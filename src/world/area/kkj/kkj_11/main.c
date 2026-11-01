@@ -40,16 +40,16 @@ EvtScript EVS_ExitDoor_kkj_18_0 = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(
 
 EvtScript EVS_BindExitTriggers = {
     IfGt(GB_StoryProgress, STORY_CH4_BEGAN_PEACH_MISSION)
-        BindTrigger(Ref(EVS_ExitDoors_kkj_10_1), TRIGGER_WALL_PRESS_A, COLLIDER_tts, 1, 0)
+        BindTrigger(EVS_ExitDoors_kkj_10_1, TRIGGER_WALL_PRESS_A, COLLIDER_tts, 1, 0)
     EndIf
     IfGt(GB_StoryProgress, STORY_CH7_BEGAN_PEACH_MISSION)
-        BindTrigger(Ref(EVS_ExitDoors_kkj_12_0), TRIGGER_WALL_PRESS_A, COLLIDER_ttn, 1, 0)
-        BindTrigger(Ref(EVS_ExitDoor_kkj_14_0), TRIGGER_WALL_PRESS_A, COLLIDER_ttn2, 1, 0)
+        BindTrigger(EVS_ExitDoors_kkj_12_0, TRIGGER_WALL_PRESS_A, COLLIDER_ttn, 1, 0)
+        BindTrigger(EVS_ExitDoor_kkj_14_0, TRIGGER_WALL_PRESS_A, COLLIDER_ttn2, 1, 0)
     EndIf
-    BindTrigger(Ref(EVS_ExitDoor_kkj_17_0), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoor_kkj_16_0), TRIGGER_WALL_PRESS_A, COLLIDER_ttsw, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoor_kkj_15_0), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoor_kkj_18_0), TRIGGER_WALL_PRESS_A, COLLIDER_ttse, 1, 0)
+    BindTrigger(EVS_ExitDoor_kkj_17_0, TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
+    BindTrigger(EVS_ExitDoor_kkj_16_0, TRIGGER_WALL_PRESS_A, COLLIDER_ttsw, 1, 0)
+    BindTrigger(EVS_ExitDoor_kkj_15_0, TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
+    BindTrigger(EVS_ExitDoor_kkj_18_0, TRIGGER_WALL_PRESS_A, COLLIDER_ttse, 1, 0)
     Return
     End
 };
@@ -105,7 +105,7 @@ EvtScript EVS_Main = {
         CaseOrEq(STORY_CH3_BEGAN_PEACH_MISSION)
         CaseOrEq(STORY_CH4_BEGAN_PEACH_MISSION)
         CaseOrEq(STORY_CH5_BEGAN_PEACH_MISSION)
-            Call(MakeNpcs, false, Ref(EarlyNPCs))
+            Call(MakeNpcs, false, EarlyNPCs)
         EndCaseGroup
         CaseEq(STORY_CH6_BEGAN_PEACH_MISSION)
             Call(SetAvailableDisguise, PEACH_DISGUISE_KOOPATROL)
@@ -113,7 +113,7 @@ EvtScript EVS_Main = {
             Call(EnableModel, MODEL_o365, false)
             Call(EnableModel, MODEL_o366, false)
             Call(DisableAllLightSources)
-            Call(MakeNpcs, false, Ref(LaterNPCs))
+            Call(MakeNpcs, false, LaterNPCs)
         CaseDefault
             Call(EnableModel, MODEL_o364, false)
             Call(EnableModel, MODEL_o365, false)

@@ -560,10 +560,10 @@ ActorBlueprint blueprint = {
 };
 
 EvtScript EVS_Init = {
-    Call(BindTakeTurn, ACTOR_PARTNER, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_PARTNER, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_PARTNER, Ref(EVS_HandleEvent))
-    Call(BindHandlePhase, ACTOR_PARTNER, Ref(EVS_HandlePhase))
+    Call(BindTakeTurn, ACTOR_PARTNER, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_PARTNER, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_PARTNER, EVS_HandleEvent)
+    Call(BindHandlePhase, ACTOR_PARTNER, EVS_HandlePhase)
     Return
     End
 };
@@ -717,7 +717,7 @@ EvtScript EVS_RunAway = {
 EvtScript EVS_PartnerRunAwayFail = {
     Call(UseIdleAnimation, ACTOR_PARTNER, false)
     Call(SetGoalToHome, ACTOR_PARTNER)
-    Call(SetActorSpeed, ACTOR_PARTNER, Float(6.0))
+    Call(SetActorSpeed, ACTOR_PARTNER, 6.0)
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleGoombario_Run)
     Call(SetActorYaw, ACTOR_PARTNER, 0)
     Call(RunToGoal, ACTOR_PARTNER, 0)
@@ -790,7 +790,7 @@ EvtScript EVS_ReturnHome_Miss = {
     Sub(LVar0, 30)
     Set(LVar1, 0)
     Call(SetGoalPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
-    Call(SetActorJumpGravity, ACTOR_PARTNER, Float(1.2))
+    Call(SetActorJumpGravity, ACTOR_PARTNER, 1.2)
     Call(GetReturnMoveTime)
     Call(JumpToGoal, ACTOR_PARTNER, LVar0, false, true, false)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleGoombario_PreHeadbonk)
@@ -813,7 +813,7 @@ EvtScript EVS_ReturnHome_Miss = {
     Call(SetActorDispOffset, ACTOR_SELF, 0, 0, 0)
     Wait(2)
     Call(SetGoalToHome, ACTOR_PARTNER)
-    Call(SetActorSpeed, ACTOR_PARTNER, Float(8.0))
+    Call(SetActorSpeed, ACTOR_PARTNER, 8.0)
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleGoombario_Run)
     Call(RunToGoal, ACTOR_PARTNER, 0)
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleGoombario_Idle)
@@ -829,7 +829,7 @@ EvtScript EVS_ReturnHome_Success = {
     Call(GetGoalPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
     Add(LVar0, 60)
     Call(SetGoalPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
-    Call(SetActorJumpGravity, ACTOR_PARTNER, Float(1.4))
+    Call(SetActorJumpGravity, ACTOR_PARTNER, 1.4)
     Call(GetReturnMoveTime)
     Thread
         Wait(4)
@@ -879,7 +879,7 @@ EvtScript EVS_ReturnHome_Success = {
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleGoombario_Idle)
     Wait(2)
     Call(SetGoalToHome, ACTOR_PARTNER)
-    Call(SetActorSpeed, ACTOR_PARTNER, Float(8.0))
+    Call(SetActorSpeed, ACTOR_PARTNER, 8.0)
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleGoombario_Run)
     Call(RunToGoal, ACTOR_PARTNER, 0)
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleGoombario_Idle)
@@ -894,13 +894,13 @@ EvtScript runToTarget = {
     Call(InitTargetIterator)
     Call(SetGoalToTarget, ACTOR_PARTNER)
     Call(GetGoalPos, ACTOR_PARTNER, LVar3, LVar4, LVar5)
-    Sub(LVar3, Float(70.0))
+    Sub(LVar3, 70.0)
     IfLt(LVar0, LVar3)
         Set(LVar3, LVar0)
     EndIf
     Call(SetGoalPos, ACTOR_PARTNER, LVar3, LVar4, LVar5)
     Call(UseBattleCamPreset, BTL_CAM_PARTNER_APPROACH)
-    Call(SetActorSpeed, ACTOR_PARTNER, Float(5.0))
+    Call(SetActorSpeed, ACTOR_PARTNER, 5.0)
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleGoombario_Run)
     Call(RunToGoal, ACTOR_PARTNER, 0)
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleGoombario_Idle)
@@ -919,7 +919,7 @@ EvtScript calcJumpTime = {
         Set(LVarB, LVar7)
     EndIf
     Sub(LVarB, 20)
-    DivF(LVarB, Float(10.588))
+    DivF(LVarB, 10.588)
     AddF(LVarB, 15)
     Set(LVarA, LVarB)
     Return
@@ -950,7 +950,7 @@ EvtScript EVS_Attack_Headbonk1 = {
         Call(SetJumpAnimations, ACTOR_PARTNER, 0, ANIM_BattleGoombario_Headbonk, ANIM_BattleGoombario_Headbonk, ANIM_BattleGoombario_Headbonk)
         Call(OnMissHeadbonk)
         Thread
-            Call(ShakeCam, CAM_BATTLE, 0, 5, Float(1.0))
+            Call(ShakeCam, CAM_BATTLE, 0, 5, 1.0)
         EndThread
         Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_TRIP)
         Wait(20)
@@ -958,11 +958,11 @@ EvtScript EVS_Attack_Headbonk1 = {
         Return
     EndIf
     ChildThread
-        Call(SetActorScale, ACTOR_PARTNER, Float(1.1), Float(0.8), Float(1.0))
+        Call(SetActorScale, ACTOR_PARTNER, 1.1, 0.8, 1.0)
         Wait(1)
-        Call(SetActorScale, ACTOR_PARTNER, Float(1.3), Float(0.5), Float(1.0))
+        Call(SetActorScale, ACTOR_PARTNER, 1.3, 0.5, 1.0)
         Wait(1)
-        Call(SetActorScale, ACTOR_PARTNER, Float(1.0), Float(1.0), Float(1.0))
+        Call(SetActorScale, ACTOR_PARTNER, 1.0, 1.0, 1.0)
     EndChildThread
     Wait(1)
     Call(GetPartnerActionQuality, LVar0)
@@ -1014,11 +1014,11 @@ EvtScript EVS_Attack_Headbonk1 = {
     Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_GOOMBARIO_HEADBONK)
     Call(JumpOnTarget, LVarA, 3)
     ChildThread
-        Call(SetActorScale, ACTOR_PARTNER, Float(1.1), Float(0.8), Float(1.0))
+        Call(SetActorScale, ACTOR_PARTNER, 1.1, 0.8, 1.0)
         Wait(1)
-        Call(SetActorScale, ACTOR_PARTNER, Float(1.3), Float(0.5), Float(1.0))
+        Call(SetActorScale, ACTOR_PARTNER, 1.3, 0.5, 1.0)
         Wait(1)
-        Call(SetActorScale, ACTOR_PARTNER, Float(1.0), Float(1.0), Float(1.0))
+        Call(SetActorScale, ACTOR_PARTNER, 1.0, 1.0, 1.0)
     EndChildThread
     Wait(1)
     Call(StopChargeAndGet)
@@ -1055,7 +1055,7 @@ EvtScript EVS_Attack_Headbonk2 = {
         Call(SetJumpAnimations, ACTOR_PARTNER, 0, ANIM_BattleGoombario_Headbonk, ANIM_BattleGoombario_Headbonk, ANIM_BattleGoombario_Headbonk)
         Call(OnMissHeadbonk)
         Thread
-            Call(ShakeCam, CAM_BATTLE, 0, 5, Float(1.0))
+            Call(ShakeCam, CAM_BATTLE, 0, 5, 1.0)
         EndThread
         Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_TRIP)
         Wait(20)
@@ -1063,11 +1063,11 @@ EvtScript EVS_Attack_Headbonk2 = {
         Return
     EndIf
     ChildThread
-        Call(SetActorScale, ACTOR_PARTNER, Float(1.1), Float(0.8), Float(1.0))
+        Call(SetActorScale, ACTOR_PARTNER, 1.1, 0.8, 1.0)
         Wait(1)
-        Call(SetActorScale, ACTOR_PARTNER, Float(1.3), Float(0.5), Float(1.0))
+        Call(SetActorScale, ACTOR_PARTNER, 1.3, 0.5, 1.0)
         Wait(1)
-        Call(SetActorScale, ACTOR_PARTNER, Float(1.0), Float(1.0), Float(1.0))
+        Call(SetActorScale, ACTOR_PARTNER, 1.0, 1.0, 1.0)
     EndChildThread
     Wait(1)
     Call(GetPartnerActionQuality, LVar0)
@@ -1121,11 +1121,11 @@ EvtScript EVS_Attack_Headbonk2 = {
     Call(JumpOnTarget, LVarA, 3)
     Call(EnableActorBlur, ACTOR_PARTNER, ACTOR_BLUR_RESET)
     ChildThread
-        Call(SetActorScale, ACTOR_PARTNER, Float(1.1), Float(0.8), Float(1.0))
+        Call(SetActorScale, ACTOR_PARTNER, 1.1, 0.8, 1.0)
         Wait(1)
-        Call(SetActorScale, ACTOR_PARTNER, Float(1.3), Float(0.5), Float(1.0))
+        Call(SetActorScale, ACTOR_PARTNER, 1.3, 0.5, 1.0)
         Wait(1)
-        Call(SetActorScale, ACTOR_PARTNER, Float(1.0), Float(1.0), Float(1.0))
+        Call(SetActorScale, ACTOR_PARTNER, 1.0, 1.0, 1.0)
     EndChildThread
     Wait(1)
     Call(StopChargeAndGet)
@@ -1162,7 +1162,7 @@ EvtScript EVS_Attack_Headbonk3 = {
         Call(SetJumpAnimations, ACTOR_PARTNER, 0, ANIM_BattleGoombario_Headbonk, ANIM_BattleGoombario_Headbonk, ANIM_BattleGoombario_Headbonk)
         Call(OnMissHeadbonk)
         Thread
-            Call(ShakeCam, CAM_BATTLE, 0, 5, Float(1.0))
+            Call(ShakeCam, CAM_BATTLE, 0, 5, 1.0)
         EndThread
         Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_TRIP)
         Wait(20)
@@ -1170,11 +1170,11 @@ EvtScript EVS_Attack_Headbonk3 = {
         Return
     EndIf
     ChildThread
-        Call(SetActorScale, ACTOR_PARTNER, Float(1.1), Float(0.8), Float(1.0))
+        Call(SetActorScale, ACTOR_PARTNER, 1.1, 0.8, 1.0)
         Wait(1)
-        Call(SetActorScale, ACTOR_PARTNER, Float(1.3), Float(0.5), Float(1.0))
+        Call(SetActorScale, ACTOR_PARTNER, 1.3, 0.5, 1.0)
         Wait(1)
-        Call(SetActorScale, ACTOR_PARTNER, Float(1.0), Float(1.0), Float(1.0))
+        Call(SetActorScale, ACTOR_PARTNER, 1.0, 1.0, 1.0)
     EndChildThread
     Wait(1)
     Call(GetPartnerActionQuality, LVar0)
@@ -1237,11 +1237,11 @@ EvtScript EVS_Attack_Headbonk3 = {
     Call(JumpOnTarget, LVarA, 3)
     Call(EnableActorBlur, ACTOR_PARTNER, ACTOR_BLUR_RESET)
     ChildThread
-        Call(SetActorScale, ACTOR_PARTNER, Float(1.1), Float(0.8), Float(1.0))
+        Call(SetActorScale, ACTOR_PARTNER, 1.1, 0.8, 1.0)
         Wait(1)
-        Call(SetActorScale, ACTOR_PARTNER, Float(1.3), Float(0.5), Float(1.0))
+        Call(SetActorScale, ACTOR_PARTNER, 1.3, 0.5, 1.0)
         Wait(1)
-        Call(SetActorScale, ACTOR_PARTNER, Float(1.0), Float(1.0), Float(1.0))
+        Call(SetActorScale, ACTOR_PARTNER, 1.0, 1.0, 1.0)
     EndChildThread
     Wait(1)
     Call(StopChargeAndGet)
@@ -1282,7 +1282,7 @@ EvtScript EVS_Move_Multibonk = {
         Call(SetJumpAnimations, ACTOR_PARTNER, 0, ANIM_BattleGoombario_Headbonk, ANIM_BattleGoombario_Headbonk, ANIM_BattleGoombario_Headbonk)
         Call(OnMissHeadbonk)
         Thread
-            Call(ShakeCam, CAM_BATTLE, 0, 5, Float(1.0))
+            Call(ShakeCam, CAM_BATTLE, 0, 5, 1.0)
         EndThread
         Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_TRIP)
         Wait(20)
@@ -1290,11 +1290,11 @@ EvtScript EVS_Move_Multibonk = {
         Return
     EndIf
     ChildThread
-        Call(SetActorScale, ACTOR_PARTNER, Float(1.1), Float(0.8), Float(1.0))
+        Call(SetActorScale, ACTOR_PARTNER, 1.1, 0.8, 1.0)
         Wait(1)
-        Call(SetActorScale, ACTOR_PARTNER, Float(1.3), Float(0.5), Float(1.0))
+        Call(SetActorScale, ACTOR_PARTNER, 1.3, 0.5, 1.0)
         Wait(1)
-        Call(SetActorScale, ACTOR_PARTNER, Float(1.0), Float(1.0), Float(1.0))
+        Call(SetActorScale, ACTOR_PARTNER, 1.0, 1.0, 1.0)
     EndChildThread
     Wait(1)
     Call(GetPartnerActionQuality, LVar0)
@@ -1337,7 +1337,7 @@ EvtScript EVS_Move_Multibonk = {
         Call(UseBattleCamPreset, BTL_CAM_GOOMBARIO_BONK_FOLLOWUP_2)
     EndThread
     Call(InterruptActionCommand)
-    Call(SetActionDifficultyTable, Ref(actionCommandTable))
+    Call(SetActionDifficultyTable, actionCommandTable)
     Call(LoadActionCommand, ACTION_COMMAND_JUMP)
     Call(InitActionCommand)
     Set(LVarA, 24)
@@ -1383,11 +1383,11 @@ EvtScript EVS_Move_Multibonk = {
         Set(LFlag0, true)
     EndIf
     ChildThread
-        Call(SetActorScale, ACTOR_PARTNER, Float(1.1), Float(0.8), Float(1.0))
+        Call(SetActorScale, ACTOR_PARTNER, 1.1, 0.8, 1.0)
         Wait(1)
-        Call(SetActorScale, ACTOR_PARTNER, Float(1.3), Float(0.5), Float(1.0))
+        Call(SetActorScale, ACTOR_PARTNER, 1.3, 0.5, 1.0)
         Wait(1)
-        Call(SetActorScale, ACTOR_PARTNER, Float(1.0), Float(1.0), Float(1.0))
+        Call(SetActorScale, ACTOR_PARTNER, 1.0, 1.0, 1.0)
     EndChildThread
     Wait(1)
     Call(GetPartnerActionQuality, LVar0)
@@ -1433,7 +1433,7 @@ EvtScript EVS_Move_Multibonk = {
 EvtScript EVS_Move_Tattle = {
     Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
     Add(LVar0, 30)
-    Call(SetActorSpeed, ACTOR_PARTNER, Float(6.0))
+    Call(SetActorSpeed, ACTOR_PARTNER, 6.0)
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleGoombario_Run)
     Call(SetGoalPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
     Call(RunToGoal, ACTOR_PARTNER, 0, false)
@@ -1468,8 +1468,8 @@ EvtScript EVS_Move_Tattle = {
     Call(SetBattleFlagBits, BS_FLAGS1_TATTLE_OPEN, false)
     Call(PartnerYieldTurn)
     Call(SetGoalToHome, ACTOR_PARTNER)
-    Call(SetActorSpeed, ACTOR_PARTNER, Float(4.0))
-    Call(SetActorJumpGravity, ACTOR_PARTNER, Float(1.8))
+    Call(SetActorSpeed, ACTOR_PARTNER, 4.0)
+    Call(SetActorJumpGravity, ACTOR_PARTNER, 1.8)
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleGoombario_Run)
     Call(RunToGoal, ACTOR_PARTNER, 0)
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleGoombario_Idle)
@@ -1485,16 +1485,16 @@ EvtScript EVS_Move_Charge = {
     Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
     Add(LVar1, 15)
     Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_CHARGE_UP)
-    Call(PlayChargeFX, LVar0, LVar1, LVar2, Float(1.2))
+    Call(PlayChargeFX, LVar0, LVar1, LVar2, 1.2)
     Wait(3)
-    Call(PlayChargeFX, LVar0, LVar1, LVar2, Float(0.8))
+    Call(PlayChargeFX, LVar0, LVar1, LVar2, 0.8)
     Thread
         Wait(15)
         Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
         Add(LVar1, 15)
         Add(LVar2, -5)
         Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_GOOMBARIO_GATHERING)
-        PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_BLUE_SHRINK, LVar0, LVar1, LVar2, Float(2.0), 20)
+        PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_BLUE_SHRINK, LVar0, LVar1, LVar2, 2.0, 20)
     EndThread
     Wait(30)
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleGoombario_Idle)
@@ -1510,7 +1510,7 @@ EvtScript EVS_Move_Charge = {
         Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_GROW)
         Call(ChargeAtPos, LVar0, LVar1, LVar2)
         Wait(4)
-        Call(SetActorJumpGravity, ACTOR_PARTNER, Float(1.4))
+        Call(SetActorJumpGravity, ACTOR_PARTNER, 1.4)
         Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
         Call(SetJumpAnimations, ACTOR_PARTNER, ANIM_BattleGoombario_Jump, 0x00000001, ANIM_BattleGoombario_Jump, ANIM_BattleGoombario_Jump)
         Call(SetGoalPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)

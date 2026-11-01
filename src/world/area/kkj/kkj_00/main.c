@@ -32,11 +32,11 @@ EvtScript EVS_PreventFrontDoorExit = {
 };
 
 EvtScript EVS_BindDoorTriggers = {
-    BindTrigger(Ref(EVS_PreventFrontDoorExit), TRIGGER_WALL_PRESS_A, COLLIDER_tts, 1, 0)
-    BindTrigger(Ref(EVS_ShowMessage_CantOpen), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
-    BindTrigger(Ref(EVS_ShowMessage_CantOpen), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoors_kkj_01_0), TRIGGER_WALL_PRESS_A, COLLIDER_ttn, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoor_kkj_19_0), TRIGGER_WALL_PRESS_A, COLLIDER_ttne, 1, 0)
+    BindTrigger(EVS_PreventFrontDoorExit, TRIGGER_WALL_PRESS_A, COLLIDER_tts, 1, 0)
+    BindTrigger(EVS_ShowMessage_CantOpen, TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
+    BindTrigger(EVS_ShowMessage_CantOpen, TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
+    BindTrigger(EVS_ExitDoors_kkj_01_0, TRIGGER_WALL_PRESS_A, COLLIDER_ttn, 1, 0)
+    BindTrigger(EVS_ExitDoor_kkj_19_0, TRIGGER_WALL_PRESS_A, COLLIDER_ttne, 1, 0)
     Return
     End
 };
@@ -123,9 +123,9 @@ EvtScript EVS_Main = {
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     IfEq(GB_StoryProgress, STORY_INTRO)
-        Call(MakeNpcs, false, Ref(IntroNPCs))
+        Call(MakeNpcs, false, IntroNPCs)
     Else
-        Call(MakeNpcs, false, Ref(EndingNPCs))
+        Call(MakeNpcs, false, EndingNPCs)
     EndIf
     Call(EnableGroup, MODEL_g2, false)
     Call(EnableGroup, MODEL_g51, false)

@@ -776,7 +776,7 @@ EvtScript EVS_PlayPhonograph = {
             EndIf
         EndIf
     EndIf
-    Call(SetPlayerSpeed, Float(2.0))
+    Call(SetPlayerSpeed, 2.0)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     IfGt(LVar2, -170)
         Goto(33)
@@ -799,7 +799,7 @@ EvtScript EVS_PlayPhonograph = {
     Wait(30)
     Call(InitPhonographHud)
     IfEq(MV_GuardDeparted, false)
-        Call(BindNpcAI, NPC_GuardBoo, Ref(EVS_NpcAI_GuardBoo_Wary))
+        Call(BindNpcAI, NPC_GuardBoo, EVS_NpcAI_GuardBoo_Wary)
         ExecGetID(MV_UpdateGuardScript, EVS_UpdateGuardBoo)
     Else
         ExecGetID(MV_UpdateGuardScript, EVS_DummyUpdateGuardBoo)
@@ -934,7 +934,7 @@ EvtScript EVS_NpcAI_GuardBoo_Dancing = {
                 Call(InterpNpcYaw, NPC_GuardBoo, 270, 5)
             CaseLt(60)
                 Call(GetNpcPos, NPC_GuardBoo, LVar0, LVar1, LVar2)
-                Call(SetNpcJumpscale, NPC_GuardBoo, Float(1.0))
+                Call(SetNpcJumpscale, NPC_GuardBoo, 1.0)
                 Call(NpcJump0, NPC_GuardBoo, LVar0, LVar1, LVar2, 10)
             CaseLt(99)
                 Call(MakeLerp, 0, 720, 20, EASING_QUADRATIC_OUT)
@@ -956,12 +956,12 @@ EvtScript EVS_GuardBoo_ReturnToPost = {
     Wait(1)
     IfEq(MV_GuardDancing, true)
         Wait(150)
-        Call(BindNpcAI, NPC_GuardBoo, Ref(EVS_NpcAI_GuardBoo_DoNothing))
+        Call(BindNpcAI, NPC_GuardBoo, EVS_NpcAI_GuardBoo_DoNothing)
         Wait(1)
         Call(SetNpcRotation, NPC_GuardBoo, 0, 0, 0)
         Wait(90)
     Else
-        Call(BindNpcAI, NPC_GuardBoo, Ref(EVS_NpcAI_GuardBoo_DoNothing))
+        Call(BindNpcAI, NPC_GuardBoo, EVS_NpcAI_GuardBoo_DoNothing)
         Wait(1)
         Call(SetNpcRotation, NPC_GuardBoo, 0, 0, 0)
     EndIf
@@ -986,7 +986,7 @@ EvtScript EVS_GuardBoo_ReturnToPost = {
         Wait(1)
     EndLoop
     Set(MV_GuardDancing, false)
-    Call(BindNpcAI, NPC_GuardBoo, Ref(EVS_NpcAI_GuardBoo_Wary))
+    Call(BindNpcAI, NPC_GuardBoo, EVS_NpcAI_GuardBoo_Wary)
     Return
     End
 };
@@ -1000,7 +1000,7 @@ EvtScript EVS_UpdateGuardBoo = {
         Call(GetNpcPos, NPC_GuardBoo, LVar0, LVar1, LVar2)
         IfLe(LVar0, -92)
             Set(MV_GuardDancing, true)
-            Call(BindNpcAI, NPC_GuardBoo, Ref(EVS_NpcAI_GuardBoo_Dancing))
+            Call(BindNpcAI, NPC_GuardBoo, EVS_NpcAI_GuardBoo_Dancing)
             Return
         EndIf
         IfEq(LVarA, 0)
@@ -1022,15 +1022,15 @@ EvtScript EVS_UpdateGuardBoo = {
                 Switch(LVar0)
                     CaseLt(60)
                     CaseLt(80)
-                        Call(BindNpcAI, NPC_GuardBoo, Ref(EVS_NpcAI_GuardBoo_DoNothing))
+                        Call(BindNpcAI, NPC_GuardBoo, EVS_NpcAI_GuardBoo_DoNothing)
                         Set(MF_GuardBusy, true)
                         Call(GetNpcPos, NPC_GuardBoo, LVar0, LVar1, LVar2)
-                        Call(SetNpcJumpscale, NPC_GuardBoo, Float(1.0))
+                        Call(SetNpcJumpscale, NPC_GuardBoo, 1.0)
                         Call(NpcJump0, NPC_GuardBoo, LVar0, LVar1, LVar2, 10)
                         Set(MF_GuardBusy, false)
-                        Call(BindNpcAI, NPC_GuardBoo, Ref(EVS_NpcAI_GuardBoo_Wary))
+                        Call(BindNpcAI, NPC_GuardBoo, EVS_NpcAI_GuardBoo_Wary)
                     CaseLt(99)
-                        Call(BindNpcAI, NPC_GuardBoo, Ref(EVS_NpcAI_GuardBoo_DoNothing))
+                        Call(BindNpcAI, NPC_GuardBoo, EVS_NpcAI_GuardBoo_DoNothing)
                         Set(MF_GuardBusy, true)
                         Call(MakeLerp, 0, 720, 20, EASING_QUADRATIC_OUT)
                         Loop(0)
@@ -1042,7 +1042,7 @@ EvtScript EVS_UpdateGuardBoo = {
                             EndIf
                         EndLoop
                         Set(MF_GuardBusy, false)
-                        Call(BindNpcAI, NPC_GuardBoo, Ref(EVS_NpcAI_GuardBoo_Wary))
+                        Call(BindNpcAI, NPC_GuardBoo, EVS_NpcAI_GuardBoo_Wary)
                 EndSwitch
             EndIf
         EndIf
@@ -1116,14 +1116,14 @@ EvtScript EVS_Scene_PlayerGotChestItem = {
     Call(SetNpcRotation, NPC_GuardBoo, 0, 0, 0)
     Exec(EVS_SetupMusic)
     Call(DisablePlayerInput, true)
-    Call(BindNpcAI, NPC_GuardBoo, Ref(EVS_NpcAI_GuardBoo_DoNothing))
+    Call(BindNpcAI, NPC_GuardBoo, EVS_NpcAI_GuardBoo_DoNothing)
     Call(GetNpcPos, NPC_GuardBoo, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamDistance, CAM_DEFAULT, 300.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(SpeakToPlayer, NPC_GuardBoo, ANIM_Boo_Cower, ANIM_Boo_Cower, 0, MSG_CH3_0039)
     Call(SetNpcAnimation, NPC_GuardBoo, ANIM_Boo_Idle)
     Call(EndSpeech, NPC_GuardBoo, ANIM_Boo_Talk, ANIM_Boo_Idle, 0)
@@ -1131,9 +1131,9 @@ EvtScript EVS_Scene_PlayerGotChestItem = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(DisablePlayerInput, false)
     Return
@@ -1141,11 +1141,11 @@ EvtScript EVS_Scene_PlayerGotChestItem = {
 };
 
 EvtScript EVS_SetupGuardBoo = {
-    Call(SetNpcScale, NPC_GuardBoo, Float(1.0), Float(1.0), Float(1.0))
+    Call(SetNpcScale, NPC_GuardBoo, 1.0, 1.0, 1.0)
     Call(SetNpcCollisionSize, NPC_GuardBoo, 40, 40)
     Call(InitGuardBooAlpha)
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_GuardBoo))
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcAI_GuardBoo_Wary))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_GuardBoo)
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcAI_GuardBoo_Wary)
     Call(SetNpcPos, NPC_GuardBoo, 168, 0, -136)
     Return
     End
@@ -1157,7 +1157,7 @@ EvtScript EVS_SetupPhonograph = {
     IfLt(GB_StoryProgress, STORY_CH3_PLAYED_THE_RECORD)
         Call(EnableModel, MODEL_reco, false)
     EndIf
-    BindPadlock(Ref(EVS_Inspect_Phonograph), TRIGGER_WALL_PRESS_A, COLLIDER_o344, Ref(RecordList), 0, 1)
+    BindPadlock(EVS_Inspect_Phonograph, TRIGGER_WALL_PRESS_A, COLLIDER_o344, RecordList, 0, 1)
     Return
     End
 };

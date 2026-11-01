@@ -30,7 +30,7 @@ EvtScript EVS_NpcInteract_Mouser_01 = {
 };
 
 EvtScript EVS_NpcInit_Mouser_01 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Mouser_01))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Mouser_01)
     Return
     End
 };
@@ -64,7 +64,7 @@ EvtScript EVS_NpcInteract_Dryite_01 = {
 };
 
 EvtScript EVS_NpcInit_Dryite_01 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Dryite_01))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Dryite_01)
     Return
     End
 };
@@ -90,7 +90,7 @@ EvtScript EVS_NpcInteract_Dryite_02 = {
 };
 
 EvtScript EVS_NpcInit_Dryite_02 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Dryite_02))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Dryite_02)
     Return
     End
 };
@@ -104,7 +104,7 @@ EvtScript EVS_NpcInteract_Toadette = {
 };
 
 EvtScript EVS_NpcInit_Toadette = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toadette))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toadette)
     Return
     End
 };
@@ -141,7 +141,7 @@ EvtScript EVS_NpcInteract_DojoGrad = {
 };
 
 EvtScript EVS_NpcInit_DojoGrad = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_DojoGrad))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_DojoGrad)
     Return
     End
 };
@@ -153,7 +153,7 @@ EvtScript EVS_NpcInteract_Dryite_06 = {
 };
 
 EvtScript EVS_NpcInit_Dryite_06 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Dryite_06))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Dryite_06)
     Return
     End
 };

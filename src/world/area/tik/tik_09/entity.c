@@ -28,7 +28,7 @@ EvtScript EVS_SpawnSwitch = {
         EndIf
     EndLoop
     Call(PlaySoundAt, SOUND_OBJECT_LAND, SOUND_SPACE_DEFAULT, -10, LVar0, 10)
-    Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(1.0))
+    Call(ShakeCam, CAM_DEFAULT, 0, 5, 1.0)
     Wait(10)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(InterpCamTargetPos, 0, 1, LVar0, LVar1, LVar2, 20)
@@ -39,7 +39,7 @@ EvtScript EVS_SpawnSwitch = {
 };
 
 EvtScript EVS_GotoMap_mim_11_3 = {
-    Call(GotoMap, Ref("mim_11"), mim_11_ENTRY_3)
+    Call(GotoMap, "mim_11", mim_11_ENTRY_3)
     Wait(100)
     Return
     End
@@ -56,15 +56,15 @@ EvtScript EVS_PlayRisingPipeSound = {
 
 EvtScript EVS_MakeEntities = {
     IfEq(GF_TIK09_WarpPipe, false)
-        Call(MakeEntity, Ref(Entity_BlueSwitch), NPC_DISPOSE_LOCATION, 0, MAKE_ENTITY_END)
+        Call(MakeEntity, Entity_BlueSwitch, NPC_DISPOSE_LOCATION, 0, MAKE_ENTITY_END)
         Call(AssignSwitchFlag, EVT_INDEX_OF_AREA_FLAG(AF_TIK09_Switch_WarpPipe))
         Set(MV_EntityID_Switch, LVar0)
-        BindTrigger(Ref(EVS_PlayRisingPipeSound), TRIGGER_AREA_FLAG_SET, AF_TIK09_Switch_WarpPipe, 1, 0)
+        BindTrigger(EVS_PlayRisingPipeSound, TRIGGER_AREA_FLAG_SET, AF_TIK09_Switch_WarpPipe, 1, 0)
         IfEq(GF_TIK09_Defeated_Ambush, true)
             Call(SetEntityPosition, MV_EntityID_Switch, -10, -10, 10)
         EndIf
     EndIf
-    Call(MakeEntity, Ref(Entity_BlueWarpPipe), -30, -10, -40, 0, tik_09_ENTRY_2, Ref(EVS_GotoMap_mim_11_3), EVT_INDEX_OF_GAME_FLAG(GF_TIK09_WarpPipe), MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_BlueWarpPipe, -30, -10, -40, 0, tik_09_ENTRY_2, EVS_GotoMap_mim_11_3, EVT_INDEX_OF_GAME_FLAG(GF_TIK09_WarpPipe), MAKE_ENTITY_END)
     Return
     End
 };

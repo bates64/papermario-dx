@@ -7,7 +7,7 @@ EvtScript EVS_OpenChest = {
 };
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Ref(Entity_Chest), 480, 235, 175, 0, 0, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_Chest, 480, 235, 175, 0, 0, MAKE_ENTITY_END)
     Return
     End
 };

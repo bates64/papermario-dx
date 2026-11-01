@@ -11,16 +11,16 @@ EvtScript EVS_NpcIdle_Bzzap = {
             Goto(100)
         EndIf
     Call(SetNpcPos, NPC_SELF, -280, 108, 0)
-    Call(SetNpcJumpscale, NPC_SELF, Float(0.0))
+    Call(SetNpcJumpscale, NPC_SELF, 0.0)
     Call(NpcJump1, NPC_SELF, -280, 50, 10, 5)
     Wait(50)
-    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_Bzzap_Wander))
+    Call(BindNpcAI, NPC_SELF, EVS_NpcAI_Bzzap_Wander)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Bzzap = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Bzzap))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Bzzap)
     Return
     End
 };

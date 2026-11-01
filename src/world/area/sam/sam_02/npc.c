@@ -48,7 +48,7 @@ EvtScript EVS_ToadHouse_SetDialogue = {
 
 EvtScript EVS_ToadHouse_GetInBed = {
     Exec(EVS_PlayRestingSong)
-    Call(SetPlayerSpeed, Float(3.0))
+    Call(SetPlayerSpeed, 3.0)
     Call(PlayerMoveTo, 294, -213, 0)
     Thread
         Wait(15)
@@ -59,7 +59,7 @@ EvtScript EVS_ToadHouse_GetInBed = {
         Call(SetCamPosA, CAM_DEFAULT, 549, -5)
         Call(SetCamPosB, CAM_DEFAULT, 315, -171)
         Call(SetCamPosC, CAM_DEFAULT, 0, 23)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+        Call(SetCamSpeed, CAM_DEFAULT, 90.0)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
     EndThread
     Call(PlayerMoveTo, 274, -270, 0)
@@ -105,7 +105,7 @@ EvtScript EVS_ToadHouse_ReturnFromRest = {
     Call(HidePlayerShadow, false)
     Call(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_CLEAR, 0, 0, 0, 0)
     Call(SetPlayerPos, 277, 0, -256)
-    Call(SetPlayerSpeed, Float(3.0))
+    Call(SetPlayerSpeed, 3.0)
     Call(PlayerMoveTo, 336, -199, 0)
     Exec(EVS_SetupMusic)
     Return
@@ -313,36 +313,36 @@ EvtScript EVS_NpcInteract_Penguin_07 = {
 };
 
 EvtScript EVS_NpcInit_Penguin_ShopOwner = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Penguin_ShopOwner))
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Penguin_ShopOwner))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Penguin_ShopOwner)
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Penguin_ShopOwner)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_ShiverToad = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ToadHouseKeeper))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_ToadHouseKeeper)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Penguin_02 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Penguin_02))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Penguin_02)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Penguin_03 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Penguin_03))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Penguin_03)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Penguin_04 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Penguin_04))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Penguin_04)
     IfGe(GB_StoryProgress, STORY_CH7_MAYOR_MURDER_MYSTERY)
         IfLt(GB_StoryProgress, STORY_CH7_MAYOR_MURDER_SOLVED)
             Call(SetNpcPos, NPC_SELF, 0, 30, 280)
-            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Penguin_04))
+            Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Penguin_04)
         EndIf
     EndIf
     Return
@@ -350,19 +350,19 @@ EvtScript EVS_NpcInit_Penguin_04 = {
 };
 
 EvtScript EVS_NpcInit_Penguin_05 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Penguin_05))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Penguin_05)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Penguin_06 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Penguin_06))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Penguin_06)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Penguin_07 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Penguin_07))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Penguin_07)
     Return
     End
 };

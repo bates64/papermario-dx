@@ -243,10 +243,10 @@ EvtScript EVS_UseItem = {
     Call(func_802A13E4_72C994)
     Wait(2)
     IfNe(LVar0, 133)
-        Jump(Ref(EVS_UseMystery))
+        Jump(EVS_UseMystery)
         Return
     EndIf
-    Call(CreateVirtualEntity, LVarA, Ref(modelCommandList))
+    Call(CreateVirtualEntity, LVarA, modelCommandList)
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Add(LVar1, 150)
     Call(SetVirtualEntityPosition, LVarA, LVar0, LVar1, LVar2)
@@ -261,7 +261,7 @@ EvtScript EVS_UseItem = {
             Wait(1)
         EndLoop
     EndThread
-    Call(SetVirtualEntityJumpGravity, LVarA, Float(0.6))
+    Call(SetVirtualEntityJumpGravity, LVarA, 0.6)
     Add(LVar2, 5)
     Call(VirtualEntityJumpTo, LVarA, LVar0, LVar1, LVar2, 12)
     Thread

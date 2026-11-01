@@ -38,7 +38,7 @@ EvtScript EVS_NpcAI_DryBones_Wander = {
     Call(SetSelfVar, AI_VAR_RANGED_PRE_TIME, 15)
     Call(SetSelfVar, AI_VAR_RANGED_POST_TIME, 10)
     Call(SetSelfVar, AI_VAR_RANGED_AMMO_COUNT, 2)
-    Call(RangedAttackAI_Main, Ref(AISettings_DryBones_Wander))
+    Call(RangedAttackAI_Main, AISettings_DryBones_Wander)
     Return
     End
 };
@@ -64,7 +64,7 @@ EvtScript EVS_NpcAI_ThrownBone = {
     Call(SetSelfVar, AI_VAR_MISSILE_FLAGS, AI_MISSILE_FLAG_SPINNING | AI_MISSILE_FLAG_CENTERED)
     Call(SetSelfVar, AI_VAR_MISSILE_SPAWN_Y, 15)
     Call(SetSelfVar, AI_VAR_MISSILE_SPAWN_R, 15)
-    Call(MissileAI_Main, Ref(AISettings_ThrownBone))
+    Call(MissileAI_Main, AISettings_ThrownBone)
     Return
     End
 };
@@ -79,7 +79,7 @@ EvtScript EVS_NpcHit_ThrownBone = {
     IfEq(LVar0, 0)
         Return
     EndIf
-    Call(BindNpcAI, NPC_SELF, Ref(EVS_NoAI_ThrownBone))
+    Call(BindNpcAI, NPC_SELF, EVS_NoAI_ThrownBone)
     Call(GetOwnerEncounterTrigger, LVar0)
     Switch(LVar0)
         CaseOrEq(ENCOUNTER_TRIGGER_HAMMER)
@@ -101,7 +101,7 @@ EvtScript EVS_NpcHit_ThrownBone = {
         CaseDefault
             Call(SetBattleAsScripted)
     EndSwitch
-    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_ThrownBone))
+    Call(BindNpcAI, NPC_SELF, EVS_NpcAI_ThrownBone)
     Return
     End
 };

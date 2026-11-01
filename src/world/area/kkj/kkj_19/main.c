@@ -160,9 +160,9 @@ EvtScript EVS_ExitDoor_0 = {
     Exec(ExitSingleDoor)
     Wait(17)
     IfEq(GB_StoryProgress, STORY_INTRO)
-        Call(GotoMap, Ref("kkj_00"), kkj_00_ENTRY_3)
+        Call(GotoMap, "kkj_00", kkj_00_ENTRY_3)
     Else
-        Call(GotoMap, Ref("kkj_10"), kkj_10_ENTRY_3)
+        Call(GotoMap, "kkj_10", kkj_10_ENTRY_3)
     EndIf
     Wait(100)
     Return
@@ -170,7 +170,7 @@ EvtScript EVS_ExitDoor_0 = {
 };
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitDoor_0), TRIGGER_WALL_PRESS_A, COLLIDER_ttse, 1, 0)
+    BindTrigger(EVS_ExitDoor_0, TRIGGER_WALL_PRESS_A, COLLIDER_ttse, 1, 0)
     Return
     End
 };
@@ -195,9 +195,9 @@ EvtScript EVS_Main = {
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Switch(GB_StoryProgress)
         CaseEq(STORY_INTRO)
-            Call(MakeNpcs, false, Ref(IntroNPCs))
+            Call(MakeNpcs, false, IntroNPCs)
         CaseEq(STORY_CH4_BEGAN_PEACH_MISSION)
-            Call(MakeNpcs, false, Ref(PeachNPCs))
+            Call(MakeNpcs, false, PeachNPCs)
     EndSwitch
     Exec(EVS_SetupMusic)
     Call(UseDoorSounds, DOOR_SOUNDS_BASIC)

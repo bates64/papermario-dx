@@ -58,7 +58,7 @@ EvtScript EVS_UpdateCameraDuringLongTrainRide = {
         IfGt(LVar0, 2000)
             Set(LVar0, 2000)
         EndIf
-        Call(SetCamTarget, CAM_DEFAULT, LVar0, Float(50.0), LVar2)
+        Call(SetCamTarget, CAM_DEFAULT, LVar0, 50.0, LVar2)
         Wait(1)
         Goto(0)
     Return
@@ -100,7 +100,7 @@ EvtScript EVS_Scene_TrainTraveling = {
     Call(GetEntryID, LVar0)
     IfEq(LVar0, omo_16_ENTRY_0)
         Set(MV_TrainRideState, TRAIN_STATE_INIT)
-        Set(MV_TrainPath, Ref(TrainPath_LeftToRight))
+        Set(MV_TrainPath, TrainPath_LeftToRight)
         Set(MV_TrainSpeedMode, TRAIN_SPEED_CONSTANT)
         Exec(EVS_UpdateTrain)
         Set(MF_TrainRideActive, true)
@@ -116,13 +116,13 @@ EvtScript EVS_Scene_TrainTraveling = {
             EndIf
             Switch(GB_OMO_TrainRoute)
                 CaseEq(TRAIN_ROUTE_BLUE_PINK)
-                    Call(GotoMap, Ref("omo_06"), omo_06_ENTRY_2)
+                    Call(GotoMap, "omo_06", omo_06_ENTRY_2)
                 CaseEq(TRAIN_ROUTE_PINK_GREEN)
-                    Call(GotoMap, Ref("omo_08"), omo_08_ENTRY_1)
+                    Call(GotoMap, "omo_08", omo_08_ENTRY_1)
                 CaseEq(TRAIN_ROUTE_GREEN_RED)
-                    Call(GotoMap, Ref("omo_10"), omo_10_ENTRY_2)
+                    Call(GotoMap, "omo_10", omo_10_ENTRY_2)
                 CaseEq(TRAIN_ROUTE_RED_BLUE)
-                    Call(GotoMap, Ref("omo_03"), omo_03_ENTRY_2)
+                    Call(GotoMap, "omo_03", omo_03_ENTRY_2)
             EndSwitch
             Wait(100)
             Return
@@ -131,7 +131,7 @@ EvtScript EVS_Scene_TrainTraveling = {
         EndThread
     Else
         Set(MV_TrainRideState, TRAIN_STATE_INIT)
-        Set(MV_TrainPath, Ref(TrainPath_RightToLeft))
+        Set(MV_TrainPath, TrainPath_RightToLeft)
         Set(MV_TrainSpeedMode, TRAIN_SPEED_CONSTANT)
         Exec(EVS_UpdateTrain)
         Set(MF_TrainRideActive, true)
@@ -147,13 +147,13 @@ EvtScript EVS_Scene_TrainTraveling = {
             EndIf
             Switch(GB_OMO_TrainRoute)
                 CaseEq(TRAIN_ROUTE_BLUE_PINK)
-                    Call(GotoMap, Ref("omo_03"), omo_03_ENTRY_3)
+                    Call(GotoMap, "omo_03", omo_03_ENTRY_3)
                 CaseEq(TRAIN_ROUTE_PINK_GREEN)
-                    Call(GotoMap, Ref("omo_06"), omo_06_ENTRY_3)
+                    Call(GotoMap, "omo_06", omo_06_ENTRY_3)
                 CaseEq(TRAIN_ROUTE_GREEN_RED)
-                    Call(GotoMap, Ref("omo_08"), omo_08_ENTRY_2)
+                    Call(GotoMap, "omo_08", omo_08_ENTRY_2)
                 CaseEq(TRAIN_ROUTE_RED_BLUE)
-                    Call(GotoMap, Ref("omo_10"), omo_10_ENTRY_3)
+                    Call(GotoMap, "omo_10", omo_10_ENTRY_3)
             EndSwitch
             Wait(100)
             Return

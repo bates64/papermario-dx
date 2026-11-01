@@ -3,7 +3,7 @@
 EvtScript EVS_ExitWalk_dgb_09_3 = EVT_EXIT_WALK(40, dgb_10_ENTRY_0, "dgb_09", dgb_09_ENTRY_3);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_dgb_09_3), TRIGGER_FLOOR_ABOVE, COLLIDER_deilis, 1, 0)
+    BindTrigger(EVS_ExitWalk_dgb_09_3, TRIGGER_FLOOR_ABOVE, COLLIDER_deilis, 1, 0)
     Return
     End
 };
@@ -12,19 +12,19 @@ EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(dgb_10_ENTRY_0)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
             Wait(1)
         CaseEq(dgb_10_ENTRY_1)
             Call(UseSettingsFrom, CAM_DEFAULT, 375, 0, -188)
             Call(SetPanTarget, CAM_DEFAULT, 375, 0, -188)
-            Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+            Call(SetCamSpeed, CAM_DEFAULT, 90.0)
             Call(PanToTarget, CAM_DEFAULT, 0, true)
             Call(DisablePlayerInput, true)
             Call(DisablePlayerPhysics, true)
             Call(SetPlayerActionState, ACTION_STATE_JUMP)
             Wait(1)
-            Call(SetPlayerJumpscale, Float(0.7))
+            Call(SetPlayerJumpscale, 0.7)
             Call(PlayerJump, 375, 0, -188, 20)
             Call(PanToTarget, CAM_DEFAULT, 0, false)
             Call(DisablePlayerPhysics, false)

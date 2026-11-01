@@ -59,13 +59,13 @@ EvtScript EVS_UnlockLowerRightDoors = {
 };
 
 EvtScript EVS_Padlock_LowerDoors = {
-    BindTrigger(Ref(EVS_ExitDoors_trd_05_0), TRIGGER_WALL_PRESS_A, COLLIDER_tte2, 1, 0)
+    BindTrigger(EVS_ExitDoors_trd_05_0, TRIGGER_WALL_PRESS_A, COLLIDER_tte2, 1, 0)
     Return
     End
 };
 
 EvtScript EVS_Padlock_UpperDoors = {
-    BindTrigger(Ref(EVS_ExitDoors_trd_03_3), TRIGGER_WALL_PRESS_A, COLLIDER_ttw3, 1, 0)
+    BindTrigger(EVS_ExitDoors_trd_03_3, TRIGGER_WALL_PRESS_A, COLLIDER_ttw3, 1, 0)
     Return
     End
 };
@@ -75,8 +75,8 @@ EvtScript EVS_DropSwitch = {
     Wait(40 * DT)
     Call(UseSettingsFrom, CAM_DEFAULT, -188, 0, -43)
     Call(SetPanTarget, CAM_DEFAULT, -188, 0, -43)
-    Call(SetCamDistance, CAM_DEFAULT, Float(510.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamDistance, CAM_DEFAULT, 510.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(3 * DT)
     Call(PlaySoundAt, SOUND_FALL_QUICK, SOUND_SPACE_DEFAULT, -180, 175, -35)
@@ -90,14 +90,14 @@ EvtScript EVS_DropSwitch = {
         Wait(1)
     EndLoop
     Call(PlaySoundAt, SOUND_OBJECT_LAND, SOUND_SPACE_DEFAULT, -180, 0, -35)
-    Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(1.0))
+    Call(ShakeCam, CAM_DEFAULT, 0, 5, 1.0)
     Wait(20 * DT)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, 0, LVar2)
-    Call(SetCamDistance, CAM_DEFAULT, Float(400.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(4.0 / DT))
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(SetCamDistance, CAM_DEFAULT, 400.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 4.0 / DT)
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(2)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
@@ -108,17 +108,17 @@ EvtScript EVS_DropSwitch = {
 
 EvtScript EVS_MakeEntities = {
     IfEq(GF_TRD04_UnlockedLowerDoor, false)
-        Call(MakeEntity, Ref(Entity_Padlock), 265, 8, 90, -80, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(EVS_Padlock_LowerDoors))
+        Call(MakeEntity, Entity_Padlock, 265, 8, 90, -80, MAKE_ENTITY_END)
+        Call(AssignScript, EVS_Padlock_LowerDoors)
         Set(MV_EntityID_PadlockLower, LVar0)
     EndIf
     IfEq(GF_TRD04_UnlockedUpperDoor, false)
-        Call(MakeEntity, Ref(Entity_Padlock), -265, 195, -55, 80, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(EVS_Padlock_UpperDoors))
+        Call(MakeEntity, Entity_Padlock, -265, 195, -55, 80, MAKE_ENTITY_END)
+        Call(AssignScript, EVS_Padlock_UpperDoors)
         Set(MV_EntityID_PadlockUpper, LVar0)
     EndIf
     IfLe(GB_StoryProgress, STORY_CH1_DEFEATED_BASEMENT_GUARD)
-        Call(MakeEntity, Ref(Entity_BlueSwitch), NPC_DISPOSE_LOCATION, 0, MAKE_ENTITY_END)
+        Call(MakeEntity, Entity_BlueSwitch, NPC_DISPOSE_LOCATION, 0, MAKE_ENTITY_END)
         Call(AssignSwitchFlag, EVT_INDEX_OF_AREA_FLAG(AF_TRD04_LowerStairs))
         Set(MV_EntityID_Switch, LVar0)
         IfEq(GB_StoryProgress, STORY_CH1_DEFEATED_BASEMENT_GUARD)

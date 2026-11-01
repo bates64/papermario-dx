@@ -36,12 +36,12 @@ BombTrigger BombPos_Tree = {
 
 EvtScript EVS_SetupFoliage = {
     IfLt(GB_StoryProgress, STORY_UNUSED_FFFFFFCC)
-        Set(LVar0, Ref(ShakeTree_Tree2))
+        Set(LVar0, ShakeTree_Tree2)
     Else
-        Set(LVar0, Ref(ShakeTree_Tree1))
+        Set(LVar0, ShakeTree_Tree1)
     EndIf
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_WALL_HAMMER, COLLIDER_o84, 1, 0)
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(BombPos_Tree), 1, 0)
+    BindTrigger(EVS_ShakeTree, TRIGGER_WALL_HAMMER, COLLIDER_o84, 1, 0)
+    BindTrigger(EVS_ShakeTree, TRIGGER_POINT_BOMB, BombPos_Tree, 1, 0)
     Return
     End
 };

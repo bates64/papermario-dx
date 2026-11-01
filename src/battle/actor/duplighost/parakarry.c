@@ -100,9 +100,9 @@ static ActorBlueprint blueprint = {
 };
 
 static EvtScript EVS_Init = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
     Return
     End
 };
@@ -237,7 +237,7 @@ static EvtScript EVS_Attack_SkyDive = {
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleParakarry_Run)
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(AddGoalPos, ACTOR_SELF, 20, 0, 0)
-    Call(SetActorSpeed, ACTOR_SELF, Float(4.0))
+    Call(SetActorSpeed, ACTOR_SELF, 4.0)
     Call(FlyToGoal, ACTOR_SELF, 0, -10, EASING_COS_IN_OUT)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleParakarry_Still)
     Wait(3)
@@ -280,7 +280,7 @@ static EvtScript EVS_Attack_SkyDive = {
             Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
             Call(YieldTurn)
             Call(SetGoalToHome, ACTOR_SELF)
-            Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
+            Call(SetActorSpeed, ACTOR_SELF, 6.0)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleParakarry_Run)
             Call(FlyToGoal, ACTOR_SELF, 0, -5, EASING_LINEAR)
             Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
@@ -313,7 +313,7 @@ static EvtScript EVS_Attack_SkyDive = {
         CaseOrEq(HIT_RESULT_NO_DAMAGE)
             Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleParakarry_Dive)
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(1.4))
+            Call(SetActorJumpGravity, ACTOR_SELF, 1.4)
             Call(AddGoalPos, ACTOR_SELF, 50, 0, 0)
             Call(JumpToGoal, ACTOR_SELF, 15, false, false, false)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleParakarry_Still)
@@ -322,12 +322,12 @@ static EvtScript EVS_Attack_SkyDive = {
                 Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleParakarry_Run)
             EndThread
             Call(AddGoalPos, ACTOR_SELF, 30, 0, 0)
-            Call(JumpWithBounce, ACTOR_SELF, 10, Float(4.0))
+            Call(JumpWithBounce, ACTOR_SELF, 10, 4.0)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleParakarry_Idle)
             Wait(6)
             Call(YieldTurn)
             Call(SetGoalToHome, ACTOR_SELF)
-            Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
+            Call(SetActorSpeed, ACTOR_SELF, 6.0)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleParakarry_Run)
             Call(FlyToGoal, ACTOR_SELF, 0, -5, EASING_LINEAR)
         EndCaseGroup

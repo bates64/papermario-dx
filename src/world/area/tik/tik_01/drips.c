@@ -17,7 +17,7 @@ DripVolumeList DripVolumes = {
 };
 
 EvtScript EVS_SetupDrips = {
-    Set(LVar0, Ref(DripVolumes))
+    Set(LVar0, DripVolumes)
     Set(LVar1, MODEL_sizuku)
     Exec(EVS_CreateDripVolumes)
     Return

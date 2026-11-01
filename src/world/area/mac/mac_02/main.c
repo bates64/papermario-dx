@@ -8,14 +8,14 @@ EvtScript EVS_ExitWalk_mac_01_3 = EVT_EXIT_WALK(60, mac_02_ENTRY_2, "mac_01", ma
 EvtScript EVS_ExitWalk_mac_03_0 = EVT_EXIT_WALK(60, mac_02_ENTRY_3, "mac_03", mac_03_ENTRY_0);
 
 EvtScript EVS_GotoMap_tik_06_3 = {
-    Call(GotoMap, Ref("tik_06"), tik_06_ENTRY_3)
+    Call(GotoMap, "tik_06", tik_06_ENTRY_3)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_GotoMap_tik_15_1 = {
-    Call(GotoMap, Ref("tik_15"), tik_15_ENTRY_1)
+    Call(GotoMap, "tik_15", tik_15_ENTRY_1)
     Wait(100)
     Return
     End
@@ -32,18 +32,18 @@ EvtScript EVS_SetupPipe = {
 };
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_mac_04_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_mim_10_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_mac_01_3), TRIGGER_FLOOR_ABOVE, COLLIDER_deilin, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_mac_03_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilis, 1, 0)
+    BindTrigger(EVS_ExitWalk_mac_04_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitWalk_mim_10_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitWalk_mac_01_3, TRIGGER_FLOOR_ABOVE, COLLIDER_deilin, 1, 0)
+    BindTrigger(EVS_ExitWalk_mac_03_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilis, 1, 0)
     Set(LVar0, mac_02_ENTRY_4)
     Set(LVar1, COLLIDER_deilip)
-    Set(LVar2, Ref(EVS_GotoMap_tik_06_3))
-    BindTrigger(Ref(EVS_SetupPipe), TRIGGER_FLOOR_TOUCH, LVar1, 1, 0)
+    Set(LVar2, EVS_GotoMap_tik_06_3)
+    BindTrigger(EVS_SetupPipe, TRIGGER_FLOOR_TOUCH, LVar1, 1, 0)
     Set(LVar0, mac_02_ENTRY_5)
     Set(LVar1, COLLIDER_deilid)
-    Set(LVar2, Ref(EVS_GotoMap_tik_15_1))
-    BindTrigger(Ref(EVS_SetupPipe), TRIGGER_FLOOR_TOUCH, LVar1, 1, 0)
+    Set(LVar2, EVS_GotoMap_tik_15_1)
+    BindTrigger(EVS_SetupPipe, TRIGGER_FLOOR_TOUCH, LVar1, 1, 0)
     Return
     End
 };
@@ -66,15 +66,15 @@ EvtScript EVS_Main = {
     Set(AF_MAC02_Unread_1E, false)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH2_STAR_SPIRIT_DEPARTED)
-            Call(MakeNpcs, false, Ref(NpcGroup4))
+            Call(MakeNpcs, false, NpcGroup4)
         CaseLt(STORY_CH3_SAW_BOO_ENTER_FOREST)
-            Call(MakeNpcs, false, Ref(NpcGroup1))
+            Call(MakeNpcs, false, NpcGroup1)
         CaseLt(STORY_CH3_STAR_SPIRIT_DEPARTED)
-            Call(MakeNpcs, false, Ref(NpcGroup4))
+            Call(MakeNpcs, false, NpcGroup4)
         CaseLt(STORY_CH4_RETURNED_TOY_TRAIN)
-            Call(MakeNpcs, false, Ref(NpcGroup3))
+            Call(MakeNpcs, false, NpcGroup3)
         CaseDefault
-            Call(MakeNpcs, false, Ref(NpcGroup4))
+            Call(MakeNpcs, false, NpcGroup4)
     EndSwitch
     ExecWait(EVS_MakeEntities)
     Switch(GB_StoryProgress)
@@ -103,7 +103,7 @@ EvtScript EVS_Main = {
     Exec(EVS_SetupMusic)
     Call(GetEntryID, LVar0)
     IfLe(LVar0, mac_02_ENTRY_3)
-        Set(LVar0, Ref(EVS_BindExitTriggers))
+        Set(LVar0, EVS_BindExitTriggers)
         Exec(EnterWalk)
     Else
         EVT_ENTER_PIPE_VERTICAL(EVS_BindExitTriggers)

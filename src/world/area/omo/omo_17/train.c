@@ -11,7 +11,7 @@ EvtScript EVS_UpdateCameraDuringTrainTransition = {
         IfGt(LVar0, 600)
             Set(LVar0, 600)
         EndIf
-        Call(SetCamTarget, CAM_DEFAULT, LVar0, Float(50.0), LVar2)
+        Call(SetCamTarget, CAM_DEFAULT, LVar0, 50.0, LVar2)
         Wait(1)
         Goto(0)
     Return
@@ -41,7 +41,7 @@ EvtScript EVS_EnterTrain = {
     Switch(LVar0)
         CaseEq(omo_17_ENTRY_4)
             Set(MV_TrainRideState, TRAIN_STATE_INIT)
-            Set(MV_TrainPath, Ref(TrainPath_LeftToRight))
+            Set(MV_TrainPath, TrainPath_LeftToRight)
             Set(MV_TrainSpeedMode, TRAIN_SPEED_CONSTANT)
             Exec(EVS_UpdateTrain)
             Set(MF_TrainRideActive, true)
@@ -51,12 +51,12 @@ EvtScript EVS_EnterTrain = {
                     Wait(1)
                     Goto(10)
                 EndIf
-                Call(GotoMap, Ref("omo_06"), omo_06_ENTRY_0)
+                Call(GotoMap, "omo_06", omo_06_ENTRY_0)
                 Wait(100)
             EndThread
         CaseEq(omo_17_ENTRY_5)
             Set(MV_TrainRideState, TRAIN_STATE_INIT)
-            Set(MV_TrainPath, Ref(TrainPath_RightToLeft))
+            Set(MV_TrainPath, TrainPath_RightToLeft)
             Set(MV_TrainSpeedMode, TRAIN_SPEED_CONSTANT)
             Exec(EVS_UpdateTrain)
             Set(MF_TrainRideActive, true)
@@ -66,7 +66,7 @@ EvtScript EVS_EnterTrain = {
                     Wait(1)
                     Goto(20)
                 EndIf
-                Call(GotoMap, Ref("omo_05"), omo_05_ENTRY_1)
+                Call(GotoMap, "omo_05", omo_05_ENTRY_1)
                 Wait(100)
             EndThread
     EndSwitch

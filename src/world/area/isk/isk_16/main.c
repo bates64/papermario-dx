@@ -16,7 +16,7 @@ EvtScript EVS_SpawnStarCard = {
     IfEq(LVar0, 0)
         Call(DisablePlayerInput, true)
         Call(UseSettingsFrom, CAM_DEFAULT, 408, -825, 414)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(0.6))
+        Call(SetCamSpeed, CAM_DEFAULT, 0.6)
         Call(SetPanTarget, CAM_DEFAULT, 408, -880, 414)
         EVT_SPIRIT_ADJUST_CAM(10000)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
@@ -51,9 +51,9 @@ EvtScript EVS_SpawnStarCard = {
         Call(AwaitSpiritCardProgress, SPIRIT_CARD_NOTIFY_DONE_FALLING)
         Call(GetPlayerPos, LVar2, LVar3, LVar4)
         Call(UseSettingsFrom, CAM_DEFAULT, LVar2, LVar3, LVar4)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(1.0))
+        Call(SetCamSpeed, CAM_DEFAULT, 1.0)
         Call(SetPanTarget, CAM_DEFAULT, LVar2, LVar3, LVar4)
-        Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+        Call(WaitForCam, CAM_DEFAULT, 1.0)
         Call(PanToTarget, CAM_DEFAULT, 0, false)
         Call(DisablePlayerInput, false)
     Else
@@ -67,7 +67,7 @@ EvtScript EVS_SpawnStarCard = {
     Call(PlaySoundAtPlayer, SOUND_RESCUE_STAR_SPIRIT, SOUND_SPACE_DEFAULT)
     Call(DisablePlayerInput, true)
     Set(GB_StoryProgress, STORY_CH2_STAR_SPIRIT_RESCUED)
-    Call(GotoMapSpecial, Ref("kmr_23"), kmr_23_ENTRY_1, TRANSITION_GET_STAR_CARD)
+    Call(GotoMapSpecial, "kmr_23", kmr_23_ENTRY_1, TRANSITION_GET_STAR_CARD)
     Wait(100)
     Return
     End
@@ -76,7 +76,7 @@ EvtScript EVS_SpawnStarCard = {
 EvtScript EVS_ExitWalk_isk_19_1 = EVT_EXIT_WALK(40, isk_16_ENTRY_0, "isk_19", isk_19_ENTRY_1);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_isk_19_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitWalk_isk_19_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
     Return
     End
 };
@@ -85,7 +85,7 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_DRY_DRY_RUINS)
     Call(SetSpriteShading, SHADING_ISK_16)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, false, Ref(DefaultNPCs))
+    Call(MakeNpcs, false, DefaultNPCs)
     ExecWait(EVS_SetupFlames)
     IfEq(GB_StoryProgress, STORY_CH2_DEFEATED_TUTANKOOPA)
         Exec(EVS_SpawnStarCard)
@@ -101,7 +101,7 @@ EvtScript EVS_Main = {
         CaseLt(STORY_CH2_DEFEATED_TUTANKOOPA)
             Exec(EVS_Scene_TutankoopaAppears)
         CaseGe(STORY_CH2_DEFEATED_TUTANKOOPA)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
     EndSwitch
     Return

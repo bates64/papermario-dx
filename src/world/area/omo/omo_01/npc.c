@@ -61,7 +61,7 @@ EvtScript EVS_NpcInit_ShyGuy = {
             Call(RemoveNpc, NPC_SELF)
         EndIf
     EndIf
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_ShyGuy))
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_ShyGuy)
     Set(LVar0, NPC_ShyGuy_01)
     IfEq(GF_OMO01_Item_Calculator, false)
         Set(LVar1, ITEM_CALCULATOR)
@@ -102,7 +102,7 @@ NpcData NpcData_ShyGuy_01 = {
 };
 
 EvtScript EVS_NpcInit_ShyGuy_02 = {
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_ShyGuy))
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_ShyGuy)
     Set(LVar0, NPC_ShyGuy_02)
     Set(LVar1, ITEM_CAKE_MIX)
     Set(LVar2, ITEM_TYPE_CONSUMABLE)
@@ -137,7 +137,7 @@ NpcData NpcData_ShyGuy_02 = {
 };
 
 EvtScript EVS_NpcInit_ShyGuy_03 = {
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_ShyGuy))
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_ShyGuy)
     Set(LVar0, NPC_ShyGuy_03)
     Set(LVar1, ITEM_CAKE_MIX)
     Set(LVar2, ITEM_TYPE_CONSUMABLE)
@@ -172,7 +172,7 @@ NpcData NpcData_ShyGuy_03 = {
 };
 
 EvtScript EVS_NpcInit_ShyGuy_04 = {
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_ShyGuy))
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_ShyGuy)
     Set(LVar0, NPC_ShyGuy_04)
     Set(LVar1, ITEM_MUSHROOM)
     Set(LVar2, ITEM_TYPE_CONSUMABLE)
@@ -207,7 +207,7 @@ NpcData NpcData_ShyGuy_04 = {
 };
 
 EvtScript EVS_NpcInit_ShyGuy_05 = {
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_ShyGuy))
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_ShyGuy)
     Set(LVar0, NPC_ShyGuy_05)
     Set(LVar1, ITEM_FIRE_FLOWER)
     Set(LVar2, ITEM_TYPE_CONSUMABLE)

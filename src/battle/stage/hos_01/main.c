@@ -113,52 +113,52 @@ EvtScript EVS_PreBattle = {
     Call(SetSpriteShading, SHADING_NONE)
 
     Call(MakeLocalVertexCopy, VTX_COPY_0, MODEL_o345, true)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(build_gfx_yellow_stars), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_1, build_gfx_yellow_stars, nullptr)
     Call(SetModelCustomGfx, MODEL_o345, CUSTOM_GFX_1, ENV_TINT_UNCHANGED)
     Call(SetModelFlags, MODEL_o345, MODEL_FLAG_HAS_LOCAL_VERTEX_COPY, true)
 
     Call(MakeLocalVertexCopy, VTX_COPY_1, MODEL_o338, true)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_2, Ref(build_gfx_yellow_stars), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_2, build_gfx_yellow_stars, nullptr)
     Call(SetModelCustomGfx, MODEL_o338, CUSTOM_GFX_2, ENV_TINT_UNCHANGED)
     Call(SetModelFlags, MODEL_o338, MODEL_FLAG_HAS_LOCAL_VERTEX_COPY, true)
 
     Call(MakeLocalVertexCopy, VTX_COPY_2, MODEL_o344, true)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_3, Ref(build_gfx_yellow_stars), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_3, build_gfx_yellow_stars, nullptr)
     Call(SetModelCustomGfx, MODEL_o344, CUSTOM_GFX_3, ENV_TINT_UNCHANGED)
     Call(SetModelFlags, MODEL_o344, MODEL_FLAG_HAS_LOCAL_VERTEX_COPY, true)
 
     Call(MakeLocalVertexCopy, VTX_COPY_3, MODEL_o354, true)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_4, Ref(build_gfx_yellow_stars), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_4, build_gfx_yellow_stars, nullptr)
     Call(SetModelCustomGfx, MODEL_o354, CUSTOM_GFX_4, ENV_TINT_UNCHANGED)
     Call(SetModelFlags, MODEL_o354, MODEL_FLAG_HAS_LOCAL_VERTEX_COPY, true)
 
     Call(MakeLocalVertexCopy, VTX_COPY_4, MODEL_o341, true)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_5, Ref(build_gfx_yellow_stars), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_5, build_gfx_yellow_stars, nullptr)
     Call(SetModelCustomGfx, MODEL_o341, CUSTOM_GFX_5, ENV_TINT_UNCHANGED)
     Call(SetModelFlags, MODEL_o341, MODEL_FLAG_HAS_LOCAL_VERTEX_COPY, true)
 
     Call(MakeLocalVertexCopy, VTX_COPY_5, MODEL_o352, true)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_6, Ref(build_gfx_blue_stars), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_6, build_gfx_blue_stars, nullptr)
     Call(SetModelCustomGfx, MODEL_o352, CUSTOM_GFX_6, ENV_TINT_UNCHANGED)
     Call(SetModelFlags, MODEL_o352, MODEL_FLAG_HAS_LOCAL_VERTEX_COPY, true)
 
     Call(MakeLocalVertexCopy, VTX_COPY_6, MODEL_o346, true)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_7, Ref(build_gfx_blue_stars), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_7, build_gfx_blue_stars, nullptr)
     Call(SetModelCustomGfx, MODEL_o346, CUSTOM_GFX_7, ENV_TINT_UNCHANGED)
     Call(SetModelFlags, MODEL_o346, MODEL_FLAG_HAS_LOCAL_VERTEX_COPY, true)
 
     Call(MakeLocalVertexCopy, VTX_COPY_7, MODEL_o349, true)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_8, Ref(build_gfx_green_stars), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_8, build_gfx_green_stars, nullptr)
     Call(SetModelCustomGfx, MODEL_o349, CUSTOM_GFX_8, ENV_TINT_UNCHANGED)
     Call(SetModelFlags, MODEL_o349, MODEL_FLAG_HAS_LOCAL_VERTEX_COPY, true)
 
     Call(MakeLocalVertexCopy, VTX_COPY_8, MODEL_o353, true)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_9, Ref(build_gfx_green_stars), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_9, build_gfx_green_stars, nullptr)
     Call(SetModelCustomGfx, MODEL_o353, CUSTOM_GFX_9, ENV_TINT_UNCHANGED)
     Call(SetModelFlags, MODEL_o353, MODEL_FLAG_HAS_LOCAL_VERTEX_COPY, true)
 
     Call(MakeLocalVertexCopy, VTX_COPY_9, MODEL_o347, true)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_A, Ref(build_gfx_pink_stars), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_A, build_gfx_pink_stars, nullptr)
     Call(SetModelCustomGfx, MODEL_o347, CUSTOM_GFX_A, ENV_TINT_UNCHANGED)
     Call(SetModelFlags, MODEL_o347, MODEL_FLAG_HAS_LOCAL_VERTEX_COPY, true)
 

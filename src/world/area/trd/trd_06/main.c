@@ -67,7 +67,7 @@ EvtScript EVS_BombWall_Cell = {
                 Call(SetNpcFlagBits, NPC_Bobomb_02, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
                 Call(SetNpcFlagBits, NPC_Bobomb_03, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
                 Call(SetNpcFlagBits, NPC_Bobomb_04, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
-                Call(SetPlayerSpeed, Float(3.0))
+                Call(SetPlayerSpeed, 3.0)
                 Call(PlayerMoveTo, 110, 140, 0)
                 Call(PlayerFaceNpc, NPC_PARTNER, false)
                 Call(SetNpcFlagBits, NPC_Bobomb_01, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
@@ -79,7 +79,7 @@ EvtScript EVS_BombWall_Cell = {
     EndThread
     Call(DisablePartnerAI, false)
     Call(SetNpcAnimation, NPC_PARTNER, ANIM_WorldBombette_Walk)
-    Call(SetNpcSpeed, NPC_PARTNER, Float(3.5 / DT))
+    Call(SetNpcSpeed, NPC_PARTNER, 3.5 / DT)
 #if !VERSION_PAL
     Call(NpcMoveTo, NPC_PARTNER, 156, 156, 0)
 #endif
@@ -128,18 +128,18 @@ EvtScript EVS_Main = {
     EndIf
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH1_DEFEATED_KOOPA_BROS)
-            Call(MakeNpcs, true, Ref(NpcGroup_Prisoners))
+            Call(MakeNpcs, true, NpcGroup_Prisoners)
             Call(SetGroupVisibility, MODEL_g27, MODEL_GROUP_HIDDEN)
         CaseLt(STORY_CH1_DEFEATED_JR_TROOPA)
-            Call(MakeNpcs, true, Ref(NpcGroup_KoopaBros))
+            Call(MakeNpcs, true, NpcGroup_KoopaBros)
     EndSwitch
     Wait(2)
     ExecWait(EVS_MakeEntities)
-    BindTrigger(Ref(EVS_ExitDoors_trd_04_5), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
+    BindTrigger(EVS_ExitDoors_trd_04_5, TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
     Call(GetEntryID, LVar0)
     IfLe(LVar0, trd_06_ENTRY_1)
         IfEq(GF_TRD06_BombedWall, false)
-            BindTrigger(Ref(EVS_BombWall_Cell), TRIGGER_POINT_BOMB, Ref(BombPos_CellWall), 1, 0)
+            BindTrigger(EVS_BombWall_Cell, TRIGGER_POINT_BOMB, BombPos_CellWall, 1, 0)
             Call(SetGroupVisibility, MODEL_ana, MODEL_GROUP_HIDDEN)
         Else
             Call(SetGroupVisibility, MODEL_ana2, MODEL_GROUP_HIDDEN)

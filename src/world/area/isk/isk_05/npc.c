@@ -225,7 +225,7 @@ EvtScript EVS_NpcIdle_StoneChomp = {
     Call(DestroyAmbushWorker)
     Call(SetNpcImgFXParams, NPC_SELF, IMGFX_CLEAR, 0, 0, 0, 0)
     Call(DisablePlayerInput, false)
-    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_StoneChomp_Wander))
+    Call(BindNpcAI, NPC_SELF, EVS_NpcAI_StoneChomp_Wander)
     Return
     End
 };
@@ -264,8 +264,8 @@ EvtScript EVS_NpcInit_StoneChomp = {
         Call(RemoveNpc, NPC_SELF)
         Return
     EndIf
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_StoneChomp))
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_StoneChomp_Override))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_StoneChomp)
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_StoneChomp_Override)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, true)
     Call(EnableNpcShadow, NPC_SELF, false)
     Return

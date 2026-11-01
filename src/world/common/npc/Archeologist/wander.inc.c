@@ -10,7 +10,7 @@ MobileAISettings AISettings_Archeologist_Wander = {
 };
 
 EvtScript EVS_NpcAI_Archeologist_Wander = {
-    Call(BasicAI_Main, Ref(AISettings_Archeologist_Wander))
+    Call(BasicAI_Main, AISettings_Archeologist_Wander)
     Return
     End
 };

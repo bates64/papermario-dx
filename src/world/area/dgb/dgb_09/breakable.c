@@ -26,7 +26,7 @@ EvtScript EVS_BlastWall = {
 
 EvtScript EVS_SetupBreakable = {
     IfEq(GF_DGB09_BombedWall, false)
-        BindTrigger(Ref(EVS_BlastWall), TRIGGER_POINT_BOMB, Ref(BombPos_Wall), 1, 0)
+        BindTrigger(EVS_BlastWall, TRIGGER_POINT_BOMB, BombPos_Wall, 1, 0)
         Call(EnableModel, MODEL_g29, false)
     Else
         Call(EnableModel, MODEL_g28, false)

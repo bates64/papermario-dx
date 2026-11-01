@@ -10,7 +10,7 @@ MobileAISettings AISettings_ShiverToad_Wander = {
 };
 
 EvtScript EVS_NpcAI_ShiverToad_Wander = {
-    Call(BasicAI_Main, Ref(AISettings_ShiverToad_Wander))
+    Call(BasicAI_Main, AISettings_ShiverToad_Wander)
     Return
     End
 };

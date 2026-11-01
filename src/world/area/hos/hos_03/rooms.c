@@ -8,13 +8,13 @@ EvtScript EVS_SetDoorRot_House = {
 
 EvtScript EVS_SetWallRot_House = {
     Set(LVar1, LVar0)
-    MulF(LVar1, Float(-1.0))
+    MulF(LVar1, -1.0)
     Call(RotateGroup, MODEL_g71, LVar1, 0, 0, 1)
     Set(LVar1, LVar0)
-    MulF(LVar1, Float(-0.5))
+    MulF(LVar1, -0.5)
     Call(RotateGroup, MODEL_g72, LVar1, 0, 1, 0)
     Set(LVar1, LVar0)
-    MulF(LVar1, Float(0.5))
+    MulF(LVar1, 0.5)
     Call(RotateGroup, MODEL_g73, LVar1, 0, 1, 0)
     Return
     End
@@ -34,13 +34,13 @@ EvtScript EVS_SetDoorRot_Shop = {
 
 EvtScript EVS_SetWallRot_Shop = {
     Set(LVar1, LVar0)
-    MulF(LVar1, Float(-1.0))
+    MulF(LVar1, -1.0)
     Call(RotateGroup, MODEL_g64, LVar1, 0, 0, 1)
     Set(LVar1, LVar0)
-    MulF(LVar1, Float(-0.5))
+    MulF(LVar1, -0.5)
     Call(RotateGroup, MODEL_g65, LVar1, 0, 1, 0)
     Set(LVar1, LVar0)
-    MulF(LVar1, Float(0.5))
+    MulF(LVar1, 0.5)
     Call(RotateGroup, MODEL_g66, LVar1, 0, 1, 0)
     Return
     End
@@ -59,13 +59,13 @@ EvtScript EVS_SetDoorRot_ToadHouse = {
 
 EvtScript EVS_SetWallRot_ToadHouse = {
     Set(LVar1, LVar0)
-    MulF(LVar1, Float(-1.0))
+    MulF(LVar1, -1.0)
     Call(RotateGroup, MODEL_g58, LVar1, 0, 0, 1)
     Set(LVar1, LVar0)
-    MulF(LVar1, Float(-0.5))
+    MulF(LVar1, -0.5)
     Call(RotateGroup, MODEL_g55, LVar1, 0, 1, 0)
     Set(LVar1, LVar0)
-    MulF(LVar1, Float(0.5))
+    MulF(LVar1, 0.5)
     Call(RotateGroup, MODEL_g56, LVar1, 0, 1, 0)
     Switch(LVar0)
         CaseEq(90)
@@ -86,9 +86,9 @@ EvtScript EVS_SetupRooms = {
     // house
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT),
-        Ref(EVS_SetDoorRot_House),
-        Ref(EVS_SetWallRot_House),
-        Ref(EVS_DropDoor_House),
+        EVS_SetDoorRot_House,
+        EVS_SetWallRot_House,
+        EVS_DropDoor_House,
         nullptr,
         COLLIDER_o99,
         COLLIDER_o184,
@@ -97,25 +97,25 @@ EvtScript EVS_SetupRooms = {
     // shop
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT),
-        Ref(EVS_SetDoorRot_Shop),
-        Ref(EVS_SetWallRot_Shop),
+        EVS_SetDoorRot_Shop,
+        EVS_SetWallRot_Shop,
         nullptr,
         nullptr,
         COLLIDER_o72,
         COLLIDER_o185,
         MODEL_o76,
-        Ref(InteriorNPCs_Shop))
+        InteriorNPCs_Shop)
     // toad house
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT),
-        Ref(EVS_SetDoorRot_ToadHouse),
-        Ref(EVS_SetWallRot_ToadHouse),
+        EVS_SetDoorRot_ToadHouse,
+        EVS_SetWallRot_ToadHouse,
         nullptr,
         nullptr,
         COLLIDER_o100,
         COLLIDER_o186,
         MODEL_o76,
-        Ref(InteriorNPCs_ToadHouse))
+        InteriorNPCs_ToadHouse)
     Return
     End
 };

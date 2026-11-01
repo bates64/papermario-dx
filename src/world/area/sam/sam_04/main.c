@@ -7,9 +7,9 @@ EvtScript EVS_ExitWalk_sam_05_0 = EVT_EXIT_WALK(60, sam_04_ENTRY_1, "sam_05", sa
 EvtScript EVS_ExitWalk_sam_07_0 = EVT_EXIT_WALK(60, sam_04_ENTRY_2, "sam_07", sam_07_ENTRY_0);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_sam_03_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deilisw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_sam_05_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_sam_07_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilin, 1, 0)
+    BindTrigger(EVS_ExitWalk_sam_03_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deilisw, 1, 0)
+    BindTrigger(EVS_ExitWalk_sam_05_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitWalk_sam_07_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilin, 1, 0)
     Return
     End
 };
@@ -17,7 +17,7 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     IfLt(LVar0, sam_04_ENTRY_3)
-        Set(LVar0, Ref(EVS_BindExitTriggers))
+        Set(LVar0, EVS_BindExitTriggers)
         Exec(EnterWalk)
     Else
     EndIf
@@ -91,7 +91,7 @@ EvtScript EVS_OnShakeTree2 = {
                     Else
                         Set(LVar0, -316)
                     EndIf
-                    Call(SetNpcJumpscale, NPC_LetterDummy, Float(2.0))
+                    Call(SetNpcJumpscale, NPC_LetterDummy, 2.0)
                     Call(NpcJump0, NPC_LetterDummy, LVar0, 0, 141, 20)
                     KillThread(LVarA)
                     Wait(1)
@@ -179,7 +179,7 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_SHIVER_SNOWFIELD)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, false, Ref(DefaultNPCs))
+    Call(MakeNpcs, false, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     ExecWait(EVS_SetupMusic)
     PlayEffect(EFFECT_SNOWFALL, 0, 40)
@@ -188,23 +188,23 @@ EvtScript EVS_Main = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_deilin, SURFACE_TYPE_SNOW)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_deilisw, SURFACE_TYPE_SNOW)
     ExecWait(EVS_SetupSnowmen)
-    Set(LVar0, Ref(ShakeTree_Tree1))
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_WALL_HAMMER, COLLIDER_miki1, 1, 0)
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(BombPos_Tree1), 1, 0)
-    Set(LVar0, Ref(ShakeTree_Tree2))
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_WALL_HAMMER, COLLIDER_miki2, 1, 0)
-    Set(LVar0, Ref(ShakeTree_Tree3))
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_WALL_HAMMER, COLLIDER_miki3, 1, 0)
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(BombPos_Tree3), 1, 0)
-    Set(LVar0, Ref(ShakeTree_Tree4))
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_WALL_HAMMER, COLLIDER_miki4, 1, 0)
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(BombPos_Tree4), 1, 0)
-    Set(LVar0, Ref(ShakeTree_Tree5))
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_WALL_HAMMER, COLLIDER_miki5, 1, 0)
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(BombPos_Tree5), 1, 0)
-    Set(LVar0, Ref(ShakeTree_Tree6))
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_WALL_HAMMER, COLLIDER_miki6, 1, 0)
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(BombPos_Tree6), 1, 0)
+    Set(LVar0, ShakeTree_Tree1)
+    BindTrigger(EVS_ShakeTree, TRIGGER_WALL_HAMMER, COLLIDER_miki1, 1, 0)
+    BindTrigger(EVS_ShakeTree, TRIGGER_POINT_BOMB, BombPos_Tree1, 1, 0)
+    Set(LVar0, ShakeTree_Tree2)
+    BindTrigger(EVS_ShakeTree, TRIGGER_WALL_HAMMER, COLLIDER_miki2, 1, 0)
+    Set(LVar0, ShakeTree_Tree3)
+    BindTrigger(EVS_ShakeTree, TRIGGER_WALL_HAMMER, COLLIDER_miki3, 1, 0)
+    BindTrigger(EVS_ShakeTree, TRIGGER_POINT_BOMB, BombPos_Tree3, 1, 0)
+    Set(LVar0, ShakeTree_Tree4)
+    BindTrigger(EVS_ShakeTree, TRIGGER_WALL_HAMMER, COLLIDER_miki4, 1, 0)
+    BindTrigger(EVS_ShakeTree, TRIGGER_POINT_BOMB, BombPos_Tree4, 1, 0)
+    Set(LVar0, ShakeTree_Tree5)
+    BindTrigger(EVS_ShakeTree, TRIGGER_WALL_HAMMER, COLLIDER_miki5, 1, 0)
+    BindTrigger(EVS_ShakeTree, TRIGGER_POINT_BOMB, BombPos_Tree5, 1, 0)
+    Set(LVar0, ShakeTree_Tree6)
+    BindTrigger(EVS_ShakeTree, TRIGGER_WALL_HAMMER, COLLIDER_miki6, 1, 0)
+    BindTrigger(EVS_ShakeTree, TRIGGER_POINT_BOMB, BombPos_Tree6, 1, 0)
     Exec(EVS_EnterMap)
     Wait(1)
     Return

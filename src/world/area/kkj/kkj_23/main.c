@@ -6,7 +6,7 @@ EvtScript EVS_EndPeachChapter6 = {
     Set(LVar0, GB_KKJ_LastPartner)
     Call(RestoreFromPeachState)
     Call(PlaySound, SOUND_SLIDE_WHISTLE_OUT)
-    Call(GotoMapSpecial, Ref("flo_00"), flo_00_ENTRY_A, TRANSITION_END_PEACH_INTERLUDE)
+    Call(GotoMapSpecial, "flo_00", flo_00_ENTRY_A, TRANSITION_END_PEACH_INTERLUDE)
     Wait(100)
     Return
     End
@@ -45,14 +45,14 @@ EvtScript EVS_Main = {
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     IfEq(GB_StoryProgress, STORY_CH6_BEGAN_PEACH_MISSION)
         Call(SetAvailableDisguise, PEACH_DISGUISE_KOOPATROL)
-        Call(MakeNpcs, false, Ref(PeachNPCs))
+        Call(MakeNpcs, false, PeachNPCs)
     Else
-        Call(MakeNpcs, false, Ref(FinaleNPCs))
+        Call(MakeNpcs, false, FinaleNPCs)
     EndIf
     Exec(EVS_SetupMusic)
     Call(UseDoorSounds, DOOR_SOUNDS_LARGE)
-    BindTrigger(Ref(EVS_ExitDoors_kkj_24_0), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoors_kkj_22_1), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
+    BindTrigger(EVS_ExitDoors_kkj_24_0, TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
+    BindTrigger(EVS_ExitDoors_kkj_22_1, TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
     Exec(EVS_EnterMap)
     Return
     End

@@ -19,10 +19,10 @@ EvtScript EVS_NpcInteract_Koover_Normal = {
         CaseGe(STORY_CH7_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Koopa_Talk, ANIM_Koopa_Idle, 0, MSG_CH1_0008)
     EndSwitch
-    Set(LVar0, Ref(LetterDelivery_Koover1))
+    Set(LVar0, LetterDelivery_Koover1)
     ExecWait(EVS_TryLetterDelivery)
     EVT_RETURN_IF_DELIVERED()
-    Set(LVar0, Ref(LetterDelivery_Koover2))
+    Set(LVar0, LetterDelivery_Koover2)
     ExecWait(EVS_TryLetterDelivery)
     EVT_RETURN_IF_DELIVERED()
     Return
@@ -230,21 +230,21 @@ EvtScript EVS_NpcInteract_Bobomb_03_Normal = {
 };
 
 EvtScript EVS_NpcInit_Koover_Normal = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Koover_Normal))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Koover_Normal)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Koopa_02_Normal = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Koopa_02_Normal))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Koopa_02_Normal)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Koopa_03_Normal = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Koopa_03_Normal))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Koopa_03_Normal)
     IfGe(GB_StoryProgress, STORY_CH7_STAR_SPIRIT_DEPARTED)
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Koopa_03_Normal))
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Koopa_03_Normal)
         Call(SetNpcAnimation, NPC_SELF, ANIM_Koopa_Still)
     EndIf
     Return
@@ -252,19 +252,19 @@ EvtScript EVS_NpcInit_Koopa_03_Normal = {
 };
 
 EvtScript EVS_NpcInit_Bobomb_01_Normal = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bobomb_01_Normal))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Bobomb_01_Normal)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Bobomb_02_Normal = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bobomb_02_Normal))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Bobomb_02_Normal)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Bobomb_03_Normal = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bobomb_03_Normal))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Bobomb_03_Normal)
     IfLt(GB_StoryProgress, STORY_CH1_STAR_SPIRIT_DEPARTED)
         Call(RemoveNpc, NPC_SELF)
     EndIf

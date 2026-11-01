@@ -86,7 +86,7 @@ EvtScript EVS_NpcDefeat_MBush = {
             Call(EnableNpcShadow, NPC_SELF, false)
             Call(SetNpcAnimation, NPC_SELF, ANIM_MBush_Hidden)
             Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
-            Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_MBush))
+            Call(BindNpcAI, NPC_SELF, EVS_NpcAI_MBush)
         CaseEq(OUTCOME_ENEMY_FLED)
             Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_FLED, true)
             Call(RemoveNpc, NPC_SELF)

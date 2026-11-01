@@ -28,7 +28,7 @@ EvtScript EVS_NpcIdle_Goomba = {
     Call(DisablePlayerInput, true)
     Call(DisableCameraLeadingPlayer)
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
-    Call(SetCamProperties, CAM_DEFAULT, Float(5.0), LVar0, LVar1, LVar2, 300, Float(13.0), Float(-9.5))
+    Call(SetCamProperties, CAM_DEFAULT, 5.0, LVar0, LVar1, LVar2, 300, 13.0, -9.5)
     IfEq(GB_OMO_PeachChoice1, 0)
         Call(SpeakToPlayer, NPC_Goomba, ANIM_Goomba_Run, ANIM_Goomba_Idle, 0, MSG_CH4_003A)
     Else
@@ -36,7 +36,7 @@ EvtScript EVS_NpcIdle_Goomba = {
     EndIf
     Thread
         Call(EnableCameraLeadingPlayer)
-        Call(ResetCam, CAM_DEFAULT, Float(4.0))
+        Call(ResetCam, CAM_DEFAULT, 4.0)
     EndThread
     Call(DisablePlayerInput, false)
     Call(StartBossBattle, SONG_SPECIAL_BATTLE)
@@ -59,8 +59,8 @@ EvtScript EVS_NpcDefeat_Goomba = {
 
 EvtScript EVS_NpcInit_Goomba = {
     IfEq(GB_OMO_PeachChoice1, 0)
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Goomba))
-        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Goomba))
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Goomba)
+        Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_Goomba)
     Else
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndIf
@@ -70,8 +70,8 @@ EvtScript EVS_NpcInit_Goomba = {
 
 EvtScript EVS_NpcInit_Clubba = {
     IfEq(GB_OMO_PeachChoice1, 1)
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Goomba))
-        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Goomba))
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Goomba)
+        Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_Goomba)
     Else
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndIf
@@ -80,8 +80,8 @@ EvtScript EVS_NpcInit_Clubba = {
 };
 
 EvtScript EVS_NpcInit_Kammy = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Kammy))
-    Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_Kammy))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Kammy)
+    Call(BindNpcAux, NPC_SELF, EVS_NpcAux_Kammy)
     Return
     End
 };

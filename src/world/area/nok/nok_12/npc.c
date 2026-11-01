@@ -36,12 +36,12 @@ EvtScript EVS_NpcIdle_SpikedGoomba = {
         EndIf
         Call(SetNpcRotation, NPC_SELF, 0, 0, 0)
     EndThread
-    Call(SetNpcJumpscale, NPC_SELF, Float(0.7))
+    Call(SetNpcJumpscale, NPC_SELF, 0.7)
     Call(NpcJump0, NPC_SELF, -65, 0, -120, 25)
     Call(SetNpcAnimation, NPC_SELF, ANIM_SpikedGoomba_Hurt)
     Wait(20)
     Call(SetNpcAnimation, NPC_SELF, ANIM_SpikedGoomba_Idle)
-    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_SpikedGoomba_Wander))
+    Call(BindNpcAI, NPC_SELF, EVS_NpcAI_SpikedGoomba_Wander)
     Return
     End
 };
@@ -49,7 +49,7 @@ EvtScript EVS_NpcIdle_SpikedGoomba = {
 EvtScript EVS_NpcInit_SpikedGoomba = {
     Call(SetNpcPos, NPC_SELF, -165, 86, -118)
     Call(SetNpcRotation, NPC_SELF, -85, 0, 0)
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_SpikedGoomba))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_SpikedGoomba)
     Return
     End
 };
@@ -79,7 +79,7 @@ EvtScript EVS_KoopaTroopa_Demo_MissAttack = {
 EvtScript EVS_NpcInit_KoopaTroopa_02 = {
     Call(GetEntryID, LVar0)
     IfGe(LVar0, nok_12_ENTRY_2)
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_KoopaTroopa_02))
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_KoopaTroopa_02)
         Call(SetNpcPos, NPC_SELF, 310, 0, -165)
     EndIf
     Return
@@ -89,7 +89,7 @@ EvtScript EVS_NpcInit_KoopaTroopa_02 = {
 EvtScript EVS_NpcInit_KoopaTroopa_02_Demo = {
     Call(GetEntryID, LVar0)
     IfGe(LVar0, nok_12_ENTRY_2)
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_KoopaTroopa_Demo_MissAttack))
+        Call(BindNpcIdle, NPC_SELF, EVS_KoopaTroopa_Demo_MissAttack)
     EndIf
     Return
     End

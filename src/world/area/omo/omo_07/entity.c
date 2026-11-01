@@ -35,7 +35,7 @@ Vec3i StarBoxLaunchTargets[] = {
 EvtScript EVS_StarBoxLaunch_Impl = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    UseBuf(Ref(StarBoxLaunchTargets))
+    UseBuf(StarBoxLaunchTargets)
     Loop(LVar0)
         BufRead3(LVar7, LVar8, LVar9)
     EndLoop
@@ -48,7 +48,7 @@ EvtScript EVS_StarBoxLaunch_Impl = {
     EndLoop
     Call(EnableCameraFollowPlayerY)
     ExecGetTID(EVS_TetherCamToPlayer, LVarA)
-    Call(SetPlayerJumpscale, Float(0.7))
+    Call(SetPlayerJumpscale, 0.7)
     Call(PlayerJump, LVar7, LVar8, LVar9, 40)
     KillThread(LVarA)
     Wait(3)
@@ -82,23 +82,23 @@ EvtScript EVS_StarBoxLaunch3 = {
 };
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Ref(Entity_Chest), 1130, 0, 0, 0, 0, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_Chest, 1130, 0, 0, 0, 0, MAKE_ENTITY_END)
     Call(AssignChestFlag, GF_OMO07_Chest_FryingPan)
-    Call(AssignScript, Ref(EVS_OpenChest_FryingPan))
-    Call(MakeEntity, Ref(Entity_Chest), -910, 80, -100, 0, 0, MAKE_ENTITY_END)
+    Call(AssignScript, EVS_OpenChest_FryingPan)
+    Call(MakeEntity, Entity_Chest, -910, 80, -100, 0, 0, MAKE_ENTITY_END)
     Call(AssignChestFlag, GF_OMO07_Chest_DefendPlusA)
-    Call(AssignScript, Ref(EVS_OpenChest_DefendPlus))
-    Call(MakeEntity, Ref(Entity_Chest), 750, 0, -100, 0, 0, MAKE_ENTITY_END)
+    Call(AssignScript, EVS_OpenChest_DefendPlus)
+    Call(MakeEntity, Entity_Chest, 750, 0, -100, 0, 0, MAKE_ENTITY_END)
     Call(AssignChestFlag, GF_OMO07_Chest_IcePower)
-    Call(AssignScript, Ref(EVS_OpenChest_IcePower))
-    Call(MakeEntity, Ref(Entity_YellowBlock), 650, 60, -30, 0, ITEM_COIN, MAKE_ENTITY_END)
+    Call(AssignScript, EVS_OpenChest_IcePower)
+    Call(MakeEntity, Entity_YellowBlock, 650, 60, -30, 0, ITEM_COIN, MAKE_ENTITY_END)
     Call(AssignBlockFlag, GF_OMO07_ItemBlock_Coin)
-    Call(MakeEntity, Ref(Entity_StarBoxLauncher), -330, 0, 127, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(EVS_StarBoxLaunch1))
-    Call(MakeEntity, Ref(Entity_StarBoxLauncher), -260, 0, 127, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(EVS_StarBoxLaunch2))
-    Call(MakeEntity, Ref(Entity_StarBoxLauncher), -192, 80, -132, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(EVS_StarBoxLaunch3))
+    Call(MakeEntity, Entity_StarBoxLauncher, -330, 0, 127, 0, MAKE_ENTITY_END)
+    Call(AssignScript, EVS_StarBoxLaunch1)
+    Call(MakeEntity, Entity_StarBoxLauncher, -260, 0, 127, 0, MAKE_ENTITY_END)
+    Call(AssignScript, EVS_StarBoxLaunch2)
+    Call(MakeEntity, Entity_StarBoxLauncher, -192, 80, -132, 0, MAKE_ENTITY_END)
+    Call(AssignScript, EVS_StarBoxLaunch3)
     Return
     End
 };

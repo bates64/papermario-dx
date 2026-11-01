@@ -21,7 +21,7 @@ EvtScript EVS_NpcAI_Spiny_Wander = {
     Call(SetSelfVar, AI_VAR_TACKLE_MIN_CHASE_TIME, 18)
     Call(SetSelfVar, AI_VAR_TACKLE_POST_DELAY, 3)
     Call(SetSelfVar, AI_VAR_TACKLE_TYPE, TACKLER_SPINY)
-    Call(TackleWanderAI_Main, Ref(AISettings_Spiny_Wander))
+    Call(TackleWanderAI_Main, AISettings_Spiny_Wander)
     Return
     End
 };

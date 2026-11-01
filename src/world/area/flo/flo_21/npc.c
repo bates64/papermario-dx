@@ -15,7 +15,7 @@ Vec3f Path_JumpOut[] = {
 EvtScript EVS_PlayRumbleSounds = {
     Label(0)
         Call(PlaySound, SOUND_HUFF_N_PUFF_JIGGLE)
-        Call(ShakeCam, CAM_DEFAULT, 0, 15, Float(1.0))
+        Call(ShakeCam, CAM_DEFAULT, 0, 15, 1.0)
         Wait(15)
         Goto(0)
     Return
@@ -26,14 +26,14 @@ EvtScript EVS_HuffNPuff_JumpOut = {
     Call(PlaySoundAtNpc, NPC_HuffNPuff_01, SOUND_HUFF_N_PUFF_EMERGE, SOUND_SPACE_DEFAULT)
     PlayEffect(EFFECT_SHOCKWAVE, 3, 650, 104, 0)
     Wait(15)
-    Call(SetNpcJumpscale, NPC_HuffNPuff_02, Float(0.0))
+    Call(SetNpcJumpscale, NPC_HuffNPuff_02, 0.0)
     Call(NpcJump0, NPC_HuffNPuff_02, 650, 50, 0, 5)
     Call(SetNpcPos, NPC_HuffNPuff_01, 650, 50, 5)
     Call(SetNpcPos, NPC_HuffNPuff_02, 650, 50, 0)
     Call(SetNpcPos, NPC_HuffNPuff_03, 650, 50, 0)
-    Call(SetNpcJumpscale, NPC_HuffNPuff_01, Float(0.0))
-    Call(SetNpcJumpscale, NPC_HuffNPuff_02, Float(0.0))
-    Call(SetNpcJumpscale, NPC_HuffNPuff_03, Float(0.0))
+    Call(SetNpcJumpscale, NPC_HuffNPuff_01, 0.0)
+    Call(SetNpcJumpscale, NPC_HuffNPuff_02, 0.0)
+    Call(SetNpcJumpscale, NPC_HuffNPuff_03, 0.0)
     Thread
         Call(NpcJump0, NPC_HuffNPuff_01, 650, 150, 5, 10)
     EndThread
@@ -45,7 +45,7 @@ EvtScript EVS_HuffNPuff_JumpOut = {
     EndThread
     Thread
         Call(SetPlayerAnimation, ANIM_MarioW2_Flail)
-        Call(LoadPath, 30, Ref(Path_JumpOut), ARRAY_COUNT(Path_JumpOut), EASING_LINEAR)
+        Call(LoadPath, 30, Path_JumpOut, ARRAY_COUNT(Path_JumpOut), EASING_LINEAR)
         Label(0)
         Call(GetNextPathPos)
         Call(SetPlayerPos, LVar1, LVar2, LVar3)
@@ -80,7 +80,7 @@ EvtScript EVS_Scene_HuffNPuffAmbush = {
     Call(GetPlayerPos, LVar2, LVar3, LVar4)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar2, LVar3, LVar4)
     Call(SetPanTarget, CAM_DEFAULT, LVar2, LVar3, LVar4)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(MakeLerp, LVar2, 600, 20, EASING_LINEAR)
     Set(LVar2, LVar3)
@@ -108,21 +108,21 @@ EvtScript EVS_Scene_HuffNPuffAmbush = {
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Add(LVar0, 25)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-9.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(4.0))
+    Call(SetCamDistance, CAM_DEFAULT, 300.0)
+    Call(SetCamPitch, CAM_DEFAULT, 17.0, -9.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 4.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Wait(10)
     Call(ShowMessageAtWorldPos, MSG_CH6_00CA, 630, 120, 0)
-    Call(SetCamDistance, CAM_DEFAULT, Float(600.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(30.0), Float(-9.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamDistance, CAM_DEFAULT, 600.0)
+    Call(SetCamPitch, CAM_DEFAULT, 30.0, -9.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(10)
     Call(ShowMessageAtWorldPos, MSG_CH6_00CB, 630, 120, 0)
-    Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-9.0))
+    Call(SetCamDistance, CAM_DEFAULT, 300.0)
+    Call(SetCamPitch, CAM_DEFAULT, 17.0, -9.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(SetPartnerForcedFollowMode, 0)
     Wait(10)
@@ -137,18 +137,18 @@ EvtScript EVS_Scene_HuffNPuffAmbush = {
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Add(LVar0, 25)
         Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
-        Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-6.0))
+        Call(SetCamPitch, CAM_DEFAULT, 17.0, -6.0)
         Set(LVar3, 40)
         Loop(5)
             Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-            Call(SetCamDistance, CAM_DEFAULT, Float(400.0))
+            Call(SetCamDistance, CAM_DEFAULT, 400.0)
             Call(SetCamSpeed, CAM_DEFAULT, LVar3)
-            Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+            Call(WaitForCam, CAM_DEFAULT, 1.0)
             Sub(LVar3, 10)
             Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-            Call(SetCamDistance, CAM_DEFAULT, Float(600.0))
+            Call(SetCamDistance, CAM_DEFAULT, 600.0)
             Call(SetCamSpeed, CAM_DEFAULT, LVar3)
-            Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+            Call(WaitForCam, CAM_DEFAULT, 1.0)
             Add(LVar3, 7)
         EndLoop
     EndChildThread
@@ -163,8 +163,8 @@ EvtScript EVS_Scene_HuffNPuffAmbush = {
 };
 
 EvtScript EVS_HuffNPuff_AnimateBodyScale = {
-    SetF(LVar0, Float(0.95))
-    SetF(LVar1, Float(1.1))
+    SetF(LVar0, 0.95)
+    SetF(LVar1, 1.1)
     Label(0)
         Switch(MV_BossFightState)
             CaseEq(0)
@@ -181,8 +181,8 @@ EvtScript EVS_HuffNPuff_AnimateBodyScale = {
             Call(SetNpcScale, NPC_HuffNPuff_01, LVar0, LVar1, 1)
             Call(SetNpcScale, NPC_HuffNPuff_02, LVar0, LVar1, 1)
             Call(SetNpcScale, NPC_HuffNPuff_03, LVar0, LVar1, 1)
-            AddF(LVar0, Float(0.015))
-            SubF(LVar1, Float(0.01))
+            AddF(LVar0, 0.015)
+            SubF(LVar1, 0.01)
             Wait(LVar2)
         EndLoop
         Set(LVar4, LVar3)
@@ -190,8 +190,8 @@ EvtScript EVS_HuffNPuff_AnimateBodyScale = {
             Call(SetNpcScale, NPC_HuffNPuff_01, LVar0, LVar1, 1)
             Call(SetNpcScale, NPC_HuffNPuff_02, LVar0, LVar1, 1)
             Call(SetNpcScale, NPC_HuffNPuff_03, LVar0, LVar1, 1)
-            SubF(LVar0, Float(0.015))
-            AddF(LVar1, Float(0.01))
+            SubF(LVar0, 0.015)
+            AddF(LVar1, 0.01)
             Wait(LVar2)
         EndLoop
         Goto(0)
@@ -294,10 +294,10 @@ EvtScript EVS_HuffNPuff_Defeat_Flashing = {
 };
 
 EvtScript EVS_HuffNPuff_Defeat_AnimateScale = {
-    SetF(MV_HuffScaleX, Float(1.0))
-    SetF(MV_HuffScaleY, Float(1.0))
+    SetF(MV_HuffScaleX, 1.0)
+    SetF(MV_HuffScaleY, 1.0)
     ChildThread
-        UseBuf(Ref(BeginAnimScaleX))
+        UseBuf(BeginAnimScaleX)
         Loop(ARRAY_COUNT(BeginAnimScaleX))
             Call(PlaySoundAtNpc, NPC_HuffNPuff_01, SOUND_HUFF_N_PUFF_JIGGLE, SOUND_SPACE_DEFAULT)
             BufRead3(LVar6, LVar7, LVar8)
@@ -314,7 +314,7 @@ EvtScript EVS_HuffNPuff_Defeat_AnimateScale = {
             Wait(1)
         EndLoop
         Loop(0)
-            UseBuf(Ref(LoopAnimScaleX))
+            UseBuf(LoopAnimScaleX)
             Loop(ARRAY_COUNT(LoopAnimScaleX))
                 Call(PlaySoundAtNpc, NPC_HuffNPuff_01, SOUND_HUFF_N_PUFF_JIGGLE, SOUND_SPACE_DEFAULT)
                 BufRead2(LVar6, LVar7)
@@ -332,7 +332,7 @@ EvtScript EVS_HuffNPuff_Defeat_AnimateScale = {
         EndLoop
     EndChildThread
     ChildThread
-        UseBuf(Ref(BeginAnimScaleY))
+        UseBuf(BeginAnimScaleY)
         Loop(ARRAY_COUNT(BeginAnimScaleY))
             BufRead3(LVar6, LVar7, LVar8)
             Call(MakeLerp, LVar6, LVar7, LVar8, EASING_SIN_OUT)
@@ -348,7 +348,7 @@ EvtScript EVS_HuffNPuff_Defeat_AnimateScale = {
             Wait(1)
         EndLoop
         Loop(0)
-            UseBuf(Ref(LoopAnimScaleY))
+            UseBuf(LoopAnimScaleY)
             Loop(ARRAY_COUNT(LoopAnimScaleY))
                 BufRead2(LVar6, LVar7)
                 Call(MakeLerp, LVar6, LVar7, 4, EASING_SIN_OUT)
@@ -390,7 +390,7 @@ EvtScript EVS_HuffNPuff_Defeat_BlowUp = {
             Wait(1)
         EndLoop
     EndChildThread
-    UseBuf(Ref(BlowUpPositions))
+    UseBuf(BlowUpPositions)
     Set(LVar8, 3)
     // all except the last one
     Loop((ARRAY_COUNT(BlowUpPositions)/ 2) - 1)
@@ -430,11 +430,11 @@ EvtScript EVS_Scene_BossDefeated = {
     Add(LVar0, -15)
     Add(LVar2, 40)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamDistance, CAM_DEFAULT, Float(350.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-5.5))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamDistance, CAM_DEFAULT, 350.0)
+    Call(SetCamPitch, CAM_DEFAULT, 17.0, -5.5)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(SpeakToPlayer, NPC_HuffNPuff_01, ANIM_HuffNPuff_TalkSadFace, ANIM_HuffNPuff_IdleSadFace, 256, -30, 30, MSG_CH6_00CE)
     Call(FadeOutMusic, 0, 1500)
     Set(MV_BossFightState, 2)
@@ -455,7 +455,7 @@ EvtScript EVS_Scene_BossDefeated = {
             Wait(14)
         EndLoop
         PlayEffect(EFFECT_EXPLOSION, 2, LVar0, LVar1, LVar2)
-        Call(ShakeCam, CAM_DEFAULT, 0, 30, Float(1.5))
+        Call(ShakeCam, CAM_DEFAULT, 0, 30, 1.5)
     EndThread
     Thread
         Wait(30)
@@ -516,8 +516,8 @@ EvtScript EVS_NpcDefeat_HuffNPuff_Aux = {
 EvtScript EVS_NpcInit_HuffNPuff_Face = {
     IfLt(GB_StoryProgress, STORY_CH6_DEFEATED_HUFF_N_PUFF)
         Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER, true)
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_HuffNPuff_01))
-        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_HuffNPuff_Main))
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_HuffNPuff_01)
+        Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_HuffNPuff_Main)
         Call(SetNpcAnimation, NPC_SELF, ANIM_HuffNPuff_IdleFace)
     Else
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
@@ -529,7 +529,7 @@ EvtScript EVS_NpcInit_HuffNPuff_Face = {
 EvtScript EVS_NpcInit_HuffNPuff_Body = {
     IfLt(GB_StoryProgress, STORY_CH6_DEFEATED_HUFF_N_PUFF)
         Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER, true)
-        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_HuffNPuff_Aux))
+        Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_HuffNPuff_Aux)
         Call(SetNpcAnimation, NPC_SELF, ANIM_HuffNPuff_IdleBody)
         Exec(EVS_HuffNPuff_AnimateBodyScale)
     Else
@@ -542,7 +542,7 @@ EvtScript EVS_NpcInit_HuffNPuff_Body = {
 EvtScript EVS_NpcInit_HuffNPuff_Arms = {
     IfLt(GB_StoryProgress, STORY_CH6_DEFEATED_HUFF_N_PUFF)
         Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER, true)
-        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_HuffNPuff_Aux))
+        Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_HuffNPuff_Aux)
         Call(SetNpcAnimation, NPC_SELF, ANIM_HuffNPuff_BragArms)
     Else
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)

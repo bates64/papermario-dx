@@ -17,14 +17,14 @@ EvtScript EVS_ExitDoors_tik_21_1 = {
     Set(LVar3, MODEL_o47)
     Exec(ExitDoubleDoor)
     Wait(17)
-    Call(GotoMap, Ref("tik_21"), tik_21_ENTRY_1)
+    Call(GotoMap, "tik_21", tik_21_ENTRY_1)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_GotoMap_tik_17_0 = {
-    Call(GotoMap, Ref("tik_17"), tik_17_ENTRY_0)
+    Call(GotoMap, "tik_17", tik_17_ENTRY_0)
     Wait(100)
     Return
     End
@@ -33,8 +33,8 @@ EvtScript EVS_GotoMap_tik_17_0 = {
 EvtScript EVS_ExitPipe_tik_17_0 = EVT_EXIT_PIPE_VERTICAL(tik_22_ENTRY_1, COLLIDER_o61, EVS_GotoMap_tik_17_0);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitDoors_tik_21_1), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
-    BindTrigger(Ref(EVS_ExitPipe_tik_17_0), TRIGGER_FLOOR_TOUCH, COLLIDER_o61, 1, 0)
+    BindTrigger(EVS_ExitDoors_tik_21_1, TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
+    BindTrigger(EVS_ExitPipe_tik_17_0, TRIGGER_FLOOR_TOUCH, COLLIDER_o61, 1, 0)
     Return
     End
 };
@@ -80,7 +80,7 @@ DripVolumeList DripVolumes = {
 };
 
 EvtScript EVS_SetupDrips = {
-    Set(LVar0, Ref(DripVolumes))
+    Set(LVar0, DripVolumes)
     Set(LVar1, MODEL_sizuku)
     Exec(EVS_CreateDripVolumes)
     Return

@@ -40,8 +40,8 @@ EvtScript EVS_Main = {
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     ExecWait(EVS_MakeEntities)
     Exec(EVS_SetupMusic)
-    BindTrigger(Ref(EVS_ExitDoors_dgb_03_3), TRIGGER_WALL_PRESS_A, COLLIDER_deilittse, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoors_dgb_15_0), TRIGGER_WALL_PRESS_A, COLLIDER_deilittne, 1, 0)
+    BindTrigger(EVS_ExitDoors_dgb_03_3, TRIGGER_WALL_PRESS_A, COLLIDER_deilittse, 1, 0)
+    BindTrigger(EVS_ExitDoors_dgb_15_0, TRIGGER_WALL_PRESS_A, COLLIDER_deilittne, 1, 0)
     Exec(EVS_EnterMap)
     Return
     End

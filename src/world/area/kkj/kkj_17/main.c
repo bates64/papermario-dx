@@ -22,7 +22,7 @@ EvtScript EVS_Main = {
     ExecWait(EVS_MakeEntities)
     Exec(EVS_SetupMagicChest)
     Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
-    BindTrigger(Ref(EVS_ExitDoors_kkj_11_5), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
+    BindTrigger(EVS_ExitDoors_kkj_11_5, TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
     Exec(EVS_EnterMap)
     Wait(1)
     Return

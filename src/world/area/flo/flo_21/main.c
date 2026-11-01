@@ -19,9 +19,9 @@ EvtScript EVS_TrySpawningStarCard = {
     IfEq(LVar0, false)
         Call(DisablePlayerInput, true)
         Call(UseSettingsFrom, CAM_DEFAULT, 650, 205, 0)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(0.6))
+        Call(SetCamSpeed, CAM_DEFAULT, 0.6)
         Call(SetPanTarget, CAM_DEFAULT, 650, 150, 0)
-        EVT_SPIRIT_ADJUST_CAM(Float(-5.5))
+        EVT_SPIRIT_ADJUST_CAM(-5.5)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
         Call(InitSpiritCardSpawn, MV_SpiritCardData, 5, 180, 650, 170, 0, 650, 205, 0, 150, 120)
         Thread
@@ -54,9 +54,9 @@ EvtScript EVS_TrySpawningStarCard = {
         Call(AwaitSpiritCardProgress, SPIRIT_CARD_NOTIFY_DONE_FALLING)
         Call(GetPlayerPos, LVar2, LVar3, LVar4)
         Call(UseSettingsFrom, CAM_DEFAULT, LVar2, LVar3, LVar4)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(1.0))
+        Call(SetCamSpeed, CAM_DEFAULT, 1.0)
         Call(SetPanTarget, CAM_DEFAULT, LVar2, LVar3, LVar4)
-        Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+        Call(WaitForCam, CAM_DEFAULT, 1.0)
         Call(PanToTarget, CAM_DEFAULT, 0, false)
         Call(DisablePlayerInput, false)
     Else
@@ -70,7 +70,7 @@ EvtScript EVS_TrySpawningStarCard = {
     Call(PlaySoundAtPlayer, SOUND_RESCUE_STAR_SPIRIT, SOUND_SPACE_DEFAULT)
     Call(DisablePlayerInput, true)
     Set(GB_StoryProgress, STORY_CH6_STAR_SPIRIT_RESCUED)
-    Call(GotoMapSpecial, Ref("kmr_23"), kmr_23_ENTRY_5, TRANSITION_GET_STAR_CARD)
+    Call(GotoMapSpecial, "kmr_23", kmr_23_ENTRY_5, TRANSITION_GET_STAR_CARD)
     Wait(100)
     Return
     End
@@ -79,7 +79,7 @@ EvtScript EVS_TrySpawningStarCard = {
 EvtScript EVS_ExitWalk_flo_19_1 = EVT_EXIT_WALK(60, flo_21_ENTRY_0, "flo_19", flo_19_ENTRY_1);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_flo_19_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitWalk_flo_19_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
     Return
     End
 };
@@ -88,7 +88,7 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_CLOUDY_CLIMB)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, false, Ref(DefaultNPCs))
+    Call(MakeNpcs, false, DefaultNPCs)
     Exec(EVS_Scene_HuffNPuffAmbush)
     Call(HidePlayerShadow, true)
     Exec(EVS_SetupCloudPuffs)
@@ -96,7 +96,7 @@ EvtScript EVS_Main = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o115, SURFACE_TYPE_CLOUD)
     Call(GetEntryID, LVar0)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitw, COLLIDER_FLAGS_UPPER_MASK)
-    Set(LVar0, Ref(EVS_BindExitTriggers))
+    Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     ExecWait(EVS_SetupMusic)
     IfGe(GB_StoryProgress, STORY_CH6_DESTROYED_PUFF_PUFF_MACHINE)

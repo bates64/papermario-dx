@@ -6,9 +6,9 @@ EvtScript EVS_ExitWalk_jan_22_1 = EVT_EXIT_WALK(60, jan_16_ENTRY_1, "jan_22", ja
 EvtScript EVS_ExitWalk_jan_17_0 = EVT_EXIT_WALK(60, jan_16_ENTRY_2, "jan_17", jan_17_ENTRY_0);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_jan_15_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_jan_22_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_jan_17_0), TRIGGER_FLOOR_ABOVE, COLLIDER_o83, 1, 0)
+    BindTrigger(EVS_ExitWalk_jan_15_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitWalk_jan_22_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitWalk_jan_17_0, TRIGGER_FLOOR_ABOVE, COLLIDER_o83, 1, 0)
     Return
     End
 };
@@ -30,14 +30,14 @@ EvtScript EVS_SpawnButterflies = {
 // provide impulses with MV_BranchWobbleVel and the scale of MODEL_g47 with be
 // modulated by the displacement of the 'spring'
 EvtScript EVS_UpdateBranchWobble = {
-    SetF(LVarA, Float(0.0)) // system "displacement"
+    SetF(LVarA, 0.0) // system "displacement"
     Loop(0)
         // scaleX = 1.0 - 0.02 * vel
         // scaleY = 1.0 + 0.04 * vel
         SetF(LVar0, MV_BranchWobbleVel)
         SetF(LVar1, MV_BranchWobbleVel)
-        MulF(LVar0, Float(-0.02))
-        MulF(LVar1, Float(0.04))
+        MulF(LVar0, -0.02)
+        MulF(LVar1, 0.04)
         AddF(LVar0, 1)
         AddF(LVar1, 1)
         Call(ScaleGroup, MODEL_g47, LVar0, LVar1, 1)
@@ -46,9 +46,9 @@ EvtScript EVS_UpdateBranchWobble = {
         // V_n+1 = (54/64) * V_n - (81/2048) * X_n
         // X_n+1 = X_n + V_n+1
         SetF(LVar0, LVarA)
-        MulF(LVar0, Float(-0.046875)) // accel = (-3/64) * displacement, multiplied by (54/64) shortly
+        MulF(LVar0, -0.046875) // accel = (-3/64) * displacement, multiplied by (54/64) shortly
         AddF(MV_BranchWobbleVel, LVar0)
-        MulF(MV_BranchWobbleVel, Float(0.84375)) // damping = (54/64)
+        MulF(MV_BranchWobbleVel, 0.84375) // damping = (54/64)
         AddF(LVarA, MV_BranchWobbleVel)
         Wait(1)
     EndLoop
@@ -65,9 +65,9 @@ EvtScript EVS_EnterFalling = {
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(UseSettingsFrom, CAM_DEFAULT, 35, 100, 330)
     Call(SetPanTarget, CAM_DEFAULT, 35, 100, 330)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(GetPartnerInUse, LVar0)
     IfNe(LVar0, PARTNER_NONE)
         Call(InterruptUsePartner)
@@ -76,7 +76,7 @@ EvtScript EVS_EnterFalling = {
     Thread
         Wait(30)
         Call(SetPanTarget, CAM_DEFAULT, 35, 0, 330)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(0.8))
+        Call(SetCamSpeed, CAM_DEFAULT, 0.8)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
     EndThread
     Call(DisablePlayerPhysics, false)
@@ -93,12 +93,12 @@ EvtScript EVS_EnterFalling = {
     EndLoop
     PlayEffect(EFFECT_DROP_LEAVES, 0, 35, 120, 340, 100)
     PlayEffect(EFFECT_DROP_LEAVES, 0, 55, 120, 330, 100)
-    AddF(MV_BranchWobbleVel, Float(-7.5))
+    AddF(MV_BranchWobbleVel, -7.5)
     Call(SetPanTarget, CAM_DEFAULT, 0, 190, 350)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(1.2))
+    Call(SetCamSpeed, CAM_DEFAULT, 1.2)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Thread
-        Call(SetPlayerJumpscale, Float(2.0))
+        Call(SetPlayerJumpscale, 2.0)
         Call(PlaySoundAtPlayer, SOUND_SHAKE_TREE_LEAVES, SOUND_SPACE_DEFAULT)
         Call(PlayerJump, -35, 0, 385, 30)
         Call(SetPlayerActionState, ACTION_STATE_LAND)
@@ -112,14 +112,14 @@ EvtScript EVS_EnterFalling = {
             Wait(5)
         EndLoop
     EndThread
-    AddF(MV_BranchWobbleVel, Float(-7.5))
+    AddF(MV_BranchWobbleVel, -7.5)
     Call(SetPanTarget, CAM_DEFAULT, -35, 0, 385)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(1.8))
+    Call(SetCamSpeed, CAM_DEFAULT, 1.8)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(SetNpcJumpscale, NPC_PARTNER, Float(2.0))
+    Call(SetNpcJumpscale, NPC_PARTNER, 2.0)
     Call(NpcJump0, NPC_PARTNER, -10, 0, 395, 20)
     Call(EnablePartnerAI)
-    Call(ResetCam, CAM_DEFAULT, Float(4.0))
+    Call(ResetCam, CAM_DEFAULT, 4.0)
     Call(DisablePlayerInput, false)
     Return
     End
@@ -129,7 +129,7 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_JADE_JUNGLE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, false, Ref(DefaultNPCs))
+    Call(MakeNpcs, false, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     Exec(EVS_Scene_ReachedRaphaelsTree)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitw, COLLIDER_FLAGS_UPPER_MASK)
@@ -139,7 +139,7 @@ EvtScript EVS_Main = {
         Exec(EVS_EnterFalling)
         Exec(EVS_BindExitTriggers)
     Else
-        Set(LVar0, Ref(EVS_BindExitTriggers))
+        Set(LVar0, EVS_BindExitTriggers)
         Exec(EnterWalk)
     EndIf
     ExecWait(EVS_SetupMusic)

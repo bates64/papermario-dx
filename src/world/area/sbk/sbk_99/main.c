@@ -20,8 +20,8 @@ EvtScript EVS_ExitWalk_iwa_04_1 = EVT_EXIT_WALK(60, sbk_99_ENTRY_0, "iwa_04", iw
 EvtScript EVS_ExitWalk_sbk_30_0 = EVT_EXIT_WALK(60, sbk_99_ENTRY_1, "sbk_30", sbk_30_ENTRY_0);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_iwa_04_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_sbk_30_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deiline, 1, 0)
+    BindTrigger(EVS_ExitWalk_iwa_04_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitWalk_sbk_30_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deiline, 1, 0)
     Return
     End
 };
@@ -33,7 +33,7 @@ EvtScript EVS_EnterMap = {
         Exec(EVS_BindExitTriggers)
         Return
     EndIf
-    Set(LVar0, Ref(EVS_BindExitTriggers))
+    Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     Return
     End

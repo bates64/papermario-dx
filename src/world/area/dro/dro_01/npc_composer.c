@@ -67,7 +67,7 @@ EvtScript EVS_NpcInteract_Composer = {
 };
 
 EvtScript EVS_NpcInit_Composer = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Composer))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Composer)
     Return
     End
 };

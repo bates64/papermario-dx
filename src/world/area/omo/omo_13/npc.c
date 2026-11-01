@@ -18,7 +18,7 @@ EvtScript EVS_NpcInteract_AntiGuy = {
         Call(SpeakToPlayer, NPC_SELF, ANIM_ShyGuy_Black_Hiding, ANIM_ShyGuy_Black_Hiding, 5, MSG_CH4_004D)
         Return
     EndIf
-    Call(AdjustCam, CAM_DEFAULT, Float(5.0), 10, Float(300.0), Float(15.0), Float(-7.5))
+    Call(AdjustCam, CAM_DEFAULT, 5.0, 10, 300.0, 15.0, -7.5)
     Call(FindItem, ITEM_LEMON_CANDY, LVar0)
     IfEq(LVar0, -1)
         Thread
@@ -80,7 +80,7 @@ EvtScript EVS_NpcInteract_AntiGuy = {
             Call(SetNpcVar, NPC_SELF, 0, 2)
         EndIf
     EndIf
-    Call(ResetCam, CAM_DEFAULT, Float(5.0))
+    Call(ResetCam, CAM_DEFAULT, 5.0)
     Return
     End
 };
@@ -157,7 +157,7 @@ EvtScript EVS_NpcIdle_AntiGuy = {
                     Add(LVar0, 60)
                 EndIf
             EndIf
-            Call(SetNpcSpeed, NPC_SELF, Float(3.0))
+            Call(SetNpcSpeed, NPC_SELF, 3.0)
             Call(NpcMoveTo, NPC_SELF, LVar0, -100, 0)
             Call(InterpNpcYaw, NPC_SELF, 90, 0)
             Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Black_Hiding)
@@ -190,9 +190,9 @@ EvtScript EVS_NpcDefeat_AntiGuy = {
 
 EvtScript EVS_NpcInit_AntiGuy = {
     IfEq(GF_OMO13_Defeated_AntiGuy, false)
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_AntiGuy))
-        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_AntiGuy))
-        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_AntiGuy))
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_AntiGuy)
+        Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_AntiGuy)
+        Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_AntiGuy)
     Else
         Call(RemoveEncounter, NPC_SELF)
     EndIf

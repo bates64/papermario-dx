@@ -18,7 +18,7 @@ EvtScript EVS_UseItem = {
         Call(MoveBattleCamOver, 20)
     EndThread
     Call(DarkenBackground)
-    PlayEffect(EFFECT_STOP_WATCH, 0, 0, 0, 0, Float(1.0), 200)
+    PlayEffect(EFFECT_STOP_WATCH, 0, 0, 0, 0, 1.0, 200)
     Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_TIME_OUT)
     Wait(200)
     Call(UseBattleCamPreset, BTL_CAM_VIEW_ENEMIES)

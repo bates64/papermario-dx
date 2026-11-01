@@ -116,7 +116,7 @@ EvtScript EVS_SpinyTromp_HitPlayer = {
     Call(SetPlayerAnimation, ANIM_Mario1_Fallen)
     Wait(1)
     Call(SpinyTromp_DamagePlayer)
-    Call(UpdatePlayerImgFX, ANIM_Mario1_Fallen, IMGFX_SET_WAVY, Float(3.0), Float(3.0), 0, 0)
+    Call(UpdatePlayerImgFX, ANIM_Mario1_Fallen, IMGFX_SET_WAVY, 3.0, 3.0, 0, 0)
     Label(1)
         Wait(1)
         IfEq(AF_KZN_TrompRollingDone, false)

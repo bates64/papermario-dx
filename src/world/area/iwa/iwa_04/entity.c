@@ -34,10 +34,10 @@ EvtScript EVS_UseSpring = {
     Wait(1)
     ExecGetTID(TetherCameraToPlayer, LVarA)
     IfEq(MV_PlayerCliffLevel, 0)
-        Call(SetPlayerJumpscale, Float(1.4))
+        Call(SetPlayerJumpscale, 1.4)
         Call(PlayerJump, -560, -250, 190, 15)
     Else
-        Call(SetPlayerJumpscale, Float(0.7))
+        Call(SetPlayerJumpscale, 0.7)
         Call(PlayerJump, -560, 0, 90, 40)
     EndIf
     KillThread(LVarA)
@@ -52,12 +52,12 @@ EvtScript EVS_MakeEntities = {
     Thread
         Call(MonitorPlayerAltitude)
     EndThread
-    Call(MakeEntity, Ref(Entity_ScriptSpring), -561, -250, 121, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(EVS_UseSpring))
-    Call(MakeEntity, Ref(Entity_ArrowSign), -513, 0, -97, 0, 90, MAKE_ENTITY_END)
-    Call(MakeEntity, Ref(Entity_ArrowSign), 600, 0, 200, 0, 270, MAKE_ENTITY_END)
-    Call(MakeEntity, Ref(Entity_ArrowSign), 336, -140, 203, 0, 70, MAKE_ENTITY_END)
-    Call(MakeEntity, Ref(Entity_ArrowSign), 730, -250, -95, 0, 90, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_ScriptSpring, -561, -250, 121, 0, MAKE_ENTITY_END)
+    Call(AssignScript, EVS_UseSpring)
+    Call(MakeEntity, Entity_ArrowSign, -513, 0, -97, 0, 90, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_ArrowSign, 600, 0, 200, 0, 270, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_ArrowSign, 336, -140, 203, 0, 70, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_ArrowSign, 730, -250, -95, 0, 90, MAKE_ENTITY_END)
     Call(MakeItemEntity, ITEM_LETTER_CHAIN_GOOMPAPA_1, -275, -250, 150, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_IWA04_Item_Letter10)
     Return
     End

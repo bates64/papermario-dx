@@ -16,8 +16,8 @@ EvtScript EVS_NpcIdle_Bowser_Npc2 = {
             Add(LVar0, -75)
             Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
             Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-            Call(SetCamSpeed, CAM_DEFAULT, Float(4.0))
-            Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-7.0))
+            Call(SetCamSpeed, CAM_DEFAULT, 4.0)
+            Call(SetCamPitch, CAM_DEFAULT, 17.0, -7.0)
             Call(SetCamDistance, CAM_DEFAULT, 1000)
             Call(PanToTarget, CAM_DEFAULT, 0, true)
         EndThread
@@ -38,7 +38,7 @@ EvtScript EVS_NpcDefeat_Bowser_Npc2 = {
     Call(PostBattleHideWorld_Npc2)
     Set(GF_KKJ25_Defeated_Bowser, true)
     // reload the map in the 'final' configuration
-    Call(GotoMap, Ref("kkj_25"), kkj_25_ENTRY_2)
+    Call(GotoMap, "kkj_25", kkj_25_ENTRY_2)
     Wait(100)
     Return
     End
@@ -50,7 +50,7 @@ s32 FlyingKammyHoverOffsets_Npc2[] = {
 
 EvtScript EVS_NpcAux_Kammy_Broom_Npc2 = {
     Label(0)
-        UseBuf(Ref(FlyingKammyHoverOffsets_Npc2))
+        UseBuf(FlyingKammyHoverOffsets_Npc2)
         Loop(10)
             BufRead1(LVar1)
             Call(GetNpcPos, NPC_Kammy_03, LVar2, LVar3, LVar4)
@@ -71,9 +71,9 @@ EvtScript EVS_NpcInit_Peach_Npc2 = {
 };
 
 EvtScript EVS_NpcInit_Bowser_Npc2 = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Bowser_Npc2))
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Bowser_Npc2))
-    Call(SetNpcScale, NPC_Bowser_02, Float(1.5), Float(1.5), Float(1.5))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Bowser_Npc2)
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_Bowser_Npc2)
+    Call(SetNpcScale, NPC_Bowser_02, 1.5, 1.5, 1.5)
     Call(SetNpcPos, NPC_Bowser_02, 200, 0, 0)
     Call(SetNpcAnimation, NPC_Bowser_02, ANIM_WorldBowser_Idle)
     Return
@@ -81,7 +81,7 @@ EvtScript EVS_NpcInit_Bowser_Npc2 = {
 };
 
 EvtScript EVS_NpcInit_Kammy_Broom_Npc2 = {
-    Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_Kammy_Broom_Npc2))
+    Call(BindNpcAux, NPC_SELF, EVS_NpcAux_Kammy_Broom_Npc2)
     Call(SetNpcPos, NPC_Kammy_03, 540, 10, -50)
     Call(SetNpcAnimation, NPC_Kammy_03, ANIM_BattleKammy_Broom)
     Return

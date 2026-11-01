@@ -42,7 +42,7 @@ EvtScript EVS_UseItem = {
     Thread
         Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
         Sub(LVar0, 10)
-        Call(SetActorSpeed, ACTOR_PLAYER, Float(2.0))
+        Call(SetActorSpeed, ACTOR_PLAYER, 2.0)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Run)
         Call(SetGoalPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
         Call(PlayerRunToGoal, 0)

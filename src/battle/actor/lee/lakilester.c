@@ -106,10 +106,10 @@ static ActorBlueprint blueprint = {
 };
 
 static EvtScript EVS_Init = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
-    Call(BindHandlePhase, ACTOR_SELF, Ref(EVS_HandlePhase))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
+    Call(BindHandlePhase, ACTOR_SELF, EVS_HandlePhase)
     Call(SetActorVar, ACTOR_SELF, AVAR_FormDuration, 1)
     Return
     End
@@ -241,12 +241,12 @@ static EvtScript EVS_TakeTurn = {
         Add(LVar0, -1)
         Add(LVar1, 4)
         Add(LVar2, 2)
-        Call(SetPartScale, ACTOR_SELF, PRT_SPINY, Float(0.4), Float(0.4), Float(0.4))
+        Call(SetPartScale, ACTOR_SELF, PRT_SPINY, 0.4, 0.4, 0.4)
     Else
         Add(LVar0, -3)
         Add(LVar1, 10)
         Add(LVar2, 5)
-        Call(SetPartScale, ACTOR_SELF, PRT_SPINY, Float(1.0), Float(1.0), Float(1.0))
+        Call(SetPartScale, ACTOR_SELF, PRT_SPINY, 1.0, 1.0, 1.0)
     EndIf
     Call(SetPartPos, ACTOR_SELF, PRT_SPINY, LVar0, LVar1, LVar2)
     Wait(1)
@@ -256,7 +256,7 @@ static EvtScript EVS_TakeTurn = {
     Loop(4)
         Call(GetStatusFlags, ACTOR_SELF, LVarA)
         IfFlag(LVarA, STATUS_FLAG_SHRINK)
-            AddF(LVar1, Float(2.4))
+            AddF(LVar1, 2.4)
         Else
             Add(LVar1, 6)
         EndIf
@@ -269,12 +269,12 @@ static EvtScript EVS_TakeTurn = {
         Add(LVar0, -3)
         Add(LVar1, 16)
         Add(LVar2, 2)
-        SetF(LVar3, Float(0.4))
+        SetF(LVar3, 0.4)
     Else
         Add(LVar0, -8)
         Add(LVar1, 40)
         Add(LVar2, 5)
-        SetF(LVar3, Float(1.0))
+        SetF(LVar3, 1.0)
     EndIf
     PlayEffect(EFFECT_ENERGY_IN_OUT, 0, LVar0, LVar1, LVar2, LVar3, 30)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SPIKE_SUMMON_SPINY)
@@ -306,7 +306,7 @@ static EvtScript EVS_TakeTurn = {
         CaseOrEq(HIT_RESULT_LUCKY)
             Set(LVarA, LVar0)
             Call(SetAnimation, ACTOR_SELF, PRT_SPINY, ANIM_BattleLakilester_SpinySpin)
-            Call(SetPartJumpGravity, ACTOR_SELF, PRT_SPINY, Float(1.5))
+            Call(SetPartJumpGravity, ACTOR_SELF, PRT_SPINY, 1.5)
             Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(RandInt, 100, LVar3)
             Sub(LVar3, 50)
@@ -333,7 +333,7 @@ static EvtScript EVS_TakeTurn = {
         EndCaseGroup
     EndSwitch
     Call(SetAnimation, ACTOR_SELF, PRT_SPINY, ANIM_BattleLakilester_SpinySpin)
-    Call(SetPartJumpGravity, ACTOR_SELF, PRT_SPINY, Float(1.5))
+    Call(SetPartJumpGravity, ACTOR_SELF, PRT_SPINY, 1.5)
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(JumpPartTo, ACTOR_SELF, PRT_SPINY, LVar0, LVar1, LVar2, 20, true)

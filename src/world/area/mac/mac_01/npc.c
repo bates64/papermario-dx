@@ -286,14 +286,14 @@ EvtScript EVS_QuickChange_CheckForPound = {
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamDistance, CAM_DEFAULT, 250)
     Call(SetCamPitch, CAM_DEFAULT, 15, -8)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(5.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 5.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(PlayerFaceNpc, NPC_Merlon, false)
     Call(SpeakToPlayer, NPC_Merlon, ANIM_Merlon_Talk, ANIM_Merlon_Idle, 5, MSG_MAC_Plaza_0041)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(SpeakToPlayer, NPC_Merlon, ANIM_Merlon_Talk, ANIM_Merlon_Idle, 0, MSG_MAC_Plaza_0042)
     Set(GF_MAC01_QuickChangeDropped, true)
@@ -305,7 +305,7 @@ EvtScript EVS_QuickChange_CheckForPound = {
 
 EvtScript EVS_SetupQuickChangeTrigger = {
     IfEq(GF_MAC01_QuickChangeDropped, false)
-        BindTrigger(Ref(EVS_QuickChange_CheckForPound), TRIGGER_FLOOR_TOUCH, COLLIDER_dr_yuka, 1, 0)
+        BindTrigger(EVS_QuickChange_CheckForPound, TRIGGER_FLOOR_TOUCH, COLLIDER_dr_yuka, 1, 0)
     Else
         Call(MakeItemEntity, ITEM_QUICK_CHANGE, -232, 20, -331, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_MAC01_Item_QuickChange)
     EndIf
@@ -358,7 +358,7 @@ EvtScript EVS_MerlonBargeOut = {
         EndLoop
     EndThread
     Thread
-        Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(2.0))
+        Call(ShakeCam, CAM_DEFAULT, 0, 5, 2.0)
     EndThread
     Thread
         Wait(1)
@@ -367,7 +367,7 @@ EvtScript EVS_MerlonBargeOut = {
         Call(InterpPlayerYaw, 270, 0)
         Wait(1)
         Call(SetPlayerAnimation, ANIM_Mario1_Hurt)
-        Call(SetPlayerJumpscale, Float(1.0))
+        Call(SetPlayerJumpscale, 1.0)
         Call(PlayerJump1, -222, 20, -158, 8 * DT)
         Wait(5 * DT)
         Call(SetPlayerFlagBits, PS_FLAG_NO_FLIPPING, false)
@@ -409,7 +409,7 @@ EvtScript EVS_MerlonBargeOut = {
     Call(KnockdownDestroy)
     Call(InterpPlayerYaw, 90, 0)
     Call(SetPlayerActionState, ACTION_STATE_JUMP)
-    Call(SetPlayerJumpscale, Float(1.0))
+    Call(SetPlayerJumpscale, 1.0)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(PlayerJump, LVar0, LVar1, LVar2, 15 * DT)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
@@ -437,7 +437,7 @@ EvtScript EVS_MerlonBargeOut = {
     Set(MF_MusicMixTrigger1, true)
     Call(DisablePlayerPhysics, false)
     Call(UseSettingsFrom, CAM_DEFAULT, -250, 20, -280)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(30 * DT)
     Call(MerlonSceneFadeIn)
@@ -460,11 +460,11 @@ EvtScript EVS_MerlonBargeOut = {
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamDistance, CAM_DEFAULT, 200)
     Call(SetCamPitch, CAM_DEFAULT, 15, -10)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Wait(10 * DT)
     Call(SpeakToPlayer, NPC_Merlon, ANIM_Merlon_Talk, ANIM_Merlon_Idle, 0, MSG_MAC_Plaza_0025)
     Set(GB_StoryProgress, STORY_CH1_SPOKE_WITH_MERLON)
-    Call(ResetCam, CAM_DEFAULT, Float(5.0 / DT))
+    Call(ResetCam, CAM_DEFAULT, 5.0 / DT)
     Thread
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o336, COLLIDER_FLAGS_UPPER_MASK)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o335, COLLIDER_FLAGS_UPPER_MASK)
@@ -495,7 +495,7 @@ EvtScript EVS_Scene_KoopaBrosUnmasked = {
     Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
     Thread
         Call(SetNpcAnimation, NPC_Merlon, ANIM_Merlon_Walk)
-        Call(SetNpcSpeed, NPC_Merlon, Float(4.0 / DT))
+        Call(SetNpcSpeed, NPC_Merlon, 4.0 / DT)
         Call(NpcMoveTo, NPC_Merlon, 410, 0, 0)
         Call(SetNpcAnimation, NPC_Merlon, ANIM_Merlon_Idle)
         Call(InterpNpcYaw, NPC_Merlon, 90, 0)
@@ -509,19 +509,19 @@ EvtScript EVS_Scene_KoopaBrosUnmasked = {
         EndIf
         Wait(1)
     EndLoop
-    Call(SetCamProperties, CAM_DEFAULT, Float(4.0), 410, 0, 0, 320, 15, -6)
+    Call(SetCamProperties, CAM_DEFAULT, 4.0, 410, 0, 0, 320, 15, -6)
     Thread
         Wait(5 * DT)
-        Call(SetPlayerSpeed, Float(3.0 / DT))
+        Call(SetPlayerSpeed, 3.0 / DT)
         Call(PlayerMoveTo, 460, 0, 0)
         Call(PlayerFaceNpc, NPC_Merlon, false)
     EndThread
     Call(SetNpcAnimation, NPC_Merlon, ANIM_Merlon_Idle)
     Call(SpeakToPlayer, NPC_Merlon, ANIM_Merlon_Talk, ANIM_Merlon_Idle, 0, MSG_MAC_Plaza_002B)
     Call(SetPanTarget, CAM_DEFAULT, 480, 0, 0)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(2.0 / DT))
+    Call(SetCamSpeed, CAM_DEFAULT, 2.0 / DT)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Thread
         Wait(5 * DT)
         Call(PlayerFaceNpc, NPC_DarkToad_01, false)
@@ -529,17 +529,17 @@ EvtScript EVS_Scene_KoopaBrosUnmasked = {
     Call(SpeakToPlayer, NPC_DarkToad_03, ANIM_DarkToad_Yellow_Dismiss, ANIM_DarkToad_Yellow_Idle, 0, MSG_MAC_Plaza_002C)
     Call(SpeakToPlayer, NPC_DarkToad_04, ANIM_DarkToad_Green_Dismiss, ANIM_DarkToad_Green_Idle, 0, MSG_MAC_Plaza_002D)
     Call(SetPanTarget, CAM_DEFAULT, 410, 0, 0)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Thread
         Wait(5 * DT)
         Call(PlayerFaceNpc, NPC_Merlon, false)
     EndThread
     Call(SpeakToPlayer, NPC_Merlon, ANIM_Merlon_Talk, ANIM_Merlon_Idle, 0, MSG_MAC_Plaza_002E)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(5.0 / DT))
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 5.0 / DT)
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(PlaySoundAtNpc, NPC_Merlon, SOUND_MERLON_GATHER, SOUND_SPACE_DEFAULT)
     Call(SetNpcAnimation, NPC_Merlon, ANIM_Merlon_Gather1)
     Call(GetNpcPos, NPC_Merlon, LVar0, LVar1, LVar2)
@@ -551,7 +551,7 @@ EvtScript EVS_Scene_KoopaBrosUnmasked = {
     PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_GRAY_WAVE, LVar0, LVar1, LVar2, 1, 20)
     Add(LVar1, 180)
     Call(PlayerFaceNpc, NPC_DarkToad_01, false)
-    Call(SetCamProperties, CAM_DEFAULT, Float(4.0 / DT), 480, 0, 0, 320, 15, -6)
+    Call(SetCamProperties, CAM_DEFAULT, 4.0 / DT, 480, 0, 0, 320, 15, -6)
     Call(PushSong, SONG_KOOPA_BROS_THEME, 0)
     Thread
         Set(MF_KoopaBrosSceneLock, false)
@@ -571,7 +571,7 @@ EvtScript EVS_Scene_KoopaBrosUnmasked = {
         Call(GetNpcPos, NPC_DarkToad_01, LVar3, LVar4, LVar5)
         Call(SetNpcPos, NPC_DarkToad_01, LVar3, NPC_DISPOSE_POS_Y, LVar2)
         Call(SetNpcPos, NPC_KoopaBros_01, LVar3, LVar4, LVar5)
-        Call(SetNpcJumpscale, NPC_KoopaBros_01, Float(1.0))
+        Call(SetNpcJumpscale, NPC_KoopaBros_01, 1.0)
         Call(SetNpcAnimation, NPC_KoopaBros_01, ANIM_KoopaBros_Red_Hurt)
         Call(NpcJump0, NPC_KoopaBros_01, LVar3, LVar4, LVar5, 10 * DT)
     EndThread
@@ -588,7 +588,7 @@ EvtScript EVS_Scene_KoopaBrosUnmasked = {
         Call(GetNpcPos, NPC_DarkToad_02, LVar3, LVar4, LVar5)
         Call(SetNpcPos, NPC_DarkToad_02, LVar3, NPC_DISPOSE_POS_Y, LVar2)
         Call(SetNpcPos, NPC_KoopaBros_02, LVar3, LVar4, LVar5)
-        Call(SetNpcJumpscale, NPC_KoopaBros_02, Float(1.0))
+        Call(SetNpcJumpscale, NPC_KoopaBros_02, 1.0)
         Call(SetNpcAnimation, NPC_KoopaBros_02, ANIM_KoopaBros_Black_Hurt)
         Call(NpcJump0, NPC_KoopaBros_02, LVar3, LVar4, LVar5, 10 * DT)
     EndThread
@@ -605,7 +605,7 @@ EvtScript EVS_Scene_KoopaBrosUnmasked = {
         Call(GetNpcPos, NPC_DarkToad_03, LVar3, LVar4, LVar5)
         Call(SetNpcPos, NPC_DarkToad_03, LVar3, NPC_DISPOSE_POS_Y, LVar2)
         Call(SetNpcPos, NPC_KoopaBros_03, LVar3, LVar4, LVar5)
-        Call(SetNpcJumpscale, NPC_KoopaBros_03, Float(1.0))
+        Call(SetNpcJumpscale, NPC_KoopaBros_03, 1.0)
         Call(SetNpcAnimation, NPC_KoopaBros_03, ANIM_KoopaBros_Yellow_Hurt)
         Call(NpcJump0, NPC_KoopaBros_03, LVar3, LVar4, LVar5, 10 * DT)
     EndThread
@@ -621,7 +621,7 @@ EvtScript EVS_Scene_KoopaBrosUnmasked = {
     Call(GetNpcPos, NPC_DarkToad_04, LVar3, LVar4, LVar5)
     Call(SetNpcPos, NPC_DarkToad_04, LVar3, NPC_DISPOSE_POS_Y, LVar2)
     Call(SetNpcPos, NPC_KoopaBros_04, LVar3, LVar4, LVar5)
-    Call(SetNpcJumpscale, NPC_KoopaBros_04, Float(1.0))
+    Call(SetNpcJumpscale, NPC_KoopaBros_04, 1.0)
     Call(SetNpcAnimation, NPC_KoopaBros_04, ANIM_KoopaBros_Green_Hurt)
     Call(NpcJump0, NPC_KoopaBros_04, LVar3, LVar4, LVar5, 10 * DT)
     Call(SetNpcAnimation, NPC_Merlon, ANIM_Merlon_Idle)
@@ -652,32 +652,32 @@ EvtScript EVS_Scene_KoopaBrosUnmasked = {
     Wait(15 * DT)
     Call(PlaySoundAtNpc, NPC_KoopaBros_03, SOUND_RUN_AWAY, SOUND_SPACE_DEFAULT)
     Thread
-        Call(SetNpcSpeed, NPC_KoopaBros_01, Float(8.0 / DT))
+        Call(SetNpcSpeed, NPC_KoopaBros_01, 8.0 / DT)
         Call(NpcMoveTo, NPC_KoopaBros_01, 700, 0, 0)
     EndThread
     Thread
-        Call(SetNpcSpeed, NPC_KoopaBros_02, Float(8.0 / DT))
+        Call(SetNpcSpeed, NPC_KoopaBros_02, 8.0 / DT)
         Call(NpcMoveTo, NPC_KoopaBros_02, 700, 0, 0)
     EndThread
     Thread
-        Call(SetNpcSpeed, NPC_KoopaBros_03, Float(8.0 / DT))
+        Call(SetNpcSpeed, NPC_KoopaBros_03, 8.0 / DT)
         Call(NpcMoveTo, NPC_KoopaBros_03, 700, 0, 0)
     EndThread
     Wait(1)
-    Call(SetNpcSpeed, NPC_KoopaBros_04, Float(8.0 / DT))
+    Call(SetNpcSpeed, NPC_KoopaBros_04, 8.0 / DT)
     Call(NpcMoveTo, NPC_KoopaBros_04, 700, 0, 0)
     Wait(10 * DT)
     Call(PopSong)
     Call(SetPanTarget, CAM_DEFAULT, 410, 0, 0)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(2.0 / DT))
+    Call(SetCamSpeed, CAM_DEFAULT, 2.0 / DT)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Thread
         Wait(3)
         Call(PlayerFaceNpc, NPC_Merlon, false)
     EndThread
     Call(SpeakToPlayer, NPC_Merlon, ANIM_Merlon_Talk, ANIM_Merlon_Idle, 0, MSG_MAC_Plaza_0033)
-    Call(SetNpcSpeed, NPC_Merlon, Float(3.0 / DT))
+    Call(SetNpcSpeed, NPC_Merlon, 3.0 / DT)
     Call(GetNpcPos, NPC_Merlon, LVar0, LVar1, LVar2)
     Set(LVar3, LVar0)
     Add(LVar3, -50)
@@ -692,7 +692,7 @@ EvtScript EVS_Scene_KoopaBrosUnmasked = {
     Thread
         Wait(10 * DT)
 #if VERSION_PAL
-        Call(ResetCam, CAM_DEFAULT, Float(1.6669921875))
+        Call(ResetCam, CAM_DEFAULT, 1.6669921875)
 #else
         Call(ResetCam, CAM_DEFAULT, 2)
 #endif
@@ -736,7 +736,7 @@ EvtScript EVS_NpcInteract_Merlon = {
                 EndChildThread
                 Call(SetNpcFlagBits, NPC_Merlon, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
                 Call(SetNpcAnimation, NPC_Merlon, ANIM_Merlon_Walk)
-                Call(SetNpcSpeed, NPC_Merlon, Float(4.0 / DT))
+                Call(SetNpcSpeed, NPC_Merlon, 4.0 / DT)
                 Call(NpcMoveTo, NPC_Merlon, -350, -280, 0)
                 Call(NpcMoveTo, NPC_Merlon, -230, -270, 0)
                 Call(SetNpcAnimation, NPC_Merlon, ANIM_Merlon_Idle)
@@ -791,14 +791,14 @@ EvtScript EVS_NpcInteract_Merlon = {
                 AddF(LVar0, LVar3)
                 AddF(LVar1, LVar4)
                 AddF(LVar2, LVar5)
-                DivF(LVar0, Float(2.0))
-                DivF(LVar1, Float(2.0))
-                DivF(LVar2, Float(2.0))
+                DivF(LVar0, 2.0)
+                DivF(LVar1, 2.0)
+                DivF(LVar2, 2.0)
                 Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-                Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
-                Call(SetCamSpeed, CAM_DEFAULT, Float(5.0))
+                Call(SetCamDistance, CAM_DEFAULT, 300.0)
+                Call(SetCamSpeed, CAM_DEFAULT, 5.0)
                 Call(PanToTarget, CAM_DEFAULT, 0, true)
-                Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+                Call(WaitForCam, CAM_DEFAULT, 1.0)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Merlon_Talk, ANIM_Merlon_Idle, 0, MSG_MAC_Plaza_003F)
                 Thread
                     Loop(0)
@@ -811,13 +811,13 @@ EvtScript EVS_NpcInteract_Merlon = {
                 EndThread
                 Call(SetNpcFlagBits, NPC_Merlon, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
                 Call(SetNpcAnimation, NPC_Merlon, ANIM_Merlon_Walk)
-                Call(SetNpcSpeed, NPC_Merlon, Float(3.0))
+                Call(SetNpcSpeed, NPC_Merlon, 3.0)
                 Call(NpcMoveTo, NPC_Merlon, -170, -225, 0)
                 Call(SetNpcAnimation, NPC_Merlon, ANIM_Merlon_Idle)
                 Call(SetGroupVisibility, MODEL_dr_in, MODEL_GROUP_VISIBLE)
                 ExecWait(EVS_MerlonDoor_Open)
                 Call(SetNpcAnimation, NPC_Merlon, ANIM_Merlon_Walk)
-                Call(SetNpcSpeed, NPC_Merlon, Float(3.0))
+                Call(SetNpcSpeed, NPC_Merlon, 3.0)
                 Call(NpcMoveTo, NPC_Merlon, -265, -300, 0)
                 Call(SetNpcAnimation, NPC_Merlon, ANIM_Merlon_Idle)
                 ExecWait(EVS_MerlonDoor_Close)
@@ -831,8 +831,8 @@ EvtScript EVS_NpcInteract_Merlon = {
                 Call(GetPlayerPos, LVar0, LVar1, LVar2)
                 Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
                 Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-                Call(SetCamSpeed, CAM_DEFAULT, Float(5.0))
-                Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+                Call(SetCamSpeed, CAM_DEFAULT, 5.0)
+                Call(WaitForCam, CAM_DEFAULT, 1.0)
                 Call(PanToTarget, CAM_DEFAULT, 0, false)
                 Return
             Else
@@ -845,7 +845,7 @@ EvtScript EVS_NpcInteract_Merlon = {
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_Merlon_Talk, ANIM_Merlon_Idle, 16, MSG_MAC_Plaza_003B)
     EndSwitch
-    Set(LVar0, Ref(LetterDelivery_Merlon))
+    Set(LVar0, LetterDelivery_Merlon)
     ExecWait(EVS_TryLetterDelivery)
     IfEq(LVar0, DELIVERY_ACCEPTED)
         EVT_GIVE_REWARD(LVar1)
@@ -874,7 +874,7 @@ EvtScript EVS_NpcInit_Merlon = {
         CaseDefault
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o336, COLLIDER_FLAGS_UPPER_MASK)
     EndSwitch
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Merlon))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Merlon)
     Return
     End
 };
@@ -887,14 +887,14 @@ EvtScript EVS_NpcInteract_DarkToad_01 = {
             Call(SpeakToPlayer, NPC_DarkToad_03, ANIM_DarkToad_Yellow_Talk, ANIM_DarkToad_Yellow_Idle, 0, MSG_MAC_Plaza_004F)
             Call(SpeakToPlayer, NPC_DarkToad_04, ANIM_DarkToad_Green_Talk, ANIM_DarkToad_Green_Idle, 0, MSG_MAC_Plaza_0050)
         CaseLt(STORY_CH1_TOLD_MERLON_ABOUT_DARK_TOADS)
-            Call(AdjustCam, CAM_DEFAULT, Float(4.0 / DT), 0, 300, Float(15.0), Float(-7.5))
+            Call(AdjustCam, CAM_DEFAULT, 4.0 / DT, 0, 300, 15.0, -7.5)
             Call(SpeakToPlayer, NPC_DarkToad_01, ANIM_DarkToad_Red_Talk, ANIM_DarkToad_Red_Idle, 0, MSG_MAC_Plaza_0051)
             Call(SpeakToPlayer, NPC_DarkToad_02, ANIM_DarkToad_Black_Talk, ANIM_DarkToad_Black_Idle, 0, MSG_MAC_Plaza_0052)
             Call(SpeakToPlayer, NPC_DarkToad_03, ANIM_DarkToad_Yellow_Talk, ANIM_DarkToad_Yellow_Idle, 0, MSG_MAC_Plaza_0053)
             Call(SpeakToPlayer, NPC_DarkToad_04, ANIM_DarkToad_Green_Talk, ANIM_DarkToad_Green_Idle, 0, MSG_MAC_Plaza_0054)
             Set(GF_MAC01_Merlon_HintFromDarkToads, true)
 #if VERSION_PAL
-            Call(ResetCam, CAM_DEFAULT, Float(5.0 / DT))
+            Call(ResetCam, CAM_DEFAULT, 5.0 / DT)
 #else
             Call(ResetCam, CAM_DEFAULT, 5)
 #endif
@@ -937,14 +937,14 @@ EvtScript EVS_NpcIdle_DarkToad_01 = {
 };
 
 EvtScript EVS_NpcInit_DarkToad_01 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_DarkToad_01))
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_DarkToad_01))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_DarkToad_01)
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_DarkToad_01)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_DarkToad_02 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_DarkToad_01))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_DarkToad_01)
     Return
     End
 };
@@ -957,7 +957,7 @@ EvtScript EVS_Scene_MerlonAndNinji = {
     Call(SetNpcPos, NPC_Ninji, -278, 20, -376)
     Call(SetNpcYaw, NPC_Ninji, 0)
     Wait(40)
-    Call(SetPlayerSpeed, Float(3.0 / DT))
+    Call(SetPlayerSpeed, 3.0 / DT)
     Call(PlayerMoveTo, -276, -305, 0)
     Wait(10 * DT)
     Call(SpeakToPlayer, NPC_Merlon, ANIM_Merlon_Talk, ANIM_Merlon_Idle, 0, MSG_MAC_Plaza_0047)
@@ -965,7 +965,7 @@ EvtScript EVS_Scene_MerlonAndNinji = {
     Wait(15 * DT)
     Call(GetNpcPos, NPC_Ninji, LVar0, LVar1, LVar2)
 #if VERSION_PAL
-    Call(SetCamProperties, CAM_DEFAULT, Float(4.0 / DT), LVar0, LVar1, LVar2, 250, 15, -9)
+    Call(SetCamProperties, CAM_DEFAULT, 4.0 / DT, LVar0, LVar1, LVar2, 250, 15, -9)
 #else
     Call(SetCamProperties, CAM_DEFAULT, 4, LVar0, LVar1, LVar2, 250, 15, -9)
 #endif
@@ -975,7 +975,7 @@ EvtScript EVS_Scene_MerlonAndNinji = {
     Wait(10 * DT)
     Call(SpeakToPlayer, NPC_Merlon, ANIM_Merlon_Talk, ANIM_Merlon_Idle, 0, MSG_MAC_Plaza_0049)
 #if VERSION_PAL
-    Call(ResetCam, CAM_DEFAULT, Float(5.0 / DT))
+    Call(ResetCam, CAM_DEFAULT, 5.0 / DT)
 #else
     Call(ResetCam, CAM_DEFAULT, 5)
 #endif
@@ -1199,9 +1199,9 @@ EvtScript EVS_NpcInteract_Toad_04 = {
 EvtScript EVS_NpcInit_Toad_04 = {
     IfEq(GB_StoryProgress, STORY_CH0_TWINK_GAVE_LUCKY_STAR)
         Call(SetNpcPos, NPC_SELF, -25, 0, -500)
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Toad_04))
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Toad_04)
     EndIf
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_04))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad_04)
     Return
     End
 };
@@ -1265,7 +1265,7 @@ EvtScript EVS_Toad_05_BlockSouthExit = {
     Wait(5)
     Call(SpeakToPlayer, NPC_Toad_05, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_Outro_0048)
     Wait(10)
-    Call(SetPlayerSpeed, Float(4.0))
+    Call(SetPlayerSpeed, 4.0)
     Call(PlayerMoveTo, 0, 580, 0)
     Call(DisablePlayerInput, false)
     Return
@@ -1273,12 +1273,12 @@ EvtScript EVS_Toad_05_BlockSouthExit = {
 };
 
 EvtScript EVS_NpcInit_Toad_05 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_05))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad_05)
     IfGe(GB_StoryProgress, STORY_EPILOGUE)
         Call(SetNpcPos, NPC_SELF, -50, 0, 580)
         Call(SetNpcYaw, NPC_SELF, 90)
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Toad_05))
-        BindTrigger(Ref(EVS_Toad_05_BlockSouthExit), TRIGGER_FLOOR_TOUCH, COLLIDER_deilis, 1, 0)
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Toad_05)
+        BindTrigger(EVS_Toad_05_BlockSouthExit, TRIGGER_FLOOR_TOUCH, COLLIDER_deilis, 1, 0)
     EndIf
     Return
     End
@@ -1338,11 +1338,11 @@ EvtScript EVS_NpcIdle_Toad_06 = {
 };
 
 EvtScript EVS_NpcInit_Toad_06 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_06))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad_06)
     IfGe(GB_StoryProgress, STORY_EPILOGUE)
         Call(SetNpcPos, NPC_SELF, -110, 20, -380)
         Call(SetNpcYaw, NPC_SELF, 90)
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Toad_06))
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Toad_06)
     EndIf
     Return
     End
@@ -1407,7 +1407,7 @@ EvtScript EVS_Toad_07_BlockEastExit = {
     Wait(5)
     Call(SpeakToPlayer, NPC_Toad_07, ANIM_Toad_Yellow_Talk, ANIM_Toad_Yellow_Idle, 0, MSG_Outro_004B)
     Wait(10)
-    Call(SetPlayerSpeed, Float(4.0))
+    Call(SetPlayerSpeed, 4.0)
     Call(PlayerMoveTo, 600, 0, 0)
     Call(DisablePlayerInput, false)
     Return
@@ -1415,12 +1415,12 @@ EvtScript EVS_Toad_07_BlockEastExit = {
 };
 
 EvtScript EVS_NpcInit_Toad_07 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_07))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad_07)
     IfGe(GB_StoryProgress, STORY_EPILOGUE)
         Call(SetNpcPos, NPC_SELF, 530, 0, -50)
         Call(SetNpcYaw, NPC_SELF, 270)
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Toad_07))
-        BindTrigger(Ref(EVS_Toad_07_BlockEastExit), TRIGGER_FLOOR_TOUCH, COLLIDER_deilie, 1, 0)
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Toad_07)
+        BindTrigger(EVS_Toad_07_BlockEastExit, TRIGGER_FLOOR_TOUCH, COLLIDER_deilie, 1, 0)
     EndIf
     Return
     End
@@ -1479,7 +1479,7 @@ EvtScript EVS_NpcInteract_Toad_08 = {
 };
 
 EvtScript EVS_NpcInit_Toad_08 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_08))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad_08)
     Return
     End
 };
@@ -1533,7 +1533,7 @@ EvtScript EVS_NpcInteract_Toad_09 = {
 };
 
 EvtScript EVS_NpcInit_Toad_09 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_09))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad_09)
     Return
     End
 };
@@ -1638,7 +1638,7 @@ EvtScript EVS_ToadHouse_GetInBed = {
         Call(SetCamPosA, CAM_DEFAULT, 495, 130)
         Call(SetCamPosB, CAM_DEFAULT, 507, -19)
         Call(SetCamPosC, CAM_DEFAULT, 0, 20)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+        Call(SetCamSpeed, CAM_DEFAULT, 90.0)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
     EndThread
     Call(PlayerMoveTo, 580, -210, 20)
@@ -1668,7 +1668,7 @@ EvtScript EVS_ToadHouse_ReturnFromRest = {
     Exec(EVS_SetupMusic)
     Call(HidePlayerShadow, false)
     Call(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_CLEAR, 0, 0, 0, 0)
-    Call(SetPlayerSpeed, Float(3.0))
+    Call(SetPlayerSpeed, 3.0)
     Call(SetPlayerPos, 568, 20, -186)
     Call(PlayerMoveTo, 525, -168, 20)
     Return
@@ -1679,18 +1679,18 @@ EvtScript EVS_NpcInit_ToadHouseKeeper = {
     IfGe(GB_StoryProgress, STORY_EPILOGUE)
         Call(SetNpcPos, NPC_SELF, 370, 20, -150)
         Call(SetNpcYaw, NPC_SELF, 270)
-        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ToadHouseKeeper_B))
+        Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_ToadHouseKeeper_B)
         Return
     EndIf
     IfEq(GF_MAC01_ChasedShyGuyFromToadHouse, false)
         Switch(GB_StoryProgress)
             CaseRange(STORY_CH3_STAR_SPIRIT_DEPARTED, STORY_CH4_STAR_SPIRIT_RESCUED)
-                Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ToadHouseKeeper_A))
+                Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_ToadHouseKeeper_A)
             CaseDefault
-                Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ToadHouseKeeper))
+                Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_ToadHouseKeeper)
         EndSwitch
     Else
-        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ToadHouseKeeper))
+        Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_ToadHouseKeeper)
     EndIf
     Set(AF_MAC01_JustDroveShyGuyFromToadHouse, false)
     Return
@@ -1727,7 +1727,7 @@ EvtScript EVS_NpcAI_ShyGuy_02 = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Hurt)
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     Call(NpcJump0, NPC_SELF, LVar0, 36, LVar2, 10)
-    Call(SetNpcSpeed, NPC_SELF, Float(8.0))
+    Call(SetNpcSpeed, NPC_SELF, 8.0)
     Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Run)
     Call(InterpNpcYaw, NPC_SELF, 270, 1)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_NPC_JUMP, SOUND_SPACE_DEFAULT)
@@ -1755,7 +1755,7 @@ EvtScript EVS_NpcAI_ShyGuy_02 = {
     Call(NpcMoveTo, NPC_SELF, 420, -118, 0)
     KillThread(LVarA)
     Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
-    Call(BindNpcInteract, NPC_ToadHouseToad, Ref(EVS_NpcInteract_ToadHouseKeeper))
+    Call(BindNpcInteract, NPC_ToadHouseToad, EVS_NpcInteract_ToadHouseKeeper)
     Call(DisablePlayerInput, false)
     Return
     End
@@ -1784,7 +1784,7 @@ EvtScript EVS_NpcHit_ShyGuy_02 = {
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_SHY_GUY_OUCH, SOUND_SPACE_DEFAULT)
     Set(GF_MAC01_ChasedShyGuyFromToadHouse, true)
     Set(AF_MAC01_JustDroveShyGuyFromToadHouse, true)
-    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_ShyGuy_02))
+    Call(BindNpcAI, NPC_SELF, EVS_NpcAI_ShyGuy_02)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER, true)
     Return
     End
@@ -1792,8 +1792,8 @@ EvtScript EVS_NpcHit_ShyGuy_02 = {
 
 EvtScript EVS_NpcInit_ShyGuy_02 = {
     IfEq(GF_MAC01_ChasedShyGuyFromToadHouse, false)
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_ShyGuy_02))
-        Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_ShyGuy_02))
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_ShyGuy_02)
+        Call(BindNpcHit, NPC_SELF, EVS_NpcHit_ShyGuy_02)
     Else
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndIf
@@ -1823,7 +1823,7 @@ EvtScript EVS_NpcIdle_Twink = {
     EndLoop
     Call(SetMusic, 0, SONG_TWINK_THEME, 0, VOL_LEVEL_FULL)
     Call(DisablePlayerInput, true)
-    Call(SetPlayerSpeed, Float(3.0 / DT))
+    Call(SetPlayerSpeed, 3.0 / DT)
     Call(PlayerMoveTo, 500, -20, 0)
     Call(WaitForPlayerMoveToComplete)
     Call(InterpPlayerYaw, 270, 0)
@@ -1836,10 +1836,10 @@ EvtScript EVS_NpcIdle_Twink = {
     EndLoop
     Wait(30 * DT)
     Call(GetPlayerPos, LVar4, LVar5, LVar6)
-    SubF(LVar4, Float(50.0))
-    AddF(LVar5, Float(40.0))
+    SubF(LVar4, 50.0)
+    AddF(LVar5, 40.0)
     Call(InterpNpcYaw, NPC_Twink, 90, 0)
-    Call(LoadPath, 35 * DT, Ref(FlightPath_TwinkArrive), ARRAY_COUNT(FlightPath_TwinkArrive), EASING_COS_IN_OUT)
+    Call(LoadPath, 35 * DT, FlightPath_TwinkArrive, ARRAY_COUNT(FlightPath_TwinkArrive), EASING_COS_IN_OUT)
     Loop(0)
         Call(GetNextPathPos)
         AddF(LVar1, LVar4)
@@ -1851,14 +1851,14 @@ EvtScript EVS_NpcIdle_Twink = {
         EndIf
     EndLoop
     Call(SetPlayerAnimation, ANIM_Mario1_LookUp)
-    Call(AdjustCam, CAM_DEFAULT, Float(3.0/ DT), -10, -300, 15, -9)
+    Call(AdjustCam, CAM_DEFAULT, 3.0/ DT, -10, -300, 15, -9)
     Call(SpeakToPlayer, NPC_Twink, ANIM_Twink_Talk, ANIM_Twink_Idle, 0, MSG_MAC_Plaza_00DC)
     Wait(5 * DT)
     Call(SetPlayerAnimation, ANIM_MarioW2_SpeakUp)
     Wait(30 * DT)
     Call(SetPlayerAnimation, ANIM_Mario1_LookUp)
     Wait(15 * DT)
-    Call(SetNpcJumpscale, NPC_Twink, Float(1.0))
+    Call(SetNpcJumpscale, NPC_Twink, 1.0)
     Call(GetNpcPos, NPC_Twink, LVar0, LVar1, LVar2)
     Call(NpcJump0, NPC_Twink, LVar0, LVar1, LVar2, 10 * DT)
     Call(SpeakToPlayer, NPC_Twink, ANIM_Twink_Talk, ANIM_Twink_Idle, 0, MSG_MAC_Plaza_00DD)
@@ -1866,13 +1866,13 @@ EvtScript EVS_NpcIdle_Twink = {
     Call(SetPlayerAnimation, ANIM_Mario1_Chuckle)
     Wait(30 * DT)
     Call(SetPlayerAnimation, ANIM_Mario1_LookUp)
-    Call(AdjustCam, CAM_DEFAULT, Float(3.0 / DT), -40, -200, 15, -15)
+    Call(AdjustCam, CAM_DEFAULT, 3.0 / DT, -40, -200, 15, -15)
     Call(SpeakToPlayer, NPC_Twink, ANIM_Twink_Talk, ANIM_Twink_Idle, 0, MSG_MAC_Plaza_00DE)
     Wait(5 * DT)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(InterpNpcYaw, NPC_Twink, 270, 0)
     Call(GetNpcPos, NPC_Twink, LVar4, LVar5, LVar6)
-    Call(LoadPath, 35 * DT, Ref(FlightPath_TwinkDepart), ARRAY_COUNT(FlightPath_TwinkDepart), EASING_QUADRATIC_IN)
+    Call(LoadPath, 35 * DT, FlightPath_TwinkDepart, ARRAY_COUNT(FlightPath_TwinkDepart), EASING_QUADRATIC_IN)
     Loop(0)
         Call(GetNextPathPos)
         Add(LVar1, LVar4)
@@ -1895,7 +1895,7 @@ EvtScript EVS_NpcIdle_Twink = {
 
 EvtScript EVS_NpcInit_Twink = {
     IfEq(GB_StoryProgress, STORY_CH1_DEFEATED_JR_TROOPA)
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Twink))
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Twink)
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -1906,7 +1906,7 @@ EvtScript EVS_NpcInit_Twink = {
 EvtScript EVS_NpcInteract_Kolorado = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_MAC_Plaza_00DF)
     ExecWait(EVS_ArtifactPrompt_Kolorado)
-    Set(LVar0, Ref(LetterDelivery_Kolorado))
+    Set(LVar0, LetterDelivery_Kolorado)
     ExecWait(EVS_TryLetterDelivery)
     Return
     End
@@ -1916,7 +1916,7 @@ EvtScript EVS_NpcInit_Kolorado = {
     Switch(GB_StoryProgress)
         CaseRange(STORY_CH5_RETURNED_TO_TOAD_TOWN, STORY_CH7_BEGAN_PEACH_MISSION)
             IfEq(GF_NOK11_Defeated_KentC, false)
-                Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Kolorado))
+                Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Kolorado)
             Else
                 Call(RemoveNpc, NPC_SELF)
             EndIf

@@ -16,7 +16,7 @@ void setup_gfx_background_shade(void) {
 
 EvtScript EVS_SetupBackgroundShade = {
     Call(SetModelCustomGfx, MODEL_g107, CUSTOM_GFX_1, ENV_TINT_UNCHANGED)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(setup_gfx_background_shade), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_1, setup_gfx_background_shade, nullptr)
     Return
     End
 };

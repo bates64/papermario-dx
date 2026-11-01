@@ -47,7 +47,7 @@ EvtScript EVS_RetractPlatform = {
         EndIf
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, LVar7, COLLIDER_FLAGS_UPPER_MASK)
     Call(PlaySound, SOUND_TRD_PUZZLE_PLATFORM_THUD)
-    Call(ShakeCam, CAM_DEFAULT, 0, 2, Float(0.3))
+    Call(ShakeCam, CAM_DEFAULT, 0, 2, 0.3)
     Return
     End
 };
@@ -63,7 +63,7 @@ EvtScript EVS_ExtendPlatform = {
         EndIf
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, LVar7, COLLIDER_FLAGS_UPPER_MASK)
     Call(PlaySound, SOUND_TRD_PUZZLE_PLATFORM_THUD)
-    Call(ShakeCam, CAM_DEFAULT, 0, 2, Float(0.3))
+    Call(ShakeCam, CAM_DEFAULT, 0, 2, 0.3)
     Return
     End
 };
@@ -81,9 +81,9 @@ EvtScript EVS_TogglePlatforms_LeftSwitch = {
     Call(GetLeftRightPoints, -315, -100, 60)
     Call(SetCamPosA, CAM_DEFAULT, LVar0, LVar1)
     Call(SetCamPosB, CAM_DEFAULT, LVar2, LVar3)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(2.5 / DT))
+    Call(SetCamSpeed, CAM_DEFAULT, 2.5 / DT)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Wait(15 * DT)
     IfEq(MV_PlatformsExtended, false)
         Set(LVar7, COLLIDER_o73)
@@ -162,9 +162,9 @@ EvtScript EVS_TogglePlatforms_LeftSwitch = {
     EndIf
     Wait(10)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(2.5 / DT))
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(1.0 / DT))
+    Call(SetCamSpeed, CAM_DEFAULT, 2.5 / DT)
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 1.0 / DT)
     Call(DisablePlayerInput, false)
     Return
     End
@@ -183,9 +183,9 @@ EvtScript EVS_TogglePlatforms_RightSwitch = {
     Call(GetLeftRightPoints, 210, -100, -60)
     Call(SetCamPosA, CAM_DEFAULT, LVar0, LVar1)
     Call(SetCamPosB, CAM_DEFAULT, LVar2, LVar3)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(2.5 / DT))
+    Call(SetCamSpeed, CAM_DEFAULT, 2.5 / DT)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Wait(15 * DT)
     IfEq(MV_PlatformsExtended, false)
         Set(LVar7, COLLIDER_o75)
@@ -264,9 +264,9 @@ EvtScript EVS_TogglePlatforms_RightSwitch = {
     EndIf
     Wait(10)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(2.5 / DT))
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(1.0 / DT))
+    Call(SetCamSpeed, CAM_DEFAULT, 2.5 / DT)
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 1.0 / DT)
     Call(DisablePlayerInput, false)
     Return
     End

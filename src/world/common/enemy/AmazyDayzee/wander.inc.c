@@ -19,7 +19,7 @@ MobileAISettings AISettings_AmazyDayzee_Wander = {
 };
 
 EvtScript EVS_NpcAI_AmazyDayzee_Wander = {
-    Call(AvoidPlayerAI_Main, Ref(AISettings_AmazyDayzee_Wander))
+    Call(AvoidPlayerAI_Main, AISettings_AmazyDayzee_Wander)
     Return
     End
 };

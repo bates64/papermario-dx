@@ -74,15 +74,15 @@ EvtScript EVS_Scene_ImpostersCaught = {
             Wait(10)
             Call(SetNpcYaw, NPC_FakeMario, 90)
             Thread
-                Call(SetPlayerSpeed, Float(2.0))
+                Call(SetPlayerSpeed, 2.0)
                 Call(PlayerMoveTo, 440, -70, 0)
             EndThread
             Wait(15)
             Call(GetNpcPos, NPC_FakeMario, LVar0, LVar1, LVar2)
-            Call(SetCamProperties, CAM_DEFAULT, Float(5.0), LVar0, LVar1, LVar2, Float(350.0), Float(12.0), Float(-7.0))
+            Call(SetCamProperties, CAM_DEFAULT, 5.0, LVar0, LVar1, LVar2, 350.0, 12.0, -7.0)
             Call(SpeakToPlayer, NPC_FakeMario, ANIM_Mario1_Flail, ANIM_Mario1_Flail, 0, MSG_CH7_0139)
             Call(SpeakToPlayer, NPC_FakeBombette, ANIM_WorldBombette_Talk, ANIM_WorldBombette_Idle, 0, MSG_CH7_013A)
-            Call(ResetCam, CAM_DEFAULT, Float(6.0))
+            Call(ResetCam, CAM_DEFAULT, 6.0)
             Call(PanToTarget, CAM_DEFAULT, 0, false)
             Thread
                 Call(GetNpcPos, NPC_FakeMario, LVar0, LVar1, LVar2)
@@ -174,8 +174,8 @@ EvtScript EVS_NpcInit_FakeMario = {
 };
 
 EvtScript EVS_NpcInit_FakeBombette = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_Scene_ImpostersCaught))
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_Scene_DefeatImposters))
+    Call(BindNpcIdle, NPC_SELF, EVS_Scene_ImpostersCaught)
+    Call(BindNpcDefeat, NPC_SELF, EVS_Scene_DefeatImposters)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_USE_INSPECT_ICON, true)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, pra_13_ENTRY_2)

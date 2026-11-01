@@ -228,16 +228,16 @@ EvtScript EVS_OnInspect_StickerSign = {
             Set(MF_SignDroppedMushroom, true)
             Thread
                 Wait(2)
-                SetF(LVar0, Float(0.0))
+                SetF(LVar0, 0.0)
                 Loop(18)
-                    AddF(LVar0, Float(10.0))
+                    AddF(LVar0, 10.0)
                     Call(SetStickerRotation, 0, LVar0)
                     Wait(1)
                 EndLoop
                 Call(SetStickerRotation, 0, 0)
             EndThread
             Thread
-                Call(SetStickerGravity, Float(0.6))
+                Call(SetStickerGravity, 0.6)
                 Call(JumpStickerTo, 362, 0, 40, 23)
                 Call(DeleteSticker)
                 Call(MakeItemEntity, ITEM_MUSHROOM, 362, 0, 40, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_KMR06_Item_Mushroom)
@@ -256,7 +256,7 @@ EvtScript EVS_SetupStickerSign = {
         Call(CreateSticker, ITEM_MUSHROOM)
         Call(SetStickerPos, 362, 40, -17)
     EndIf
-    BindTrigger(Ref(EVS_OnInspect_StickerSign), TRIGGER_WALL_PRESS_A, COLLIDER_o852, 1, 0)
+    BindTrigger(EVS_OnInspect_StickerSign, TRIGGER_WALL_PRESS_A, COLLIDER_o852, 1, 0)
     Return
     End
 };

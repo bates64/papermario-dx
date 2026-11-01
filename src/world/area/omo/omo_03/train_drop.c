@@ -20,7 +20,7 @@ Vec3f SecondBouncePath[] = {
 
 EvtScript EVS_Scene_TrainDropped = {
     Call(DisablePlayerInput, true)
-    Call(SetCamProperties, CAM_DEFAULT, Float(90.0), 82, 24, 12, 580, Float(16.5), Float(-8.5))
+    Call(SetCamProperties, CAM_DEFAULT, 90.0, 82, 24, 12, 580, 16.5, -8.5)
     Call(TranslateGroup, MODEL_po, -170, 400, -196)
     Set(MV_DroppedTrainAngle, 30)
     Wait(45)
@@ -35,7 +35,7 @@ EvtScript EVS_Scene_TrainDropped = {
             EndIf
         EndLoop
     EndThread
-    Call(LoadPath, 30, Ref(FallPath), ARRAY_COUNT(FallPath), EASING_LINEAR)
+    Call(LoadPath, 30, FallPath, ARRAY_COUNT(FallPath), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(TranslateGroup, MODEL_po, LVar1, LVar2, LVar3)
@@ -47,17 +47,17 @@ EvtScript EVS_Scene_TrainDropped = {
     EndLoop
     Call(PlaySoundAtModel, MODEL_p_8, SOUND_OMO_TOYBOX_TRAIN_DROP, SOUND_SPACE_DEFAULT)
     Thread
-        Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(3.0))
+        Call(ShakeCam, CAM_DEFAULT, 0, 5, 3.0)
     EndThread
     Thread
         Call(SetNpcAnimation, NPC_Conductor, ANIM_TrainToad_Idle)
-        Call(SetNpcJumpscale, NPC_Conductor, Float(3.0))
+        Call(SetNpcJumpscale, NPC_Conductor, 3.0)
         Call(GetNpcPos, NPC_Conductor, LVar0, LVar1, LVar2)
         Call(NpcJump0, NPC_Conductor, LVar0, LVar1, LVar2, 12)
     EndThread
     Thread
         Call(SetNpcAnimation, NPC_TrainToad, ANIM_TrainToad_Blue_Idle)
-        Call(SetNpcJumpscale, NPC_TrainToad, Float(3.0))
+        Call(SetNpcJumpscale, NPC_TrainToad, 3.0)
         Call(GetNpcPos, NPC_TrainToad, LVar0, LVar1, LVar2)
         Call(NpcJump0, NPC_TrainToad, LVar0, LVar1, LVar2, 15)
     EndThread
@@ -72,7 +72,7 @@ EvtScript EVS_Scene_TrainDropped = {
             EndIf
         EndLoop
     EndThread
-    Call(LoadPath, 20, Ref(FirstBouncePath), ARRAY_COUNT(FirstBouncePath), EASING_LINEAR)
+    Call(LoadPath, 20, FirstBouncePath, ARRAY_COUNT(FirstBouncePath), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(TranslateGroup, MODEL_po, LVar1, LVar2, LVar3)
@@ -84,7 +84,7 @@ EvtScript EVS_Scene_TrainDropped = {
     EndLoop
     Call(PlaySoundAtModel, MODEL_p_8, SOUND_OMO_TOYBOX_TRAIN_DROP, SOUND_SPACE_DEFAULT)
     Thread
-        Call(ShakeCam, CAM_DEFAULT, 0, 8, Float(2.0))
+        Call(ShakeCam, CAM_DEFAULT, 0, 8, 2.0)
     EndThread
     Thread
         Call(GetNpcPos, NPC_Conductor, LVar0, LVar1, LVar2)
@@ -105,7 +105,7 @@ EvtScript EVS_Scene_TrainDropped = {
             EndIf
         EndLoop
     EndThread
-    Call(LoadPath, 15, Ref(SecondBouncePath), ARRAY_COUNT(SecondBouncePath), EASING_LINEAR)
+    Call(LoadPath, 15, SecondBouncePath, ARRAY_COUNT(SecondBouncePath), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(TranslateGroup, MODEL_po, LVar1, LVar2, LVar3)
@@ -117,7 +117,7 @@ EvtScript EVS_Scene_TrainDropped = {
     EndLoop
     Call(PlaySoundAtModel, MODEL_p_8, SOUND_OMO_TOYBOX_TRAIN_DROP, SOUND_SPACE_DEFAULT)
     Thread
-        Call(ShakeCam, CAM_DEFAULT, 0, 10, Float(1.0))
+        Call(ShakeCam, CAM_DEFAULT, 0, 10, 1.0)
     EndThread
     Thread
         Call(GetNpcPos, NPC_Conductor, LVar0, LVar1, LVar2)
@@ -135,7 +135,7 @@ EvtScript EVS_Scene_TrainDropped = {
     EndThread
     Set(GB_StoryProgress, STORY_CH4_RETURNED_TOY_TRAIN)
     Wait(75)
-    Call(GotoMap, Ref("mac_04"), mac_04_ENTRY_3)
+    Call(GotoMap, "mac_04", mac_04_ENTRY_3)
     Wait(100)
     Return
     End

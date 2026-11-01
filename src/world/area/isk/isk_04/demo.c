@@ -81,7 +81,7 @@ EvtScript EVS_ProvideDemoInputs = {
         Return
     EndIf
     Set(GF_DemoSceneDone, true)
-    Call(GotoMapSpecial, Ref("isk_04"), isk_04_ENTRY_5, TRANSITION_END_DEMO_SCENE_BLACK)
+    Call(GotoMapSpecial, "isk_04", isk_04_ENTRY_5, TRANSITION_END_DEMO_SCENE_BLACK)
     Wait(323)
     Return
     End
@@ -100,7 +100,7 @@ EvtScript EVS_MonitorDemoState = {
         Return
     EndIf
     Set(GF_DemoSceneDone, true)
-    Call(GotoMapSpecial, Ref("isk_04"), isk_04_ENTRY_2, TRANSITION_END_DEMO_SCENE_WHITE)
+    Call(GotoMapSpecial, "isk_04", isk_04_ENTRY_2, TRANSITION_END_DEMO_SCENE_WHITE)
     Wait(313)
     Return
     End
@@ -138,7 +138,7 @@ EvtScript EVS_SetupDemo = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, 530, 25, -50)
     Call(SetCamPitch, CAM_DEFAULT, 12, -3)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, 25, LVar2)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Thread

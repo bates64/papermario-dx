@@ -32,7 +32,7 @@ EvtScript EVS_NpcIdle_KoopaTroopa_02 = {
     Call(EnableNpcShadow, NPC_SELF, false)
     Call(GetNpcPos, NPC_SELF, LVar2, LVar3, LVar4)
     Label(0)
-    Call(MakeLerp, Float(-2.0), Float(2.0), 30, EASING_COS_IN_OUT)
+    Call(MakeLerp, -2.0, 2.0, 30, EASING_COS_IN_OUT)
     Label(10)
     IfEq(GB_StoryProgress, STORY_CH1_RAISED_SUBMERGED_STAIRS)
         Goto(100)
@@ -46,7 +46,7 @@ EvtScript EVS_NpcIdle_KoopaTroopa_02 = {
         Goto(10)
     EndIf
     Wait(5)
-    Call(MakeLerp, Float(2.0), Float(-2.0), 30, EASING_COS_IN_OUT)
+    Call(MakeLerp, 2.0, -2.0, 30, EASING_COS_IN_OUT)
     Label(20)
     IfEq(GB_StoryProgress, STORY_CH1_RAISED_SUBMERGED_STAIRS)
         Goto(100)
@@ -80,27 +80,27 @@ EvtScript EVS_NpcIdle_KoopaTroopa_02 = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLYING, false)
     Call(GetSelfNpcID, LVar0)
     IfEq(LVar0, 1)
-        Call(SetNpcSpeed, NPC_SELF, Float(3.0))
+        Call(SetNpcSpeed, NPC_SELF, 3.0)
         Call(NpcMoveTo, NPC_SELF, 190, 20, 0)
         Call(NpcMoveTo, NPC_SELF, 245, 75, 0)
     Else
-        Call(SetNpcSpeed, NPC_SELF, Float(3.6))
+        Call(SetNpcSpeed, NPC_SELF, 3.6)
         Call(NpcMoveTo, NPC_SELF, 210, -20, 0)
         Call(NpcMoveTo, NPC_SELF, 260, 25, 0)
     EndIf
-    Call(SetNpcSpeed, NPC_SELF, Float(1.5))
+    Call(SetNpcSpeed, NPC_SELF, 1.5)
     Call(SetNewWanderCenterPos)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, false)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLYING, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION, false)
-    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_KoopaTroopa_Wander))
+    Call(BindNpcAI, NPC_SELF, EVS_NpcAI_KoopaTroopa_Wander)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_KoopaTroopa_02 = {
     IfLt(GB_StoryProgress, STORY_CH1_RAISED_SUBMERGED_STAIRS)
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_KoopaTroopa_02))
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_KoopaTroopa_02)
         Call(SetNpcAnimation, NPC_SELF, ANIM_KoopaTroopa_Floating)
     Else
         Call(InterpNpcYaw, NPC_SELF, 270, 0)
@@ -137,7 +137,7 @@ EvtScript EVS_NpcInit_KoopaTroopa_01 = {
         Call(RemoveNpc, NPC_SELF)
         Return
     EndIf
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_KoopaTroopa_01))
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_KoopaTroopa_01)
     Return
     End
 };

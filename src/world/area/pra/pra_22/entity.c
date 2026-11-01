@@ -49,7 +49,7 @@ EvtScript EVS_UseSpring = {
         Call(GetTargetPosXForSpring)
         Set(LVar1, -200)
         Set(LVar2, 15)
-        Call(SetPlayerJumpscale, Float(2.0))
+        Call(SetPlayerJumpscale, 2.0)
     Else
         Set(LVar3, 0)
         ExecGetTID(EVS_TetherCamToPlayer, LVarA)
@@ -60,7 +60,7 @@ EvtScript EVS_UseSpring = {
         EndIf
         Set(LVar1, 0)
         Set(LVar2, 35)
-        Call(SetPlayerJumpscale, Float(0.7))
+        Call(SetPlayerJumpscale, 0.7)
     EndIf
     Call(PlayerJump, LVar0, LVar1, LVar9, LVar2)
     KillThread(LVarA)
@@ -76,11 +76,11 @@ EvtScript EVS_MakeEntities = {
     Thread
         Call(MonitorPlayerFloor)
     EndThread
-    Call(MakeEntity, Ref(Entity_ScriptSpring), 366, -200, 80, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(EVS_UseSpring))
-    Call(MakeEntity, Ref(Entity_HiddenYellowBlock), 55, 80, 75, 0, ITEM_JAMMIN_JELLY, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_ScriptSpring, 366, -200, 80, 0, MAKE_ENTITY_END)
+    Call(AssignScript, EVS_UseSpring)
+    Call(MakeEntity, Entity_HiddenYellowBlock, 55, 80, 75, 0, ITEM_JAMMIN_JELLY, MAKE_ENTITY_END)
     Call(AssignBlockFlag, GF_PRA22_HiddenItem_JamminJelly)
-    Call(MakeEntity, Ref(Entity_HiddenPanel), 50, 0, 75, 0, MODEL_o1088, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_HiddenPanel, 50, 0, 75, 0, MODEL_o1088, MAKE_ENTITY_END)
     Call(AssignPanelFlag, GF_PRA22_HiddenPanel)
     Return
     End

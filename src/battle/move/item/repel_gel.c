@@ -27,7 +27,7 @@ EvtScript EVS_UseItem = {
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Add(LVar1, 20)
-    PlayEffect(EFFECT_RADIAL_SHIMMER, 3, LVar0, LVar1, LVar2, Float(1.0), 30)
+    PlayEffect(EFFECT_RADIAL_SHIMMER, 3, LVar0, LVar1, LVar2, 1.0, 30)
     Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_REPEL_GEL_VANISH)
     Call(GetItemPower, ITEM_REPEL_GEL, LVar0, LVar1)
     Call(func_802A123C_72DDAC)

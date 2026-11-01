@@ -20,7 +20,7 @@ EvtScript EVS_Main = {
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
-    BindTrigger(Ref(EVS_ExitDoor_kkj_10_2), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
+    BindTrigger(EVS_ExitDoor_kkj_10_2, TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
     Exec(EVS_EnterMap)
     Wait(1)
     Return

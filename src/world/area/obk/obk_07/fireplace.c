@@ -35,25 +35,25 @@ Vec3i ExplosionPositions3[] = {
 EvtScript EVS_PlayExplosionFX = {
     UseBuf(LVar0)
     BufRead3(LVarA, LVarB, LVarC)
-    PlayEffect(EFFECT_RING_BLAST, 0, LVarA, LVarB, LVarC, Float(1.203), 20)
+    PlayEffect(EFFECT_RING_BLAST, 0, LVarA, LVarB, LVarC, 1.203, 20)
     Wait(1)
     BufRead3(LVarA, LVarB, LVarC)
-    PlayEffect(EFFECT_RING_BLAST, 0, LVarA, LVarB, LVarC, Float(1.5), 20)
+    PlayEffect(EFFECT_RING_BLAST, 0, LVarA, LVarB, LVarC, 1.5, 20)
     Wait(1)
     BufRead3(LVarA, LVarB, LVarC)
-    PlayEffect(EFFECT_RING_BLAST, 0, LVarA, LVarB, LVarC, Float(2.0), 20)
+    PlayEffect(EFFECT_RING_BLAST, 0, LVarA, LVarB, LVarC, 2.0, 20)
     Wait(1)
     BufRead3(LVarA, LVarB, LVarC)
-    PlayEffect(EFFECT_RING_BLAST, 0, LVarA, LVarB, LVarC, Float(2.5), 20)
+    PlayEffect(EFFECT_RING_BLAST, 0, LVarA, LVarB, LVarC, 2.5, 20)
     Wait(1)
     BufRead3(LVarA, LVarB, LVarC)
-    PlayEffect(EFFECT_RING_BLAST, 0, LVarA, LVarB, LVarC, Float(3.0), 20)
+    PlayEffect(EFFECT_RING_BLAST, 0, LVarA, LVarB, LVarC, 3.0, 20)
     Wait(1)
     BufRead3(LVarA, LVarB, LVarC)
-    PlayEffect(EFFECT_RING_BLAST, 0, LVarA, LVarB, LVarC, Float(3.5), 20)
+    PlayEffect(EFFECT_RING_BLAST, 0, LVarA, LVarB, LVarC, 3.5, 20)
     Wait(1)
     BufRead3(LVarA, LVarB, LVarC)
-    PlayEffect(EFFECT_RING_BLAST, 0, LVarA, LVarB, LVarC, Float(4.0), 80)
+    PlayEffect(EFFECT_RING_BLAST, 0, LVarA, LVarB, LVarC, 4.0, 80)
     Return
     End
 };
@@ -81,7 +81,7 @@ EvtScript EVS_Inspect_Fireplace = {
     Set(MV_InspectingFireplace, true)
     Call(DisablePlayerInput, true)
     Thread
-        Call(AdjustCam, CAM_DEFAULT, Float(4.0), 0, Float(250.0), Float(17.5), Float(-10.0))
+        Call(AdjustCam, CAM_DEFAULT, 4.0, 0, 250.0, 17.5, -10.0)
     EndThread
     Wait(10)
     Thread
@@ -97,11 +97,11 @@ EvtScript EVS_Inspect_Fireplace = {
         Call(InterpNpcYaw, NPC_PARTNER, 90, 0)
     EndThread
     Call(PlaySoundAtPlayer, SOUND_FIREPLACE_BURST, SOUND_SPACE_DEFAULT)
-    Set(LVar0, Ref(ExplosionPositions1))
+    Set(LVar0, ExplosionPositions1)
     Exec(EVS_PlayExplosionFX)
-    Set(LVar0, Ref(ExplosionPositions2))
+    Set(LVar0, ExplosionPositions2)
     Exec(EVS_PlayExplosionFX)
-    Set(LVar0, Ref(ExplosionPositions3))
+    Set(LVar0, ExplosionPositions3)
     Exec(EVS_PlayExplosionFX)
     Wait(5)
     Call(SetPlayerAnimation, ANIM_Mario1_Burnt)
@@ -109,7 +109,7 @@ EvtScript EVS_Inspect_Fireplace = {
     ExecWait(EVS_PlaySmokeFX)
     Wait(40)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
-    Call(ResetCam, CAM_DEFAULT, Float(4.0))
+    Call(ResetCam, CAM_DEFAULT, 4.0)
     Set(MV_InspectingFireplace, false)
     Call(DisablePlayerInput, false)
     Return
@@ -117,7 +117,7 @@ EvtScript EVS_Inspect_Fireplace = {
 };
 
 EvtScript EVS_SetupFireplace = {
-    BindTrigger(Ref(EVS_Inspect_Fireplace), TRIGGER_WALL_PRESS_A, COLLIDER_o283, 1, 0)
+    BindTrigger(EVS_Inspect_Fireplace, TRIGGER_WALL_PRESS_A, COLLIDER_o283, 1, 0)
     Return
     End
 };

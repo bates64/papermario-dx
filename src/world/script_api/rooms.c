@@ -447,7 +447,7 @@ EvtScript EVS_EnterRoom_MovePlayerB = {
 };
 
 EvtScript EVS_EnterRoom_MoveCam = {
-    Call(SetRoomCamMoveSpeed, Float(1.796))
+    Call(SetRoomCamMoveSpeed, 1.796)
     Call(GetPlayerPos, LVarB, LVarC, LVarD)
     Set(LVarB, ROOM_DATA_ENTER_POS_BX)
     Set(LVarD, ROOM_DATA_ENTER_POS_BZ)
@@ -482,7 +482,7 @@ EvtScript EVS_ExitRoom_MovePlayerB = {
 };
 
 EvtScript EVS_ExitRoom_MoveCam = {
-    Call(SetRoomCamMoveSpeed, Float(1.796))
+    Call(SetRoomCamMoveSpeed, 1.796)
     Call(GetPlayerPos, LVarB, LVarC, LVarD)
     Set(LVarB, ROOM_DATA_EXIT_POS_BX)
     Set(LVarD, ROOM_DATA_EXIT_POS_BZ)

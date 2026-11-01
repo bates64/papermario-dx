@@ -227,8 +227,8 @@ EvtScript EVS_SetupBadgeShop = {
             Set(GF_MAC01_RowfBadgeAvailableA, true)
         EndIf
     EndIf
-    Call(MakeShop, Ref(RowfItemPositions), LVar2, Ref(RowfDummyPriceList), 0)
-    Call(MakeShopOwner, Ref(ShopOwnerRowf))
+    Call(MakeShop, RowfItemPositions, LVar2, RowfDummyPriceList, 0)
+    Call(MakeShopOwner, ShopOwnerRowf)
     IfEq(LVar3, 1)
         IfGe(LVar0, 3)
             IfEq(GF_MAC01_RowfBadgeAvailableC, true)

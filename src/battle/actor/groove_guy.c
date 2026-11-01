@@ -116,9 +116,9 @@ OVL_DEF_ACTOR() = {
 };
 
 EvtScript EVS_Init = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
     Call(SetActorVar, ACTOR_SELF, AVAR_Generation, 0)
     Return
     End
@@ -196,7 +196,7 @@ EvtScript EVS_HandleEvent = {
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_GrooveGuy_Hurt)
             ExecWait(EVS_Enemy_Knockback)
-            Call(SetActorSpeed, ACTOR_SELF, Float(4.0))
+            Call(SetActorSpeed, ACTOR_SELF, 4.0)
             ExecWait(EVS_ReturnHome)
         CaseEq(EVENT_SHOCK_DEATH)
             SetConst(LVar0, PRT_MAIN)
@@ -260,7 +260,7 @@ EvtScript EVS_Attack_Tackle = {
     Call(BattleCamTargetActor, ACTOR_SELF)
     Call(SetBattleCamTargetingModes, BTL_CAM_YADJ_TARGET, BTL_CAM_XADJ_AVG, false)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_GrooveGuy_Run)
-    Call(SetActorSpeed, ACTOR_SELF, Float(4.0))
+    Call(SetActorSpeed, ACTOR_SELF, 4.0)
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Add(LVar0, 50)
@@ -275,12 +275,12 @@ EvtScript EVS_Attack_Tackle = {
             Call(SetActorSounds, ACTOR_SELF, ACTOR_SOUND_JUMP, SOUND_ACTOR_HOP, 0)
             Call(SetActorSounds, ACTOR_SELF, ACTOR_SOUND_WALK, SOUND_ACTOR_STEP_A, SOUND_ACTOR_STEP_B)
             Call(SetActorSounds, ACTOR_SELF, ACTOR_SOUND_WALK_INCREMENT, 10, 0)
-            Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
+            Call(SetActorSpeed, ACTOR_SELF, 6.0)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_GrooveGuy_Panic)
             Call(SetGoalToTarget, ACTOR_SELF)
             Call(RunToGoal, ACTOR_SELF, 0, false)
-            Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(0.5))
+            Call(SetActorSpeed, ACTOR_SELF, 6.0)
+            Call(SetActorJumpGravity, ACTOR_SELF, 0.5)
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Sub(LVar0, 30)
             Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -296,7 +296,7 @@ EvtScript EVS_Attack_Tackle = {
             Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
             Call(SetActorYaw, ACTOR_SELF, 180)
             Call(AddActorDecoration, ACTOR_SELF, PRT_MAIN, 0, ACTOR_DECORATION_SWEAT)
-            Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
+            Call(SetActorSpeed, ACTOR_SELF, 6.0)
             ExecWait(EVS_ReturnHome)
             Call(RemoveActorDecoration, ACTOR_SELF, PRT_MAIN, 0)
             Call(SetActorYaw, ACTOR_SELF, 0)
@@ -311,7 +311,7 @@ EvtScript EVS_Attack_Tackle = {
     EndThread
     Call(SetActorSounds, ACTOR_SELF, ACTOR_SOUND_WALK, SOUND_ACTOR_STEP_A, SOUND_ACTOR_STEP_B)
     Call(SetActorSounds, ACTOR_SELF, ACTOR_SOUND_WALK_INCREMENT, 10, 0)
-    Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
+    Call(SetActorSpeed, ACTOR_SELF, 6.0)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_GrooveGuy_Panic)
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -329,12 +329,12 @@ EvtScript EVS_Attack_Tackle = {
             Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Add(LVar0, 30)
             Set(LVar1, 0)
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(1.8))
+            Call(SetActorJumpGravity, ACTOR_SELF, 1.8)
             Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(JumpToGoal, ACTOR_SELF, 10, false, true, false)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_GrooveGuy_Idle)
             Wait(8)
-            Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
+            Call(SetActorSpeed, ACTOR_SELF, 6.0)
             ExecWait(EVS_ReturnHome)
         EndCaseGroup
     EndSwitch
@@ -354,7 +354,7 @@ EvtScript EVS_Attack_SleepySpin = {
     Call(SetActorSounds, ACTOR_SELF, ACTOR_SOUND_WALK, SOUND_ACTOR_STEP_A, SOUND_ACTOR_STEP_B)
     Call(SetActorSounds, ACTOR_SELF, ACTOR_SOUND_WALK_INCREMENT, 10, 0)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_GrooveGuy_Panic)
-    Call(SetActorSpeed, ACTOR_SELF, Float(4.0))
+    Call(SetActorSpeed, ACTOR_SELF, 4.0)
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Add(LVar0, 10)
@@ -382,7 +382,7 @@ EvtScript EVS_Attack_SleepySpin = {
             EndIf
             Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
             Call(ResetAllActorSounds, ACTOR_SELF)
-            Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
+            Call(SetActorSpeed, ACTOR_SELF, 6.0)
             ExecWait(EVS_ReturnHome)
             Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
             Call(UseIdleAnimation, ACTOR_SELF, true)
@@ -433,13 +433,13 @@ EvtScript EVS_Attack_SleepySpin = {
             Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Add(LVar0, 40)
             Set(LVar1, 0)
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(1.0))
+            Call(SetActorJumpGravity, ACTOR_SELF, 1.0)
             Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(JumpToGoal, ACTOR_SELF, 20, false, true, false)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_GrooveGuy_Swing)
             Wait(25)
             Call(ResetAllActorSounds, ACTOR_SELF)
-            Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
+            Call(SetActorSpeed, ACTOR_SELF, 6.0)
             ExecWait(EVS_ReturnHome)
         EndCaseGroup
     EndSwitch
@@ -600,7 +600,7 @@ EvtScript EVS_RandomSummon = {
             ExecWait(EVS_SummonMediGuy)
     EndSwitch
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
-    Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(DefaultAnims))
+    Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, DefaultAnims)
     Return
     End
 };
@@ -681,9 +681,9 @@ EvtScript EVS_PerformSummonDance = {
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_GrooveGuy_Forward)
     Call(GetStatusFlags, ACTOR_SELF, LVar3)
     IfNotFlag(LVar3, STATUS_FLAG_SHRINK)
-        SetF(LVar3, Float(1.0))
+        SetF(LVar3, 1.0)
     Else
-        SetF(LVar3, Float(0.4))
+        SetF(LVar3, 0.4)
     EndIf
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(SpawnSpinFX, LVar0, LVar1, LVar2, LVar3, 48)
@@ -712,7 +712,7 @@ EvtScript EVS_SummonShyGuy = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     ExecWait(EVS_PerformSummonDance)
-    Call(SummonEnemy, Ref(ShyGuyFormation), false)
+    Call(SummonEnemy, ShyGuyFormation, false)
     Set(LVarB, LVar0)
     Set(LVar0, 200)
     Set(LVar1, 0)
@@ -724,7 +724,7 @@ EvtScript EVS_SummonShyGuy = {
     Call(SetGoalToIndex, LVarB, LVarA)
     Call(SetActorSounds, ACTOR_SELF, ACTOR_SOUND_WALK, SOUND_ACTOR_STEP_A, SOUND_ACTOR_STEP_B)
     Call(SetActorSounds, ACTOR_SELF, ACTOR_SOUND_WALK_INCREMENT, 10, 0)
-    Call(SetActorSpeed, LVarB, Float(4.0))
+    Call(SetActorSpeed, LVarB, 4.0)
     Call(RunToGoal, LVarB, 0, false)
     Call(SetAnimation, LVarB, PRT_MAIN, ANIM_ShyGuy_Red_Idle)
     Call(GetActorPos, LVarB, LVar0, LVar1, LVar2)
@@ -742,7 +742,7 @@ EvtScript EVS_SummonGrooveGuy = {
     ExecWait(EVS_PerformSummonDance)
     Call(UseBattleCamPreset, BTL_CAM_VIEW_ENEMIES)
     Call(BattleCamTargetActor, ACTOR_SELF)
-    Call(SummonEnemy, Ref(GrooveGuyFormation), false)
+    Call(SummonEnemy, GrooveGuyFormation, false)
     Set(LVarB, LVar0)
     Call(SetAnimation, LVarB, PRT_MAIN, ANIM_GrooveGuy_Forward)
     Call(SetGoalToIndex, LVarB, LVarA)
@@ -766,7 +766,7 @@ EvtScript EVS_SummonGrooveGuy = {
             Wait(25)
         EndLoop
     EndThread
-    Call(SetActorSpeed, LVarB, Float(4.0))
+    Call(SetActorSpeed, LVarB, 4.0)
     Call(RunToGoal, LVarB, 0, false)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SMALL_LENS_FLARE)
     Call(SetAnimation, LVarB, PRT_MAIN, ANIM_GrooveGuy_Swing)
@@ -795,7 +795,7 @@ EvtScript EVS_SummonMediGuy = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     ExecWait(EVS_PerformSummonDance)
-    Call(SummonEnemy, Ref(MediGuyFormation), false)
+    Call(SummonEnemy, MediGuyFormation, false)
     Set(LVarB, LVar0)
     Call(SetAnimation, LVarB, PRT_MAIN, ANIM_MediGuy_ArmsUp)
     Add(LVarA, 4)
@@ -808,7 +808,7 @@ EvtScript EVS_SummonMediGuy = {
     Call(SetActorSounds, LVarB, ACTOR_SOUND_WALK, SOUND_SHY_GUY_FLY, SOUND_NONE)
     Call(UseBattleCamPreset, BTL_CAM_VIEW_ENEMIES)
     Call(BattleCamTargetActor, ACTOR_SELF)
-    Call(SetActorSpeed, LVarB, Float(4.0))
+    Call(SetActorSpeed, LVarB, 4.0)
     Call(RunToGoal, LVarB, 0, false)
     Call(SetAnimation, LVarB, PRT_MAIN, ANIM_MediGuy_Idle)
     Call(GetActorPos, LVarB, LVar0, LVar1, LVar2)

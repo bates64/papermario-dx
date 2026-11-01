@@ -24,7 +24,7 @@ Vec3f TwinkFollowCh1Path2[] = {
 EvtScript EVS_GetApproachPeachPos_Ch1 = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Sub(LVar0, 10)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(1.0 / DT))
+    Call(SetCamSpeed, CAM_DEFAULT, 1.0 / DT)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetNpcVar, NPC_Koopatrol_01, 0, 1)
     Thread
@@ -32,7 +32,7 @@ EvtScript EVS_GetApproachPeachPos_Ch1 = {
         Sub(LVar0, 26)
         Sub(LVar2, 2)
         Call(SetNpcAnimation, NPC_Koopatrol_01, ANIM_WorldKoopatrol_Run)
-        Call(SetNpcSpeed, NPC_Koopatrol_01, Float(5.0))
+        Call(SetNpcSpeed, NPC_Koopatrol_01, 5.0)
         Call(NpcMoveTo, NPC_Koopatrol_01, LVar0, LVar2, 0)
         Call(SetNpcAnimation, NPC_Koopatrol_01, ANIM_WorldKoopatrol_Idle)
         Call(NpcFacePlayer, NPC_Koopatrol_01, 5)
@@ -43,7 +43,7 @@ EvtScript EVS_GetApproachPeachPos_Ch1 = {
         Add(LVar0, 26)
         Add(LVar2, 2)
         Call(SetNpcAnimation, NPC_Koopatrol_02, ANIM_WorldKoopatrol_Run)
-        Call(SetNpcSpeed, NPC_Koopatrol_02, Float(5.0))
+        Call(SetNpcSpeed, NPC_Koopatrol_02, 5.0)
         Call(NpcMoveTo, NPC_Koopatrol_02, LVar0, LVar2, 0)
         Call(SetNpcAnimation, NPC_Koopatrol_02, ANIM_WorldKoopatrol_Idle)
         Call(NpcFacePlayer, NPC_Koopatrol_02, 5)
@@ -111,16 +111,16 @@ EvtScript EVS_CarryPeachAway_Ch1 = {
     Call(SetNpcVar, NPC_Koopatrol_01, 0, 1)
     Thread
         Call(SetNpcAnimation, NPC_Koopatrol_01, ANIM_WorldKoopatrol_CarryFast)
-        Call(SetNpcSpeed, NPC_Koopatrol_01, Float(7.5))
+        Call(SetNpcSpeed, NPC_Koopatrol_01, 7.5)
         Call(NpcMoveTo, NPC_Koopatrol_01, 249, -72, 0)
         Call(SetNpcVar, NPC_Koopatrol_01, 0, 0)
     EndThread
     Thread
         Call(SetNpcAnimation, NPC_Koopatrol_02, ANIM_WorldKoopatrol_CarryFast)
-        Call(SetNpcSpeed, NPC_Koopatrol_02, Float(7.5))
+        Call(SetNpcSpeed, NPC_Koopatrol_02, 7.5)
         Call(NpcMoveTo, NPC_Koopatrol_02, 281, -68, 0)
     EndThread
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Loop(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(SetPanTarget, CAM_DEFAULT, LVar0, 0, LVar2)
@@ -153,7 +153,7 @@ EvtScript EVS_Inspect_BowsersDiary = {
         Call(SetPanTarget, CAM_DEFAULT, -237, 0, 37)
         Call(SetCamDistance, CAM_DEFAULT, 300)
         Call(SetCamPosA, CAM_DEFAULT, -180, -20)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+        Call(SetCamSpeed, CAM_DEFAULT, 90.0)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
     EndThread
     Call(SetPlayerFlagBits, PS_FLAG_NO_FLIPPING, true)
@@ -200,9 +200,9 @@ EvtScript EVS_Inspect_BowsersDiary = {
     Wait(10 * DT)
     Call(SetMusic, 0, SONG_BOWSER_THEME, 0, VOL_LEVEL_FULL)
     Call(SetPanTarget, CAM_DEFAULT, 237, 0, 37)
-    Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-12.0))
+    Call(SetCamPitch, CAM_DEFAULT, 17.0, -12.0)
     Call(SetCamPosB, CAM_DEFAULT, 170, -20)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Wait(30 * DT)
     Thread
         Call(PlaySoundAtCollider, COLLIDER_tte, SOUND_BASIC_DOOR_OPEN, 0)
@@ -219,7 +219,7 @@ EvtScript EVS_Inspect_BowsersDiary = {
     Wait(10 * DT)
     Call(SetNpcPos, NPC_Bowser, 280, 0, -70)
     Call(SetNpcAnimation, NPC_Bowser, ANIM_WorldBowser_Walk)
-    Call(SetNpcSpeed, NPC_Bowser, Float(3.0 / DT))
+    Call(SetNpcSpeed, NPC_Bowser, 3.0 / DT)
     Call(NpcMoveTo, NPC_Bowser, 170, -40, 0)
     Call(SetNpcAnimation, NPC_Bowser, ANIM_WorldBowser_Idle)
     Call(SpeakToPlayer, NPC_Bowser, ANIM_WorldBowser_Talk, ANIM_WorldBowser_Idle, 5, MSG_Peach_0055)
@@ -227,8 +227,8 @@ EvtScript EVS_Inspect_BowsersDiary = {
         Call(SetPlayerAnimation, ANIM_Peach2_LookAround)
         Wait(10 * DT)
         Call(SetPanTarget, CAM_DEFAULT, -110, 0, -40)
-        Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
-        Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+        Call(SetCamDistance, CAM_DEFAULT, 300.0)
+        Call(SetCamSpeed, CAM_DEFAULT, 90.0)
         Wait(10 * DT)
         Call(SetNpcAnimation, NPC_PARTNER, ANIM_Twink_Cringe)
         Call(NpcJump0, NPC_PARTNER, -168, 38, -112, 10)
@@ -249,7 +249,7 @@ EvtScript EVS_Inspect_BowsersDiary = {
     Wait(10 * DT)
     Call(UseSettingsFrom, CAM_DEFAULT, 240, 0, 37)
     Call(SetPanTarget, CAM_DEFAULT, 240, 0, 37)
-    Call(SetCamDistance, CAM_DEFAULT, Float(400.0))
+    Call(SetCamDistance, CAM_DEFAULT, 400.0)
     Call(SetCamPosB, CAM_DEFAULT, 134, -20)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(5 * DT)
@@ -267,14 +267,14 @@ EvtScript EVS_Inspect_BowsersDiary = {
     Call(SetNpcVar, NPC_Koopatrol_01, 0, 1)
     Thread
         Call(SetNpcAnimation, NPC_Koopatrol_01, ANIM_WorldKoopatrol_Run)
-        Call(SetNpcSpeed, NPC_Koopatrol_01, Float(5.0))
+        Call(SetNpcSpeed, NPC_Koopatrol_01, 5.0)
         Call(NpcMoveTo, NPC_Koopatrol_01, -50, -30, 0)
         Call(SetNpcAnimation, NPC_Koopatrol_01, ANIM_WorldKoopatrol_Idle)
         Call(SetNpcVar, NPC_Koopatrol_01, 0, 0)
     EndThread
     Thread
         Call(SetNpcAnimation, NPC_Koopatrol_02, ANIM_WorldKoopatrol_Run)
-        Call(SetNpcSpeed, NPC_Koopatrol_02, Float(5.0))
+        Call(SetNpcSpeed, NPC_Koopatrol_02, 5.0)
         Call(NpcMoveTo, NPC_Koopatrol_02, -20, -30, 0)
         Call(SetNpcAnimation, NPC_Koopatrol_02, ANIM_WorldKoopatrol_Idle)
     EndThread
@@ -297,7 +297,7 @@ EvtScript EVS_Inspect_BowsersDiary = {
     ExecWait(EVS_CarryPeachAway_Ch1)
     Wait(10 * DT)
     Call(SetNpcPos, NPC_PARTNER, -70, 120, -70)
-    Call(LoadPath, 80 * DT, Ref(TwinkFollowCh1Path1), ARRAY_COUNT(TwinkFollowCh1Path1), EASING_LINEAR)
+    Call(LoadPath, 80 * DT, TwinkFollowCh1Path1, ARRAY_COUNT(TwinkFollowCh1Path1), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_PARTNER, LVar1, LVar2, LVar3)
@@ -317,7 +317,7 @@ EvtScript EVS_Inspect_BowsersDiary = {
     Wait(15 * DT)
     Call(SetNpcAnimation, NPC_PARTNER, ANIM_Twink_Fly)
     Call(InterpNpcYaw, NPC_PARTNER, 90, 7 * DT)
-    Call(LoadPath, 15 * DT, Ref(TwinkFollowCh1Path2), ARRAY_COUNT(TwinkFollowCh1Path2), EASING_LINEAR)
+    Call(LoadPath, 15 * DT, TwinkFollowCh1Path2, ARRAY_COUNT(TwinkFollowCh1Path2), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_PARTNER, LVar1, LVar2, LVar3)
@@ -338,8 +338,8 @@ EvtScript EVS_Inspect_BowsersDiary = {
 };
 
 EvtScript EVS_SetupChapter1 = {
-    BindTrigger(Ref(EVS_Inspect_BowsersDiary), TRIGGER_WALL_PRESS_A, COLLIDER_o100, 1, 0)
-    BindTrigger(Ref(EVS_Inspect_Door), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
+    BindTrigger(EVS_Inspect_BowsersDiary, TRIGGER_WALL_PRESS_A, COLLIDER_o100, 1, 0)
+    BindTrigger(EVS_Inspect_Door, TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
     Return
     End
 };

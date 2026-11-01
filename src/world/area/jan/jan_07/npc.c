@@ -38,14 +38,14 @@ EvtScript EVS_NpcIdle_YoshiKid = {
         Call(UseSettingsFrom, CAM_DEFAULT, -183, 50, -11)
         Call(SetPanTarget, CAM_DEFAULT, 50, 0, 0)
         Call(SetCamDistance, CAM_DEFAULT, 500)
-        Call(SetCamPitch, CAM_DEFAULT, 16, Float(-6.0))
+        Call(SetCamPitch, CAM_DEFAULT, 16, -6.0)
         Call(SetCamSpeed, CAM_DEFAULT, 3)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
-        Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+        Call(WaitForCam, CAM_DEFAULT, 1.0)
         Call(SpeakToPlayer, NPC_SELF, ANIM_YoshiKid_Yellow_Cry, ANIM_YoshiKid_Yellow_Cry, 5, MSG_CH5_00B5)
         Wait(10)
         Exec(EVS_YoshiKid_CryForHelp)
-        Call(ResetCam, CAM_DEFAULT, Float(90.0))
+        Call(ResetCam, CAM_DEFAULT, 90.0)
         Set(GF_JAN07_YoshiCriedForHelp, true)
         Call(DisablePlayerInput, false)
     EndIf
@@ -58,8 +58,8 @@ EvtScript EVS_NpcIdle_YoshiKid = {
     Call(DisablePlayerInput, true)
     Call(UseSettingsFrom, CAM_DEFAULT, -20, 0, 20)
     Call(SetPanTarget, CAM_DEFAULT, -20, 0, 20)
-    Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(2.5))
+    Call(SetCamDistance, CAM_DEFAULT, 300.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 2.5)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Thread
         Call(DisablePartnerAI, false)
@@ -97,7 +97,7 @@ EvtScript EVS_NpcIdle_YoshiKid = {
     Thread
         Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
         Call(SetNpcAnimation, NPC_SELF, ANIM_YoshiKid_Yellow_Run)
-        Call(SetNpcSpeed, NPC_SELF, Float(5.0))
+        Call(SetNpcSpeed, NPC_SELF, 5.0)
         Call(NpcMoveTo, NPC_SELF, -150, 15, 0)
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndThread
@@ -123,7 +123,7 @@ EvtScript EVS_NpcIdle_YoshiKid = {
         EndThread
         Wait(30)
     EndIf
-    Call(ResetCam, CAM_DEFAULT, Float(4.5))
+    Call(ResetCam, CAM_DEFAULT, 4.5)
     Call(DisablePlayerInput, false)
     Call(RemoveNpc, NPC_SELF)
     Return
@@ -134,7 +134,7 @@ EvtScript EVS_NpcInit_YoshiKid = {
     IfEq(GB_StoryProgress, STORY_CH5_SUSHIE_JOINED_PARTY)
         IfEq(GF_JAN07_SavedYoshi, false)
             Call(SetNpcAnimation, NPC_SELF, ANIM_YoshiKid_Yellow_Cry)
-            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_YoshiKid))
+            Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_YoshiKid)
             Return
         EndIf
     EndIf
@@ -174,7 +174,7 @@ EvtScript EVS_NpcIdle_PutridPiranha = {
     Thread
         Call(UseSettingsFrom, CAM_DEFAULT, -60, 0, 20)
         Call(SetPanTarget, CAM_DEFAULT, -50, 0, 20)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(1.0))
+        Call(SetCamSpeed, CAM_DEFAULT, 1.0)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
     EndThread
     Thread
@@ -256,8 +256,8 @@ EvtScript EVS_NpcIdle_PutridPiranha = {
 EvtScript EVS_NpcDefeat_PutridPiranha = {
     Call(UseSettingsFrom, CAM_DEFAULT, -20, 0, 20)
     Call(SetPanTarget, CAM_DEFAULT, -20, 0, 20)
-    Call(SetCamDistance, CAM_DEFAULT, Float(500.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamDistance, CAM_DEFAULT, 500.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
@@ -274,8 +274,8 @@ EvtScript EVS_NpcDefeat_PutridPiranha = {
 EvtScript EVS_NpcInit_PutridPiranha = {
     IfEq(GB_StoryProgress, STORY_CH5_SUSHIE_JOINED_PARTY)
         IfEq(GF_JAN07_SavedYoshi, false)
-            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_PutridPiranha))
-            Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_PutridPiranha))
+            Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_PutridPiranha)
+            Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_PutridPiranha)
             Return
         EndIf
     EndIf

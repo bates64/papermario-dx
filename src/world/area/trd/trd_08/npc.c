@@ -31,7 +31,7 @@ EvtScript EVS_FireBar_Defeated = {
         Call(RandInt, 30, LVar5)
         Add(LVar1, LVar4)
         Add(LVar2, LVar5)
-        PlayEffect(EFFECT_BLAST, 0, LVar1, LVar2, LVar3, Float(3.0), 20)
+        PlayEffect(EFFECT_BLAST, 0, LVar1, LVar2, LVar3, 3.0, 20)
     EndLoop
     IfEq(LVarA, NPC_FireBar_1A)
         IfEq(AF_TRD08_FireBar1_Coins, false)
@@ -87,13 +87,13 @@ EvtScript EVS_NpcCreate_FireBar = {
 };
 
 EvtScript EVS_NpcAI_FireBar_01 = {
-    Call(FireBarAI_Main, Ref(AISettings_FireBar_01))
+    Call(FireBarAI_Main, AISettings_FireBar_01)
     Return
     End
 };
 
 EvtScript EVS_NpcAI_FireBar_02 = {
-    Call(FireBarAI_Main, Ref(AISettings_FireBar_02))
+    Call(FireBarAI_Main, AISettings_FireBar_02)
     Return
     End
 };

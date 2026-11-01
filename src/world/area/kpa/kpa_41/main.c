@@ -11,12 +11,12 @@ EvtScript EVS_ExitWalk_LowerRight = {
         CaseOrEq(2)
         CaseOrEq(4)
             Add(AB_KPA_MazeProgress, 1)
-            Call(GotoMap, Ref("kpa_41"), kpa_41_ENTRY_0)
+            Call(GotoMap, "kpa_41", kpa_41_ENTRY_0)
         EndCaseGroup
         CaseOrEq(0)
         CaseOrEq(3)
         CaseOrEq(5)
-            Call(GotoMap, Ref("kpa_40"), kpa_40_ENTRY_3)
+            Call(GotoMap, "kpa_40", kpa_40_ENTRY_3)
         EndCaseGroup
     EndSwitch
     Wait(100)
@@ -33,15 +33,15 @@ EvtScript EVS_ExitWalk_UpperRight = {
     Switch(AB_KPA_MazeProgress)
         CaseEq(5)
             Set(AB_KPA_MazeProgress, 0)
-            Call(GotoMap, Ref("kpa_102"), kpa_102_ENTRY_0)
+            Call(GotoMap, "kpa_102", kpa_102_ENTRY_0)
         CaseEq(3)
             Add(AB_KPA_MazeProgress, 1)
-            Call(GotoMap, Ref("kpa_41"), kpa_41_ENTRY_3)
+            Call(GotoMap, "kpa_41", kpa_41_ENTRY_3)
         CaseOrEq(0)
         CaseOrEq(1)
         CaseOrEq(2)
         CaseOrEq(4)
-            Call(GotoMap, Ref("kpa_40"), kpa_40_ENTRY_3)
+            Call(GotoMap, "kpa_40", kpa_40_ENTRY_3)
         EndCaseGroup
     EndSwitch
     Wait(100)
@@ -50,10 +50,10 @@ EvtScript EVS_ExitWalk_UpperRight = {
 };
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_LowerLeft), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_LowerRight), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_UpperLeft), TRIGGER_FLOOR_ABOVE, COLLIDER_deili3, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_UpperRight), TRIGGER_FLOOR_ABOVE, COLLIDER_deili4, 1, 0)
+    BindTrigger(EVS_ExitWalk_LowerLeft, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitWalk_LowerRight, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitWalk_UpperLeft, TRIGGER_FLOOR_ABOVE, COLLIDER_deili3, 1, 0)
+    BindTrigger(EVS_ExitWalk_UpperRight, TRIGGER_FLOOR_ABOVE, COLLIDER_deili4, 1, 0)
     Return
     End
 };
@@ -65,7 +65,7 @@ EvtScript EVS_EnterMap = {
             Set(AB_KPA_MazeProgress, 5)
         CaseDefault
     EndSwitch
-    Set(LVar0, Ref(EVS_BindExitTriggers))
+    Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     Wait(1)
     Return

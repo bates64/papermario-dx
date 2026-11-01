@@ -35,7 +35,7 @@ EvtScript EVS_NpcIdle_Tubba = {
     Wait(15)
     Thread
         Call(UseSettingsFrom, CAM_DEFAULT, -50, 0, 180)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(2.0))
+        Call(SetCamSpeed, CAM_DEFAULT, 2.0)
         Call(SetPanTarget, CAM_DEFAULT, -50, 0, 180)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
     EndThread
@@ -52,13 +52,13 @@ EvtScript EVS_NpcIdle_Tubba = {
     Thread
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(2.0))
+        Call(SetCamSpeed, CAM_DEFAULT, 2.0)
         Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-        Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+        Call(WaitForCam, CAM_DEFAULT, 1.0)
         Call(PanToTarget, CAM_DEFAULT, 0, false)
         Call(DisablePlayerInput, false)
     EndThread
-    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_Tubba))
+    Call(BindNpcAI, NPC_SELF, EVS_NpcAI_Tubba)
     Return
     End
 };
@@ -75,21 +75,21 @@ EvtScript EVS_PlayFootstepFX = {
             Switch(LVarA)
                 CaseLt(200)
                     Thread
-                        Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(1.6))
+                        Call(ShakeCam, CAM_DEFAULT, 0, 5, 1.6)
                         Wait(5)
-                        Call(ShakeCam, CAM_DEFAULT, 0, 2, Float(0.8))
+                        Call(ShakeCam, CAM_DEFAULT, 0, 2, 0.8)
                     EndThread
                 CaseLt(300)
                     Thread
-                        Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(0.6))
+                        Call(ShakeCam, CAM_DEFAULT, 0, 5, 0.6)
                         Wait(5)
-                        Call(ShakeCam, CAM_DEFAULT, 0, 2, Float(0.3))
+                        Call(ShakeCam, CAM_DEFAULT, 0, 2, 0.3)
                     EndThread
                 CaseGe(300)
                     Thread
-                        Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(0.1))
+                        Call(ShakeCam, CAM_DEFAULT, 0, 5, 0.1)
                         Wait(5)
-                        Call(ShakeCam, CAM_DEFAULT, 0, 2, Float(0.05))
+                        Call(ShakeCam, CAM_DEFAULT, 0, 2, 0.05)
                     EndThread
             EndSwitch
             Wait(12)
@@ -123,7 +123,7 @@ EvtScript EVS_NpcAI_Tubba = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, true)
     Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Run)
     Exec(EVS_PlayFootstepFX)
-    Call(PatrolNoAttackAI_Main, Ref(AISettings_Tubba))
+    Call(PatrolNoAttackAI_Main, AISettings_Tubba)
     Return
     End
 };
@@ -137,7 +137,7 @@ API_CALLABLE(PostBattleHideWorld) {
 // failsafe if the player somehow defeats Tubba
 EvtScript EVS_NpcDefeat_Tubba = {
     Call(PostBattleHideWorld)
-    Call(GotoMap, Ref("dgb_14"), dgb_14_ENTRY_1)
+    Call(GotoMap, "dgb_14", dgb_14_ENTRY_1)
     Wait(100)
     Return
     End
@@ -148,14 +148,14 @@ EvtScript EVS_NpcInit_Tubba = {
         Call(RemoveNpc, NPC_SELF)
         Return
     EndIf
-    Call(SetNpcScale, NPC_SELF, Float(1.25), Float(1.25), Float(1.25))
+    Call(SetNpcScale, NPC_SELF, 1.25, 1.25, 1.25)
     IfNe(GB_ARN_Tubba_MapID, 15)
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Tubba))
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Tubba)
     Else
         Call(SetNpcPos, NPC_SELF, -310, 0, 180)
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcAI_Tubba))
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcAI_Tubba)
     EndIf
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Tubba))
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_Tubba)
     Return
     End
 };

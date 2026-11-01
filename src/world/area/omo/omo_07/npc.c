@@ -87,7 +87,7 @@ EvtScript EVS_Push_SecretDoor = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Add(LVar2, 60)
     Wait(10)
-    Call(SetPlayerSpeed, Float(3.0))
+    Call(SetPlayerSpeed, 3.0)
     Call(PlayerMoveTo, LVar0, LVar2, 0)
     Set(AF_OMO07_DoorOpening, false)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_tt1, COLLIDER_FLAGS_UPPER_MASK)
@@ -98,7 +98,7 @@ EvtScript EVS_Push_SecretDoor = {
 
 EvtScript EVS_SetupShyGuyPool = {
     Call(ParentColliderToModel, COLLIDER_tt1, MODEL_k)
-    BindTrigger(Ref(EVS_Push_SecretDoor), TRIGGER_WALL_PUSH, COLLIDER_tt1, 1, 0)
+    BindTrigger(EVS_Push_SecretDoor, TRIGGER_WALL_PUSH, COLLIDER_tt1, 1, 0)
     Set(AF_OMO07_NpcPool0, false)
     Set(AF_OMO07_NpcPool1, false)
     Set(AF_OMO07_NpcPool2, false)
@@ -164,11 +164,11 @@ EvtScript EVS_NpcAI_ShyGuy = {
                 Call(EnableNpcShadow, NPC_SELF, true)
                 Call(SetSelfEnemyFlagBits, ENEMY_FLAG_PASSIVE, false)
                 Call(SetNpcPos, NPC_SELF, 800, 0, 75)
-                Call(SetNpcSpeed, NPC_SELF, Float(4.0))
+                Call(SetNpcSpeed, NPC_SELF, 4.0)
                 Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Run)
-                Call(SetNpcSpeed, NPC_SELF, Float(5.0))
+                Call(SetNpcSpeed, NPC_SELF, 5.0)
                 Call(NpcMoveTo, NPC_SELF, 665, 75, 0)
-                Call(SetNpcSpeed, NPC_SELF, Float(4.0))
+                Call(SetNpcSpeed, NPC_SELF, 4.0)
                 Call(NpcMoveTo, NPC_SELF, 635, -107, 0)
                 Call(NpcMoveTo, NPC_SELF, 100, -107, 0)
                 Call(NpcMoveTo, NPC_SELF, -10, -107, 0)
@@ -216,7 +216,7 @@ EvtScript EVS_NpcAI_ShyGuy = {
                 EndIf
             CaseEq(SHYGUY_STATE_ACTIVE)
                 Wait(1)
-                Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_ShyGuy_Patrol))
+                Call(BindNpcAI, NPC_SELF, EVS_NpcAI_ShyGuy_Patrol)
                 Wait(10)
             CaseEq(SHYGUY_STATE_RECYCLE)
                 Call(DisablePlayerInput, true)
@@ -250,7 +250,7 @@ EvtScript EVS_NpcDefeat_ShyGuy = {
             Call(SetSelfVar, SHYGUY_VAR_STATE, SHYGUY_STATE_RECYCLE)
             Wait(1)
             Call(SetSelfVar, SHYGUY_VAR_STATE, SHYGUY_STATE_RECYCLE)
-            Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_ShyGuy))
+            Call(BindNpcAI, NPC_SELF, EVS_NpcAI_ShyGuy)
             Call(DoNpcDefeat)
             Wait(1)
         CaseEq(OUTCOME_PLAYER_LOST)
@@ -263,8 +263,8 @@ EvtScript EVS_NpcDefeat_ShyGuy = {
 };
 
 EvtScript EVS_NpcInit_ShyGuy = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcAI_ShyGuy))
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_ShyGuy))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcAI_ShyGuy)
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_ShyGuy)
     Return
     End
 };
@@ -279,7 +279,7 @@ EvtScript EVS_NpcIdle_Fuzzy = {
     Call(DisablePlayerInput, true)
     Call(DisableCameraLeadingPlayer)
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
-    Call(SetCamProperties, CAM_DEFAULT, Float(5.0), LVar0, LVar1, LVar2, 300, Float(13.0), Float(-9.5))
+    Call(SetCamProperties, CAM_DEFAULT, 5.0, LVar0, LVar1, LVar2, 300, 13.0, -9.5)
     IfEq(GB_OMO_PeachChoice2, 0)
         Call(SpeakToPlayer, NPC_Fuzzy, ANIM_Fuzzy_Talk, ANIM_Fuzzy_Idle, 0, MSG_CH4_003C)
     Else
@@ -287,7 +287,7 @@ EvtScript EVS_NpcIdle_Fuzzy = {
     EndIf
     Thread
         Call(EnableCameraLeadingPlayer)
-        Call(ResetCam, CAM_DEFAULT, Float(4.0))
+        Call(ResetCam, CAM_DEFAULT, 4.0)
     EndThread
     Call(DisablePlayerInput, false)
     Call(StartBossBattle, SONG_SPECIAL_BATTLE)
@@ -310,8 +310,8 @@ EvtScript EVS_NpcDefeat_Fuzzy = {
 
 EvtScript EVS_NpcInit_Fuzzy = {
     IfEq(GB_OMO_PeachChoice2, 0)
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Fuzzy))
-        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Fuzzy))
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Fuzzy)
+        Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_Fuzzy)
     Else
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndIf
@@ -321,8 +321,8 @@ EvtScript EVS_NpcInit_Fuzzy = {
 
 EvtScript EVS_NpcInit_HammerBros = {
     IfEq(GB_OMO_PeachChoice2, 1)
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Fuzzy))
-        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Fuzzy))
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Fuzzy)
+        Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_Fuzzy)
     Else
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndIf
@@ -331,7 +331,7 @@ EvtScript EVS_NpcInit_HammerBros = {
 };
 
 EvtScript EVS_NpcInit_Kammy = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Kammy))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Kammy)
     Return
     End
 };

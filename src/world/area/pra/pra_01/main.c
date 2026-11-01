@@ -20,15 +20,15 @@ EvtScript EVS_ExitDoor_pra_02_0 = {
     Set(LVar0, pra_01_ENTRY_1)
     Set(LVar1, COLLIDER_deilittse)
     IfEq(GF_PRA_BrokeIllusion, false)
-        Set(LVar2, Ref(BothDoorModelsL))
-        Set(LVar3, Ref(BothDoorModelsR))
+        Set(LVar2, BothDoorModelsL)
+        Set(LVar3, BothDoorModelsR)
     Else
-        Set(LVar2, Ref(NearDoorModelsL))
-        Set(LVar3, Ref(NearDoorModelsR))
+        Set(LVar2, NearDoorModelsL)
+        Set(LVar3, NearDoorModelsR)
     EndIf
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, Ref("pra_02"), pra_02_ENTRY_0)
+    Call(GotoMap, "pra_02", pra_02_ENTRY_0)
     Wait(100)
     Return
     End
@@ -40,25 +40,25 @@ EvtScript EVS_ExitDoor_pra_02_5 = {
     Set(LVar0, pra_01_ENTRY_2)
     Set(LVar1, COLLIDER_deilittse)
     IfEq(GF_PRA_BrokeIllusion, false)
-        Set(LVar2, Ref(BothDoorModelsL))
-        Set(LVar3, Ref(BothDoorModelsR))
+        Set(LVar2, BothDoorModelsL)
+        Set(LVar3, BothDoorModelsR)
     Else
-        Set(LVar2, Ref(FarDoorModelsL))
-        Set(LVar3, Ref(FarDoorModelsR))
+        Set(LVar2, FarDoorModelsL)
+        Set(LVar3, FarDoorModelsR)
     EndIf
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, Ref("pra_02"), pra_02_ENTRY_5)
+    Call(GotoMap, "pra_02", pra_02_ENTRY_5)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_sam_10_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deilisw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_pra_15_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilinw, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoor_pra_02_0), TRIGGER_WALL_PRESS_A, COLLIDER_deilittse, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoor_pra_02_5), TRIGGER_WALL_PRESS_A, COLLIDER_deilittne, 1, 0)
+    BindTrigger(EVS_ExitWalk_sam_10_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deilisw, 1, 0)
+    BindTrigger(EVS_ExitWalk_pra_15_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilinw, 1, 0)
+    BindTrigger(EVS_ExitDoor_pra_02_0, TRIGGER_WALL_PRESS_A, COLLIDER_deilittse, 1, 0)
+    BindTrigger(EVS_ExitDoor_pra_02_5, TRIGGER_WALL_PRESS_A, COLLIDER_deilittne, 1, 0)
     Return
     End
 };
@@ -67,30 +67,30 @@ EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(pra_01_ENTRY_0)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
         CaseEq(pra_01_ENTRY_1)
             IfEq(GF_PRA_BrokeIllusion, false)
-                Set(LVar2, Ref(BothDoorModelsL))
-                Set(LVar3, Ref(BothDoorModelsR))
+                Set(LVar2, BothDoorModelsL)
+                Set(LVar3, BothDoorModelsR)
             Else
-                Set(LVar2, Ref(NearDoorModelsL))
-                Set(LVar3, Ref(NearDoorModelsR))
+                Set(LVar2, NearDoorModelsL)
+                Set(LVar3, NearDoorModelsR)
             EndIf
             ExecWait(BaseEnterDoor)
             Exec(EVS_BindExitTriggers)
         CaseEq(pra_01_ENTRY_2)
             IfEq(GF_PRA_BrokeIllusion, false)
-                Set(LVar2, Ref(BothDoorModelsL))
-                Set(LVar3, Ref(BothDoorModelsR))
+                Set(LVar2, BothDoorModelsL)
+                Set(LVar3, BothDoorModelsR)
             Else
-                Set(LVar2, Ref(FarDoorModelsL))
-                Set(LVar3, Ref(FarDoorModelsR))
+                Set(LVar2, FarDoorModelsL)
+                Set(LVar3, FarDoorModelsR)
             EndIf
             ExecWait(BaseEnterDoor)
             Exec(EVS_BindExitTriggers)
         CaseEq(pra_01_ENTRY_3)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
         CaseEq(pra_01_ENTRY_4)
             Exec(EVS_BindExitTriggers)
@@ -117,7 +117,7 @@ EvtScript EVS_Main = {
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(GF_MAP_CrystalPalace, true)
     IfEq(GB_StoryProgress, STORY_CH7_BEGAN_PEACH_MISSION)
-        Call(MakeNpcs, true, Ref(DefaultNPCs))
+        Call(MakeNpcs, true, DefaultNPCs)
     EndIf
     ExecWait(EVS_MakeEntities)
     ExecWait(EVS_SetupMusic)

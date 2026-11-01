@@ -19,7 +19,7 @@ EvtScript EVS_CloseGates = {
         EndIf
     EndLoop
     Call(PlaySoundAtCollider, COLLIDER_o59, SOUND_LARGE_GATE_CLOSE, SOUND_SPACE_DEFAULT)
-    Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(1.0))
+    Call(ShakeCam, CAM_DEFAULT, 0, 5, 1.0)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o58, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o59, COLLIDER_FLAGS_UPPER_MASK)
     Call(DisablePlayerInput, false)
@@ -33,8 +33,8 @@ EvtScript EVS_ExitWalk_tik_10_0 = EVT_EXIT_WALK(60, tik_09_ENTRY_0, "tik_10", ti
 EvtScript EVS_ExitWalk_tik_08_0 = EVT_EXIT_WALK(60, tik_09_ENTRY_1, "tik_08", tik_08_ENTRY_0);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_tik_10_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_tik_08_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitWalk_tik_10_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitWalk_tik_08_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     Return
     End
 };
@@ -45,7 +45,7 @@ EvtScript EVS_EnterMap = {
     IfEq(LVar0, tik_09_ENTRY_2)
         EVT_ENTER_PIPE_VERTICAL(EVS_BindExitTriggers)
     Else
-        Set(LVar0, Ref(EVS_BindExitTriggers))
+        Set(LVar0, EVS_BindExitTriggers)
         ExecWait(EnterWalk)
         IfEq(GF_TIK09_Defeated_Ambush, false)
             ExecWait(EVS_CloseGates)
@@ -62,7 +62,7 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_TOAD_TOWN_TUNNELS)
     Call(SetSpriteShading, SHADING_TIK_09)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Call(MakeNpcs, true, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     Exec(EVS_SetupMusic)
     Call(PlaySound, SOUND_LOOP_TIK09_WATER)

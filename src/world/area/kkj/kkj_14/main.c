@@ -30,7 +30,7 @@ EvtScript EVS_EndPeachChapter7 = {
     Set(LVar0, GB_KKJ_LastPartner)
     Call(RestoreFromPeachState)
     Call(PlaySound, SOUND_SLIDE_WHISTLE_OUT)
-    Call(GotoMapSpecial, Ref("pra_01"), pra_01_ENTRY_4, TRANSITION_END_PEACH_INTERLUDE)
+    Call(GotoMapSpecial, "pra_01", pra_01_ENTRY_4, TRANSITION_END_PEACH_INTERLUDE)
     Wait(100)
     Return
     End
@@ -48,9 +48,9 @@ EvtScript EVS_ExitDoor_GrandHall = {
     Exec(ExitSingleDoor)
     Wait(17)
     IfEq(GB_StoryProgress, STORY_INTRO)
-        Call(GotoMap, Ref("kkj_01"), kkj_01_ENTRY_4)
+        Call(GotoMap, "kkj_01", kkj_01_ENTRY_4)
     Else
-        Call(GotoMap, Ref("kkj_11"), kkj_11_ENTRY_4)
+        Call(GotoMap, "kkj_11", kkj_11_ENTRY_4)
     EndIf
     Wait(100)
     Return
@@ -70,7 +70,7 @@ EvtScript EVS_ExitDoors_Balcony = {
     Set(LVar5, MODEL_o86)
     Exec(ExitSplitDoubleDoor)
     Wait(17)
-    Call(GotoMap, Ref("kkj_26"), kkj_26_ENTRY_0)
+    Call(GotoMap, "kkj_26", kkj_26_ENTRY_0)
     Wait(100)
     Return
     End
@@ -82,9 +82,9 @@ EvtScript EVS_ExitWalk_SecretPassage = {
     Call(UseExitHeading, 60, kkj_14_ENTRY_2)
     Exec(ExitWalk)
     IfEq(GF_KKJ14_SkipSecretPassage, false)
-        Call(GotoMap, Ref("kkj_27"), kkj_27_ENTRY_0)
+        Call(GotoMap, "kkj_27", kkj_27_ENTRY_0)
     Else
-        Call(GotoMap, Ref("kkj_15"), kkj_15_ENTRY_1)
+        Call(GotoMap, "kkj_15", kkj_15_ENTRY_1)
     EndIf
     Wait(100)
     Return
@@ -101,12 +101,12 @@ EvtScript EVS_ShowMessage_CantOpen = {
 
 EvtScript EVS_BindExitTriggers = {
     IfEq(GB_StoryProgress, STORY_INTRO)
-        BindTrigger(Ref(EVS_ShowMessage_CantOpen), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
+        BindTrigger(EVS_ShowMessage_CantOpen, TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
     Else
-        BindTrigger(Ref(EVS_ExitDoors_Balcony), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
-        BindTrigger(Ref(EVS_ExitWalk_SecretPassage), TRIGGER_FLOOR_ABOVE, COLLIDER_o119, 1, 0)
+        BindTrigger(EVS_ExitDoors_Balcony, TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
+        BindTrigger(EVS_ExitWalk_SecretPassage, TRIGGER_FLOOR_ABOVE, COLLIDER_o119, 1, 0)
     EndIf
-    BindTrigger(Ref(EVS_ExitDoor_GrandHall), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
+    BindTrigger(EVS_ExitDoor_GrandHall, TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
     Return
     End
 };
@@ -129,7 +129,7 @@ EvtScript EVS_EnterMap = {
             ExecWait(EnterSplitDoubleDoor)
             Exec(EVS_BindExitTriggers)
         CaseEq(kkj_14_ENTRY_2)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
         CaseEq(kkj_14_ENTRY_3)
             Exec(EVS_Scene_Chapter0)
@@ -176,7 +176,7 @@ EvtScript EVS_Main = {
                 Set(GB_StoryProgress, STORY_CH0_BEGAN_PEACH_MISSION)
                 Set(GB_KKJ_CaughtCount, 0)
                 Set(GF_KKJ14_SkipSecretPassage, false)
-                Call(MakeNpcs, false, Ref(Chapter0NPCs))
+                Call(MakeNpcs, false, Chapter0NPCs)
             CaseEq(kkj_14_ENTRY_4)
                 Set(GB_StoryProgress, STORY_CH1_BEGAN_PEACH_MISSION)
                 Set(GB_KKJ_CaughtCount, 0)
@@ -186,7 +186,7 @@ EvtScript EVS_Main = {
                 Set(GB_KKJ_CaughtCount, 0)
                 Set(GF_KKJ14_SkipSecretPassage, false)
                 Set(AF_KKJ_PeachSawGrandHall, false)
-                Call(MakeNpcs, false, Ref(Chapter2NPCs))
+                Call(MakeNpcs, false, Chapter2NPCs)
             CaseEq(kkj_14_ENTRY_6)
                 Set(GB_StoryProgress, STORY_CH3_BEGAN_PEACH_MISSION)
                 Set(GB_KKJ_CaughtCount, 0)
@@ -205,10 +205,10 @@ EvtScript EVS_Main = {
                 Set(GB_KKJ_CaughtCount, 0)
                 Set(GF_KKJ14_SkipSecretPassage, true)
             CaseEq(kkj_14_ENTRY_A)
-                Call(MakeNpcs, false, Ref(Chapter7NPCs))
+                Call(MakeNpcs, false, Chapter7NPCs)
             CaseEq(kkj_14_ENTRY_B)
                 Add(GB_KKJ_CaughtCount, 1)
-                Call(MakeNpcs, false, Ref(TossBackNPCs))
+                Call(MakeNpcs, false, TossBackNPCs)
         EndSwitch
     EndIf
     Exec(EVS_SetupInteractables)
@@ -226,7 +226,7 @@ EvtScript EVS_Main = {
         Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetModelCustomGfx, MODEL_o154, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
-    Call(SetCustomGfx, CUSTOM_GFX_0, Ref(setup_gfx_candle_lights), nullptr)
+    Call(SetCustomGfx, CUSTOM_GFX_0, setup_gfx_candle_lights, nullptr)
     Return
     End
 };

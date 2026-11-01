@@ -9,15 +9,15 @@ EvtScript EVS_Scene_Chapter5 = {
     Call(InterpNpcYaw, NPC_PARTNER, 90, 0)
     Call(UseSettingsFrom, CAM_DEFAULT, -140, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, -140, 0, 0)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Thread
-        Call(SetCamDistance, CAM_DEFAULT, Float(275.0))
-        Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-11.0))
-        Call(SetCamSpeed, CAM_DEFAULT, Float(0.6 / DT))
+        Call(SetCamDistance, CAM_DEFAULT, 275.0)
+        Call(SetCamPitch, CAM_DEFAULT, 17.0, -11.0)
+        Call(SetCamSpeed, CAM_DEFAULT, 0.6 / DT)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
-        Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+        Call(WaitForCam, CAM_DEFAULT, 1.0)
     EndThread
     Loop(2)
         Call(PlayerMoveTo, -110, 0, 25 * DT)
@@ -41,7 +41,7 @@ EvtScript EVS_Scene_Chapter5 = {
         Call(NpcFlyTo, NPC_PARTNER, -140, 55, 0, 30 * DT, -5, EASING_LINEAR)
         Call(EnablePartnerAI)
     EndThread
-    Call(ResetCam, CAM_DEFAULT, Float(2.0 / DT))
+    Call(ResetCam, CAM_DEFAULT, 2.0 / DT)
     Call(DisablePlayerInput, false)
     Return
     End

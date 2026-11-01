@@ -17,18 +17,18 @@ EvtScript EVS_Scene_ReachedRaphaelsTree = {
         Call(SetCamDistance, CAM_DEFAULT, 1000)
         Call(SetCamPitch, CAM_DEFAULT, 20, 0)
         Call(SetCamPosA, CAM_DEFAULT, -410, -85)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+        Call(SetCamSpeed, CAM_DEFAULT, 90.0)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
-        Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+        Call(WaitForCam, CAM_DEFAULT, 1.0)
         Wait(10)
         Call(SetCamDistance, CAM_DEFAULT, 400)
         Call(SetCamPitch, CAM_DEFAULT, -13, 1)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(0.45 / DT))
+        Call(SetCamSpeed, CAM_DEFAULT, 0.45 / DT)
         Call(SetCamPosA, CAM_DEFAULT, -207, -85)
-        Call(PanToTarget, CAM_DEFAULT, Float(0.8), true)
-        Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+        Call(PanToTarget, CAM_DEFAULT, 0.8, true)
+        Call(WaitForCam, CAM_DEFAULT, 1.0)
         Wait(30 * DT)
-        Call(ResetCam, CAM_DEFAULT, Float(90.0))
+        Call(ResetCam, CAM_DEFAULT, 90.0)
         Set(GB_StoryProgress, STORY_CH5_REACHED_RAPHAELS_TREE)
     EndIf
     Call(EnableGroup, MODEL_g38, true)
@@ -51,7 +51,7 @@ EvtScript EVS_NpcInit_Raven = {
         CaseLt(STORY_CH5_RAPHAEL_LEFT_NEST)
             Goto(20)
         CaseRange(STORY_CH5_RAPHAEL_LEFT_NEST, STORY_CH5_RAPHAEL_MOVED_ROOT)
-            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Raven))
+            Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Raven)
             Call(GetSelfNpcID, LVar0)
             IfEq(LVar0, 1)
                 Call(SetNpcPos, NPC_Raven_01, -450, 0, 26)
@@ -78,7 +78,7 @@ EvtScript EVS_NpcInteract_RaphaelRaven = {
     Wait(5 * DT)
     Call(PlayerFaceNpc, NPC_SELF, false)
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
-    Call(SetCamProperties, CAM_DEFAULT, Float(4.5 / DT), LVar0, LVar1, LVar2, 450, Float(20.0), Float(-9.5))
+    Call(SetCamProperties, CAM_DEFAULT, 4.5 / DT, LVar0, LVar1, LVar2, 450, 20.0, -9.5)
     Call(InterpNpcYaw, NPC_SELF, 90, 0)
     Wait(10 * DT)
     Call(InterpPlayerYaw, 90, 0)
@@ -100,7 +100,7 @@ EvtScript EVS_NpcInteract_RaphaelRaven = {
     Call(NpcJump1, NPC_SELF, LVar0, LVar1, LVar2, 30)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_JAN_RAPHAEL_POUND, SOUND_SPACE_DEFAULT)
     Thread
-        Call(ShakeCam, CAM_DEFAULT, 0, 50, Float(1.0))
+        Call(ShakeCam, CAM_DEFAULT, 0, 50, 1.0)
         Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     EndThread
     Call(SetPlayerAnimation, ANIM_Mario1_Flail)
@@ -118,9 +118,9 @@ EvtScript EVS_NpcInteract_RaphaelRaven = {
         EndLoop
     EndThread
     Loop(15)
-        Call(ScaleGroup, MODEL_g40, 1, Float(1.05), 1)
+        Call(ScaleGroup, MODEL_g40, 1, 1.05, 1)
         Wait(2)
-        Call(ScaleGroup, MODEL_g40, 1, Float(0.95), 1)
+        Call(ScaleGroup, MODEL_g40, 1, 0.95, 1)
         Wait(2)
     EndLoop
     Thread
@@ -150,8 +150,8 @@ EvtScript EVS_NpcInteract_RaphaelRaven = {
             Wait(20)
         EndLoop
     EndThread
-    SetF(LVar2, Float(1.0))
-    SetF(LVar3, Float(0.25))
+    SetF(LVar2, 1.0)
+    SetF(LVar3, 0.25)
     Loop(5)
         Loop(10)
             AddF(LVar2, LVar3)
@@ -167,18 +167,18 @@ EvtScript EVS_NpcInteract_RaphaelRaven = {
         EndLoop
         PlayEffect(EFFECT_LANDING_DUST, 1, 115, 0, 355, 0)
         PlayEffect(EFFECT_LANDING_DUST, 1, 205, 0, 475, 0)
-        SubF(LVar3, Float(0.05))
+        SubF(LVar3, 0.05)
     EndLoop
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o97, COLLIDER_FLAGS_UPPER_MASK)
     Wait(10 * DT)
     Call(SpeakToPlayer, NPC_SELF, ANIM_RaphaelRaven_Talk, ANIM_RaphaelRaven_Idle, 0, MSG_CH5_00E2)
     Call(SetNpcAnimation, NPC_SELF, ANIM_RaphaelRaven_Walk)
-    Call(SetNpcSpeed, NPC_RaphaelRaven, Float(4.0 / DT))
+    Call(SetNpcSpeed, NPC_RaphaelRaven, 4.0 / DT)
     Call(NpcMoveTo, NPC_SELF, 340, 270, 0)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, false)
     Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
 #if VERSION_PAL
-    Call(ResetCam, CAM_DEFAULT, Float(5 * DT))
+    Call(ResetCam, CAM_DEFAULT, 5 * DT)
 #else
     Call(ResetCam, CAM_DEFAULT, 5)
 #endif
@@ -192,7 +192,7 @@ EvtScript EVS_NpcInit_RaphaelRaven = {
     IfEq(GB_StoryProgress, STORY_CH5_RAPHAEL_LEFT_NEST)
         Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
         Call(SetNpcPos, NPC_SELF, 85, 0, 410)
-        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_RaphaelRaven))
+        Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_RaphaelRaven)
         Return
     Else
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o130, COLLIDER_FLAGS_UPPER_MASK)

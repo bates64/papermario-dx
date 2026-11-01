@@ -19,11 +19,11 @@ EvtScript EVS_SetupWindmill = {
 };
 
 EvtScript EVS_UpdateWindmill = {
-    SetF(LVar0, Float(0.0))
+    SetF(LVar0, 0.0)
     Set(LVar1, 30)
     Call(PlaySoundAtModel, MODEL_o36, SOUND_LOOP_WINDMILL_EXT, SOUND_SPACE_DEFAULT)
     Label(0)
-        AddF(LVar0, Float(1.0))
+        AddF(LVar0, 1.0)
         Call(WrapWindmillAngle)
         Call(RotateModel, MODEL_o40, LVar0, 0, 0, 1)
         Wait(1)
@@ -36,15 +36,15 @@ EvtScript EVS_UpdateWindmill = {
         IfGt(LVar2, 10)
             Goto(0)
         EndIf
-        SetF(LVar2, Float(1.0))
+        SetF(LVar2, 1.0)
         Loop(50)
-            SubF(LVar2, Float(0.01))
+            SubF(LVar2, 0.01)
             AddF(LVar0, LVar2)
             Call(RotateModel, MODEL_o40, LVar0, 0, 0, 1)
             Wait(1)
         EndLoop
         Loop(50)
-            AddF(LVar2, Float(0.01))
+            AddF(LVar2, 0.01)
             AddF(LVar0, LVar2)
             Call(RotateModel, MODEL_o40, LVar0, 0, 0, 1)
             Wait(1)

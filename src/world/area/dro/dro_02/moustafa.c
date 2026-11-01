@@ -24,17 +24,17 @@ EvtScript EVS_Moustafa_SetCamBetween = {
     Div(LVar2, 2)
     Add(LVar1, 15)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(8.0 / DT))
+    Call(SetCamSpeed, CAM_DEFAULT, 8.0 / DT)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Return
     End
 };
 
 EvtScript EVS_Moustafa_ResetCam = {
     Call(PanToTarget, CAM_DEFAULT, 0, false)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(3.0 / DT))
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 3.0 / DT)
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Return
     End
 };
@@ -189,7 +189,7 @@ EvtScript EVS_NpcInteract_Moustafa = {
                 Call(SetPartnerForcedFollowMode, 1)
             EndThread
             Call(SetNpcFlagBits, NPC_DisguisedMoustafa, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
-            Call(SetPlayerSpeed, Float(3.0 / DT))
+            Call(SetPlayerSpeed, 3.0 / DT)
             Call(PlayerMoveTo, -391, -260, 0)
             Call(InterpPlayerYaw, 90, 3)
             Call(SetNpcFlagBits, NPC_DisguisedMoustafa, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
@@ -200,22 +200,22 @@ EvtScript EVS_NpcInteract_Moustafa = {
                 Call(SpeakToPlayer, NPC_DisguisedMoustafa, ANIM_DisguisedMoustafa_Talk, ANIM_DisguisedMoustafa_Idle, 0, MSG_CH2_00C3)
                 ExecWait(EVS_Moustafa_Unveiling)
                 Call(SetPartnerForcedFollowMode, 0)
-                Call(SetNpcJumpscale, NPC_Moustafa, Float(1.0))
+                Call(SetNpcJumpscale, NPC_Moustafa, 1.0)
                 Call(NpcJump0, NPC_Moustafa, -425, 140, -206, 20 * DT)
                 Call(SpeakToPlayer, NPC_Moustafa, ANIM_Moustafa_Shout, ANIM_Moustafa_Idle, 0, MSG_CH2_00C4)
             Else
                 Call(SpeakToPlayer, NPC_DisguisedMoustafa, ANIM_DisguisedMoustafa_Talk, ANIM_DisguisedMoustafa_Idle, 0, MSG_CH2_00C5)
                 ExecWait(EVS_Moustafa_Unveiling)
                 Call(SetPartnerForcedFollowMode, 0)
-                Call(SetNpcJumpscale, NPC_Moustafa, Float(1.0))
+                Call(SetNpcJumpscale, NPC_Moustafa, 1.0)
                 Call(NpcJump0, NPC_Moustafa, -425, 140, -206, 20 * DT)
                 Call(SpeakToPlayer, NPC_Moustafa, ANIM_Moustafa_Shout, ANIM_Moustafa_Idle, 0, MSG_CH2_00C6)
             EndIf
-            Call(SetNpcJumpscale, NPC_Moustafa, Float(1.0))
+            Call(SetNpcJumpscale, NPC_Moustafa, 1.0)
             Call(NpcJump0, NPC_Moustafa, -337, 140, -200, 20 * DT)
             Call(SpeakToPlayer, NPC_Moustafa, ANIM_Moustafa_Shout, ANIM_Moustafa_Idle, 0, MSG_CH2_00C7)
             Call(SpeakToPlayer, NPC_Moustafa, ANIM_Moustafa_Shout, ANIM_Moustafa_Idle, 0, MSG_CH2_00C8)
-            Call(SetNpcJumpscale, NPC_Moustafa, Float(1.0))
+            Call(SetNpcJumpscale, NPC_Moustafa, 1.0)
             Call(NpcJump0, NPC_Moustafa, -335, 163, -260, 20 * DT)
             Call(SpeakToPlayer, NPC_Moustafa, ANIM_Moustafa_Shout, ANIM_Moustafa_Idle, 0, MSG_CH2_00C9)
             EVT_GIVE_REWARD(ITEM_PULSE_STONE)
@@ -260,15 +260,15 @@ EvtScript EVS_NpcInit_DisguisedMoustafa = {
             Call(SetNpcAnimation, NPC_SELF, ANIM_DisguisedMoustafa_GrabCloak)
         EndCaseGroup
         CaseDefault
-            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_DisguisedMoustafa))
-            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Moustafa))
+            Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_DisguisedMoustafa)
+            Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Moustafa)
     EndSwitch
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Moustafa = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Moustafa))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Moustafa)
     Return
     End
 };

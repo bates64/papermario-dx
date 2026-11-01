@@ -11,11 +11,11 @@ EvtScript EVS_Scene_Wishing = {
     Call(DisablePlayerInput, true)
     Call(UseSettingsFrom, CAM_DEFAULT, 305, -10, -50)
     Call(SetPanTarget, CAM_DEFAULT, 305, -10, -50)
-    Call(SetCamDistance, CAM_DEFAULT, Float(400.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(9.0), Float(-10.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamDistance, CAM_DEFAULT, 400.0)
+    Call(SetCamPitch, CAM_DEFAULT, 9.0, -10.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Wait(30)
     Call(SpeakToPlayer, NPC_ToadKid, ANIM_ToadKid_Red_Talk, ANIM_ToadKid_Red_Disappointed, 0, MSG_HOS_006C)
     Wait(10)
@@ -24,7 +24,7 @@ EvtScript EVS_Scene_Wishing = {
     Wait(10)
     Call(SpeakToPlayer, NPC_ToadKid, ANIM_ToadKid_Red_Talk, ANIM_ToadKid_Red_Idle, 0, MSG_HOS_006E)
     Wait(50)
-    Call(GotoMap, Ref("osr_01"), osr_01_ENTRY_3)
+    Call(GotoMap, "osr_01", osr_01_ENTRY_3)
     Wait(100)
     Return
     End
@@ -66,8 +66,8 @@ EvtScript EVS_NpcIdle_FlyingMagikoopa = {
 
 EvtScript EVS_NpcInit_FlyingMagikoopa = {
     IfLt(GB_StoryProgress, STORY_CH0_TWINK_GAVE_LUCKY_STAR)
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_FlyingMagikoopa))
-        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_FlyingMagikoopa))
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_FlyingMagikoopa)
+        Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_FlyingMagikoopa)
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -110,9 +110,9 @@ EvtScript EVS_NpcDefeat_Twink = {
 };
 
 EvtScript EVS_NpcInit_Twink = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Twink))
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Twink))
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Twink))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Twink)
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Twink)
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_Twink)
     Return
     End
 };

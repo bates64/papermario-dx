@@ -36,7 +36,7 @@ EvtScript EVS_OnPullVine = {
 };
 
 EvtScript EVS_SetupVines = {
-    BindTrigger(Ref(EVS_Inspect_MoveBushes), TRIGGER_WALL_PRESS_A, COLLIDER_o12, 1, 0)
+    BindTrigger(EVS_Inspect_MoveBushes, TRIGGER_WALL_PRESS_A, COLLIDER_o12, 1, 0)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, jan_12_ENTRY_1)
         Exec(EVS_Inspect_MoveBushes)
@@ -48,7 +48,7 @@ EvtScript EVS_SetupVines = {
     Set(LVar9, MODEL_o6)
     Set(LVarA, MODEL_o62)
     Set(LVarB, MODEL_o63)
-    Set(LVar4, Ref(EVS_OnPullVine))
+    Set(LVar4, EVS_OnPullVine)
     Set(LVar5, 15)
     Exec(EVS_PullVine_Manage)
     Return

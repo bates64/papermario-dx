@@ -8,10 +8,10 @@ EvtScript EVS_ExitWalk_kpa_134_2 = EVT_EXIT_WALK(40, kpa_133_ENTRY_2, "kpa_134",
 EvtScript EVS_ExitWalk_kpa_134_3 = EVT_EXIT_WALK(40, kpa_133_ENTRY_3, "kpa_134", kpa_134_ENTRY_3);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitDoors_kpa_51_1), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_kpa_134_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_kpa_134_2), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie2, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_kpa_134_3), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliae, 1, 0)
+    BindTrigger(EVS_ExitDoors_kpa_51_1, TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
+    BindTrigger(EVS_ExitWalk_kpa_134_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitWalk_kpa_134_2, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie2, 1, 0)
+    BindTrigger(EVS_ExitWalk_kpa_134_3, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliae, 1, 0)
     Return
     End
 };
@@ -26,13 +26,13 @@ EvtScript EVS_EnterMap = {
             Exec(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
         CaseEq(kpa_133_ENTRY_1)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
         CaseEq(kpa_133_ENTRY_2)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
         CaseEq(kpa_133_ENTRY_3)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
     EndSwitch
     Return
@@ -69,18 +69,18 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_BOWSERS_CASTLE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Call(MakeNpcs, true, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     IfEq(GF_KPA133_Item_BombedWall, false)
         Call(EnableModel, MODEL_o235, false)
-        BindTrigger(Ref(EVS_BlastWall), TRIGGER_POINT_BOMB, Ref(BombPos_Wall), 1, 0)
+        BindTrigger(EVS_BlastWall, TRIGGER_POINT_BOMB, BombPos_Wall, 1, 0)
     Else
         Call(EnableModel, MODEL_o477, false)
         Call(EnableModel, MODEL_o476, false)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_ttae, COLLIDER_FLAGS_UPPER_MASK)
     EndIf
     Exec(EVS_SetWaterLevel)
-    BindTrigger(Ref(EVS_OnHitSwitch), TRIGGER_AREA_FLAG_SET, AF_KPA133_HitWaterSwitch, 1, 0)
+    BindTrigger(EVS_OnHitSwitch, TRIGGER_AREA_FLAG_SET, AF_KPA133_HitWaterSwitch, 1, 0)
     // water edge
     Call(SetTexPanner, MODEL_s_sui, TEX_PANNER_1)
     Call(SetTexPanner, MODEL_sui, TEX_PANNER_1)

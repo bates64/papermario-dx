@@ -14,8 +14,8 @@ EvtScript EVS_MakeEntities = {
             EndLoop
         EndThread
     EndIf
-    Call(MakeEntity, Ref(Entity_WoodenCrate), -110, 30, 50, 0, -1, MAKE_ENTITY_END)
-    Call(MakeEntity, Ref(Entity_WoodenCrate), -110, 0, 50, 0, ITEM_STAR_PIECE, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_WoodenCrate, -110, 30, 50, 0, -1, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_WoodenCrate, -110, 0, 50, 0, ITEM_STAR_PIECE, MAKE_ENTITY_END)
     Call(AssignCrateFlag, GF_OBK06_Crate_StarPiece)
     Return
     End

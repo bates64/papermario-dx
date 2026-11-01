@@ -107,7 +107,7 @@ EvtScript EVS_Twink = {
         EndIf
     EndLoop
     Wait(30 * DT)
-    Call(LoadPath, 60 * DT, Ref(TwinkFlightPath), ARRAY_COUNT(TwinkFlightPath), EASING_LINEAR)
+    Call(LoadPath, 60 * DT, TwinkFlightPath, ARRAY_COUNT(TwinkFlightPath), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_Twink, LVar1, LVar2, LVar3)
@@ -223,7 +223,7 @@ EvtScript EVS_ParadePhase_MarioPeach = {
 EvtScript EVS_Twirler = {
     ChildThread
         Call(EnableNpcShadow, LVar1, false)
-        Call(SetNpcJumpscale, LVar1, Float(0.5))
+        Call(SetNpcJumpscale, LVar1, 0.5)
         Loop(0)
             Wait(30)
             Call(GetNpcPos, LVar0, LVar2, LVar3, LVar4)
@@ -312,10 +312,10 @@ EvtScript EVS_MarioPeachExit = {
     Wait(60 * DT)
     // slowly pan camera up
     Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    SetF(LVar1, Float(0.0))
+    SetF(LVar1, 0.0)
     Loop(0)
         Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-        AddF(LVar1, Float(0.334))
+        AddF(LVar1, 0.334)
         Wait(1)
     EndLoop
     Return

@@ -2,7 +2,7 @@
 #include "entity.h"
 
 EvtScript EVS_UseBluePipe = {
-    Call(GotoMap, Ref("tik_09"), tik_09_ENTRY_2)
+    Call(GotoMap, "tik_09", tik_09_ENTRY_2)
     Wait(100)
     Return
     End
@@ -17,10 +17,10 @@ EvtScript EVS_MakeEntities = {
             EndIf
         EndIf
     EndIf
-    Call(MakeEntity, Ref(Entity_BlueWarpPipe), -275, 0, -225, 270, mim_11_ENTRY_3, Ref(EVS_UseBluePipe), EVT_INDEX_OF_GAME_FLAG(GF_MIM11_WarpPipe), MAKE_ENTITY_END)
-    Call(MakeEntity, Ref(Entity_HeartBlock), 0, 60, -300, 45, MAKE_ENTITY_END)
-    Call(MakeEntity, Ref(Entity_SavePoint), 220, 60, -80, 45, MAKE_ENTITY_END)
-    Call(MakeEntity, Ref(Entity_YellowBlock), -282, 60, 522, 0, ITEM_VOLT_SHROOM, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_BlueWarpPipe, -275, 0, -225, 270, mim_11_ENTRY_3, EVS_UseBluePipe, EVT_INDEX_OF_GAME_FLAG(GF_MIM11_WarpPipe), MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_HeartBlock, 0, 60, -300, 45, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_SavePoint, 220, 60, -80, 45, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_YellowBlock, -282, 60, 522, 0, ITEM_VOLT_SHROOM, MAKE_ENTITY_END)
     Call(AssignBlockFlag, GF_MIM11_ItemBlock_VoltShroom)
     Return
     End

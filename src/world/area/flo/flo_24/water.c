@@ -6,10 +6,10 @@ EvtScript EVS_Scene_FillWithWater = {
     Call(UseSettingsFrom, CAM_DEFAULT, 170, 0, 160)
     Call(SetPanTarget, CAM_DEFAULT, 170, -90, 160)
     Call(SetCamDistance, CAM_DEFAULT, 800)
-    Call(SetCamPitch, CAM_DEFAULT, Float(18.5), Float(-7.5))
-    Call(SetCamPosA, CAM_DEFAULT, Float(-300.0), Float(200.0))
-    Call(SetCamPosB, CAM_DEFAULT, Float(300.0), Float(-150.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamPitch, CAM_DEFAULT, 18.5, -7.5)
+    Call(SetCamPosA, CAM_DEFAULT, -300.0, 200.0)
+    Call(SetCamPosB, CAM_DEFAULT, 300.0, -150.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(PlaySound, SOUND_LOOP_FLO_FILL_WATER_POOL)
     Thread
@@ -36,7 +36,7 @@ EvtScript EVS_Scene_FillWithWater = {
     EndThread
     Wait(30)
     Set(GB_StoryProgress, STORY_CH6_FILLED_SPRING_WITH_WATER)
-    Call(GotoMap, Ref("flo_10"), flo_10_ENTRY_2)
+    Call(GotoMap, "flo_10", flo_10_ENTRY_2)
     Wait(100)
     Return
     End

@@ -33,9 +33,9 @@ EvtScript EVS_Scene_GetJadeRaven = {
     Wait(5 * DT)
     Call(UseSettingsFrom, CAM_DEFAULT, 25, 15, -150)
     Call(SetPanTarget, CAM_DEFAULT, 25, 15, -150)
-    Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(16.0), Float(-8.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(4.0 / DT))
+    Call(SetCamDistance, CAM_DEFAULT, 300.0)
+    Call(SetCamPitch, CAM_DEFAULT, 16.0, -8.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 4.0 / DT)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(5 * DT)
     Call(PlayerMoveTo, 58, -140, 25)
@@ -56,9 +56,9 @@ EvtScript EVS_Scene_GetJadeRaven = {
     Call(GetPlayerPos, LVar3, LVar4, LVar5)
     Add(LVar3, 25)
     Call(SetPanTarget, CAM_DEFAULT, LVar3, LVar4, LVar5)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(2.5 / DT))
+    Call(SetCamSpeed, CAM_DEFAULT, 2.5 / DT)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION, false)
     Call(SetPartnerForcedFollowMode, 0)
     Call(GetCurrentPartnerID, LVar0)
@@ -100,7 +100,7 @@ EvtScript EVS_Scene_GetJadeRaven = {
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldSushie_Talk, ANIM_WorldSushie_Idle, 5, MSG_CH5_002C)
     Wait(10 * DT)
     Call(EnablePartnerAI)
-    Call(ResetCam, CAM_DEFAULT, Float(2.0 / DT))
+    Call(ResetCam, CAM_DEFAULT, 2.0 / DT)
     Return
     End
 };
@@ -144,21 +144,21 @@ EvtScript EVS_NpcInit_VillageLeader = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_VillageLeader_IdleSit)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
-            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_VillageLeader))
+            Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_VillageLeader)
         CaseLt(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
             Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
         CaseLt(STORY_CH5_GOT_JADE_RAVEN)
             Call(SetNpcAnimation, NPC_SELF, ANIM_VillageLeader_Idle)
             Call(InterpNpcYaw, NPC_SELF, 90, 1)
             Call(SetNpcPos, NPC_SELF, 0, 15, -50)
-            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_VillageLeader))
+            Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_VillageLeader)
         CaseLt(STORY_CH5_RAPHAEL_LEFT_NEST)
             Call(SetNpcAnimation, NPC_SELF, ANIM_VillageLeader_Idle)
             Call(InterpNpcYaw, NPC_SELF, 90, 1)
             Call(SetNpcPos, NPC_SELF, 30, 15, -30)
-            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_VillageLeader))
+            Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_VillageLeader)
         CaseDefault
-            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_VillageLeader))
+            Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_VillageLeader)
     EndSwitch
     Return
     End
@@ -204,7 +204,7 @@ EvtScript EVS_NpcInit_Councillor = {
             Call(SetNpcAnimation, NPC_SELF, ANIM_LeadersFriend_BowSit)
     EndSwitch
     Call(BindNpcIdle, NPC_SELF, 0)
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Councillor))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Councillor)
     Return
     End
 };
@@ -256,10 +256,10 @@ EvtScript EVS_NpcInit_Yoshi_01 = {
         CaseLt(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
             IfEq(GF_JAN08_SavedYoshi, false)
                 Call(SetNpcAnimation, NPC_SELF, ANIM_Yoshi_Red_Panic)
-                Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Yoshi_01))
+                Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Yoshi_01)
             EndIf
     EndSwitch
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Yoshi_01))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Yoshi_01)
     Return
     End
 };
@@ -311,10 +311,10 @@ EvtScript EVS_NpcInit_Yoshi_02 = {
         CaseLt(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
             IfEq(GF_JAN10_SavedYoshi, false)
                 Call(SetNpcAnimation, NPC_SELF, ANIM_Yoshi_Blue_Panic)
-                Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Yoshi_02))
+                Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Yoshi_02)
             EndIf
     EndSwitch
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Yoshi_02))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Yoshi_02)
     Return
     End
 };
@@ -366,10 +366,10 @@ EvtScript EVS_NpcInit_Yoshi_03 = {
         CaseLt(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
             IfEq(GF_JAN05_SavedYoshi, false)
                 Call(SetNpcAnimation, NPC_SELF, ANIM_Yoshi_Purple_Panic)
-                Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Yoshi_03))
+                Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Yoshi_03)
             EndIf
     EndSwitch
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Yoshi_03))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Yoshi_03)
     Return
     End
 };

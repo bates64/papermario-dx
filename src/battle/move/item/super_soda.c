@@ -99,7 +99,7 @@ EvtScript EVS_UseOnPartner = {
         Wait(20)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
     EndThread
-    Call(CreateVirtualEntity, LVarA, Ref(EMS_StarIcon))
+    Call(CreateVirtualEntity, LVarA, EMS_StarIcon)
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Add(LVar0, 0)
     Add(LVar1, 30)
@@ -125,7 +125,7 @@ EvtScript EVS_UseOnPartner = {
     Call(SetBattleCamOffsetY, 41)
     Call(SetBattleCamDist, 248)
     Call(MoveBattleCamOver, 25)
-    Call(SetVirtualEntityJumpGravity, LVarA, Float(0.4))
+    Call(SetVirtualEntityJumpGravity, LVarA, 0.4)
     Add(LVar2, 5)
     Call(VirtualEntityJumpTo, LVarA, LVar0, LVar1, LVar2, 25)
     Call(AddBattleCamDist, 100)

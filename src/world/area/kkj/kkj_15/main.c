@@ -25,7 +25,7 @@ EvtScript EVS_EndPeachChapter0 = {
     Set(LVar0, GB_KKJ_LastPartner)
     Call(RestoreFromPeachState)
     Call(PlaySound, SOUND_SLIDE_WHISTLE_OUT)
-    Call(GotoMapSpecial, Ref("kmr_10"), kmr_10_ENTRY_0, TRANSITION_END_PEACH_INTERLUDE)
+    Call(GotoMapSpecial, "kmr_10", kmr_10_ENTRY_0, TRANSITION_END_PEACH_INTERLUDE)
     Wait(100)
     Return
     End
@@ -35,7 +35,7 @@ EvtScript EVS_EndPeachChapter1 = {
     Set(LVar0, GB_KKJ_LastPartner)
     Call(RestoreFromPeachState)
     Call(PlaySound, SOUND_SLIDE_WHISTLE_OUT)
-    Call(GotoMapSpecial, Ref("trd_00"), trd_00_ENTRY_5, TRANSITION_END_PEACH_INTERLUDE)
+    Call(GotoMapSpecial, "trd_00", trd_00_ENTRY_5, TRANSITION_END_PEACH_INTERLUDE)
     Wait(100)
     Return
     End
@@ -45,7 +45,7 @@ EvtScript EVS_EndPeachChapter3 = {
     Set(LVar0, GB_KKJ_LastPartner)
     Call(RestoreFromPeachState)
     Call(PlaySound, SOUND_SLIDE_WHISTLE_OUT)
-    Call(GotoMapSpecial, Ref("arn_07"), arn_07_ENTRY_3, TRANSITION_END_PEACH_INTERLUDE)
+    Call(GotoMapSpecial, "arn_07", arn_07_ENTRY_3, TRANSITION_END_PEACH_INTERLUDE)
     Wait(100)
     Return
     End
@@ -55,7 +55,7 @@ EvtScript EVS_ExitDoor_kkj_11_3 =
     EVT_EXIT_SINGLE_DOOR(kkj_15_ENTRY_0, "kkj_11", kkj_11_ENTRY_3, COLLIDER_tte, MODEL_o2, DOOR_SWING_IN);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitDoor_kkj_11_3), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
+    BindTrigger(EVS_ExitDoor_kkj_11_3, TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
     Return
     End
 };
@@ -100,11 +100,11 @@ EvtScript EVS_Main = {
     EndSwitch
     Switch(GB_StoryProgress)
         CaseEq(STORY_CH0_KAMMY_RETURNED_TO_BOWSER)
-            Call(MakeNpcs, false, Ref(Chapter0NPCs))
+            Call(MakeNpcs, false, Chapter0NPCs)
         CaseEq(STORY_CH1_BEGAN_PEACH_MISSION)
-            Call(MakeNpcs, false, Ref(Chapter1NPCs))
+            Call(MakeNpcs, false, Chapter1NPCs)
         CaseEq(STORY_CH3_BEGAN_PEACH_MISSION)
-            Call(MakeNpcs, false, Ref(Chapter3NPCs))
+            Call(MakeNpcs, false, Chapter3NPCs)
     EndSwitch
     IfNe(GB_StoryProgress, STORY_CH1_BEGAN_PEACH_MISSION)
         Call(EnableModel, MODEL_o76, false)
@@ -120,7 +120,7 @@ EvtScript EVS_Main = {
         Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetModelCustomGfx, MODEL_o151, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
-    Call(SetCustomGfx, CUSTOM_GFX_0, Ref(setup_gfx_candle_lights), nullptr)
+    Call(SetCustomGfx, CUSTOM_GFX_0, setup_gfx_candle_lights, nullptr)
     Call(SetTexPanner, MODEL_o152, TEX_PANNER_0)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_0)
@@ -130,7 +130,7 @@ EvtScript EVS_Main = {
         Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetModelCustomGfx, MODEL_o152, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
-    Call(SetCustomGfx, CUSTOM_GFX_0, Ref(setup_gfx_candle_lights), nullptr)
+    Call(SetCustomGfx, CUSTOM_GFX_0, setup_gfx_candle_lights, nullptr)
     Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
     Exec(EVS_SetupMusic)
     Call(GetEntryID, LVar0)

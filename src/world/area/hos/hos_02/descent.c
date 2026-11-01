@@ -3,11 +3,11 @@
 EvtScript EVS_DescendStarWarp = {
     Call(SetMusic, 0, SONG_STAR_WAY_OPENS, BGM_VARIATION_2, VOL_LEVEL_FULL)
     Call(SetStarWarpTravelParams, MV_StarWarpEffect)
-    Call(SetPlayerSpeed, Float(3.0))
+    Call(SetPlayerSpeed, 3.0)
     Call(PlayerMoveTo, -1105, 230, 0)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION, true)
-    Call(SetNpcJumpscale, NPC_PARTNER, Float(0.5))
+    Call(SetNpcJumpscale, NPC_PARTNER, 0.5)
     Call(NpcJump0, NPC_PARTNER, -1105, -171, 220, 5)
     Thread
         Set(LVar0, 0)

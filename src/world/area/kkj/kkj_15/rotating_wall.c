@@ -79,7 +79,7 @@ EvtScript EVS_AnimateRotatingWall_Default = {
 
 EvtScript EVS_RotatingWall_Default = {
     Call(UseSettingsFrom, CAM_DEFAULT, 50, 10, -35)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(SetCamDistance, CAM_DEFAULT, 400)
     Call(SetPanTarget, CAM_DEFAULT, 50, 10, -35)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
@@ -94,18 +94,18 @@ EvtScript EVS_RotatingWall_FirstTime = {
     Call(UseSettingsFrom, CAM_DEFAULT, 50, 10, -35)
     Call(SetPanTarget, CAM_DEFAULT, 50, 35, -35)
     Call(SetCamDistance, CAM_DEFAULT, 200)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Thread
         Call(SetPanTarget, CAM_DEFAULT, 50, 10, -35)
         Call(SetCamDistance, CAM_DEFAULT, 400)
 #if VERSION_PAL
-        Call(SetCamSpeed, CAM_DEFAULT, Float(0.961))
+        Call(SetCamSpeed, CAM_DEFAULT, 0.961)
 #else
-        Call(SetCamSpeed, CAM_DEFAULT, Float(0.8 / DT))
+        Call(SetCamSpeed, CAM_DEFAULT, 0.8 / DT)
 #endif
-        Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+        Call(WaitForCam, CAM_DEFAULT, 1.0)
     EndThread
     ExecWait(EVS_AnimateRotatingWall_Default)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_Talk, ANIM_Twink_Idle, 0, MSG_Peach_0049)

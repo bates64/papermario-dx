@@ -9,8 +9,8 @@ EvtScript EVS_ExitDoors_pra_32_0 =
     EVT_EXIT_DOUBLE_DOOR(pra_40_ENTRY_1, "pra_32", pra_32_ENTRY_0, COLLIDER_deilitt2, MODEL_o880, MODEL_o878);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitDoors_pra_31_1), TRIGGER_WALL_PRESS_A, COLLIDER_deilitt1, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoors_pra_32_0), TRIGGER_WALL_PRESS_A, COLLIDER_deilitt2, 1, 0)
+    BindTrigger(EVS_ExitDoors_pra_31_1, TRIGGER_WALL_PRESS_A, COLLIDER_deilitt1, 1, 0)
+    BindTrigger(EVS_ExitDoors_pra_32_0, TRIGGER_WALL_PRESS_A, COLLIDER_deilitt2, 1, 0)
     Return
     End
 };

@@ -4,7 +4,7 @@
 EvtScript EVS_ExitWalk_flo_03_1 = EVT_EXIT_WALK(60, flo_22_ENTRY_0, "flo_03", flo_03_ENTRY_1);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_flo_03_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitWalk_flo_03_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
     Return
     End
 };
@@ -13,12 +13,12 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_FLOWER_FIELDS)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, false, Ref(DefaultNPCs))
+    Call(MakeNpcs, false, DefaultNPCs)
     Exec(EVS_SetupFoliage)
     Exec(EVS_SetupWell)
     Call(GetEntryID, LVar0)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitw, COLLIDER_FLAGS_UPPER_MASK)
-    Set(LVar0, Ref(EVS_BindExitTriggers))
+    Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     Exec(EVS_SniffleHint)
     ExecWait(EVS_SetupMusic)

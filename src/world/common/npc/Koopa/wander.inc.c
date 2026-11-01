@@ -10,7 +10,7 @@ MobileAISettings AISettings_Koopa_Wander = {
 };
 
 EvtScript EVS_NpcAI_Koopa_Wander = {
-    Call(BasicAI_Main, Ref(AISettings_Koopa_Wander))
+    Call(BasicAI_Main, AISettings_Koopa_Wander)
     Return
     End
 };

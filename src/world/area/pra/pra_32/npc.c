@@ -27,7 +27,7 @@ EvtScript EVS_AnimateCam_CrystalKing = {
         IfGe(LVar5, 100)
             Call(SetPanTarget, CAM_DEFAULT, 588, LVar5, 116)
             Call(SetCamDistance, CAM_DEFAULT, MV_CamDistance)
-            Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+            Call(SetCamSpeed, CAM_DEFAULT, 90.0)
             Call(PanToTarget, CAM_DEFAULT, 0, true)
         EndIf
         Wait(1)
@@ -57,9 +57,9 @@ EvtScript EVS_Scene_CrystalKingAppears = {
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Add(LVar1, -30)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(3.0 / DT))
-    Call(SetCamPitch, CAM_DEFAULT, Float(12.0), Float(-10.0))
-    Call(SetCamDistance, CAM_DEFAULT, Float(400.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 3.0 / DT)
+    Call(SetCamPitch, CAM_DEFAULT, 12.0, -10.0)
+    Call(SetCamDistance, CAM_DEFAULT, 400.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(30 * DT)
     Call(SetPlayerAnimation, ANIM_Mario1_BeforeJump)
@@ -71,7 +71,7 @@ EvtScript EVS_Scene_CrystalKingAppears = {
     Else
         Call(SetNpcPos, NPC_PARTNER, 452, 100, 120)
     EndIf
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Thread
         Call(GetNpcPos, NPC_CrystalKing_01, LVar0, LVar1, LVar2)
         Add(LVar1, 10)
@@ -110,13 +110,13 @@ EvtScript EVS_Scene_CrystalKingAppears = {
     Call(SetNpcPos, NPC_SELF, LVar3, LVar4, LVar2)
     Add(LVar0, LVar3)
     Div(LVar0, 2)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(3.0 / DT))
+    Call(SetCamSpeed, CAM_DEFAULT, 3.0 / DT)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(SpeakToPlayer, NPC_CrystalKing_01, ANIM_CrystalKing_Idle, ANIM_CrystalKing_Idle, 0, MSG_CH7_016B)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(SetPlayerAnimation, ANIM_Mario1_Run)
-    Call(SetPlayerSpeed, Float(2.5 / DT))
+    Call(SetPlayerSpeed, 2.5 / DT)
     Thread
         Wait(10 * DT)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o1309, 0)
@@ -138,11 +138,11 @@ EvtScript EVS_Scene_BossDefeated = {
     Call(GetNpcPos, NPC_CrystalKing_01, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(12.0), Float(-10.0))
-    Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
+    Call(SetCamPitch, CAM_DEFAULT, 12.0, -10.0)
+    Call(SetCamDistance, CAM_DEFAULT, 300.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(SpeakToPlayer, NPC_CrystalKing_01, ANIM_CrystalKing_Idle, ANIM_CrystalKing_Idle, 0, MSG_CH7_016C)
     Thread
         Call(SetNpcRotationPivot, NPC_CrystalKing_01, 30)
@@ -161,7 +161,7 @@ EvtScript EVS_Scene_BossDefeated = {
         Loop(0)
             Call(UpdateLerp)
             SetF(LVarA, LVar0)
-            MulF(LVarA, Float(0.01))
+            MulF(LVarA, 0.01)
             Call(SetNpcScale, NPC_CrystalKing_01, LVarA, LVarA, 1)
             IfEq(LVar1, 0)
                 BreakLoop
@@ -212,10 +212,10 @@ EvtScript EVS_Scene_BossDefeated = {
 };
 
 EvtScript EVS_NpcInit_CrystalKing = {
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_Scene_BossDefeated))
+    Call(BindNpcDefeat, NPC_SELF, EVS_Scene_BossDefeated)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_DEFEATED_CRYSTAL_KING)
-            Call(BindNpcIdle, NPC_SELF, Ref(EVS_Scene_CrystalKingAppears))
+            Call(BindNpcIdle, NPC_SELF, EVS_Scene_CrystalKingAppears)
         CaseEq(STORY_CH7_DEFEATED_CRYSTAL_KING)
             Exec(EVS_RespawnStarCard)
         CaseGt(STORY_CH7_DEFEATED_CRYSTAL_KING)

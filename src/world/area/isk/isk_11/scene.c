@@ -128,7 +128,7 @@ EvtScript EVS_ManageSecretPassage = {
     Wait(30 * DT)
     Thread
         Call(PlaySound, SOUND_LOOP_ISK_LOWER_STAIRS)
-        Call(ShakeCam, CAM_DEFAULT, 0, 330, Float(0.5))
+        Call(ShakeCam, CAM_DEFAULT, 0, 330, 0.5)
         Call(StopSound, SOUND_LOOP_ISK_LOWER_STAIRS)
     EndThread
     Thread
@@ -155,7 +155,7 @@ EvtScript EVS_ManageSecretPassage = {
     Thread
         Wait(20 * DT)
 #if VERSION_PAL
-        Call(SetPlayerSpeed, Float(4.0 / DT))
+        Call(SetPlayerSpeed, 4.0 / DT)
 #else
         Call(SetPlayerSpeed, 4)
 #endif
@@ -169,27 +169,27 @@ EvtScript EVS_ManageSecretPassage = {
         Set(MV_PlayerPanicDone, true)
     EndThread
     Wait(40 * DT)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(UseSettingsFrom, CAM_DEFAULT, 0, -520, 530)
     Call(SetCamDistance, CAM_DEFAULT, 140)
-    Call(SetCamPitch, CAM_DEFAULT, Float(22.7), Float(-22.7))
+    Call(SetCamPitch, CAM_DEFAULT, 22.7, -22.7)
     Call(SetPanTarget, CAM_DEFAULT, 0, -520, 530)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(EnableGroup, MODEL_15, true)
     Call(EnableGroup, MODEL_g377, false)
     Call(EnableModel, MODEL_o2205, false)
     Wait(60)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(1.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 1.0)
     Call(UseSettingsFrom, CAM_DEFAULT, 0, -520, 530)
     Call(SetPanTarget, CAM_DEFAULT, 0, -520, 530)
     Wait(10 * DT)
-    Call(SetCamPitch, CAM_DEFAULT, Float(10.0), Float(12.0))
+    Call(SetCamPitch, CAM_DEFAULT, 10.0, 12.0)
     Wait(90 * DT)
     Exec(EVS_DropHiddenStairs)
     Wait(60 * DT)
     Set(MV_HiddenStairsRevealed, true)
     Wait(100 * DT)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)

@@ -62,7 +62,7 @@ EvtScript EVS_GardenShyGuy_RunAway = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Hurt)
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     Call(NpcJump0, NPC_SELF, LVar0, 27, LVar2, 10)
-    Call(SetNpcSpeed, NPC_SELF, Float(8.0))
+    Call(SetNpcSpeed, NPC_SELF, 8.0)
     Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Run)
     Call(ShowSweat, NPC_SELF, 1, -45, EMOTER_NPC, 0, 0, 0, 0, 20)
     Call(InterpNpcYaw, NPC_SELF, 270, 1)
@@ -119,7 +119,7 @@ EvtScript EVS_NpcHit_GardenShyGuy1 = {
         Return
     EndIf
     Set(GF_MAC01_ChasedShyGuysFromGardenA, true)
-    Call(BindNpcAI, NPC_SELF, Ref(EVS_GardenShyGuy_RunAway))
+    Call(BindNpcAI, NPC_SELF, EVS_GardenShyGuy_RunAway)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER, true)
     Return
     End
@@ -131,7 +131,7 @@ EvtScript EVS_NpcHit_GardenShyGuy2 = {
         Return
     EndIf
     Set(GF_MAC01_ChasedShyGuysFromGardenB, true)
-    Call(BindNpcAI, NPC_SELF, Ref(EVS_GardenShyGuy_RunAway))
+    Call(BindNpcAI, NPC_SELF, EVS_GardenShyGuy_RunAway)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER, true)
     Return
     End
@@ -139,8 +139,8 @@ EvtScript EVS_NpcHit_GardenShyGuy2 = {
 
 EvtScript EVS_NpcInit_GardenShyGuy1 = {
     IfEq(GF_MAC01_ChasedShyGuysFromGardenA, false)
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_GardenShyGuy1))
-        Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_GardenShyGuy1))
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_GardenShyGuy1)
+        Call(BindNpcHit, NPC_SELF, EVS_NpcHit_GardenShyGuy1)
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -150,8 +150,8 @@ EvtScript EVS_NpcInit_GardenShyGuy1 = {
 
 EvtScript EVS_NpcInit_GardenShyGuy2 = {
     IfEq(GF_MAC01_ChasedShyGuysFromGardenB, false)
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_GardenShyGuy2))
-        Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_GardenShyGuy2))
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_GardenShyGuy2)
+        Call(BindNpcHit, NPC_SELF, EVS_NpcHit_GardenShyGuy2)
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -177,11 +177,11 @@ EvtScript EVS_NpcInit_Bubulb = {
         CaseRange(STORY_CH5_STAR_SPIRIT_DEPARTED, STORY_CH6_FLOWER_GATE_OPEN)
             Call(SetNpcPos, NPC_SELF, 200, 20, 500)
             Call(SetNpcYaw, NPC_SELF, 270)
-            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bubulb))
+            Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Bubulb)
         CaseEq(STORY_EPILOGUE)
             Call(SetNpcPos, NPC_SELF, 230, 30, 400)
             Call(SetNpcYaw, NPC_SELF, 270)
-            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bubulb))
+            Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Bubulb)
     EndSwitch
     Return
     End
@@ -218,7 +218,7 @@ EvtScript EVS_FadeInFlowerGateGlowAlpha = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_door_ura, COLLIDER_FLAGS_UPPER_MASK)
     Call(EnableModel, MODEL_pica, true)
     Call(SetModelCustomGfx, MODEL_pica, CUSTOM_GFX_4, -1)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_4, Ref(gfx_build_flower_gate_glow), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_4, gfx_build_flower_gate_glow, nullptr)
     Call(MakeLerp, 0, 255, 30, EASING_LINEAR)
     Loop(0)
         Call(UpdateLerp)
@@ -269,7 +269,7 @@ EvtScript EVS_FadeOutFlowerGateGlowAlpha = {
 
 EvtScript EVS_Scene_FlowerGateAppears = {
 #if VERSION_PAL
-    Call(SetCamProperties, CAM_DEFAULT, Float(1.0 / DT), 266, 27, 373, 300, 15, -6)
+    Call(SetCamProperties, CAM_DEFAULT, 1.0 / DT, 266, 27, 373, 300, 15, -6)
 #else
     Call(SetCamProperties, CAM_DEFAULT, 1, 266, 27, 373, 300, 15, -6)
 #endif
@@ -316,7 +316,7 @@ EvtScript EVS_Scene_FlowerGateAppears = {
     EndLoop
     ExecWait(EVS_FadeOutFlowerGateGlowAlpha)
 #if VERSION_PAL
-    Call(ResetCam, CAM_DEFAULT, Float(1 * DT))
+    Call(ResetCam, CAM_DEFAULT, 1 * DT)
 #else
     Call(ResetCam, CAM_DEFAULT, 1)
 #endif
@@ -334,7 +334,7 @@ EvtScript EVS_MinhT_PlantSeed = {
     Call(UseSettingsFrom, CAM_DEFAULT, 266, 27, 373)
     Call(SetPanTarget, CAM_DEFAULT, 266, 27, 373)
 #if VERSION_PAL
-    Call(SetCamSpeed, CAM_DEFAULT, Float(1.0 / DT))
+    Call(SetCamSpeed, CAM_DEFAULT, 1.0 / DT)
 #else
     Call(SetCamSpeed, CAM_DEFAULT, 1)
 #endif
@@ -379,7 +379,7 @@ EvtScript EVS_MinhT_PlantSeed = {
             Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
             Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
             Call(PanToTarget, CAM_DEFAULT, 0, true)
-            Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+            Call(WaitForCam, CAM_DEFAULT, 1.0)
             Call(PanToTarget, CAM_DEFAULT, 0, false)
         EndThread
     EndIf
@@ -444,7 +444,7 @@ EvtScript EVS_MinhT_ChooseMagicalSeed = {
 };
 
 EvtScript EVS_NpcInteract_MinhT = {
-    Set(LVar0, Ref(LetterDelivery_MinhT))
+    Set(LVar0, LetterDelivery_MinhT)
     ExecWait(EVS_TryLetterDelivery)
     EVT_RETURN_IF_DELIVERED()
     Set(LVar2, 0)
@@ -575,14 +575,14 @@ EvtScript EVS_NpcIdle_MinhT = {
             IfEq(LVar0, 2)
                 Call(SetNpcAnimation, NPC_SELF, ANIM_MinhT_Idle)
                 Call(SetSelfEnemyFlagBits, ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER, false)
-                Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_MinhT))
+                Call(BindNpcAI, NPC_SELF, EVS_NpcAI_MinhT)
                 BreakLoop
             EndIf
             Wait(1)
         EndLoop
     EndThread
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
-    Call(SetNpcSpeed, NPC_SELF, Float(3.0))
+    Call(SetNpcSpeed, NPC_SELF, 3.0)
     Add(LVar0, 25)
     Loop(0)
         Call(SetNpcAnimation, NPC_SELF, ANIM_MinhT_Run)
@@ -611,10 +611,10 @@ EvtScript EVS_NpcInit_MinhT = {
         CaseRange(STORY_CH3_STAR_SPIRIT_DEPARTED, STORY_CH4_STAR_SPIRIT_RESCUED)
             Set(GF_MAC01_ShyGuysTramplingGarden, true)
             Call(SetSelfEnemyFlagBits, ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER, true)
-            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_MinhT))
+            Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_MinhT)
     EndSwitch
     Call(SetNpcAnimation, NPC_SELF, ANIM_MinhT_Idle)
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_MinhT))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_MinhT)
     Return
     End
 };
@@ -702,11 +702,11 @@ EvtScript EVS_ExitFlowerGate = {
     IfEq(GF_StartedChapter6, false)
         Set(GF_StartedChapter6, true)
         Call(FadeOutMusic, 0, 1500)
-        Call(GotoMapSpecial, Ref("kmr_22"), kmr_22_ENTRY_6, TRANSITION_BEGIN_OR_END_CHAPTER)
+        Call(GotoMapSpecial, "kmr_22", kmr_22_ENTRY_6, TRANSITION_BEGIN_OR_END_CHAPTER)
         Wait(100)
         Return
     EndIf
-    Call(GotoMap, Ref("flo_00"), flo_00_ENTRY_0)
+    Call(GotoMap, "flo_00", flo_00_ENTRY_0)
     Wait(100)
     Return
     End

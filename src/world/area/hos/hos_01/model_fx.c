@@ -149,10 +149,10 @@ EvtScript EVS_SetupModelFX = {
     Call(SetModelCustomGfx, MODEL_5, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
     Call(SetModelCustomGfx, MODEL_6, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
     Call(SetModelCustomGfx, MODEL_7, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_0, Ref(setup_gfx_glowing_star), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_0, setup_gfx_glowing_star, nullptr)
     Call(TranslateModel, MODEL_power, 0, 2, 0)
     Call(SetModelCustomGfx, MODEL_power, CUSTOM_GFX_1, ENV_TINT_UNCHANGED)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(setup_gfx_giving_power), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_1, setup_gfx_giving_power, nullptr)
     Thread
         Loop(0)
             Call(MakeLerp, 255, 100, 60, EASING_COS_IN_OUT)

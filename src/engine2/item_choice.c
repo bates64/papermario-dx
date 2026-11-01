@@ -91,7 +91,7 @@ static EvtScript EVS_KeyItemChoicePopup = {
 
 EvtScript EVS_ChooseKeyItem = {
     Call(BuildKeyItemChoiceList, LVar0)
-    BindPadlock(Ref(EVS_KeyItemChoicePopup), TRIGGER_FORCE_ACTIVATE, 0, Ref(ChoiceList), 0, 1)
+    BindPadlock(EVS_KeyItemChoicePopup, TRIGGER_FORCE_ACTIVATE, 0, ChoiceList, 0, 1)
     Call(ItemChoice_WaitForSelection, LVar0)
     Return
     End
@@ -154,7 +154,7 @@ static EvtScript EVS_ItemChoicePopup = {
 
 EvtScript EVS_ChooseItem = {
     Call(BuildItemChoiceList, LVar0)
-    BindPadlock(Ref(EVS_ItemChoicePopup), TRIGGER_FORCE_ACTIVATE, 0, Ref(ChoiceList), 0, 1)
+    BindPadlock(EVS_ItemChoicePopup, TRIGGER_FORCE_ACTIVATE, 0, ChoiceList, 0, 1)
     Call(ItemChoice_WaitForSelection, LVar0)
     Return
     End
@@ -310,7 +310,7 @@ static EvtScript EVS_LetterDelivery_ItemPrompt = {
                 Add(LVar6, -20)
             EndIf
             Add(LVar7, 10)
-            Call(SetNpcJumpscale, NPC_PARTNER, Float(0.0))
+            Call(SetNpcJumpscale, NPC_PARTNER, 0.0)
             Call(NpcJump1, NPC_PARTNER, LVar6, LVar7, LVar8, 20)
             KillThread(LVarA)
             Call(RemoveItemEntity, LVar0)
@@ -338,7 +338,7 @@ static EvtScript EVS_ShowLetterChoice = {
     Set(LVar0, LVarB)
     Set(LVar1, LVar2)
     Call(BuildKeyItemChoiceList, LVar0)
-    BindPadlock(EVS_LetterDelivery_ItemPrompt, TRIGGER_FORCE_ACTIVATE, 0, Ref(ChoiceList), 0, 1)
+    BindPadlock(EVS_LetterDelivery_ItemPrompt, TRIGGER_FORCE_ACTIVATE, 0, ChoiceList, 0, 1)
     Call(ItemChoice_WaitForSelection, LVar0)
     Return
     End
@@ -360,7 +360,7 @@ static EvtScript EVS_DoLetterDelivery = {
             Wait(1)
             Call(GetNpcPos, LVar2, LVarD, LVar0, LVarE)
             Call(GetNpcPos, NPC_PARTNER, LVarD, LVarE, LVarF)
-            Call(SetNpcJumpscale, NPC_PARTNER, Float(0.0))
+            Call(SetNpcJumpscale, NPC_PARTNER, 0.0)
             Add(LVar0, 10)
             Call(NpcJump1, NPC_PARTNER, LVarD, LVar0, LVarF, 10)
             Call(SpeakToNpc, NPC_PARTNER, ANIM_WorldParakarry_Talk, ANIM_WorldParakarry_Idle, 0, LVar2, LVar7)

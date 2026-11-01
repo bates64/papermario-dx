@@ -88,15 +88,15 @@ s32 DefaultAnims[] = {
 };
 
 EvtScript EVS_Init = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
     Call(SetActorPos, ACTOR_SELF, 180, 0, 0)
     Call(ForceHomePos, ACTOR_SELF, 180, 0, 0)
     Call(HPBarToHome, ACTOR_SELF)
     Thread
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_MarshalGuy_Run)
-        Call(SetActorSpeed, ACTOR_SELF, Float(5.0))
+        Call(SetActorSpeed, ACTOR_SELF, 5.0)
         Call(SetGoalPos, ACTOR_SELF, 0, 0, 0)
         Call(RunToGoal, ACTOR_SELF, 0, false)
         Call(SetActorYaw, ACTOR_SELF, 180)
@@ -137,7 +137,7 @@ EvtScript EVS_HandleEvent = {
         CaseOrEq(EVENT_SPIKE_TAUNT)
         CaseOrEq(EVENT_DEATH)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_MarshalGuy_Hurt)
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(1.5))
+            Call(SetActorJumpGravity, ACTOR_SELF, 1.5)
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Sub(LVar0, 35)
             Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -156,7 +156,7 @@ EvtScript EVS_HandleEvent = {
             Call(SetActorSounds, ACTOR_SELF, ACTOR_SOUND_WALK, SOUND_ACTOR_STEP_A, SOUND_ACTOR_STEP_B)
             Call(SetActorSounds, ACTOR_SELF, ACTOR_SOUND_WALK_INCREMENT, 10, 0)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_MarshalGuy_Panic)
-            Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
+            Call(SetActorSpeed, ACTOR_SELF, 6.0)
             Call(AddActorDecoration, ACTOR_SELF, PRT_MAIN, 0, ACTOR_DECORATION_STEAM_EMITTER)
             Call(SetGoalPos, ACTOR_SELF, -200, 0, 20)
             Call(RunToGoal, ACTOR_SELF, 0, false)

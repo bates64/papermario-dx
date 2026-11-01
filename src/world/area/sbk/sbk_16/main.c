@@ -24,9 +24,9 @@ EvtScript EVS_ExitWalk_sbk_06_3 = EVT_EXIT_WALK(60, sbk_16_ENTRY_2, "sbk_06", sb
 EvtScript EVS_ExitWalk_sbk_26_2 = EVT_EXIT_WALK(60, sbk_16_ENTRY_3, "sbk_26", sbk_26_ENTRY_2);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_sbk_15_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_sbk_06_3), TRIGGER_FLOOR_ABOVE, COLLIDER_deilin, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_sbk_26_2), TRIGGER_FLOOR_ABOVE, COLLIDER_deilis, 1, 0)
+    BindTrigger(EVS_ExitWalk_sbk_15_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitWalk_sbk_06_3, TRIGGER_FLOOR_ABOVE, COLLIDER_deilin, 1, 0)
+    BindTrigger(EVS_ExitWalk_sbk_26_2, TRIGGER_FLOOR_ABOVE, COLLIDER_deilis, 1, 0)
     Return
     End
 };
@@ -40,7 +40,7 @@ EvtScript EVS_Main = {
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(SpawnSunEffect, FX_SUN_FROM_LEFT)
     Call(SetMusic, 0, SONG_DRY_DRY_DESERT, 0, VOL_LEVEL_FULL)
-    Set(LVar0, Ref(EVS_BindExitTriggers))
+    Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     Exec(EVS_SetupFoliage)
     Return

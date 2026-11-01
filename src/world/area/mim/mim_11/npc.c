@@ -25,7 +25,7 @@ EvtScript EVS_NpcAux_Skolar = {
 };
 
 EvtScript EVS_NpcInit_Skolar = {
-    Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_Skolar))
+    Call(BindNpcAux, NPC_SELF, EVS_NpcAux_Skolar)
     Call(SetNpcPos, NPC_SELF, 0, -1000, -100)
     Call(EnableNpcShadow, NPC_SELF, false)
     IfNe(GB_StoryProgress, STORY_CH3_DEFEATED_TUBBA_BLUBBA)

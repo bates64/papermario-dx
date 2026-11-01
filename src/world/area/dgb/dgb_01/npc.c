@@ -66,22 +66,22 @@ EvtScript EVS_NpcIdle_Tubba_Floor3 = {
         Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_GetUpAngry)
     EndThread
     Wait(4)
-    Call(SetNpcJumpscale, NPC_Tubba, Float(1.0))
+    Call(SetNpcJumpscale, NPC_Tubba, 1.0)
     Call(GetNpcPos, NPC_Tubba, LVar0, LVar1, LVar2)
     Call(NpcJump0, NPC_Tubba, LVar0, LVar1, LVar2, 30)
     Call(PlaySoundAtNpc, NPC_Tubba, SOUND_LARGE_NPC_IMPACT, SOUND_SPACE_DEFAULT)
     Call(PlaySound, SOUND_LOOP_DGB_COLLAPSE)
-    Call(ShakeCam, CAM_DEFAULT, 0, 15, Float(4.0))
-    Call(ShakeCam, CAM_DEFAULT, 0, 15, Float(2.0))
+    Call(ShakeCam, CAM_DEFAULT, 0, 15, 4.0)
+    Call(ShakeCam, CAM_DEFAULT, 0, 15, 2.0)
     Call(SetSelfVar, 0, 3)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Tubba_Floor3 = {
-    Call(SetNpcScale, NPC_SELF, Float(1.25), Float(1.25), Float(1.25))
+    Call(SetNpcScale, NPC_SELF, 1.25, 1.25, 1.25)
     Call(SetSelfVar, 0, 0)
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Tubba_Floor3))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Tubba_Floor3)
     Return
     End
 };
@@ -89,7 +89,7 @@ EvtScript EVS_NpcInit_Tubba_Floor3 = {
 // failsafe if the player somehow defeats Tubba
 EvtScript EVS_NpcDefeat_Tubba_Floor2 = {
     Call(PostBattleHideWorld)
-    Call(GotoMap, Ref("dgb_08"), dgb_08_ENTRY_1)
+    Call(GotoMap, "dgb_08", dgb_08_ENTRY_1)
     Wait(100)
     Return
     End
@@ -107,13 +107,13 @@ EvtScript EVS_NpcInit_Tubba_Floor2 = {
         Return
     EndIf
     Call(SetNpcPos, NPC_Tubba, 137, 244, 35)
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Tubba_Floor2))
-    Call(SetNpcScale, NPC_SELF, Float(1.25), Float(1.25), Float(1.25))
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_Tubba_Floor2)
+    Call(SetNpcScale, NPC_SELF, 1.25, 1.25, 1.25)
     Thread
         Loop(0)
-            Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(2.0))
+            Call(ShakeCam, CAM_DEFAULT, 0, 5, 2.0)
             Wait(5)
-            Call(ShakeCam, CAM_DEFAULT, 0, 2, Float(1.0))
+            Call(ShakeCam, CAM_DEFAULT, 0, 2, 1.0)
             Wait(8)
         EndLoop
     EndThread
@@ -157,16 +157,16 @@ EvtScript EVS_NpcIdle_Tubba_Floor1 = {
     Thread
         Loop(0)
             Call(PlaySoundAtNpc, NPC_SELF, SOUND_HEAVY_NPC_STEP_C, SOUND_PARAM_QUIET)
-            Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(2.0))
+            Call(ShakeCam, CAM_DEFAULT, 0, 5, 2.0)
             Wait(5)
             Call(PlaySoundAtNpc, NPC_SELF, SOUND_HEAVY_NPC_STEP_C, SOUND_PARAM_QUIET)
-            Call(ShakeCam, CAM_DEFAULT, 0, 2, Float(1.0))
+            Call(ShakeCam, CAM_DEFAULT, 0, 2, 1.0)
             Wait(8)
         EndLoop
     EndThread
-    Call(SetNpcSpeed, NPC_SELF, Float(5.0))
+    Call(SetNpcSpeed, NPC_SELF, 5.0)
     Call(NpcMoveTo, NPC_SELF, 259, 167, 0)
-    Call(PatrolNoAttackAI_Main, Ref(AISettings_Tubba_Patrol))
+    Call(PatrolNoAttackAI_Main, AISettings_Tubba_Patrol)
     Return
     End
 };
@@ -174,7 +174,7 @@ EvtScript EVS_NpcIdle_Tubba_Floor1 = {
 // failsafe if the player somehow defeats Tubba
 EvtScript EVS_NpcDefeat_Tubba_Floor1 = {
     Call(PostBattleHideWorld)
-    Call(GotoMap, Ref("dgb_00"), dgb_00_ENTRY_1)
+    Call(GotoMap, "dgb_00", dgb_00_ENTRY_1)
     Wait(100)
     Return
     End
@@ -182,12 +182,12 @@ EvtScript EVS_NpcDefeat_Tubba_Floor1 = {
 
 EvtScript EVS_NpcInit_Tubba_Floor1 = {
     IfNe(GB_ARN_Tubba_MapID, 1)
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Tubba_Floor1))
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Tubba_Floor1)
     Else
         Call(SetNpcPos, NPC_SELF, 136, 0, -330)
     EndIf
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Tubba_Floor1))
-    Call(SetNpcScale, NPC_SELF, Float(1.25), Float(1.25), Float(1.25))
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_Tubba_Floor1)
+    Call(SetNpcScale, NPC_SELF, 1.25, 1.25, 1.25)
     Return
     End
 };

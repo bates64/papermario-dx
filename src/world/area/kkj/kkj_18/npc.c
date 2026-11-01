@@ -31,11 +31,11 @@ EvtScript EVS_NpcInit_GourmetGuy = {
     Call(SetNpcPos, NPC_SELF, 120, 0, -20)
     Call(SetNpcYaw, NPC_SELF, 270)
     IfEq(AF_KKJ_FinishedBakingCake, false)
-        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_GourmetGuy_Excited))
+        Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_GourmetGuy_Excited)
     Else
-        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_GourmetGuy_Scold))
+        Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_GourmetGuy_Scold)
     EndIf
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_GourmetGuy))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_GourmetGuy)
     Call(SetNpcAnimation, NPC_GourmetGuy_Knife, ANIM_GourmetGuy_Knife)
     Call(SetNpcFlagBits, NPC_GourmetGuy_Knife, NPC_FLAG_INVISIBLE, true)
     Call(EnableNpcShadow, NPC_GourmetGuy_Knife, false)

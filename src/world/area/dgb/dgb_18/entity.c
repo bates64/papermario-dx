@@ -12,9 +12,9 @@ EvtScript EVS_OpenChest_MysticalKey = {
 };
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Ref(Entity_Chest), 845, 0, 145, -35, 0, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_Chest, 845, 0, 145, -35, 0, MAKE_ENTITY_END)
     Call(AssignChestFlag, GF_DGB18_Chest_MysticalKey)
-    Call(AssignScript, Ref(EVS_OpenChest_MysticalKey))
+    Call(AssignScript, EVS_OpenChest_MysticalKey)
     Return
     End
 };

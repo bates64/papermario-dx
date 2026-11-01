@@ -111,16 +111,16 @@ ActorBlueprint blueprint = {
 };
 
 EvtScript EVS_Init = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
-    Call(BindHandlePhase, ACTOR_SELF, Ref(EVS_HandlePhase))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
+    Call(BindHandlePhase, ACTOR_SELF, EVS_HandlePhase)
     Call(IsPeachBattle)
     IfNe(LVar0, true)
         Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_NO_ATTACK, true)
     EndIf
     Call(SetActorVar, ACTOR_SELF, AVAR_Twink_PowerLevel, 0)
-    Call(SetActorVar, ACTOR_SELF, AVAR_Twink_DefensePtr, Ref(DefenseTable))
+    Call(SetActorVar, ACTOR_SELF, AVAR_Twink_DefensePtr, DefenseTable)
     Call(AddActorDecoration, ACTOR_SELF, PRT_MAIN, 0, ACTOR_DECORATION_SPARKLES)
     Call(ModifyActorDecoration, ACTOR_SELF, PRT_MAIN, 0, 0, 0, 0, 0)
     Return
@@ -212,7 +212,7 @@ EvtScript EVS_RunAway = {
 EvtScript EVS_PartnerRunAwayFail = {
     Call(UseIdleAnimation, ACTOR_PARTNER, false)
     Call(SetGoalToHome, ACTOR_PARTNER)
-    Call(SetActorSpeed, ACTOR_PARTNER, Float(6.0))
+    Call(SetActorSpeed, ACTOR_PARTNER, 6.0)
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_Twink_Angry)
     Call(SetActorYaw, ACTOR_PARTNER, 0)
     Call(RunToGoal, ACTOR_PARTNER, 0)
@@ -237,7 +237,7 @@ EvtScript EVS_ExecuteAction = {
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_Twink_Angry)
     Call(SetGoalToTarget, ACTOR_PARTNER)
     Call(AddGoalPos, ACTOR_PARTNER, -20, 0, 0)
-    Call(SetActorSpeed, ACTOR_PARTNER, Float(4.0))
+    Call(SetActorSpeed, ACTOR_PARTNER, 4.0)
     Call(FlyToGoal, ACTOR_PARTNER, 0, -10, EASING_COS_IN_OUT)
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_Twink_Idle)
     Wait(3)
@@ -283,7 +283,7 @@ EvtScript EVS_ExecuteAction = {
     Call(SetActorSounds, ACTOR_PARTNER, ACTOR_SOUND_FLY, SOUND_TWINK_FLY_A, SOUND_TWINK_FLY_B)
     Call(SetGoalToHome, ACTOR_PARTNER)
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_Twink_Angry)
-    Call(SetActorSpeed, ACTOR_PARTNER, Float(8.0))
+    Call(SetActorSpeed, ACTOR_PARTNER, 8.0)
     Call(FlyToGoal, ACTOR_PARTNER, 0, -20, EASING_COS_IN_OUT)
     Call(EnableIdleScript, ACTOR_PARTNER, IDLE_SCRIPT_ENABLE)
     Call(UseIdleAnimation, ACTOR_PARTNER, true)

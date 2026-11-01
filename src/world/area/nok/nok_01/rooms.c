@@ -244,48 +244,48 @@ EvtScript EVS_MakeRooms = {
     // toad house
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT | ROOM_FLAG_CUSTOM_ANIM_WALL_ROT),
-        Ref(EVS_SetDoorRot_ToadHouse),
-        Ref(EVS_SetWallRot_ToadHouse),
+        EVS_SetDoorRot_ToadHouse,
+        EVS_SetWallRot_ToadHouse,
         nullptr,
-        Ref(EVS_RoomListener_ToadHouse),
+        EVS_RoomListener_ToadHouse,
         COLLIDER_o200,
         COLLIDER_o284,
         MODEL_aka,
-        Ref(InteriorNPCs_ToadHouse))
+        InteriorNPCs_ToadHouse)
     // shop
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_1, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT | ROOM_FLAG_CUSTOM_ANIM_WALL_ROT),
-        Ref(EVS_SetDoorRot_Shop),
-        Ref(EVS_SetWallRot_Shop),
+        EVS_SetDoorRot_Shop,
+        EVS_SetWallRot_Shop,
         nullptr,
-        Ref(EVS_RoomListener_Shop),
+        EVS_RoomListener_Shop,
         COLLIDER_o226,
         COLLIDER_o286,
         MODEL_ki,
-        Ref(InteriorNPCs_Shop))
+        InteriorNPCs_Shop)
     // beach house
     IfLt(GB_StoryProgress, STORY_CH1_KOOPER_JOINED_PARTY)
         Call(CreateMapRoom,
             PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT | ROOM_FLAG_CUSTOM_ANIM_WALL_ROT),
-            Ref(EVS_SetDoorRot_BeachHouse),
-            Ref(EVS_SetWallRot_BeachHouse),
-            Ref(EVS_DropDoor_BeachHouse),
-            Ref(EVS_RoomListener_BeachHouse),
+            EVS_SetDoorRot_BeachHouse,
+            EVS_SetWallRot_BeachHouse,
+            EVS_DropDoor_BeachHouse,
+            EVS_RoomListener_BeachHouse,
             COLLIDER_o246,
             COLLIDER_o291,
             MODEL_ao,
-            Ref(InteriorNPCs_BeachHouse_Before))
+            InteriorNPCs_BeachHouse_Before)
     Else
         Call(CreateMapRoom,
             PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT | ROOM_FLAG_CUSTOM_ANIM_WALL_ROT),
-            Ref(EVS_SetDoorRot_BeachHouse),
-            Ref(EVS_SetWallRot_BeachHouse),
-            Ref(EVS_DropDoor_BeachHouse),
-            Ref(EVS_RoomListener_BeachHouse),
+            EVS_SetDoorRot_BeachHouse,
+            EVS_SetWallRot_BeachHouse,
+            EVS_DropDoor_BeachHouse,
+            EVS_RoomListener_BeachHouse,
             COLLIDER_o246,
             COLLIDER_o291,
             MODEL_ao,
-            Ref(InteriorNPCs_BeachHouse_After))
+            InteriorNPCs_BeachHouse_After)
     EndIf
     Call(InitializeRadio)
     Set(LVar0, ROOM_UPDATE_EXIT_END)

@@ -98,11 +98,11 @@ EvtScript EVS_RideZipline = {
         Sub(LVar0, 10)
         Set(LVar1, ArrayVar(5))
         Add(LVar1, -5)
-        Call(SetNpcJumpscale, NPC_PARTNER, Float(0.5))
+        Call(SetNpcJumpscale, NPC_PARTNER, 0.5)
         Call(NpcJump0, NPC_PARTNER, ArrayVar(3), LVar0, LVar1, 8)
         Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
     EndThread
-    Call(SetPlayerJumpscale, Float(0.2))
+    Call(SetPlayerJumpscale, 0.2)
     Call(PlayerJump, ArrayVar(3), ArrayVar(4), ArrayVar(5), 5)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
     Wait(1)
@@ -183,7 +183,7 @@ EvtScript EVS_RideZipline = {
 EvtScript EVS_SetupZipline = {
     MallocArray(7, LVar0)
     UseArray(LVar0)
-    Set(ArrayVar(0), Ref(Zipline_Endpoints))
+    Set(ArrayVar(0), Zipline_Endpoints)
     Set(ArrayVar(1), MODEL_kassya_koma)
     Set(ArrayVar(2), MODEL_kassya_himo)
     Set(ArrayVar(3), -332)

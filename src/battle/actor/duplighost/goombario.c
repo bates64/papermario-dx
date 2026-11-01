@@ -88,9 +88,9 @@ static ActorBlueprint blueprint = {
 };
 
 static EvtScript EVS_Init = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
     Return
     End
 };
@@ -229,12 +229,12 @@ static EvtScript EVS_HeadbonkFollowthrough = {
     Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Add(LVar0, 60)
     Set(LVar1, 0)
-    Call(SetActorJumpGravity, ACTOR_SELF, Float(1.0))
+    Call(SetActorJumpGravity, ACTOR_SELF, 1.0)
     Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(JumpToGoal, ACTOR_SELF, 15, false, true, false)
     Call(GetStatusFlags, ACTOR_SELF, LVarA)
     IfFlag(LVarA, STATUS_FLAG_SHRINK)
-        SetF(LVar5, Float(7.2))
+        SetF(LVar5, 7.2)
     Else
         Set(LVar5, 18)
     EndIf
@@ -262,7 +262,7 @@ static EvtScript EVS_HeadbonkFollowthrough = {
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleGoombario_Idle)
     Wait(2)
     Call(SetGoalToHome, ACTOR_SELF)
-    Call(SetActorSpeed, ACTOR_SELF, Float(8.0))
+    Call(SetActorSpeed, ACTOR_SELF, 8.0)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleGoombario_Run)
     Call(RunToGoal, ACTOR_SELF, 0, false)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleGoombario_Idle)
@@ -278,7 +278,7 @@ static EvtScript EVS_ApproachPlayer = {
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(AddGoalPos, ACTOR_SELF, 70, 0, 0)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleGoombario_Run)
-    Call(SetActorSpeed, ACTOR_SELF, Float(5.0))
+    Call(SetActorSpeed, ACTOR_SELF, 5.0)
     Call(RunToGoal, ACTOR_SELF, 0, false)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleGoombario_Idle)
     Return
@@ -297,7 +297,7 @@ static EvtScript EVS_CalculateJumpTime = {
         Set(LVarB, LVarC)
     EndIf
     Sub(LVarB, 20)
-    DivF(LVarB, Float(10.588))
+    DivF(LVarB, 10.588)
     AddF(LVarB, 15)
     Set(LVarA, LVarB)
     Return
@@ -311,9 +311,9 @@ static EvtScript EVS_Attack_Headbonk = {
     ExecWait(EVS_CalculateJumpTime)
     Call(GetStatusFlags, ACTOR_SELF, LVarA)
     IfFlag(LVarA, STATUS_FLAG_SHRINK)
-        SetF(LVar0, Float(7.2))
-        SetF(LVar1, Float(7.6))
-        SetF(LVar1, Float(3.6))
+        SetF(LVar0, 7.2)
+        SetF(LVar1, 7.6)
+        SetF(LVar1, 3.6)
     Else
         Set(LVar0, 18)
         Set(LVar1, 19)
@@ -340,7 +340,7 @@ static EvtScript EVS_Attack_Headbonk = {
             Call(SetJumpAnimations, ACTOR_SELF, PRT_MAIN, ANIM_BattleGoombario_Headbonk, ANIM_BattleGoombario_Headbonk, ANIM_BattleGoombario_Headbonk)
             Call(ActorJumpToPos)
             Thread
-                Call(ShakeCam, CAM_BATTLE, 0, 5, Float(1.0))
+                Call(ShakeCam, CAM_BATTLE, 0, 5, 1.0)
             EndThread
             IfEq(LVarA, HIT_RESULT_LUCKY)
                 Call(EnemyTestTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_TRIGGER_LUCKY, 0, 0, 0)
@@ -354,11 +354,11 @@ static EvtScript EVS_Attack_Headbonk = {
         EndCaseGroup
     EndSwitch
     ChildThread
-        Call(SetPartScale, ACTOR_SELF, PRT_MAIN, Float(1.1), Float(0.8), Float(1.0))
+        Call(SetPartScale, ACTOR_SELF, PRT_MAIN, 1.1, 0.8, 1.0)
         Wait(1)
-        Call(SetPartScale, ACTOR_SELF, PRT_MAIN, Float(1.3), Float(0.5), Float(1.0))
+        Call(SetPartScale, ACTOR_SELF, PRT_MAIN, 1.3, 0.5, 1.0)
         Wait(1)
-        Call(SetPartScale, ACTOR_SELF, PRT_MAIN, Float(1.0), Float(1.0), Float(1.0))
+        Call(SetPartScale, ACTOR_SELF, PRT_MAIN, 1.0, 1.0, 1.0)
     EndChildThread
     Wait(1)
     Wait(2)
@@ -435,11 +435,11 @@ static EvtScript EVS_Attack_Headbonk = {
             Call(EnableActorBlur, ACTOR_SELF, ACTOR_BLUR_DISABLE)
     EndSwitch
     ChildThread
-        Call(SetPartScale, ACTOR_SELF, PRT_MAIN, Float(1.1), Float(0.8), Float(1.0))
+        Call(SetPartScale, ACTOR_SELF, PRT_MAIN, 1.1, 0.8, 1.0)
         Wait(1)
-        Call(SetPartScale, ACTOR_SELF, PRT_MAIN, Float(1.3), Float(0.5), Float(1.0))
+        Call(SetPartScale, ACTOR_SELF, PRT_MAIN, 1.3, 0.5, 1.0)
         Wait(1)
-        Call(SetPartScale, ACTOR_SELF, PRT_MAIN, Float(1.0), Float(1.0), Float(1.0))
+        Call(SetPartScale, ACTOR_SELF, PRT_MAIN, 1.0, 1.0, 1.0)
     EndChildThread
     Wait(1)
     Wait(2)
@@ -509,7 +509,7 @@ static API_CALLABLE(CloseTattleWindow) {
 static EvtScript EVS_Move_Tattle = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
-    Call(SetActorJumpGravity, ACTOR_SELF, Float(1.8))
+    Call(SetActorJumpGravity, ACTOR_SELF, 1.8)
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(JumpToGoal, ACTOR_SELF, 10, false, true, false)

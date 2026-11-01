@@ -17,13 +17,13 @@ EvtScript EVS_NpcInteract_ToadGuard = {
 };
 
 EvtScript EVS_NpcInit_Toad = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_ToadGuard = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ToadGuard))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_ToadGuard)
     Return
     End
 };

@@ -29,15 +29,15 @@ EvtScript EVS_UnlockPrompt_UpperDoor = {
 };
 
 EvtScript EVS_OpenLockedDoor = {
-    BindTrigger(Ref(EVS_ExitDoors_dgb_14_0), TRIGGER_WALL_PRESS_A, COLLIDER_deilittnw, 1, 0)
+    BindTrigger(EVS_ExitDoors_dgb_14_0, TRIGGER_WALL_PRESS_A, COLLIDER_deilittnw, 1, 0)
     Return
     End
 };
 
 EvtScript EVS_MakeEntities = {
     IfEq(GF_DGB03_UnlockedThirdFloor, false)
-        Call(MakeEntity, Ref(Entity_Padlock), -355, 218, 75, 80, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(EVS_OpenLockedDoor))
+        Call(MakeEntity, Entity_Padlock, -355, 218, 75, 80, MAKE_ENTITY_END)
+        Call(AssignScript, EVS_OpenLockedDoor)
         Set(MV_EntityID_Padlock, LVar0)
     EndIf
     Call(MakeItemEntity, ITEM_STAR_PIECE, 0, 75, 100, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_DGB03_Item_StarPiece)

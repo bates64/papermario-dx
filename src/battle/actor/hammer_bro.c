@@ -172,9 +172,9 @@ OVL_DEF_ACTOR() = {
 };
 
 EvtScript EVS_Init = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
     Call(SetActorVar, ACTOR_SELF, AVAR_Unused, 0)
     Return
     End
@@ -349,9 +349,9 @@ EvtScript EVS_Attack_HammerThrow = {
     EndThread
     Call(GetStatusFlags, ACTOR_SELF, LVar0)
     IfFlag(LVar0, STATUS_FLAG_SHRINK)
-        Call(SetPartScale, ACTOR_SELF, PRT_HAMMER_1, Float(0.4), Float(0.4), Float(0.4))
+        Call(SetPartScale, ACTOR_SELF, PRT_HAMMER_1, 0.4, 0.4, 0.4)
     Else
-        Call(SetPartScale, ACTOR_SELF, PRT_HAMMER_1, Float(1.0), Float(1.0), Float(1.0))
+        Call(SetPartScale, ACTOR_SELF, PRT_HAMMER_1, 1.0, 1.0, 1.0)
     EndIf
     Call(EnemyTestTarget, ACTOR_SELF, LVar0, 0, 0, 1, BS_FLAGS1_INCLUDE_POWER_UPS)
     Switch(LVar0)
@@ -364,7 +364,7 @@ EvtScript EVS_Attack_HammerThrow = {
             Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Sub(LVar0, 20)
             Set(LVar1, 10)
-            Call(SetPartJumpGravity, ACTOR_SELF, PRT_HAMMER_1, Float(1.3))
+            Call(SetPartJumpGravity, ACTOR_SELF, PRT_HAMMER_1, 1.3)
             Call(JumpPartTo, ACTOR_SELF, PRT_HAMMER_1, LVar0, LVar1, LVar2, 15, true)
             IfEq(LVarA, HIT_RESULT_LUCKY)
                 Call(EnemyTestTarget, ACTOR_SELF, LVarA, DAMAGE_TYPE_TRIGGER_LUCKY, 0, 0, 0)
@@ -390,7 +390,7 @@ EvtScript EVS_Attack_HammerThrow = {
     Call(PlaySoundAtPart, ACTOR_SELF, PRT_HAMMER_1, SOUND_HAMMER_BROS_THROW)
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-    Call(SetPartJumpGravity, ACTOR_SELF, PRT_HAMMER_1, Float(1.3))
+    Call(SetPartJumpGravity, ACTOR_SELF, PRT_HAMMER_1, 1.3)
     Call(JumpPartTo, ACTOR_SELF, PRT_HAMMER_1, LVar0, LVar1, LVar2, 15, true)
     Wait(2)
     Call(EnemyDamageTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_NO_CONTACT, 0, DMG_STATUS_KEY(STATUS_FLAG_SHRINK, 3, 50), DMG_HAMMER_THROW, BS_FLAGS1_TRIGGER_EVENTS)
@@ -417,7 +417,7 @@ EvtScript EVS_Attack_HammerThrow = {
 };
 
 EvtScript EVS_HammerSurge_Miss = {
-    Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, Float(2.0))
+    Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, 2.0)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HammerBros_Idle)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HammerBros_Throw)
     Wait(4)
@@ -431,7 +431,7 @@ EvtScript EVS_HammerSurge_Miss = {
     Set(LVar5, 30)
     Sub(LVar5, LVar4)
     Add(LVar1, LVar5)
-    Call(SetPartJumpGravity, ACTOR_SELF, LVar0, Float(1.3))
+    Call(SetPartJumpGravity, ACTOR_SELF, LVar0, 1.3)
     Call(JumpPartTo, ACTOR_SELF, LVar0, LVar1, LVar2, LVar3, 15, true)
     Sub(LVar1, 50)
     Set(LVar2, 10)
@@ -446,7 +446,7 @@ EvtScript EVS_HammerSurge_Miss = {
 };
 
 EvtScript EVS_HammerSurge_Hit = {
-    Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, Float(2.0))
+    Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, 2.0)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HammerBros_Idle)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HammerBros_Throw)
     Wait(4)
@@ -455,7 +455,7 @@ EvtScript EVS_HammerSurge_Hit = {
     Call(PlaySoundAtPart, ACTOR_SELF, LVar0, SOUND_HAMMER_BROS_THROW)
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(GetGoalPos, ACTOR_SELF, LVar1, LVar2, LVar3)
-    Call(SetPartJumpGravity, ACTOR_SELF, LVar0, Float(1.3))
+    Call(SetPartJumpGravity, ACTOR_SELF, LVar0, 1.3)
     Call(JumpPartTo, ACTOR_SELF, LVar0, LVar1, LVar2, LVar3, 15, true)
     Sub(LVar1, 50)
     Set(LVar2, 10)
@@ -497,17 +497,17 @@ EvtScript EVS_Attack_HammerSurge = {
     Call(SetPartPos, ACTOR_SELF, PRT_HAMMER_5, LVar0, LVar1, LVar2)
     Call(GetStatusFlags, ACTOR_SELF, LVar0)
     IfFlag(LVar0, STATUS_FLAG_SHRINK)
-        Call(SetPartScale, ACTOR_SELF, PRT_HAMMER_1, Float(0.4), Float(0.4), Float(0.4))
-        Call(SetPartScale, ACTOR_SELF, PRT_HAMMER_2, Float(0.4), Float(0.4), Float(0.4))
-        Call(SetPartScale, ACTOR_SELF, PRT_HAMMER_3, Float(0.4), Float(0.4), Float(0.4))
-        Call(SetPartScale, ACTOR_SELF, PRT_HAMMER_4, Float(0.4), Float(0.4), Float(0.4))
-        Call(SetPartScale, ACTOR_SELF, PRT_HAMMER_5, Float(0.4), Float(0.4), Float(0.4))
+        Call(SetPartScale, ACTOR_SELF, PRT_HAMMER_1, 0.4, 0.4, 0.4)
+        Call(SetPartScale, ACTOR_SELF, PRT_HAMMER_2, 0.4, 0.4, 0.4)
+        Call(SetPartScale, ACTOR_SELF, PRT_HAMMER_3, 0.4, 0.4, 0.4)
+        Call(SetPartScale, ACTOR_SELF, PRT_HAMMER_4, 0.4, 0.4, 0.4)
+        Call(SetPartScale, ACTOR_SELF, PRT_HAMMER_5, 0.4, 0.4, 0.4)
     Else
-        Call(SetPartScale, ACTOR_SELF, PRT_HAMMER_1, Float(1.0), Float(1.0), Float(1.0))
-        Call(SetPartScale, ACTOR_SELF, PRT_HAMMER_2, Float(1.0), Float(1.0), Float(1.0))
-        Call(SetPartScale, ACTOR_SELF, PRT_HAMMER_3, Float(1.0), Float(1.0), Float(1.0))
-        Call(SetPartScale, ACTOR_SELF, PRT_HAMMER_4, Float(1.0), Float(1.0), Float(1.0))
-        Call(SetPartScale, ACTOR_SELF, PRT_HAMMER_5, Float(1.0), Float(1.0), Float(1.0))
+        Call(SetPartScale, ACTOR_SELF, PRT_HAMMER_1, 1.0, 1.0, 1.0)
+        Call(SetPartScale, ACTOR_SELF, PRT_HAMMER_2, 1.0, 1.0, 1.0)
+        Call(SetPartScale, ACTOR_SELF, PRT_HAMMER_3, 1.0, 1.0, 1.0)
+        Call(SetPartScale, ACTOR_SELF, PRT_HAMMER_4, 1.0, 1.0, 1.0)
+        Call(SetPartScale, ACTOR_SELF, PRT_HAMMER_5, 1.0, 1.0, 1.0)
     EndIf
     Call(EnemyTestTarget, ACTOR_SELF, LVar0, 0, 0, 1, BS_FLAGS1_INCLUDE_POWER_UPS)
     Switch(LVar0)
@@ -592,7 +592,7 @@ EvtScript EVS_Attack_HammerSurge = {
 EvtScript EVS_TakeTurn = {
     Call(GetActorHP, ACTOR_SELF, LVar0)
     Call(GetEnemyMaxHP, ACTOR_SELF, LVar1)
-    MulF(LVar0, Float(100.0))
+    MulF(LVar0, 100.0)
     DivF(LVar0, LVar1)
     IfGt(LVar0, 34)
         ExecWait(EVS_Attack_HammerThrow)

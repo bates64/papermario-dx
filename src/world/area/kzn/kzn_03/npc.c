@@ -18,7 +18,7 @@ LetterDelivery LetterDelivery_Kolorado = {
 };
 
 EvtScript EVS_NpcIdle_Kolorado = {
-    Call(SetNpcSpeed, NPC_SELF, Float(2.0))
+    Call(SetNpcSpeed, NPC_SELF, 2.0)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Walk)
     Call(GetNpcPos, NPC_SELF, LVar4, LVar5, LVar6)
     Set(LVar3, LVar4)
@@ -58,7 +58,7 @@ EvtScript EVS_NpcIdle_Kolorado = {
     Call(SetSelfVar, 0, 1)
     Thread
         Call(GetNpcPos, NPC_SELF, LVar3, LVar4, LVar5)
-        Call(SetNpcJumpscale, NPC_SELF, Float(2.5))
+        Call(SetNpcJumpscale, NPC_SELF, 2.5)
         Label(5)
         Call(PlaySoundAtNpc, NPC_SELF, SOUND_NPC_JUMP, SOUND_SPACE_DEFAULT)
         Call(NpcJump0, NPC_SELF, LVar3, LVar4, LVar5, 9)
@@ -81,10 +81,10 @@ EvtScript EVS_NpcInteract_Kolorado = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     IfLt(GB_StoryProgress, STORY_CH5_SMASHED_ULTRA_BLOCK)
         IfEq(GF_KZN03_SpokeWithKolorado, false)
-            Call(AdjustCam, CAM_DEFAULT, Float(3.3), 0, 350, Float(15.0), Float(-7.0))
+            Call(AdjustCam, CAM_DEFAULT, 3.3, 0, 350, 15.0, -7.0)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_00F1)
             Set(GF_KZN03_SpokeWithKolorado, true)
-            Call(ResetCam, CAM_DEFAULT, Float(5.0))
+            Call(ResetCam, CAM_DEFAULT, 5.0)
         Else
             Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_00F2)
         EndIf
@@ -92,7 +92,7 @@ EvtScript EVS_NpcInteract_Kolorado = {
         Call(SetSelfVar, 0, 1)
         Thread
             Call(GetNpcPos, NPC_SELF, LVar3, LVar4, LVar5)
-            Call(SetNpcJumpscale, NPC_SELF, Float(2.5))
+            Call(SetNpcJumpscale, NPC_SELF, 2.5)
             Label(5)
             Call(PlaySoundAtNpc, NPC_SELF, SOUND_NPC_JUMP, SOUND_SPACE_DEFAULT)
             Call(NpcJump0, NPC_SELF, LVar3, LVar4, LVar5, 9)
@@ -107,7 +107,7 @@ EvtScript EVS_NpcInteract_Kolorado = {
         Wait(18)
     EndIf
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
-    Set(LVar0, Ref(LetterDelivery_Kolorado))
+    Set(LVar0, LetterDelivery_Kolorado)
     ExecWait(EVS_TryLetterDelivery)
     Return
     End
@@ -117,12 +117,12 @@ EvtScript EVS_NpcInit_Kolorado = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_SMASHED_ULTRA_BLOCK)
             IfEq(GF_KZN06_Visited, true)
-                Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Kolorado))
-                Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Kolorado))
+                Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Kolorado)
+                Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Kolorado)
                 Return
             EndIf
         CaseEq(STORY_CH5_SMASHED_ULTRA_BLOCK)
-            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Kolorado))
+            Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Kolorado)
             Return
     EndSwitch
     Call(RemoveNpc, NPC_SELF)
@@ -152,7 +152,7 @@ EvtScript EVS_SyncZiplineDummyNPC2 = {
 
 EvtScript EVS_NpcInit_ZiplineDummy = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, true)
-    Call(SetNpcScale, NPC_SELF, Float(0.3), 1, Float(0.3))
+    Call(SetNpcScale, NPC_SELF, 0.3, 1, 0.3)
     Return
     End
 };

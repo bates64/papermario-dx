@@ -23,7 +23,7 @@ EvtScript EVS_AnimateStarship = {
             Loop(0)
                 Call(UpdateLerp)
                 DivF(LVar0, 10)
-                Call(SetCamPitch, CAM_DEFAULT, LVar0, Float(-3.0))
+                Call(SetCamPitch, CAM_DEFAULT, LVar0, -3.0)
                 Wait(1)
                 IfEq(LVar1, 0)
                     BreakLoop
@@ -42,7 +42,7 @@ EvtScript EVS_AnimateStarship = {
         Loop(0)
             Call(UpdateLerp)
             SetF(LVar2, LVar0)
-            MulF(LVar2, Float(0.1))
+            MulF(LVar2, 0.1)
             Call(TranslateGroup, MODEL_ry, MV_Starship_PosX, LVar2, 0)
             Call(RotateGroup, MODEL_ry, MV_Starship_Yaw, 0, 1, 0)
             Call(GetModelCenter, MODEL_ry3)
@@ -74,8 +74,8 @@ EvtScript EVS_Starship_Flight1 = {
     Call(SetNpcYaw, NPC_PARTNER, 90)
     Call(UseSettingsFrom, CAM_DEFAULT, 0, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, 0, 0, 0)
-    Call(SetCamPitch, CAM_DEFAULT, Float(18.5), Float(-3.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamPitch, CAM_DEFAULT, 18.5, -3.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Set(MV_Starship_PosX, -300)
     Set(MV_Starship_Yaw, 0)
@@ -94,7 +94,7 @@ EvtScript EVS_Starship_Flight1 = {
         EndLoop
         Wait(100)
         Call(PlaySound, SOUND_STARSHIP_ENGINE_LOOP | SOUND_ID_TRIGGER_CHANGE_SOUND)
-        Call(GotoMap, Ref("hos_00"), hos_00_ENTRY_3)
+        Call(GotoMap, "hos_00", hos_00_ENTRY_3)
     Else
         Thread
             Call(MakeLerp, -300, 0, 120, EASING_QUADRATIC_OUT)
@@ -129,7 +129,7 @@ EvtScript EVS_Starship_Flight1 = {
             EndIf
         EndLoop
         Call(PlaySound, SOUND_STARSHIP_ENGINE_LOOP | SOUND_ID_TRIGGER_CHANGE_SOUND)
-        Call(GotoMap, Ref("kpa_60"), kpa_60_ENTRY_4)
+        Call(GotoMap, "kpa_60", kpa_60_ENTRY_4)
     EndIf
     Wait(100)
     Return
@@ -146,8 +146,8 @@ EvtScript EVS_Starship_Flight2 = {
     Call(SetNpcYaw, NPC_PARTNER, 90)
     Call(UseSettingsFrom, CAM_DEFAULT, 0, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, 0, 0, 0)
-    Call(SetCamPitch, CAM_DEFAULT, Float(18.5), Float(-3.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamPitch, CAM_DEFAULT, 18.5, -3.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(PlaySound, SOUND_STARSHIP_ENGINE_LOOP)
     Set(MV_Starship_PosX, 0)
@@ -166,7 +166,7 @@ EvtScript EVS_Starship_Flight2 = {
         EndIf
     EndLoop
     Wait(20)
-    Call(GotoMap, Ref("osr_03"), osr_03_ENTRY_3)
+    Call(GotoMap, "osr_03", osr_03_ENTRY_3)
     Wait(100)
     Return
     End
@@ -182,8 +182,8 @@ EvtScript EVS_Starship_Return = {
     Call(SetNpcYaw, NPC_PARTNER, 270)
     Call(UseSettingsFrom, CAM_DEFAULT, 0, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, 0, 0, 0)
-    Call(SetCamPitch, CAM_DEFAULT, Float(18.5), Float(-3.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamPitch, CAM_DEFAULT, 18.5, -3.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Set(MV_Starship_PosX, 300)
     Set(MV_Starship_Yaw, 180)
@@ -223,7 +223,7 @@ EvtScript EVS_Starship_Return = {
         EndIf
     EndLoop
     Call(PlaySound, SOUND_STARSHIP_ENGINE_LOOP | SOUND_ID_TRIGGER_CHANGE_SOUND)
-    Call(GotoMap, Ref("hos_05"), hos_05_ENTRY_1)
+    Call(GotoMap, "hos_05", hos_05_ENTRY_1)
     Wait(100)
     Return
     End

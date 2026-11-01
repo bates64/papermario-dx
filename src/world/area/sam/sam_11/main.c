@@ -1,8 +1,8 @@
 #include "sam_11.h"
 
 EvtScript EVS_LoadPondAnimation = {
-    Call(LoadAnimatedModel, 0, Ref(ShatterPondSkeleton))
-    Call(PlayModelAnimation, 0, Ref(AS_ShatterPond))
+    Call(LoadAnimatedModel, 0, ShatterPondSkeleton)
+    Call(PlayModelAnimation, 0, AS_ShatterPond)
     Call(SetAnimatedModelRootPosition, 0, 0, 0, 0)
     Call(SetAnimatedModelRenderMode, 0, RENDER_MODE_SURFACE_OPA)
     Return
@@ -57,7 +57,7 @@ EvtScript EVS_ExitWalk_sam_02_1 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(UseExitHeading, 60, sam_11_ENTRY_0)
     Exec(ExitWalk)
-    Call(GotoMap, Ref("sam_02"), sam_02_ENTRY_1)
+    Call(GotoMap, "sam_02", sam_02_ENTRY_1)
     Wait(100)
     Return
     End
@@ -71,15 +71,15 @@ EvtScript EVS_ExitWalk_sam_03_0 = {
     Set(GF_SAM11_LeftTown, true)
     Call(UseExitHeading, 60, sam_11_ENTRY_1)
     Exec(ExitWalk)
-    Call(GotoMap, Ref("sam_03"), sam_03_ENTRY_0)
+    Call(GotoMap, "sam_03", sam_03_ENTRY_0)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_sam_02_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_sam_03_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitWalk_sam_02_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitWalk_sam_03_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     Return
     End
 };
@@ -94,17 +94,17 @@ EvtScript EVS_Main = {
     IfNe(LVar0, sam_11_ENTRY_2)
         Goto(10)
     EndIf
-    Call(MakeNpcs, false, Ref(EpilogueNPCs))
+    Call(MakeNpcs, false, EpilogueNPCs)
     Call(FadeInMusic, 0, SONG_SHIVER_CITY, 0, 3000, 0, 127)
     Return
     Label(10)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_MAYOR_MURDER_MYSTERY)
-            Call(MakeNpcs, false, Ref(BeforeNPCs))
+            Call(MakeNpcs, false, BeforeNPCs)
         CaseLt(STORY_CH7_MAYOR_MURDER_SOLVED)
-            Call(MakeNpcs, false, Ref(MysteryNPCs))
+            Call(MakeNpcs, false, MysteryNPCs)
         CaseGe(STORY_CH7_MAYOR_MURDER_SOLVED)
-            Call(MakeNpcs, false, Ref(AfterNPCs))
+            Call(MakeNpcs, false, AfterNPCs)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o621, COLLIDER_FLAGS_UPPER_MASK)
     EndSwitch
     ExecWait(EVS_MakeEntities)
@@ -124,18 +124,18 @@ EvtScript EVS_Main = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_suimen, SURFACE_TYPE_SNOW)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_deilie, SURFACE_TYPE_SNOW)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_deiliw, SURFACE_TYPE_SNOW)
-    Set(LVar0, Ref(ShakeTree_Tree1))
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(BombPos_Tree1), 1, 0)
-    Set(LVar0, Ref(ShakeTree_Tree2))
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_WALL_HAMMER, COLLIDER_miki4, 1, 0)
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(BombPos_Tree2), 1, 0)
-    Set(LVar0, Ref(ShakeTree_Tree3))
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_WALL_HAMMER, COLLIDER_miki5, 1, 0)
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(BombPos_Tree3), 1, 0)
+    Set(LVar0, ShakeTree_Tree1)
+    BindTrigger(EVS_ShakeTree, TRIGGER_POINT_BOMB, BombPos_Tree1, 1, 0)
+    Set(LVar0, ShakeTree_Tree2)
+    BindTrigger(EVS_ShakeTree, TRIGGER_WALL_HAMMER, COLLIDER_miki4, 1, 0)
+    BindTrigger(EVS_ShakeTree, TRIGGER_POINT_BOMB, BombPos_Tree2, 1, 0)
+    Set(LVar0, ShakeTree_Tree3)
+    BindTrigger(EVS_ShakeTree, TRIGGER_WALL_HAMMER, COLLIDER_miki5, 1, 0)
+    BindTrigger(EVS_ShakeTree, TRIGGER_POINT_BOMB, BombPos_Tree3, 1, 0)
     Call(InitAnimatedModels)
     Call(GetEntryID, LVar0)
     IfNe(LVar0, sam_11_ENTRY_2)
-        Set(LVar0, Ref(EVS_BindExitTriggers))
+        Set(LVar0, EVS_BindExitTriggers)
         Exec(EnterWalk)
         Wait(1)
     EndIf

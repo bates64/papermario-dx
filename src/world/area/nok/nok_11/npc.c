@@ -45,18 +45,18 @@ EvtScript EVS_NpcIdle_JrTroopa_01 = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_JrTroopa_Talk, ANIM_JrTroopa_Idle, 5, MSG_CH1_011E)
     Wait(15 * DT)
     Call(SetCamLeadPlayer, CAM_DEFAULT, false)
-    Call(SetCamProperties, CAM_DEFAULT, Float(90.0), -190, 0, -40, 200, Float(15.0), Float(-8.5))
+    Call(SetCamProperties, CAM_DEFAULT, 90.0, -190, 0, -40, 200, 15.0, -8.5)
     Wait(15 * DT)
-    Set(LVar0, Ref(SearchBush_Scene))
+    Set(LVar0, SearchBush_Scene)
     Exec(EVS_SearchBush)
     Wait(15 * DT)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_NPC_JUMP, SOUND_SPACE_DEFAULT)
-    Call(SetNpcJumpscale, NPC_SELF, Float(1.0))
+    Call(SetNpcJumpscale, NPC_SELF, 1.0)
     Call(NpcJump0, NPC_SELF, -230, 0, -157, 15 * DT)
     Call(NpcFacePlayer, NPC_SELF, 0)
     Wait(15 * DT)
     Call(SpeakToPlayer, NPC_SELF, ANIM_JrTroopa_PointTalk, ANIM_JrTroopa_PointTapFoot, 0, MSG_CH1_011F)
-    Call(SetCamProperties, CAM_DEFAULT, Float(4.0 / DT), -140, 0, -40, 400, Float(15.0), Float(-5.0))
+    Call(SetCamProperties, CAM_DEFAULT, 4.0 / DT, -140, 0, -40, 400, 15.0, -5.0)
     Call(SetNpcAnimation, NPC_SELF, ANIM_JrTroopa_Charge)
     Wait(10 * DT)
     Thread
@@ -75,7 +75,7 @@ EvtScript EVS_NpcIdle_JrTroopa_01 = {
         EndLoop
     EndThread
     Call(NpcMoveTo, NPC_SELF, -201, -67, 10 * DT)
-    Call(SetNpcJumpscale, NPC_SELF, Float(2.0))
+    Call(SetNpcJumpscale, NPC_SELF, 2.0)
     Call(NpcJump1, NPC_SELF, -191, 0, -32, 5 * DT)
     ExecGetTID(EVS_JrTroopa_RunFX, LVarA)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_SLIDE, SOUND_SPACE_DEFAULT)
@@ -90,24 +90,24 @@ EvtScript EVS_NpcIdle_JrTroopa_01 = {
         Call(PlaySoundAtNpc, NPC_SELF, SOUND_WATER_SPLASH, SOUND_SPACE_DEFAULT)
         Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
         Sub(LVar0, 5)
-        PlayEffect(EFFECT_WATER_SPLASH, 2, LVar0, LVar1, LVar2, Float(0.7), 30)
+        PlayEffect(EFFECT_WATER_SPLASH, 2, LVar0, LVar1, LVar2, 0.7, 30)
         Add(LVar0, 10)
-        PlayEffect(EFFECT_WATER_SPLASH, 2, LVar0, LVar1, LVar2, Float(0.7), 30)
+        PlayEffect(EFFECT_WATER_SPLASH, 2, LVar0, LVar1, LVar2, 0.7, 30)
         Wait(5 * DT)
         Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
         Sub(LVar0, 25)
-        PlayEffect(EFFECT_WATER_SPLASH, 2, LVar0, LVar1, LVar2, Float(0.7), 30)
+        PlayEffect(EFFECT_WATER_SPLASH, 2, LVar0, LVar1, LVar2, 0.7, 30)
         Add(LVar0, 10)
-        PlayEffect(EFFECT_WATER_SPLASH, 2, LVar0, LVar1, LVar2, Float(0.7), 30)
+        PlayEffect(EFFECT_WATER_SPLASH, 2, LVar0, LVar1, LVar2, 0.7, 30)
         Wait(5 * DT)
         Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
         Sub(LVar0, -15)
-        PlayEffect(EFFECT_WATER_SPLASH, 2, LVar0, LVar1, LVar2, Float(0.7), 30)
+        PlayEffect(EFFECT_WATER_SPLASH, 2, LVar0, LVar1, LVar2, 0.7, 30)
         Add(LVar0, 10)
-        PlayEffect(EFFECT_WATER_SPLASH, 2, LVar0, LVar1, LVar2, Float(0.7), 30)
+        PlayEffect(EFFECT_WATER_SPLASH, 2, LVar0, LVar1, LVar2, 0.7, 30)
     EndThread
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_FALL_QUICK, SOUND_SPACE_DEFAULT)
-    Call(SetNpcJumpscale, NPC_SELF, Float(0.5))
+    Call(SetNpcJumpscale, NPC_SELF, 0.5)
     Call(NpcJump0, NPC_SELF, -165, -90, 50, 20 * DT)
     Wait(30 * DT)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_JR_TROOPA_SCAMPER, SOUND_SPACE_DEFAULT)
@@ -124,7 +124,7 @@ EvtScript EVS_NpcIdle_JrTroopa_01 = {
     Call(NpcMoveTo, NPC_SELF, -190, -45, 10 * DT)
     Call(NpcFacePlayer, NPC_SELF, 0)
     Call(SetNpcAnimation, NPC_SELF, ANIM_JrTroopa_PointTapFoot)
-    Call(SetCamProperties, CAM_DEFAULT, Float(90.0), -140, 0, -40, 250, Float(15.0), Float(-8.5))
+    Call(SetCamProperties, CAM_DEFAULT, 90.0, -140, 0, -40, 250, 15.0, -8.5)
     Call(SpeakToPlayer, NPC_SELF, ANIM_JrTroopa_PointTalk, ANIM_JrTroopa_PointTapFoot, 0, MSG_CH1_0121)
     Call(DisablePartnerAI, false)
     Call(GetCurrentPartnerID, LVar0)
@@ -199,9 +199,9 @@ EvtScript EVS_NpcDefeat_JrTroopa_01 = {
         Wait(4)
         Exec(EVS_SetupMusic)
     EndThread
-    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_JrTroopa_01))
+    Call(BindNpcAI, NPC_SELF, EVS_NpcAI_JrTroopa_01)
     Call(SetNpcFlagBits, NPC_JrTroopa_02, NPC_FLAG_INVISIBLE, true)
-    Call(ResetCam, CAM_DEFAULT, Float(90.0))
+    Call(ResetCam, CAM_DEFAULT, 90.0)
     Call(DisablePlayerInput, false)
     Return
     End
@@ -262,7 +262,7 @@ EvtScript EVS_NpcIdle_KentCKoopa_01 = {
     Else
         Set(LVar0, -20)
     EndIf
-    Call(AdjustCam, CAM_DEFAULT, Float(5.0), LVar0, Float(275.0), Float(17.5), Float(-12.0))
+    Call(AdjustCam, CAM_DEFAULT, 5.0, LVar0, 275.0, 17.5, -12.0)
     Call(SpeakToPlayer, NPC_KentCKoopa_02, ANIM_KentCKoopa_Talk, ANIM_KentCKoopa_Idle, 0, MSG_CH1_012D)
     Label(15)
     Call(ShowCoinCounter, true)
@@ -314,7 +314,7 @@ EvtScript EVS_NpcIdle_KentCKoopa_01 = {
     Call(NpcMoveTo, NPC_KentCKoopa_02, LVar0, -37, 40)
     Call(SetNpcPos, NPC_KentCKoopa_02, NPC_DISPOSE_LOCATION)
     Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
-    Call(ResetCam, CAM_DEFAULT, Float(5.0))
+    Call(ResetCam, CAM_DEFAULT, 5.0)
     Goto(100)
     Label(30)
     Call(KentCheckNotEnoughCoins)
@@ -338,7 +338,7 @@ EvtScript EVS_NpcIdle_KentCKoopa_01 = {
     Call(SetNpcAnimation, NPC_KentCKoopa_02, ANIM_KentCKoopa_Walk)
     Call(NpcMoveTo, NPC_KentCKoopa_02, -167, -100, 20)
     Call(SetNpcFlagBits, NPC_KentCKoopa_02, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
-    Call(BindNpcInteract, NPC_KentCKoopa_02, Ref(EVS_NpcInteract_KentCKoopa_02))
+    Call(BindNpcInteract, NPC_KentCKoopa_02, EVS_NpcInteract_KentCKoopa_02)
     Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     Call(SetNpcAnimation, NPC_KentCKoopa_02, ANIM_KentCKoopa_Idle)
     IfEq(AB_NOK11_KentEntryID, nok_11_ENTRY_0)
@@ -349,12 +349,12 @@ EvtScript EVS_NpcIdle_KentCKoopa_01 = {
     Call(InterpNpcYaw, NPC_KentCKoopa_02, LVar0, 0)
     Wait(10)
     Call(SpeakToPlayer, NPC_KentCKoopa_02, ANIM_KentCKoopa_Talk, ANIM_KentCKoopa_Idle, 0, MSG_CH1_0134)
-    Call(ResetCam, CAM_DEFAULT, Float(5.0))
+    Call(ResetCam, CAM_DEFAULT, 5.0)
     Goto(100)
     Label(40)
     Call(ShowCoinCounter, false)
     Call(ContinueSpeech, NPC_KentCKoopa_02, ANIM_KentCKoopa_Talk, ANIM_KentCKoopa_Idle, 0, MSG_CH1_012F)
-    Call(ResetCam, CAM_DEFAULT, Float(5.0))
+    Call(ResetCam, CAM_DEFAULT, 5.0)
     Exec(EVS_SetupMusic)
     Wait(30)
     Call(DisablePlayerInput, false)
@@ -390,7 +390,7 @@ EvtScript EVS_NpcIdle_KentCKoopa_01 = {
     Label(50)
     Call(ShowCoinCounter, false)
     Call(ContinueSpeech, NPC_KentCKoopa_02, ANIM_KentCKoopa_Talk, ANIM_KentCKoopa_Idle, 0, MSG_CH1_0131)
-    Call(ResetCam, CAM_DEFAULT, Float(5.0))
+    Call(ResetCam, CAM_DEFAULT, 5.0)
     Exec(EVS_SetupMusic)
     Wait(30)
     Call(DisablePlayerInput, false)
@@ -425,7 +425,7 @@ EvtScript EVS_NpcIdle_KentCKoopa_01 = {
     Else
         Set(LVar0, -20)
     EndIf
-    Call(AdjustCam, CAM_DEFAULT, Float(5.0), LVar0, Float(275.0), Float(17.5), Float(-12.0))
+    Call(AdjustCam, CAM_DEFAULT, 5.0, LVar0, 275.0, 17.5, -12.0)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(SetPlayerPos, LVar3, LVar1, LVar2)
     Goto(15)
@@ -517,16 +517,16 @@ NpcData NpcData_SpikedGoomba = {
 };
 
 EvtScript EVS_NpcInit_JrTroopa_01 = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_JrTroopa_01))
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_JrTroopa_01))
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_JrTroopa_01))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_JrTroopa_01)
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_JrTroopa_01)
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_JrTroopa_01)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_JrTroopa_02 = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_JrTroopa_02))
-    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_JrTroopa_02))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_JrTroopa_02)
+    Call(BindNpcHit, NPC_SELF, EVS_NpcHit_JrTroopa_02)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_HAS_SHADOW, false)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, true)
     Return
@@ -559,8 +559,8 @@ NpcData NpcData_JrTroopa[] = {
 };
 
 EvtScript EVS_NpcInit_KentCKoopa_01 = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_KentCKoopa_01))
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_KentCKoopa_01))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_KentCKoopa_01)
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_KentCKoopa_01)
     Call(EnableNpcShadow, NPC_SELF, false)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(GetEntryID, AB_NOK11_KentEntryID)
@@ -569,7 +569,7 @@ EvtScript EVS_NpcInit_KentCKoopa_01 = {
 };
 
 EvtScript EVS_NpcInit_KentCKoopa_02 = {
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_KentCKoopa_02))
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_KentCKoopa_02)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(GetEntryID, LVar3)
     IfEq(LVar3, nok_11_ENTRY_0)

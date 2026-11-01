@@ -29,22 +29,22 @@ EvtScript EVS_ExitDoors_trd_06_1 =
 ITEM_LIST(KeyList, ITEM_KOOPA_FORTRESS_KEY);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitDoors_trd_03_1), TRIGGER_WALL_PRESS_A, COLLIDER_ttw2, 1, 0)
+    BindTrigger(EVS_ExitDoors_trd_03_1, TRIGGER_WALL_PRESS_A, COLLIDER_ttw2, 1, 0)
     IfEq(GF_TRD04_UnlockedLowerDoor, false)
-        BindPadlock(Ref(EVS_UnlockLowerRightDoors), TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), Ref(KeyList), 0, 1)
+        BindPadlock(EVS_UnlockLowerRightDoors, TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), KeyList, 0, 1)
     Else
-        BindTrigger(Ref(EVS_ExitDoors_trd_05_0), TRIGGER_WALL_PRESS_A, COLLIDER_tte2, 1, 0)
+        BindTrigger(EVS_ExitDoors_trd_05_0, TRIGGER_WALL_PRESS_A, COLLIDER_tte2, 1, 0)
     EndIf
     IfEq(GF_TRD04_UnlockedUpperDoor, false)
         IfEq(GF_TRD04_UnlockedLowerDoor, true)
-            BindPadlock(Ref(EVS_UnlockUpperLeftDoors), TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), Ref(KeyList), 0, 1)
+            BindPadlock(EVS_UnlockUpperLeftDoors, TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), KeyList, 0, 1)
         EndIf
     Else
-        BindTrigger(Ref(EVS_ExitDoors_trd_03_3), TRIGGER_WALL_PRESS_A, COLLIDER_ttw3, 1, 0)
+        BindTrigger(EVS_ExitDoors_trd_03_3, TRIGGER_WALL_PRESS_A, COLLIDER_ttw3, 1, 0)
     EndIf
-    BindTrigger(Ref(EVS_ExitDoors_trd_05_3), TRIGGER_WALL_PRESS_A, COLLIDER_tte3, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_trd_07_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoors_trd_06_1), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
+    BindTrigger(EVS_ExitDoors_trd_05_3, TRIGGER_WALL_PRESS_A, COLLIDER_tte3, 1, 0)
+    BindTrigger(EVS_ExitWalk_trd_07_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitDoors_trd_06_1, TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
     Return
     End
 };
@@ -81,7 +81,7 @@ EvtScript EVS_EnterMap = {
             ExecWait(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
         CaseEq(trd_04_ENTRY_4)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
         CaseEq(trd_04_ENTRY_5)
             Set(LVar2, MODEL_o29)
@@ -101,10 +101,10 @@ EvtScript EVS_Scene_LowerStairs = {
     Call(DisablePlayerInput, true)
     Wait(30 * DT)
     Thread
-        Call(ShakeCam, CAM_DEFAULT, 0, 10 * DT, Float(0.7))
-        Call(ShakeCam, CAM_DEFAULT, 0, 320 * DT, Float(1.0))
-        Call(ShakeCam, CAM_DEFAULT, 0, 10 * DT, Float(0.7))
-        Call(ShakeCam, CAM_DEFAULT, 0, 10 * DT, Float(0.4))
+        Call(ShakeCam, CAM_DEFAULT, 0, 10 * DT, 0.7)
+        Call(ShakeCam, CAM_DEFAULT, 0, 320 * DT, 1.0)
+        Call(ShakeCam, CAM_DEFAULT, 0, 10 * DT, 0.7)
+        Call(ShakeCam, CAM_DEFAULT, 0, 10 * DT, 0.4)
     EndThread
     Wait(30 * DT)
     Call(EnableModel, MODEL_o6, false)
@@ -112,10 +112,10 @@ EvtScript EVS_Scene_LowerStairs = {
     Call(EnableModel, MODEL_bero2, false)
     Call(UseSettingsFrom, CAM_DEFAULT, -50, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, -50, 0, 0)
-    Call(SetCamDistance, CAM_DEFAULT, Float(540.0))
+    Call(SetCamDistance, CAM_DEFAULT, 540.0)
     Call(SetCamPitch, CAM_DEFAULT, 15, -6)
     Call(SetCamPosA, CAM_DEFAULT, -30, -60)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(SetPlayerPos, -185, 0, -36)
     Call(InterpPlayerYaw, 90, 0)
@@ -194,11 +194,11 @@ EvtScript EVS_Scene_LowerStairs = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, 0, LVar2)
-    Call(SetCamDistance, CAM_DEFAULT, Float(400.0))
+    Call(SetCamDistance, CAM_DEFAULT, 400.0)
     Call(SetCamPosA, CAM_DEFAULT, -169, 130)
     Call(SetCamPitch, CAM_DEFAULT, 18, -6)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(4.0 / DT))
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 4.0 / DT)
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Wait(2)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(EnableModel, MODEL_o6, true)
@@ -217,9 +217,9 @@ EvtScript EVS_Main = {
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(SetRenderMode, MODEL_suimen, RENDER_MODE_SURFACE_XLU_LAYER2)
     IfLt(GB_StoryProgress, STORY_CH1_LOWERED_FIRST_STAIRS)
-        Call(MakeNpcs, true, Ref(NpcGroupBefore))
+        Call(MakeNpcs, true, NpcGroupBefore)
     Else
-        Call(MakeNpcs, true, Ref(NpcGroupAfter))
+        Call(MakeNpcs, true, NpcGroupAfter)
     EndIf
     ExecWait(EVS_MakeEntities)
     Exec(EVS_SetupMusic)
@@ -232,7 +232,7 @@ EvtScript EVS_Main = {
         Call(TranslateModel, MODEL_k_kusari, 0, 187, 0)
         Call(UpdateColliderTransform, COLLIDER_o86)
         Call(UpdateColliderTransform, COLLIDER_o87)
-        BindTrigger(Ref(EVS_Scene_LowerStairs), TRIGGER_AREA_FLAG_SET, AF_TRD04_LowerStairs, 1, 0)
+        BindTrigger(EVS_Scene_LowerStairs, TRIGGER_AREA_FLAG_SET, AF_TRD04_LowerStairs, 1, 0)
     EndIf
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_ttw, COLLIDER_FLAGS_UPPER_MASK)
     Call(EnableModel, MODEL_o34, false)

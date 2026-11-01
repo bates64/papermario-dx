@@ -55,7 +55,7 @@ EvtScript EVS_NpcInteract_Archeologist = {
 };
 
 EvtScript EVS_NpcInit_Archeologist = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Archeologist))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Archeologist)
     IfGe(GB_StoryProgress, STORY_UNUSED_FFFFFFCC)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -76,14 +76,14 @@ EvtScript EVS_NpcInteract_MrE = {
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_Dryite_Blue_Talk, ANIM_Dryite_Blue_Idle, 0, MSG_CH2_0094)
     EndSwitch
-    Set(LVar0, Ref(LetterDelivery_MrE))
+    Set(LVar0, LetterDelivery_MrE)
     ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_MrE = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_MrE))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_MrE)
     Return
     End
 };
@@ -108,7 +108,7 @@ EvtScript EVS_NpcInteract_Dryite_02 = {
 };
 
 EvtScript EVS_NpcInit_Dryite_02 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Dryite_02))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Dryite_02)
     Return
     End
 };
@@ -120,7 +120,7 @@ EvtScript EVS_NpcInteract_Dryite_03 = {
 };
 
 EvtScript EVS_NpcInit_Dryite_03 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Dryite_03))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Dryite_03)
     Return
     End
 };
@@ -157,7 +157,7 @@ EvtScript EVS_NpcInteract_Mouser_01 = {
 };
 
 EvtScript EVS_NpcInit_Mouser_01 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Mouser_01))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Mouser_01)
     Return
     End
 };
@@ -182,7 +182,7 @@ EvtScript EVS_NpcInteract_Mouser_02 = {
 };
 
 EvtScript EVS_NpcInit_Mouser_02 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Mouser_02))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Mouser_02)
     Return
     End
 };
@@ -228,7 +228,7 @@ EvtScript EVS_NpcIdle_Mouser_03 = {
 };
 
 EvtScript EVS_NpcInit_Mouser_03 = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Mouser_03))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Mouser_03)
     IfGe(GB_StoryProgress, STORY_CH2_SPOKE_WITH_SHEEK)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -248,7 +248,7 @@ EvtScript EVS_ToadHouse_SetDialogue = {
 
 EvtScript EVS_ToadHouse_GetInBed = {
     Exec(EVS_PlayRestMusic)
-    Call(SetPlayerSpeed, Float(3.0))
+    Call(SetPlayerSpeed, 3.0)
     Call(PlayerMoveTo, -179, -198, 0)
     Thread
         Wait(15)
@@ -259,7 +259,7 @@ EvtScript EVS_ToadHouse_GetInBed = {
         Call(SetCamPosA, CAM_DEFAULT, 202, 62)
         Call(SetCamPosB, CAM_DEFAULT, -89, -141)
         Call(SetCamPosC, CAM_DEFAULT, 0, 0)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+        Call(SetCamSpeed, CAM_DEFAULT, 90.0)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
     EndThread
     Call(PlayerMoveTo, -187, -267, 0)
@@ -289,7 +289,7 @@ EvtScript EVS_ToadHouse_ReturnFromRest = {
     Call(HidePlayerShadow, false)
     Call(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_CLEAR, 0, 0, 0, 0)
     Call(SetPlayerPos, -187, 0, -240)
-    Call(SetPlayerSpeed, Float(3.0))
+    Call(SetPlayerSpeed, 3.0)
     Call(PlayerMoveTo, -168, -195, 0)
     Exec(EVS_SetupMusic)
     Return
@@ -297,13 +297,13 @@ EvtScript EVS_ToadHouse_ReturnFromRest = {
 };
 
 EvtScript EVS_NpcInit_ToadHouseKeeper = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ToadHouseKeeper))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_ToadHouseKeeper)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Merlee = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Merlee))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Merlee)
     Return
     End
 };

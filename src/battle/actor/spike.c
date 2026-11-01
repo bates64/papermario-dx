@@ -116,9 +116,9 @@ OVL_DEF_ACTOR() = {
 };
 
 EvtScript EVS_Init = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
     Return
     End
 };
@@ -131,7 +131,7 @@ EvtScript EVS_Idle = {
 EvtScript EVS_ReturnHome = {
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleLakilester_Run)
     Call(SetGoalToHome, ACTOR_SELF)
-    Call(SetActorSpeed, ACTOR_SELF, Float(7.0))
+    Call(SetActorSpeed, ACTOR_SELF, 7.0)
     Call(FlyToGoal, ACTOR_SELF, 0, 0, EASING_SIN_OUT)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleLakilester_Idle)
     Return
@@ -258,12 +258,12 @@ EvtScript EVS_Attack_SpinyToss = {
         Add(LVar0, -1)
         Add(LVar1, 4)
         Add(LVar2, 2)
-        Call(SetPartScale, ACTOR_SELF, PRT_SPINY_BALL, Float(0.4), Float(0.4), Float(0.4))
+        Call(SetPartScale, ACTOR_SELF, PRT_SPINY_BALL, 0.4, 0.4, 0.4)
     Else
         Add(LVar0, -3)
         Add(LVar1, 10)
         Add(LVar2, 5)
-        Call(SetPartScale, ACTOR_SELF, PRT_SPINY_BALL, Float(1.0), Float(1.0), Float(1.0))
+        Call(SetPartScale, ACTOR_SELF, PRT_SPINY_BALL, 1.0, 1.0, 1.0)
     EndIf
     Call(SetPartPos, ACTOR_SELF, PRT_SPINY_BALL, LVar0, LVar1, LVar2)
     Wait(1)
@@ -273,7 +273,7 @@ EvtScript EVS_Attack_SpinyToss = {
     Loop(4)
         Call(GetStatusFlags, ACTOR_SELF, LVarA)
         IfFlag(LVarA, STATUS_FLAG_SHRINK)
-            AddF(LVar1, Float(2.4))
+            AddF(LVar1, 2.4)
         Else
             Add(LVar1, 6)
         EndIf
@@ -286,12 +286,12 @@ EvtScript EVS_Attack_SpinyToss = {
         Add(LVar0, -3)
         Add(LVar1, 16)
         Add(LVar2, 2)
-        SetF(LVar3, Float(0.4))
+        SetF(LVar3, 0.4)
     Else
         Add(LVar0, -8)
         Add(LVar1, 40)
         Add(LVar2, 5)
-        SetF(LVar3, Float(1.0))
+        SetF(LVar3, 1.0)
     EndIf
     PlayEffect(EFFECT_ENERGY_IN_OUT, 0, LVar0, LVar1, LVar2, LVar3, 30)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SPIKE_SUMMON_SPINY)
@@ -323,7 +323,7 @@ EvtScript EVS_Attack_SpinyToss = {
         CaseOrEq(HIT_RESULT_LUCKY)
             Set(LVarA, LVar0)
             Call(SetAnimation, ACTOR_SELF, PRT_SPINY_BALL, ANIM_BattleLakilester_SpinySpin)
-            Call(SetPartJumpGravity, ACTOR_SELF, PRT_SPINY_BALL, Float(1.5))
+            Call(SetPartJumpGravity, ACTOR_SELF, PRT_SPINY_BALL, 1.5)
             Call(SetGoalToTarget, ACTOR_SELF)
             Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(RandInt, 100, LVar3)
@@ -353,7 +353,7 @@ EvtScript EVS_Attack_SpinyToss = {
         EndCaseGroup
     EndSwitch
     Call(SetAnimation, ACTOR_SELF, PRT_SPINY_BALL, ANIM_BattleLakilester_SpinySpin)
-    Call(SetPartJumpGravity, ACTOR_SELF, PRT_SPINY_BALL, Float(1.5))
+    Call(SetPartJumpGravity, ACTOR_SELF, PRT_SPINY_BALL, 1.5)
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(JumpPartTo, ACTOR_SELF, PRT_SPINY_BALL, LVar0, LVar1, LVar2, 20, true)

@@ -308,8 +308,8 @@ EvtScript EVS_NpcHit_Whacka_02 = {
 EvtScript EVS_NpcInit_Whacka_01 = {
     Call(SetNpcVar, NPC_Whacka_01, 8, 0)
     IfLt(GB_IWA00_Whacka_HitCount, 8)
-        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Whacka_01))
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Whacka_01))
+        Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Whacka_01)
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Whacka_01)
         Call(EnableNpcShadow, NPC_SELF, false)
         Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLIP_INSTANTLY, true)
     Else
@@ -322,7 +322,7 @@ EvtScript EVS_NpcInit_Whacka_01 = {
 EvtScript EVS_NpcInit_Whacka_02 = {
     IfLt(GB_IWA00_Whacka_HitCount, 8)
         Call(EnableNpcShadow, NPC_SELF, false)
-        Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_Whacka_02))
+        Call(BindNpcHit, NPC_SELF, EVS_NpcHit_Whacka_02)
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf

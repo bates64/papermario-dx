@@ -6,8 +6,8 @@ EvtScript EVS_ExitDoors_kkj_00_6 =
     EVT_EXIT_DOUBLE_DOOR(osr_00_ENTRY_2, "kkj_00", kkj_00_ENTRY_6, COLLIDER_deilitn, MODEL_d2, MODEL_d1);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_mac_01_2), TRIGGER_FLOOR_ABOVE, COLLIDER_deilis, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoors_kkj_00_6), TRIGGER_WALL_PRESS_A, COLLIDER_deilitn, 1, 0)
+    BindTrigger(EVS_ExitWalk_mac_01_2, TRIGGER_FLOOR_ABOVE, COLLIDER_deilis, 1, 0)
+    BindTrigger(EVS_ExitDoors_kkj_00_6, TRIGGER_WALL_PRESS_A, COLLIDER_deilitn, 1, 0)
     Return
     End
 };
@@ -25,7 +25,7 @@ EvtScript EVS_EnterMap = {
         CaseEq(osr_00_ENTRY_4)
             Exec(EVS_Scene_ApproachParty)
         CaseDefault
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
     EndSwitch
     Return
@@ -61,10 +61,10 @@ EvtScript EVS_Main = {
     Switch(GB_StoryProgress)
         CaseEq(STORY_INTRO)
             Call(SpawnSunEffect, FX_SUN_FROM_RIGHT)
-            Call(MakeNpcs, false, Ref(IntroNPCs))
+            Call(MakeNpcs, false, IntroNPCs)
         CaseGe(STORY_EPILOGUE)
             Call(SpawnSunEffect, FX_SUN_FROM_LEFT)
-            Call(MakeNpcs, false, Ref(EpilogueNPCs))
+            Call(MakeNpcs, false, EpilogueNPCs)
     EndSwitch
     Call(GetEntryID, LVar0)
     IfNe(LVar0, osr_00_ENTRY_3)

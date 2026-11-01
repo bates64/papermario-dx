@@ -33,11 +33,11 @@ EvtScript EVS_ExitDoors_kpa_61_0 = {
     Call(DisablePlayerInput, true)
     Set(LVar0, kpa_82_ENTRY_1)
     Set(LVar1, COLLIDER_o166)
-    Set(LVar2, Ref(RightDoorModels))
-    Set(LVar3, Ref(LeftDoorModels))
+    Set(LVar2, RightDoorModels)
+    Set(LVar3, LeftDoorModels)
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, Ref("kpa_61"), kpa_61_ENTRY_0)
+    Call(GotoMap, "kpa_61", kpa_61_ENTRY_0)
     Wait(100)
     Return
     End
@@ -53,11 +53,11 @@ EvtScript EVS_Inspect_FaceDoor = {
 };
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitDoors_kpa_113_1), TRIGGER_WALL_PRESS_A, COLLIDER_deilittw, 1, 0)
+    BindTrigger(EVS_ExitDoors_kpa_113_1, TRIGGER_WALL_PRESS_A, COLLIDER_deilittw, 1, 0)
     IfEq(GB_KPA82_BowserDoorState, 0)
-        BindTrigger(Ref(EVS_Inspect_FaceDoor), TRIGGER_WALL_PRESS_A, COLLIDER_o166, 1, 0)
+        BindTrigger(EVS_Inspect_FaceDoor, TRIGGER_WALL_PRESS_A, COLLIDER_o166, 1, 0)
     Else
-        BindTrigger(Ref(EVS_ExitDoors_kpa_61_0), TRIGGER_WALL_PRESS_A, COLLIDER_o166, 1, 0)
+        BindTrigger(EVS_ExitDoors_kpa_61_0, TRIGGER_WALL_PRESS_A, COLLIDER_o166, 1, 0)
     EndIf
     Return
     End
@@ -74,8 +74,8 @@ EvtScript EVS_EnterMap = {
             Exec(EVS_BindExitTriggers)
         CaseEq(kpa_82_ENTRY_1)
             Set(LVar0, kpa_82_ENTRY_1)
-            Set(LVar2, Ref(LeftDoorModels))
-            Set(LVar3, Ref(RightDoorModels))
+            Set(LVar2, LeftDoorModels)
+            Set(LVar3, RightDoorModels)
             ExecWait(BaseEnterDoor)
             Exec(EVS_BindExitTriggers)
     EndSwitch
@@ -87,7 +87,7 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_BOWSERS_CASTLE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Call(MakeNpcs, true, DefaultNPCs)
     Call(EnableModel, MODEL_o166, false)
     Call(EnableModel, MODEL_m_, false)
     Call(EnableModel, MODEL_m_kai, false)

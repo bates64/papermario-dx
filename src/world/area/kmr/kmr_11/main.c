@@ -14,8 +14,8 @@ API_CALLABLE(UseSlowerFadeOnMapChange) {
 }
 
 EvtScript EVS_PlayFortressAnimation = {
-    Call(LoadAnimatedModel, MDL_ANIMATOR_1, Ref(AnimSkeleton_Fortress))
-    Call(PlayModelAnimation, MDL_ANIMATOR_1, Ref(AnimScript_Fortress))
+    Call(LoadAnimatedModel, MDL_ANIMATOR_1, AnimSkeleton_Fortress)
+    Call(PlayModelAnimation, MDL_ANIMATOR_1, AnimScript_Fortress)
     Call(SetAnimatedModelRootPosition, MDL_ANIMATOR_1, 0, 0, 0)
     Call(SetAnimatedModelRenderMode, MDL_ANIMATOR_1, RENDER_MODE_SURFACE_OPA)
     Return
@@ -23,8 +23,8 @@ EvtScript EVS_PlayFortressAnimation = {
 };
 
 EvtScript EVS_PlayBridgeAnimation = {
-    Call(LoadAnimatedModel, MDL_ANIMATOR_0, Ref(AnimSkeleton_Bridge))
-    Call(PlayModelAnimation, MDL_ANIMATOR_0, Ref(AnimScript_Bridge))
+    Call(LoadAnimatedModel, MDL_ANIMATOR_0, AnimSkeleton_Bridge)
+    Call(PlayModelAnimation, MDL_ANIMATOR_0, AnimScript_Bridge)
     Call(SetAnimatedModelRootPosition, MDL_ANIMATOR_0, 0, 0, 0)
     Call(SetAnimatedModelRenderMode, MDL_ANIMATOR_0, RENDER_MODE_SURFACE_OPA)
     Return
@@ -33,7 +33,7 @@ EvtScript EVS_PlayBridgeAnimation = {
 
 EvtScript EVS_BadExit_kmr_24_0 = {
     Call(FadeOutMusic, 0, 1500)
-    Call(GotoMapSpecial, Ref("kmr_24"), kmr_24_ENTRY_0, TRANSITION_MARIO_BLACK)
+    Call(GotoMapSpecial, "kmr_24", kmr_24_ENTRY_0, TRANSITION_MARIO_BLACK)
     Wait(100)
     Return
     End
@@ -43,7 +43,7 @@ EvtScript EVS_ExitWalk_kmr_12_1 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(UseExitHeading, 60, kmr_11_ENTRY_0)
     Exec(ExitWalk)
-    Call(GotoMap, Ref("kmr_12"), kmr_12_ENTRY_1)
+    Call(GotoMap, "kmr_12", kmr_12_ENTRY_1)
     Wait(100)
     Return
     End
@@ -54,7 +54,7 @@ EvtScript EVS_ExitWalk_kmr_10_0 = {
     Call(UseExitHeading, 60, kmr_11_ENTRY_1)
     Exec(ExitWalk)
     IfGe(GB_StoryProgress, STORY_CH0_KAMMY_RETURNED_TO_BOWSER)
-        Call(GotoMap, Ref("kmr_10"), kmr_10_ENTRY_0)
+        Call(GotoMap, "kmr_10", kmr_10_ENTRY_0)
         Wait(100)
         Return
     Else
@@ -67,8 +67,8 @@ EvtScript EVS_ExitWalk_kmr_10_0 = {
 };
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_kmr_12_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_kmr_10_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deiline, 1, 0)
+    BindTrigger(EVS_ExitWalk_kmr_12_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitWalk_kmr_10_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deiline, 1, 0)
     Return
     End
 };
@@ -93,7 +93,7 @@ EvtScript EVS_Main = {
     Call(SetSpriteShading, SHADING_NONE)
     Call(UseSlowerFadeOnMapChange)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, false, Ref(DefaultNPCs))
+    Call(MakeNpcs, false, DefaultNPCs)
     Call(ClearDefeatedEnemies)
     ExecWait(EVS_MakeEntities)
     IfLt(GB_StoryProgress, STORY_CH0_KAMMY_RETURNED_TO_BOWSER)
@@ -123,18 +123,18 @@ EvtScript EVS_Main = {
             Set(GF_KMR11_GoombaBrosFledToCastle, true)
         Else
             Exec(EVS_SetupMusic)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
             Wait(1)
         EndIf
     Else
         Exec(EVS_SetupMusic)
-        Set(LVar0, Ref(EVS_BindExitTriggers))
+        Set(LVar0, EVS_BindExitTriggers)
         Exec(EnterWalk)
         Wait(1)
     EndIf
-    Set(LVar0, Ref(SearchBush_SwitchBush))
-    BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_kusa4, 1, 0)
+    Set(LVar0, SearchBush_SwitchBush)
+    BindTrigger(EVS_SearchBush, TRIGGER_WALL_PRESS_A, COLLIDER_kusa4, 1, 0)
     Call(SetGroupVisibility, MODEL_event_cam, MODEL_GROUP_HIDDEN)
     Call(TranslateGroup, MODEL_g172, NPC_DISPOSE_LOCATION)
     Call(TranslateGroup, MODEL_g173, NPC_DISPOSE_LOCATION)

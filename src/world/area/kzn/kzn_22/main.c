@@ -91,8 +91,8 @@ EvtScript EVS_UpdateLavaLevel = {
     SetGroup(EVT_GROUP_NOT_BATTLE)
     Call(EnableModel, MODEL_yu, false)
     Call(ParentColliderToModel, COLLIDER_o591, MODEL_yu)
-    SetF(LVar4, Float(0.0))
-    SetF(LVar5, Float(0.0))
+    SetF(LVar4, 0.0)
+    SetF(LVar5, 0.0)
     Set(LVarA, 0)
     Label(10)
         Call(UpdateColliderTransform, COLLIDER_o591)
@@ -112,15 +112,15 @@ EvtScript EVS_UpdateLavaLevel = {
             CaseEq(10)
                 // state 10: raise the lava level
                 IfLt(LVar4, 140)
-                    Set(LVar5, Float(1.5))
+                    Set(LVar5, 1.5)
                 Else
                     IfEq(AF_KZN22_FlewAway, false)
-                        Set(LVar5, Float(0.0))
+                        Set(LVar5, 0.0)
                     Else
                         IfLt(LVar4, 285)
-                            Set(LVar5, Float(2.8))
+                            Set(LVar5, 2.8)
                         Else
-                            Set(LVar5, Float(0.0))
+                            Set(LVar5, 0.0)
                             Set(LVarA, -1)
                         EndIf
                     EndIf
@@ -144,7 +144,7 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_MT_LAVALAVA)
     Call(SetSpriteShading, SHADING_KZN_22)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Call(MakeNpcs, true, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
@@ -152,7 +152,7 @@ EvtScript EVS_Main = {
     Exec(EVS_SetupMusic)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o591, SURFACE_TYPE_LAVA)
     Thread
-        Call(ResetFromLava, Ref(SafeFloorColliders))
+        Call(ResetFromLava, SafeFloorColliders)
     EndThread
     Exec(EVS_StartTexPanners)
     Exec(EVS_UpdateLavaLevel)

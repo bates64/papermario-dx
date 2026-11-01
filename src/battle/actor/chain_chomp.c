@@ -284,9 +284,9 @@ API_CALLABLE(func_8021866C_4EFB0C) {
 
 EvtScript EVS_Init = {
     Call(SetActorVar, ACTOR_SELF, AVAR_EnableChainSounds, false)
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(SetPartPos, ACTOR_SELF, PRT_TARGET, LVar0, LVar1, LVar2)
     Set(LVar0, PRT_CHAIN_1)
@@ -328,12 +328,12 @@ EvtScript EVS_Idle = {
             EndIf
             Wait(1)
         EndLoop
-        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(SlowBiteAnims))
-        Call(SetActorIdleJumpGravity, ACTOR_SELF, Float(1.0))
+        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, SlowBiteAnims)
+        Call(SetActorIdleJumpGravity, ACTOR_SELF, 1.0)
         Call(SetIdleGoalToHome, ACTOR_SELF)
         Call(GetIdleGoal, ACTOR_SELF, LVar0, LVar1, LVar2)
         Add(LVar0, 10)
-        Call(SetActorIdleJumpGravity, ACTOR_SELF, Float(0.8))
+        Call(SetActorIdleJumpGravity, ACTOR_SELF, 0.8)
         Call(SetIdleGoal, ACTOR_SELF, LVar0, LVar1, LVar2)
         Call(IdleJumpToGoal, ACTOR_SELF, 11, 1)
         Loop(0)
@@ -344,7 +344,7 @@ EvtScript EVS_Idle = {
             EndIf
             Wait(1)
         EndLoop
-        Call(SetActorIdleJumpGravity, ACTOR_SELF, Float(1.0))
+        Call(SetActorIdleJumpGravity, ACTOR_SELF, 1.0)
         Call(SetIdleGoalToHome, ACTOR_SELF)
         Call(GetIdleGoal, ACTOR_SELF, LVar0, LVar1, LVar2)
         Call(SetIdleGoal, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -360,8 +360,8 @@ EvtScript EVS_Idle = {
             EndIf
             Wait(1)
         EndLoop
-        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(BiteAnims))
-        Call(SetActorIdleJumpGravity, ACTOR_SELF, Float(0.8))
+        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, BiteAnims)
+        Call(SetActorIdleJumpGravity, ACTOR_SELF, 0.8)
         Call(SetIdleGoalToHome, ACTOR_SELF)
         Call(GetIdleGoal, ACTOR_SELF, LVar0, LVar1, LVar2)
         Call(SetIdleGoal, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -374,8 +374,8 @@ EvtScript EVS_Idle = {
             EndIf
             Wait(1)
         EndLoop
-        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(SlowBiteAnims))
-        Call(SetActorIdleJumpGravity, ACTOR_SELF, Float(0.8))
+        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, SlowBiteAnims)
+        Call(SetActorIdleJumpGravity, ACTOR_SELF, 0.8)
         Call(SetIdleGoalToHome, ACTOR_SELF)
         Call(GetIdleGoal, ACTOR_SELF, LVar0, LVar1, LVar2)
         Sub(LVar0, 20)
@@ -389,7 +389,7 @@ EvtScript EVS_Idle = {
             EndIf
             Wait(1)
         EndLoop
-        Call(SetActorIdleJumpGravity, ACTOR_SELF, Float(0.8))
+        Call(SetActorIdleJumpGravity, ACTOR_SELF, 0.8)
         Call(SetIdleGoalToHome, ACTOR_SELF)
         Call(GetIdleGoal, ACTOR_SELF, LVar0, LVar1, LVar2)
         Sub(LVar0, 10)
@@ -403,8 +403,8 @@ EvtScript EVS_Idle = {
             EndIf
             Wait(1)
         EndLoop
-        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(QuickBiteAnims))
-        Call(SetActorIdleJumpGravity, ACTOR_SELF, Float(0.8))
+        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, QuickBiteAnims)
+        Call(SetActorIdleJumpGravity, ACTOR_SELF, 0.8)
         Call(SetIdleGoalToHome, ACTOR_SELF)
         Call(GetIdleGoal, ACTOR_SELF, LVar0, LVar1, LVar2)
         Call(SetIdleGoal, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -434,7 +434,7 @@ EvtScript EVS_UpdateChain = {
 EvtScript EVS_HandleEvent = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
-    Call(SetActorScale, ACTOR_SELF, Float(1.0), Float(1.0), Float(1.0))
+    Call(SetActorScale, ACTOR_SELF, 1.0, 1.0, 1.0)
     Call(GetLastEvent, ACTOR_SELF, LVar0)
     Set(LVarF, LVar0)
     Switch(LVar0)
@@ -481,7 +481,7 @@ EvtScript EVS_HandleEvent = {
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Set(LVar1, 0)
             Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(1.4))
+            Call(SetActorJumpGravity, ACTOR_SELF, 1.4)
             Call(AddGoalPos, ACTOR_SELF, 30, 0, 0)
             Call(JumpToGoal, ACTOR_SELF, 15, false, true, false)
             Call(PlaySoundAtActor, ACTOR_SELF, SOUND_CHAIN_CHOMP_THUD)
@@ -496,11 +496,11 @@ EvtScript EVS_HandleEvent = {
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_ChainChomp_SlowBite)
             ExecWait(EVS_Chomp_HopHome)
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(1.6))
+            Call(SetActorJumpGravity, ACTOR_SELF, 1.6)
             Call(JumpToGoal, ACTOR_SELF, 5, false, true, false)
             Call(PlaySoundAtActor, ACTOR_SELF, SOUND_CHAIN_CHOMP_THUD)
             Thread
-                Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.5))
+                Call(ShakeCam, CAM_BATTLE, 0, 1, 0.5)
             EndThread
             Call(SetGoalToHome, ACTOR_SELF)
             Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -535,7 +535,7 @@ EvtScript EVS_HandleEvent = {
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_ChainChomp_Idle)
             ExecWait(EVS_Enemy_NoDamageHit)
-            Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, Float(1.0))
+            Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, 1.0)
         CaseOrEq(EVENT_ZERO_DAMAGE)
         CaseOrEq(EVENT_IMMUNE)
             SetConst(LVar0, PRT_MAIN)
@@ -582,7 +582,7 @@ EvtScript EVS_HandleEvent = {
     IfFlag(LVar0, STATUS_FLAG_SLEEP | STATUS_FLAG_PARALYZE | STATUS_FLAG_DIZZY | STATUS_FLAG_STONE)
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         IfNe(LVar1, 0)
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(0.8))
+            Call(SetActorJumpGravity, ACTOR_SELF, 0.8)
             Call(SetGoalPos, ACTOR_SELF, LVar0, 0, LVar2)
             Call(FallToGoal, ACTOR_SELF, 11)
         EndIf
@@ -608,34 +608,34 @@ EvtScript EVS_Chomp_SpinSmashHit = {
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(SetGoalPos, ACTOR_SELF, LVar0, 20, LVar2)
-    Call(SetActorJumpGravity, ACTOR_SELF, Float(0.1))
-    Call(SetActorSpeed, ACTOR_SELF, Float(7.0))
+    Call(SetActorJumpGravity, ACTOR_SELF, 0.1)
+    Call(SetActorSpeed, ACTOR_SELF, 7.0)
     Call(JumpToGoal, ACTOR_SELF, 0, false, true, false)
     Thread
-        Call(ShakeCam, CAM_BATTLE, 0, 2, Float(1.0))
+        Call(ShakeCam, CAM_BATTLE, 0, 2, 1.0)
     EndThread
     Wait(2)
     Call(EnemyDamageTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_IGNORE_DEFENSE, 0, 0, 1, BS_FLAGS1_TRIGGER_EVENTS)
-    Call(SetActorJumpGravity, ACTOR_SELF, Float(0.1))
-    Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
+    Call(SetActorJumpGravity, ACTOR_SELF, 0.1)
+    Call(SetActorSpeed, ACTOR_SELF, 6.0)
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(SetGoalPos, ACTOR_SELF, 150, LVar1, LVar2)
     Call(JumpToGoal, ACTOR_SELF, 0, false, true, false)
     Thread
         Call(GetStatusFlags, ACTOR_SELF, LVar0)
         IfNotFlag(LVar0, STATUS_FLAG_SHRINK)
-            Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.5))
+            Call(ShakeCam, CAM_BATTLE, 0, 1, 0.5)
         EndIf
     EndThread
     Set(LVar1, 0)
-    Call(SetActorJumpGravity, ACTOR_SELF, Float(1.0))
-    Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
+    Call(SetActorJumpGravity, ACTOR_SELF, 1.0)
+    Call(SetActorSpeed, ACTOR_SELF, 6.0)
     Call(SetGoalPos, ACTOR_SELF, 130, LVar1, LVar2)
     Call(JumpToGoal, ACTOR_SELF, 10, false, true, false)
     Thread
         Call(GetStatusFlags, ACTOR_SELF, LVar0)
         IfNotFlag(LVar0, STATUS_FLAG_SHRINK)
-            Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.5))
+            Call(ShakeCam, CAM_BATTLE, 0, 1, 0.5)
         EndIf
     EndThread
     Call(SetActorDispOffset, ACTOR_SELF, 0, 0, 0)
@@ -643,26 +643,26 @@ EvtScript EVS_Chomp_SpinSmashHit = {
     Goto(10)
     Label(1)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_ChainChomp_Hurt)
-    Call(SetActorJumpGravity, ACTOR_SELF, Float(0.1))
-    Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
+    Call(SetActorJumpGravity, ACTOR_SELF, 0.1)
+    Call(SetActorSpeed, ACTOR_SELF, 6.0)
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(SetGoalPos, ACTOR_SELF, 135, LVar1, LVar2)
     Call(JumpToGoal, ACTOR_SELF, 0, false, true, false)
     Thread
         Call(GetStatusFlags, ACTOR_SELF, LVar0)
         IfNotFlag(LVar0, STATUS_FLAG_SHRINK)
-            Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.5))
+            Call(ShakeCam, CAM_BATTLE, 0, 1, 0.5)
         EndIf
     EndThread
     Set(LVar1, 0)
-    Call(SetActorJumpGravity, ACTOR_SELF, Float(1.0))
-    Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
+    Call(SetActorJumpGravity, ACTOR_SELF, 1.0)
+    Call(SetActorSpeed, ACTOR_SELF, 6.0)
     Call(SetGoalPos, ACTOR_SELF, 105, LVar1, LVar2)
     Call(JumpToGoal, ACTOR_SELF, 10, false, true, false)
     Thread
         Call(GetStatusFlags, ACTOR_SELF, LVar0)
         IfNotFlag(LVar0, STATUS_FLAG_SHRINK)
-            Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.5))
+            Call(ShakeCam, CAM_BATTLE, 0, 1, 0.5)
         EndIf
     EndThread
     Call(SetActorDispOffset, ACTOR_SELF, 0, 0, 0)
@@ -684,7 +684,7 @@ EvtScript EVS_TakeTurn = {
     Call(UseBattleCamPreset, BTL_CAM_ENEMY_APPROACH)
     Call(BattleCamTargetActor, ACTOR_SELF)
     Call(SetBattleCamTargetingModes, BTL_CAM_YADJ_TARGET, BTL_CAM_XADJ_AVG, false)
-    Call(SetActorJumpGravity, ACTOR_SELF, Float(0.5))
+    Call(SetActorJumpGravity, ACTOR_SELF, 0.5)
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Set(LVar1, 0)
     Add(LVar0, 45)
@@ -694,7 +694,7 @@ EvtScript EVS_TakeTurn = {
     Thread
         Call(GetStatusFlags, ACTOR_SELF, LVar0)
         IfNotFlag(LVar0, STATUS_FLAG_SHRINK)
-            Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.5))
+            Call(ShakeCam, CAM_BATTLE, 0, 1, 0.5)
         EndIf
     EndThread
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_ChainChomp_SlowBite)
@@ -711,17 +711,17 @@ EvtScript EVS_TakeTurn = {
             Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Sub(LVar0, 20)
             Set(LVar1, 0)
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(1.8))
+            Call(SetActorJumpGravity, ACTOR_SELF, 1.8)
             Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(JumpToGoal, ACTOR_SELF, 10, false, true, false)
             Call(PlaySoundAtActor, ACTOR_SELF, SOUND_CHAIN_CHOMP_THUD)
             Thread
                 Call(GetStatusFlags, ACTOR_SELF, LVar0)
                 IfNotFlag(LVar0, STATUS_FLAG_SHRINK)
-                    Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.5))
+                    Call(ShakeCam, CAM_BATTLE, 0, 1, 0.5)
                 EndIf
             EndThread
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(1.8))
+            Call(SetActorJumpGravity, ACTOR_SELF, 1.8)
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Sub(LVar0, 25)
             Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -730,7 +730,7 @@ EvtScript EVS_TakeTurn = {
             Thread
                 Call(GetStatusFlags, ACTOR_SELF, LVar0)
                 IfNotFlag(LVar0, STATUS_FLAG_SHRINK)
-                    Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.5))
+                    Call(ShakeCam, CAM_BATTLE, 0, 1, 0.5)
                 EndIf
             EndThread
             Sub(LVar0, 15)
@@ -740,7 +740,7 @@ EvtScript EVS_TakeTurn = {
             Thread
                 Call(GetStatusFlags, ACTOR_SELF, LVar0)
                 IfNotFlag(LVar0, STATUS_FLAG_SHRINK)
-                    Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.5))
+                    Call(ShakeCam, CAM_BATTLE, 0, 1, 0.5)
                 EndIf
             EndThread
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_ChainChomp_Bite)
@@ -774,7 +774,7 @@ EvtScript EVS_TakeTurn = {
         Add(LVar0, 10)
     EndIf
     Set(LVar1, 27)
-    Call(SetActorJumpGravity, ACTOR_SELF, Float(0.2))
+    Call(SetActorJumpGravity, ACTOR_SELF, 0.2)
     Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(JumpToGoal, ACTOR_SELF, 5, false, true, false)
     Wait(2)
@@ -789,14 +789,14 @@ EvtScript EVS_TakeTurn = {
             Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Add(LVar0, 40)
             Set(LVar1, 0)
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(1.8))
+            Call(SetActorJumpGravity, ACTOR_SELF, 1.8)
             Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(JumpToGoal, ACTOR_SELF, 10, false, true, false)
             Call(PlaySoundAtActor, ACTOR_SELF, SOUND_CHAIN_CHOMP_THUD)
             Thread
                 Call(GetStatusFlags, ACTOR_SELF, LVar0)
                 IfNotFlag(LVar0, STATUS_FLAG_SHRINK)
-                    Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.5))
+                    Call(ShakeCam, CAM_BATTLE, 0, 1, 0.5)
                 EndIf
             EndThread
             Add(LVar0, 30)
@@ -806,7 +806,7 @@ EvtScript EVS_TakeTurn = {
             Thread
                 Call(GetStatusFlags, ACTOR_SELF, LVar0)
                 IfNotFlag(LVar0, STATUS_FLAG_SHRINK)
-                    Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.5))
+                    Call(ShakeCam, CAM_BATTLE, 0, 1, 0.5)
                 EndIf
             EndThread
             Add(LVar0, 20)
@@ -816,7 +816,7 @@ EvtScript EVS_TakeTurn = {
             Thread
                 Call(GetStatusFlags, ACTOR_SELF, LVar0)
                 IfNotFlag(LVar0, STATUS_FLAG_SHRINK)
-                    Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.5))
+                    Call(ShakeCam, CAM_BATTLE, 0, 1, 0.5)
                 EndIf
             EndThread
             Sub(LVar0, 10)
@@ -825,7 +825,7 @@ EvtScript EVS_TakeTurn = {
             Thread
                 Call(GetStatusFlags, ACTOR_SELF, LVar0)
                 IfNotFlag(LVar0, STATUS_FLAG_SHRINK)
-                    Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.5))
+                    Call(ShakeCam, CAM_BATTLE, 0, 1, 0.5)
                 EndIf
             EndThread
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_ChainChomp_Idle)
@@ -856,8 +856,8 @@ EvtScript EVS_TakeTurn = {
 EvtScript EVS_Chomp_HopHome = {
     Call(SetAnimation, ACTOR_SELF, LVar0, LVar1)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_ChainChomp_Bite)
-    Call(SetActorSpeed, ACTOR_SELF, Float(4.0))
-    Call(SetActorJumpGravity, ACTOR_SELF, Float(1.8))
+    Call(SetActorSpeed, ACTOR_SELF, 4.0)
+    Call(SetActorJumpGravity, ACTOR_SELF, 1.8)
     Call(SetGoalToHome, ACTOR_SELF)
     Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     ExecWait(EVS_Chomp_HopToPos)
@@ -894,7 +894,7 @@ EvtScript EVS_Chomp_HopToPos = {
                 Thread
                     Call(GetStatusFlags, ACTOR_SELF, LVar0)
                     IfNotFlag(LVar0, STATUS_FLAG_SHRINK)
-                        Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.5))
+                        Call(ShakeCam, CAM_BATTLE, 0, 1, 0.5)
                     EndIf
                 EndThread
             Else
@@ -906,7 +906,7 @@ EvtScript EVS_Chomp_HopToPos = {
                 Thread
                     Call(GetStatusFlags, ACTOR_SELF, LVar0)
                     IfNotFlag(LVar0, STATUS_FLAG_SHRINK)
-                        Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.5))
+                        Call(ShakeCam, CAM_BATTLE, 0, 1, 0.5)
                     EndIf
                 EndThread
             EndIf
@@ -920,7 +920,7 @@ EvtScript EVS_Chomp_HopToPos = {
                 Thread
                     Call(GetStatusFlags, ACTOR_SELF, LVar0)
                     IfNotFlag(LVar0, STATUS_FLAG_SHRINK)
-                        Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.5))
+                        Call(ShakeCam, CAM_BATTLE, 0, 1, 0.5)
                     EndIf
                 EndThread
             Else
@@ -931,7 +931,7 @@ EvtScript EVS_Chomp_HopToPos = {
                 Thread
                     Call(GetStatusFlags, ACTOR_SELF, LVar0)
                     IfNotFlag(LVar0, STATUS_FLAG_SHRINK)
-                        Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.5))
+                        Call(ShakeCam, CAM_BATTLE, 0, 1, 0.5)
                     EndIf
                 EndThread
             EndIf

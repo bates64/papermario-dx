@@ -10,7 +10,7 @@ MobileAISettings AISettings_Penguin_Wander = {
 };
 
 EvtScript EVS_NpcAI_Penguin_Wander = {
-    Call(BasicAI_Main, Ref(AISettings_Penguin_Wander))
+    Call(BasicAI_Main, AISettings_Penguin_Wander)
     Return
     End
 };

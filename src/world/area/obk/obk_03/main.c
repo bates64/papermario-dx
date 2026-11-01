@@ -45,15 +45,15 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_BOOS_MANSION)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, false, Ref(DefaultNPCs))
+    Call(MakeNpcs, false, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     Exec(EVS_SetupStairs)
     Exec(EVS_SetupRockingChair)
     ExecWait(EVS_SetupShop)
     Exec(EVS_SetupTexPan)
     Exec(EVS_SetupMusic)
-    BindTrigger(Ref(EVS_ExitDoor_obk_04_0), TRIGGER_WALL_PRESS_A, COLLIDER_tt1, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoor_obk_02_1), TRIGGER_WALL_PRESS_A, COLLIDER_tt2, 1, 0)
+    BindTrigger(EVS_ExitDoor_obk_04_0, TRIGGER_WALL_PRESS_A, COLLIDER_tt1, 1, 0)
+    BindTrigger(EVS_ExitDoor_obk_02_1, TRIGGER_WALL_PRESS_A, COLLIDER_tt2, 1, 0)
     Exec(EVS_EnterMap)
     Return
     End

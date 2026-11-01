@@ -109,7 +109,7 @@ EvtScript EVS_FlowersReact_Correct = {
 
 EvtScript EVS_CheckFlowers_North = {
     Call(PlaySoundAt, SOUND_FLOWERS_LIGHT_GIGGLE, SOUND_SPACE_DEFAULT, 0, 0, -300)
-    Set(LVar8, Ref(FlowerModels_North))
+    Set(LVar8, FlowerModels_North)
     Set(LVar9, TEX_PANNER_0)
     ExecWait(EVS_FlowersReact_Wrong)
     Return
@@ -118,7 +118,7 @@ EvtScript EVS_CheckFlowers_North = {
 
 EvtScript EVS_CheckFlowers_West = {
     Call(PlaySoundAt, SOUND_FLOWERS_SAD_GIGGLE, SOUND_SPACE_DEFAULT, -300, 0, 0)
-    Set(LVar8, Ref(FlowerModels_West))
+    Set(LVar8, FlowerModels_West)
     Set(LVar9, TEX_PANNER_1)
     ExecWait(EVS_FlowersReact_Correct)
     Return
@@ -127,7 +127,7 @@ EvtScript EVS_CheckFlowers_West = {
 
 EvtScript EVS_CheckFlowers_South = {
     Call(PlaySoundAt, SOUND_FLOWERS_LIGHT_GIGGLE, SOUND_SPACE_DEFAULT, 0, 0, 300)
-    Set(LVar8, Ref(FlowerModels_South))
+    Set(LVar8, FlowerModels_South)
     Set(LVar9, TEX_PANNER_2)
     ExecWait(EVS_FlowersReact_Wrong)
     Return
@@ -136,7 +136,7 @@ EvtScript EVS_CheckFlowers_South = {
 
 EvtScript EVS_CheckFlowers_East = {
     Call(PlaySoundAt, SOUND_FLOWERS_LIGHT_GIGGLE, SOUND_SPACE_DEFAULT, 300, 0, 0)
-    Set(LVar8, Ref(FlowerModels_East))
+    Set(LVar8, FlowerModels_East)
     Set(LVar9, TEX_PANNER_3)
     ExecWait(EVS_FlowersReact_Wrong)
     Return
@@ -157,10 +157,10 @@ EvtScript EVS_SetupExitHint = {
     Call(SetTexPanner, MODEL_o8, TEX_PANNER_3)
     Call(SetTexPanner, MODEL_o10, TEX_PANNER_3)
     Call(SetTexPanner, MODEL_o12, TEX_PANNER_3)
-    BindTrigger(Ref(EVS_CheckFlowers_West),  TRIGGER_WALL_PRESS_A, COLLIDER_o132, 1, 0)
-    BindTrigger(Ref(EVS_CheckFlowers_North), TRIGGER_WALL_PRESS_A, COLLIDER_o149, 1, 0)
-    BindTrigger(Ref(EVS_CheckFlowers_South), TRIGGER_WALL_PRESS_A, COLLIDER_o151, 1, 0)
-    BindTrigger(Ref(EVS_CheckFlowers_East),  TRIGGER_WALL_PRESS_A, COLLIDER_o150, 1, 0)
+    BindTrigger(EVS_CheckFlowers_West,  TRIGGER_WALL_PRESS_A, COLLIDER_o132, 1, 0)
+    BindTrigger(EVS_CheckFlowers_North, TRIGGER_WALL_PRESS_A, COLLIDER_o149, 1, 0)
+    BindTrigger(EVS_CheckFlowers_South, TRIGGER_WALL_PRESS_A, COLLIDER_o151, 1, 0)
+    BindTrigger(EVS_CheckFlowers_East,  TRIGGER_WALL_PRESS_A, COLLIDER_o150, 1, 0)
     Return
     End
 };

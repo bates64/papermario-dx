@@ -10,7 +10,7 @@ MobileAISettings AISettings_BooWander = {
 };
 
 EvtScript EVS_NpcAI_Boo_Wander = {
-    Call(BasicAI_Main, Ref(AISettings_BooWander))
+    Call(BasicAI_Main, AISettings_BooWander)
     Return
     End
 };

@@ -9,7 +9,7 @@ API_CALLABLE(SetupBeginGameTransition) {
 
 EvtScript EVS_GotoMap_mac_00_4 = {
     Exec(EVS_FadeOutAmbientSounds)
-    Call(GotoMap, Ref("mac_00"), mac_00_ENTRY_4)
+    Call(GotoMap, "mac_00", mac_00_ENTRY_4)
     Wait(100)
     Return
     End
@@ -19,14 +19,14 @@ EvtScript EVS_ExitPipe_mac_00_4 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Set(LVarA, kmr_20_ENTRY_4)
     Set(LVarB, COLLIDER_o244)
-    Set(LVarC, Ref(EVS_GotoMap_mac_00_4))
+    Set(LVarC, EVS_GotoMap_mac_00_4)
     ExecWait(EVS_Pipe_ExitVertical)
     Return
     End
 };
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitPipe_mac_00_4), TRIGGER_FLOOR_TOUCH, COLLIDER_o244, 1, 0)
+    BindTrigger(EVS_ExitPipe_mac_00_4, TRIGGER_FLOOR_TOUCH, COLLIDER_o244, 1, 0)
     Return
     End
 };
@@ -53,9 +53,9 @@ EvtScript EVS_Main = {
     Exec(EVS_SetupMusic)
     Call(GetEntryID, LVar0)
     IfLt(LVar0, kmr_20_ENTRY_4)
-        Call(MakeNpcs, false, Ref(SceneNPCs))
+        Call(MakeNpcs, false, SceneNPCs)
     Else
-        Call(MakeNpcs, false, Ref(DefaultNPCs))
+        Call(MakeNpcs, false, DefaultNPCs)
     EndIf
     ExecWait(EVS_MakeEntities)
     Call(EnableGroup, MODEL_g100, false)
@@ -92,11 +92,11 @@ EvtScript EVS_Main = {
                             Wait(1)
                             Goto(0)
                         EndIf
-                    Set(LVarA, Ref(EVS_BindExitTriggers))
+                    Set(LVarA, EVS_BindExitTriggers)
                     Exec(EVS_Pipe_EnterVertical)
                 EndThread
             Else
-                Set(LVarA, Ref(EVS_BindExitTriggers))
+                Set(LVarA, EVS_BindExitTriggers)
                 Exec(EVS_Pipe_EnterVertical)
             EndIf
     EndSwitch

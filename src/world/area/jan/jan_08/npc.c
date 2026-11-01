@@ -49,7 +49,7 @@ EvtScript EVS_NpcIdle_YoshiKid = {
         Goto(10)
     EndIf
     Call(DisablePlayerInput, true)
-    Call(AdjustCam, CAM_DEFAULT, Float(4.0), -23, 350, Float(17.0), Float(-7.0))
+    Call(AdjustCam, CAM_DEFAULT, 4.0, -23, 350, 17.0, -7.0)
     Call(NpcFacePlayer, NPC_SELF, 0)
     Call(GetCurrentPartnerID, LVar0)
     Set(AF_JAN_SavedCurrentYoshiKid, true)
@@ -63,7 +63,7 @@ EvtScript EVS_NpcIdle_YoshiKid = {
     Thread
         Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
         Call(SetNpcAnimation, NPC_SELF, ANIM_YoshiKid_Red_Run)
-        Call(SetNpcSpeed, NPC_SELF, Float(5.0))
+        Call(SetNpcSpeed, NPC_SELF, 5.0)
         Call(NpcMoveTo, NPC_SELF, -418, -60, 0)
         Call(NpcMoveTo, NPC_SELF, -300, 80, 0)
         Call(NpcMoveTo, NPC_SELF, -320, 115, 0)
@@ -86,7 +86,7 @@ EvtScript EVS_NpcIdle_YoshiKid = {
     Else
         Wait(40)
     EndIf
-    Call(ResetCam, CAM_DEFAULT, Float(4.0))
+    Call(ResetCam, CAM_DEFAULT, 4.0)
     Call(DisablePlayerInput, false)
     Call(RemoveNpc, NPC_SELF)
     Return
@@ -101,7 +101,7 @@ EvtScript EVS_NpcInit_YoshiKid = {
             Call(SetNpcAnimation, NPC_SELF, ANIM_YoshiKid_Red_Cry)
             Call(SetNpcYaw, NPC_SELF, 90)
             Call(SetNpcPos, NPC_SELF, -391, 0, -164)
-            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_YoshiKid))
+            Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_YoshiKid)
             Return
         EndIf
     EndIf
@@ -112,7 +112,7 @@ EvtScript EVS_NpcInit_YoshiKid = {
 
 EvtScript EVS_NpcInit_MBush_01 = {
     Call(SetNpcCollisionSize, NPC_SELF, 60, 30)
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_MBush))
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_MBush)
     Return
     End
 };

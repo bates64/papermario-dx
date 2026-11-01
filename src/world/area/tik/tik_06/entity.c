@@ -18,7 +18,7 @@ EvtScript EVS_MonitorPlayerFallDown = {
         IfGt(LVar1, -70)
             Goto(1)
         EndIf
-    Call(GotoMap, Ref("tik_08"), tik_08_ENTRY_2)
+    Call(GotoMap, "tik_08", tik_08_ENTRY_2)
     Wait(100)
     Return
     End
@@ -46,24 +46,24 @@ EvtScript EVS_OnSmash_Block2 = {
 };
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Ref(Entity_SavePoint), 120, 50, -75, 0, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_SavePoint, 120, 50, -75, 0, MAKE_ENTITY_END)
     Call(EnableModel, MODEL_o49, false)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o49, COLLIDER_FLAGS_UPPER_MASK)
     IfEq(GF_TIK02_BoardedFloor, false)
-        Call(MakeEntity, Ref(Entity_BoardedFloor), -359, -10, -9, 0, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(EVS_OnPound_BoardedFloor))
+        Call(MakeEntity, Entity_BoardedFloor, -359, -10, -9, 0, MAKE_ENTITY_END)
+        Call(AssignScript, EVS_OnPound_BoardedFloor)
     Else
         Exec(EVS_MonitorPlayerFallDown)
     EndIf
     IfEq(GF_TIK02_Hammer1Block, false)
-        Call(MakeEntity, Ref(Entity_Hammer1Block), 190, -10, 0, 0, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(EVS_OnSmash_Block1))
+        Call(MakeEntity, Entity_Hammer1Block, 190, -10, 0, 0, MAKE_ENTITY_END)
+        Call(AssignScript, EVS_OnSmash_Block1)
     Else
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o93, COLLIDER_FLAGS_UPPER_MASK)
     EndIf
     IfEq(GF_TIK02_Hammer2Block, false)
-        Call(MakeEntity, Ref(Entity_Hammer2Block), -540, -10, 0, 0, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(EVS_OnSmash_Block2))
+        Call(MakeEntity, Entity_Hammer2Block, -540, -10, 0, 0, MAKE_ENTITY_END)
+        Call(AssignScript, EVS_OnSmash_Block2)
     Else
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o90, COLLIDER_FLAGS_UPPER_MASK)
     EndIf

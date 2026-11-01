@@ -13,8 +13,8 @@ EvtScript EVS_MoveBoosToTubbaBody = {
     SetF(LVar0, LVar0)
     SetF(LVar3, LVar0)
     SetF(LVar4, LVar0)
-    SubF(LVar3, Float(25.0))
-    AddF(LVar4, Float(25.0))
+    SubF(LVar3, 25.0)
+    AddF(LVar4, 25.0)
     Call(SetNpcPos, NPC_Boo1, LVar0, 20, 2)
     Call(SetNpcPos, NPC_Boo2, LVar3, 20, -2)
     Call(SetNpcPos, NPC_Boo3, LVar4, 20, 2)
@@ -87,7 +87,7 @@ EvtScript EVS_ParadePhase_Boos = {
     ExecGetTID(EVS_MoveBoosToTubbaBody, LVarB)
     Wait(20 * DT)
     Call(SetNpcPos, NPC_TubbasHeart, -260, 0, 0)
-    Call(SetNpcJumpscale, NPC_TubbasHeart, Float(1.0))
+    Call(SetNpcJumpscale, NPC_TubbasHeart, 1.0)
     Call(NpcJump0, NPC_TubbasHeart, -290, 0, 0, 10 * DT)
     Call(NpcJump0, NPC_TubbasHeart, -320, 0, 0, 10 * DT)
     Set(LVar0, 53)
@@ -225,7 +225,7 @@ EvtScript EVS_ParadePhase_GoombaKing = {
         EndLoop
     EndThread
     Call(GetNpcPos, NPC_GoombaKing, LVar0, LVar1, LVar2)
-    Call(SetNpcJumpscale, NPC_GoombaKing, Float(0.5))
+    Call(SetNpcJumpscale, NPC_GoombaKing, 0.5)
     Call(NpcJump0, NPC_GoombaKing, LVar0, 0, 0, 20)
     Wait(30)
     Thread

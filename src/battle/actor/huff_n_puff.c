@@ -467,10 +467,10 @@ OVL_DEF_ACTOR() = {
 };
 
 EvtScript EVS_Init = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
-    Call(BindHandlePhase, ACTOR_SELF, Ref(EVS_HandlePhase))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
+    Call(BindHandlePhase, ACTOR_SELF, EVS_HandlePhase)
     Call(SetActorVar, ACTOR_HUFF_N_PUFF, AVAR_Flags, 0)
     Call(SetActorVar, ACTOR_SELF, AVAR_NextMove, AVAL_Move_Basic_1)
     Call(SetActorVar, ACTOR_SELF, AVAR_ChildBits, 0)
@@ -560,25 +560,25 @@ EvtScript EVS_Idle = {
         Call(GetActorVar, ACTOR_SELF, AVAR_WobbleMode, LVarA)
         Switch(LVarA)
             CaseEq(0)
-                Call(CosInterpMinMax, LVarF, LVar0, Float(0.97), Float(1.03), 15, 0, 0)
-                Call(CosInterpMinMax, LVarF, LVar1, Float(1.03), Float(0.97), 15, 0, 0)
+                Call(CosInterpMinMax, LVarF, LVar0, 0.97, 1.03, 15, 0, 0)
+                Call(CosInterpMinMax, LVarF, LVar1, 1.03, 0.97, 15, 0, 0)
                 Add(LVarF, 1)
             CaseEq(1)
-                Call(CosInterpMinMax, LVarF, LVar0, Float(0.95), Float(1.05), 15, 0, 0)
-                Call(CosInterpMinMax, LVarF, LVar1, Float(1.05), Float(0.95), 15, 0, 0)
+                Call(CosInterpMinMax, LVarF, LVar0, 0.95, 1.05, 15, 0, 0)
+                Call(CosInterpMinMax, LVarF, LVar1, 1.05, 0.95, 15, 0, 0)
                 Add(LVarF, 3)
             CaseEq(2)
-                Call(CosInterpMinMax, LVarF, LVar0, Float(0.9), Float(1.1), 15, 0, 0)
-                Call(CosInterpMinMax, LVarF, LVar1, Float(1.1), Float(0.9), 15, 0, 0)
+                Call(CosInterpMinMax, LVarF, LVar0, 0.9, 1.1, 15, 0, 0)
+                Call(CosInterpMinMax, LVarF, LVar1, 1.1, 0.9, 15, 0, 0)
                 Add(LVarF, 5)
         EndSwitch
         Call(GetActorVar, ACTOR_SELF, AVAR_ScaleX, LVar2)
         Call(GetActorVar, ACTOR_SELF, AVAR_ScaleY, LVar3)
-        DivF(LVar2, Float(100.0))
-        DivF(LVar3, Float(100.0))
+        DivF(LVar2, 100.0)
+        DivF(LVar3, 100.0)
         MulF(LVar1, LVar2)
         MulF(LVar0, LVar3)
-        Call(SetActorScale, ACTOR_SELF, LVar1, LVar0, Float(1.0))
+        Call(SetActorScale, ACTOR_SELF, LVar1, LVar0, 1.0)
         IfGe(LVarF, 30)
             Set(LVarF, 0)
         EndIf
@@ -654,10 +654,10 @@ EvtScript EVS_TrySpawningRuffPuff = {
         Call(SetTuffPuffPriority)
         IfGt(LVarA, 0)
             Sub(LVarA, 1)
-            Call(SummonEnemy, Ref(LargeTuffFormation), false)
+            Call(SummonEnemy, LargeTuffFormation, false)
             Call(SetActorVar, LVar0, AVAR_TuffPuff_HealValue, 2)
         Else
-            Call(SummonEnemy, Ref(SmallTuffFormation), false)
+            Call(SummonEnemy, SmallTuffFormation, false)
             Call(SetActorVar, LVar0, AVAR_TuffPuff_HealValue, 1)
         EndIf
         Call(GetActorVar, ACTOR_SELF, AVAR_ChildBits, LVar1)
@@ -701,9 +701,9 @@ EvtScript EVS_TrySpawningRuffPuff = {
             Add(LVar5, 0)
             Mul(LVar2, 36)
             Add(LVar2, 0)
-            Call(SetTuffPuffPos, LVar3, LVar4, LVar5, LVar2, Float(0.0), Float(50.0))
+            Call(SetTuffPuffPos, LVar3, LVar4, LVar5, LVar2, 0.0, 50.0)
             Thread
-                Call(SetActorJumpGravity, LVar0, Float(0.8))
+                Call(SetActorJumpGravity, LVar0, 0.8)
                 Call(SetGoalPos, LVar0, LVar3, LVar4, LVar5)
                 Call(JumpToGoal, LVar0, 30, false, false, false)
                 Call(ForceHomePos, LVar0, LVar3, LVar4, LVar5)
@@ -717,7 +717,7 @@ EvtScript EVS_TrySpawningRuffPuff = {
             Add(LVar3, LVar6)
             Add(LVar5, 10)
             Thread
-                Call(SetActorJumpGravity, LVar0, Float(0.8))
+                Call(SetActorJumpGravity, LVar0, 0.8)
                 Call(SetGoalPos, LVar0, LVar3, -30, LVar5)
                 Call(JumpToGoal, LVar0, 40, false, false, false)
                 Call(RemoveActor, LVar0)
@@ -1078,9 +1078,9 @@ EvtScript EVS_Dialogue_FullPower = {
     Call(GetActorPos, LVar0, LVar1, LVar2, LVar3)
     Call(GetActorPos, ACTOR_SELF, LVar4, LVar5, LVar6)
     IfLt(LVar1, LVar4)
-        SetF(LVar7, Float(0.0))
+        SetF(LVar7, 0.0)
         Loop(10)
-            AddF(LVar7, Float(18.0))
+            AddF(LVar7, 18.0)
             Call(SetActorYaw, LVar0, LVar7)
             Wait(1)
         EndLoop
@@ -1097,9 +1097,9 @@ EvtScript EVS_Dialogue_FullPower = {
     Call(GetActorPos, LVar0, LVar1, LVar2, LVar3)
     Call(GetActorPos, ACTOR_SELF, LVar4, LVar5, LVar6)
     IfLt(LVar1, LVar4)
-        SetF(LVar7, Float(180.0))
+        SetF(LVar7, 180.0)
         Loop(10)
-            SubF(LVar7, Float(18.0))
+            SubF(LVar7, 18.0)
             Call(SetActorYaw, LVar0, LVar7)
             Wait(1)
         EndLoop
@@ -1148,9 +1148,9 @@ EvtScript EVS_Dialogue_PraiseHuff = {
     Call(GetActorPos, LVar0, LVar1, LVar2, LVar3)
     Call(GetActorPos, ACTOR_SELF, LVar4, LVar5, LVar6)
     IfLt(LVar1, LVar4)
-        SetF(LVar7, Float(0.0))
+        SetF(LVar7, 0.0)
         Loop(10)
-            AddF(LVar7, Float(18.0))
+            AddF(LVar7, 18.0)
             Call(SetActorYaw, LVar0, LVar7)
             Wait(1)
         EndLoop
@@ -1166,9 +1166,9 @@ EvtScript EVS_Dialogue_PraiseHuff = {
     Call(GetActorPos, LVar0, LVar1, LVar2, LVar3)
     Call(GetActorPos, ACTOR_SELF, LVar4, LVar5, LVar6)
     IfLt(LVar1, LVar4)
-        SetF(LVar7, Float(180.0))
+        SetF(LVar7, 180.0)
         Loop(10)
-            SubF(LVar7, Float(18.0))
+            SubF(LVar7, 18.0)
             Call(SetActorYaw, LVar0, LVar7)
             Wait(1)
         EndLoop
@@ -1372,12 +1372,12 @@ EvtScript EVS_Attack_BodySlam = {
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(GetActorVar, ACTOR_SELF, AVAR_ScaleX, LVar0)
     Call(GetActorVar, ACTOR_SELF, AVAR_ScaleY, LVar1)
-    SetF(LVar2, Float(62.5))
-    SetF(LVar3, Float(47.5))
+    SetF(LVar2, 62.5)
+    SetF(LVar3, 47.5)
     MulF(LVar2, LVar0)
     MulF(LVar3, LVar1)
-    DivF(LVar2, Float(100.0))
-    DivF(LVar3, Float(100.0))
+    DivF(LVar2, 100.0)
+    DivF(LVar3, 100.0)
     Call(AddGoalPos, ACTOR_SELF, LVar2, LVar3, 0)
     Call(AddGoalPos, ACTOR_SELF, 0, 20, 0)
     Call(FlyToGoal, ACTOR_SELF, 40, -20, EASING_SIN_OUT)
@@ -1394,10 +1394,10 @@ EvtScript EVS_Attack_BodySlam = {
             Call(SetGoalToTarget, ACTOR_SELF)
             Call(GetGoalPos, ACTOR_SELF, LVar5, LVar6, LVar7)
             Call(SetGoalPos, ACTOR_SELF, LVar5, LVar3, LVar7)
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(1.0))
+            Call(SetActorJumpGravity, ACTOR_SELF, 1.0)
             Call(JumpToGoal, ACTOR_SELF, 20, false, false, false)
             Thread
-                Call(ShakeCam, CAM_BATTLE, 0, 10, Float(0.8))
+                Call(ShakeCam, CAM_BATTLE, 0, 10, 0.8)
             EndThread
             IfEq(LVar0, HIT_RESULT_LUCKY)
                 Call(EnemyTestTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_TRIGGER_LUCKY, 0, 0, 0)
@@ -1405,21 +1405,21 @@ EvtScript EVS_Attack_BodySlam = {
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_IdleSadBody)
             Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_IdleSadFace)
             Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_IdleSadArms)
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(0.5))
+            Call(SetActorJumpGravity, ACTOR_SELF, 0.5)
             Call(AddGoalPos, ACTOR_SELF, -80, 0, 0)
             Call(JumpToGoal, ACTOR_SELF, 25, false, false, false)
             Thread
-                Call(ShakeCam, CAM_BATTLE, 0, 8, Float(0.6))
+                Call(ShakeCam, CAM_BATTLE, 0, 8, 0.6)
             EndThread
             Call(AddGoalPos, ACTOR_SELF, -50, 0, 0)
             Call(JumpToGoal, ACTOR_SELF, 20, false, false, false)
             Thread
-                Call(ShakeCam, CAM_BATTLE, 0, 6, Float(0.4))
+                Call(ShakeCam, CAM_BATTLE, 0, 6, 0.4)
             EndThread
             Call(AddGoalPos, ACTOR_SELF, -30, 0, 0)
             Call(JumpToGoal, ACTOR_SELF, 15, false, false, false)
             Thread
-                Call(ShakeCam, CAM_BATTLE, 0, 4, Float(0.2))
+                Call(ShakeCam, CAM_BATTLE, 0, 4, 0.2)
             EndThread
             Call(AddGoalPos, ACTOR_SELF, -20, 0, 0)
             Call(JumpToGoal, ACTOR_SELF, 10, false, false, false)
@@ -1437,7 +1437,7 @@ EvtScript EVS_Attack_BodySlam = {
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_JumpBody)
     Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_JumpFace)
     Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_JumpArms)
-    Call(SetActorJumpGravity, ACTOR_SELF, Float(1.0))
+    Call(SetActorJumpGravity, ACTOR_SELF, 1.0)
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(AddGoalPos, ACTOR_SELF, 0, LVar3, 5)
     Call(AddGoalPos, ACTOR_SELF, 0, -30, 0)
@@ -1465,7 +1465,7 @@ EvtScript EVS_Attack_BodySlam = {
         CaseOrEq(HIT_RESULT_HIT)
         CaseOrEq(HIT_RESULT_NO_DAMAGE)
             Thread
-                Call(ShakeCam, CAM_BATTLE, 0, 20, Float(1.0))
+                Call(ShakeCam, CAM_BATTLE, 0, 20, 1.0)
             EndThread
             Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
             Call(GetBattleFlags, LVar0)
@@ -1483,7 +1483,7 @@ EvtScript EVS_Attack_BodySlam = {
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(AddGoalPos, ACTOR_SELF, 30, 0, 0)
-            Call(JumpWithBounce, ACTOR_SELF, 20, Float(4.0))
+            Call(JumpWithBounce, ACTOR_SELF, 20, 4.0)
             Wait(20)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_IdleBody)
             Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_IdleFace)
@@ -1608,10 +1608,10 @@ EvtScript EVS_Move_HealOrSlam = {
     Add(LVar0, -13)
     Add(LVar1, 0)
     Add(LVar2, 0)
-    Call(HuffPuffBreath, 0, LVar0, LVar1, LVar2, Float(180.0), Float(-1.0), Float(1.2), 0, LVar8)
+    Call(HuffPuffBreath, 0, LVar0, LVar1, LVar2, 180.0, -1.0, 1.2, 0, LVar8)
     Call(StartRumbleWithParams, 80, 220)
     Thread
-        Call(ShakeCam, CAM_BATTLE, 0, 110, Float(0.3))
+        Call(ShakeCam, CAM_BATTLE, 0, 110, 0.3)
     EndThread
     Wait(20)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BIG_POWER_UP)
@@ -1673,16 +1673,16 @@ EvtScript EVS_Move_HurricaneBreath = {
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(GetActorVar, ACTOR_SELF, AVAR_ScaleX, LVar3)
     Call(GetActorVar, ACTOR_SELF, AVAR_ScaleY, LVar4)
-    MulF(LVar3, Float(-13.0))
-    MulF(LVar4, Float(0.0))
-    DivF(LVar3, Float(100.0))
-    DivF(LVar4, Float(100.0))
+    MulF(LVar3, -13.0)
+    MulF(LVar4, 0.0)
+    DivF(LVar3, 100.0)
+    DivF(LVar4, 100.0)
     Add(LVar0, LVar3)
     Add(LVar1, LVar4)
-    PlayEffect(EFFECT_HUFF_PUFF_BREATH, 1, LVar0, LVar1, LVar2, Float(190.0), Float(-1.0), Float(1.5), 100)
+    PlayEffect(EFFECT_HUFF_PUFF_BREATH, 1, LVar0, LVar1, LVar2, 190.0, -1.0, 1.5, 100)
     Call(StartRumbleWithParams, 80, 150)
     Thread
-        Call(ShakeCam, CAM_BATTLE, 0, 75, Float(0.3))
+        Call(ShakeCam, CAM_BATTLE, 0, 75, 0.3)
     EndThread
     Thread
         Call(GetActorVar, ACTOR_SELF, AVAR_ScaleX, LVar2)
@@ -1768,29 +1768,29 @@ EvtScript EVS_Move_HurricaneBreath = {
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(GetActorVar, ACTOR_SELF, AVAR_ScaleX, LVar3)
             Call(GetActorVar, ACTOR_SELF, AVAR_ScaleY, LVar4)
-            MulF(LVar3, Float(-20.0))
-            MulF(LVar4, Float(-20.0))
-            DivF(LVar3, Float(100.0))
-            DivF(LVar4, Float(100.0))
+            MulF(LVar3, -20.0)
+            MulF(LVar4, -20.0)
+            DivF(LVar3, 100.0)
+            DivF(LVar4, 100.0)
             Add(LVar0, LVar3)
             Add(LVar1, LVar4)
-            PlayEffect(EFFECT_HUFF_PUFF_BREATH, 0, LVar0, LVar1, LVar2, Float(190.0), Float(1.5), Float(1.0), 40)
+            PlayEffect(EFFECT_HUFF_PUFF_BREATH, 0, LVar0, LVar1, LVar2, 190.0, 1.5, 1.0, 40)
             Call(StartRumbleWithParams, 80, 60)
             Thread
-                Call(ShakeCam, CAM_BATTLE, 0, 30, Float(0.3))
+                Call(ShakeCam, CAM_BATTLE, 0, 30, 0.3)
             EndThread
             Loop(10)
                 Call(RandInt, 150, LVar3)
                 Call(RandInt, 100, LVar4)
                 Add(LVar3, 50)
-                SetF(LVar4, Float(5.0))
+                SetF(LVar4, 5.0)
                 Call(RandInt, 4, LVar5)
                 AddF(LVar4, LVar5)
-                DivF(LVar4, Float(10.0))
-                SetF(LVar5, Float(100.0))
+                DivF(LVar4, 10.0)
+                SetF(LVar5, 100.0)
                 Call(RandInt, 40, LVar6)
                 AddF(LVar5, LVar6)
-                DivF(LVar5, Float(10.0))
+                DivF(LVar5, 10.0)
                 PlayEffect(EFFECT_MOVING_CLOUD, 0, 200, LVar3, 5, -200, LVar4, 5, LVar5, LVar4)
                 Call(RandInt, 5, LVar0)
                 Add(LVar0, 5)
@@ -1848,30 +1848,30 @@ EvtScript EVS_Move_HurricaneBreath = {
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Call(GetActorVar, ACTOR_SELF, AVAR_ScaleX, LVar3)
         Call(GetActorVar, ACTOR_SELF, AVAR_ScaleY, LVar4)
-        MulF(LVar3, Float(-20.0))
-        MulF(LVar4, Float(-20.0))
-        DivF(LVar3, Float(100.0))
-        DivF(LVar4, Float(100.0))
+        MulF(LVar3, -20.0)
+        MulF(LVar4, -20.0)
+        DivF(LVar3, 100.0)
+        DivF(LVar4, 100.0)
         Add(LVar0, LVar3)
         Add(LVar1, LVar4)
-        PlayEffect(EFFECT_HUFF_PUFF_BREATH, 0, LVar0, LVar1, LVar2, Float(190.0), Float(1.5), Float(1.0), 200)
+        PlayEffect(EFFECT_HUFF_PUFF_BREATH, 0, LVar0, LVar1, LVar2, 190.0, 1.5, 1.0, 200)
         Call(StartRumbleWithParams, 100, 350)
         Thread
-            Call(ShakeCam, CAM_BATTLE, 0, 175, Float(0.3))
+            Call(ShakeCam, CAM_BATTLE, 0, 175, 0.3)
         EndThread
         Thread
             Loop(25)
                 Call(RandInt, 150, LVar3)
                 Call(RandInt, 100, LVar4)
                 Add(LVar3, 50)
-                SetF(LVar4, Float(5.0))
+                SetF(LVar4, 5.0)
                 Call(RandInt, 4, LVar5)
                 AddF(LVar4, LVar5)
-                DivF(LVar4, Float(10.0))
-                SetF(LVar5, Float(100.0))
+                DivF(LVar4, 10.0)
+                SetF(LVar5, 100.0)
                 Call(RandInt, 40, LVar6)
                 AddF(LVar5, LVar6)
-                DivF(LVar5, Float(10.0))
+                DivF(LVar5, 10.0)
                 PlayEffect(EFFECT_MOVING_CLOUD, 0, 200, LVar3, 5, -200, LVar4, 5, LVar5, LVar4)
                 Call(RandInt, 5, LVar0)
                 Add(LVar0, 5)
@@ -1917,30 +1917,30 @@ EvtScript EVS_Move_HurricaneBreath = {
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Call(GetActorVar, ACTOR_SELF, AVAR_ScaleX, LVar3)
         Call(GetActorVar, ACTOR_SELF, AVAR_ScaleY, LVar4)
-        MulF(LVar3, Float(-20.0))
-        MulF(LVar4, Float(-20.0))
-        DivF(LVar3, Float(100.0))
-        DivF(LVar4, Float(100.0))
+        MulF(LVar3, -20.0)
+        MulF(LVar4, -20.0)
+        DivF(LVar3, 100.0)
+        DivF(LVar4, 100.0)
         Add(LVar0, LVar3)
         Add(LVar1, LVar4)
-        PlayEffect(EFFECT_HUFF_PUFF_BREATH, 0, LVar0, LVar1, LVar2, Float(190.0), Float(1.5), Float(1.0), 100)
+        PlayEffect(EFFECT_HUFF_PUFF_BREATH, 0, LVar0, LVar1, LVar2, 190.0, 1.5, 1.0, 100)
         Call(StartRumbleWithParams, 100, 200)
         Thread
-            Call(ShakeCam, CAM_BATTLE, 0, 100, Float(0.3))
+            Call(ShakeCam, CAM_BATTLE, 0, 100, 0.3)
         EndThread
         Thread
             Loop(15)
                 Call(RandInt, 150, LVar3)
                 Call(RandInt, 100, LVar4)
                 Add(LVar3, 50)
-                SetF(LVar4, Float(5.0))
+                SetF(LVar4, 5.0)
                 Call(RandInt, 4, LVar5)
                 AddF(LVar4, LVar5)
-                DivF(LVar4, Float(10.0))
-                SetF(LVar5, Float(100.0))
+                DivF(LVar4, 10.0)
+                SetF(LVar5, 100.0)
                 Call(RandInt, 40, LVar6)
                 AddF(LVar5, LVar6)
-                DivF(LVar5, Float(10.0))
+                DivF(LVar5, 10.0)
                 PlayEffect(EFFECT_MOVING_CLOUD, 0, 200, LVar3, 5, -200, LVar4, 5, LVar5, LVar4)
                 Call(RandInt, 5, LVar0)
                 Add(LVar0, 5)
@@ -1996,18 +1996,18 @@ EvtScript EVS_Move_ChargeForGround = {
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_IdleChargedBody)
     Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_IdleChargedFace)
     Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_IdleChargedArms)
-    Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(ChargedBodyAnims))
-    Call(SetIdleAnimations, ACTOR_SELF, PRT_FACE, Ref(ChargedFaceAnims))
-    Call(SetIdleAnimations, ACTOR_SELF, PRT_ARMS, Ref(ChargedArmAnims))
+    Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, ChargedBodyAnims)
+    Call(SetIdleAnimations, ACTOR_SELF, PRT_FACE, ChargedFaceAnims)
+    Call(SetIdleAnimations, ACTOR_SELF, PRT_ARMS, ChargedArmAnims)
     Call(SetPartEventBits, ACTOR_SELF, PRT_MAIN, ACTOR_EVENT_FLAG_ELECTRIFIED, true)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_CHARGE_LIGHTNING)
     Call(StartRumbleWithParams, 70, 120)
     Thread
-        Call(ShakeCam, CAM_BATTLE, 0, 60, Float(0.3))
+        Call(ShakeCam, CAM_BATTLE, 0, 60, 0.3)
     EndThread
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(GetActorVar, ACTOR_SELF, AVAR_ScaleX, LVar3)
-    DivF(LVar3, Float(100.0))
+    DivF(LVar3, 100.0)
     Call(MakeSnakingStatic, LVar0, LVar1, LVar2, LVar3)
     Call(SetActorVar, ACTOR_SELF, AVAR_ChargedStaticEffect, LVar0)
     Wait(60)
@@ -2030,7 +2030,7 @@ EvtScript EVS_Attack_GroundLightning = {
     Call(MoveBattleCamOver, 60)
     Call(StartRumbleWithParams, 70, 100)
     Thread
-        Call(ShakeCam, CAM_BATTLE, 0, 100, Float(0.3))
+        Call(ShakeCam, CAM_BATTLE, 0, 100, 0.3)
     EndThread
     Call(UnkBackgroundFunc3)
     Call(MakeLerp, 0, 200, 60, EASING_LINEAR)
@@ -2049,9 +2049,9 @@ EvtScript EVS_Attack_GroundLightning = {
     Call(SetActorDispOffset, ACTOR_SELF, 0, 0, 0)
     Call(GetActorVar, ACTOR_SELF, AVAR_ChargedStaticEffect, LVar0)
     Call(RemoveEffect, LVar0)
-    Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(BodyAnims))
-    Call(SetIdleAnimations, ACTOR_SELF, PRT_FACE, Ref(FaceAnims))
-    Call(SetIdleAnimations, ACTOR_SELF, PRT_ARMS, Ref(ArmAnims))
+    Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, BodyAnims)
+    Call(SetIdleAnimations, ACTOR_SELF, PRT_FACE, FaceAnims)
+    Call(SetIdleAnimations, ACTOR_SELF, PRT_ARMS, ArmAnims)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_UnleashBody)
     Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_UnleashFace)
     Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_UnleashArms)
@@ -2073,21 +2073,21 @@ EvtScript EVS_Attack_GroundLightning = {
     Sub(LVar2, 10)
     Set(LVar3, LVar0)
     Sub(LVar3, 30)
-    PlayEffect(EFFECT_LIGHTNING_BOLT, 0, LVar0, LVar1, LVar2, LVar3, 1, LVar2, Float(3.0), 30)
+    PlayEffect(EFFECT_LIGHTNING_BOLT, 0, LVar0, LVar1, LVar2, LVar3, 1, LVar2, 3.0, 30)
     Wait(5)
     Call(StartRumbleWithParams, 256, 30)
     Thread
-        Call(ShakeCam, CAM_BATTLE, 0, 10, Float(5.0))
-        Call(ShakeCam, CAM_BATTLE, 0, 10, Float(3.0))
-        Call(ShakeCam, CAM_BATTLE, 0, 10, Float(4.0))
+        Call(ShakeCam, CAM_BATTLE, 0, 10, 5.0)
+        Call(ShakeCam, CAM_BATTLE, 0, 10, 3.0)
+        Call(ShakeCam, CAM_BATTLE, 0, 10, 4.0)
     EndThread
-    SetF(LVar6, Float(0.0))
+    SetF(LVar6, 0.0)
     Loop(10)
         Set(LVar4, LVar3)
         Set(LVar5, LVar2)
-        AddF(LVar6, Float(36.0))
-        Call(AddVectorPolar, LVar4, LVar5, Float(300.0), LVar6)
-        PlayEffect(EFFECT_LIGHTNING_BOLT, 0, LVar3, 1, LVar2, LVar4, 1, LVar5, Float(4.0), 30)
+        AddF(LVar6, 36.0)
+        Call(AddVectorPolar, LVar4, LVar5, 300.0, LVar6)
+        PlayEffect(EFFECT_LIGHTNING_BOLT, 0, LVar3, 1, LVar2, LVar4, 1, LVar5, 4.0, 30)
     EndLoop
     Wait(10)
     Call(EnemyTestTarget, ACTOR_SELF, LVar0, 0, 0, 1, BS_FLAGS1_INCLUDE_POWER_UPS)
@@ -2140,18 +2140,18 @@ EvtScript EVS_Move_ChargeForDirect = {
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_IdleChargedBody)
     Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_IdleChargedFace)
     Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_IdleChargedArms)
-    Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(ChargedBodyAnims))
-    Call(SetIdleAnimations, ACTOR_SELF, PRT_FACE, Ref(ChargedFaceAnims))
-    Call(SetIdleAnimations, ACTOR_SELF, PRT_ARMS, Ref(ChargedArmAnims))
+    Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, ChargedBodyAnims)
+    Call(SetIdleAnimations, ACTOR_SELF, PRT_FACE, ChargedFaceAnims)
+    Call(SetIdleAnimations, ACTOR_SELF, PRT_ARMS, ChargedArmAnims)
     Call(SetPartEventBits, ACTOR_SELF, PRT_MAIN, ACTOR_EVENT_FLAG_ELECTRIFIED, true)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_CHARGE_LIGHTNING)
     Call(StartRumbleWithParams, 70, 120)
     Thread
-        Call(ShakeCam, CAM_BATTLE, 0, 60, Float(0.3))
+        Call(ShakeCam, CAM_BATTLE, 0, 60, 0.3)
     EndThread
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(GetActorVar, ACTOR_SELF, AVAR_ScaleX, LVar3)
-    DivF(LVar3, Float(100.0))
+    DivF(LVar3, 100.0)
     Call(MakeSnakingStatic, LVar0, LVar1, LVar2, LVar3)
     Call(SetActorVar, ACTOR_SELF, AVAR_ChargedStaticEffect, LVar0)
     Wait(60)
@@ -2174,7 +2174,7 @@ EvtScript EVS_Attack_DirectLightning = {
     Call(SetBattleCamTargetingModes, BTL_CAM_YADJ_TARGET, BTL_CAM_XADJ_AVG, false)
     Call(StartRumbleWithParams, 70, 80)
     Thread
-        Call(ShakeCam, CAM_BATTLE, 0, 40, Float(0.3))
+        Call(ShakeCam, CAM_BATTLE, 0, 40, 0.3)
     EndThread
     Thread
         Call(UnkBackgroundFunc3)
@@ -2198,12 +2198,12 @@ EvtScript EVS_Attack_DirectLightning = {
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(GetActorVar, ACTOR_SELF, AVAR_ScaleX, LVar0)
     Call(GetActorVar, ACTOR_SELF, AVAR_ScaleX, LVar1)
-    SetF(LVar2, Float(72.5))
-    SetF(LVar3, Float(67.5))
+    SetF(LVar2, 72.5)
+    SetF(LVar3, 67.5)
     MulF(LVar2, LVar0)
     MulF(LVar3, LVar1)
-    DivF(LVar2, Float(100.0))
-    DivF(LVar3, Float(100.0))
+    DivF(LVar2, 100.0)
+    DivF(LVar3, 100.0)
     Call(AddGoalPos, ACTOR_SELF, 0, LVar3, 0)
     Call(AddGoalPos, ACTOR_SELF, 20, 40, 0)
     Call(FlyToGoal, ACTOR_SELF, 40, -20, EASING_SIN_OUT)
@@ -2213,9 +2213,9 @@ EvtScript EVS_Attack_DirectLightning = {
     Call(SetActorDispOffset, ACTOR_SELF, 0, 0, 0)
     Call(GetActorVar, ACTOR_SELF, AVAR_ChargedStaticEffect, LVar0)
     Call(RemoveEffect, LVar0)
-    Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(BodyAnims))
-    Call(SetIdleAnimations, ACTOR_SELF, PRT_FACE, Ref(FaceAnims))
-    Call(SetIdleAnimations, ACTOR_SELF, PRT_ARMS, Ref(ArmAnims))
+    Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, BodyAnims)
+    Call(SetIdleAnimations, ACTOR_SELF, PRT_FACE, FaceAnims)
+    Call(SetIdleAnimations, ACTOR_SELF, PRT_ARMS, ArmAnims)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_UnleashBody)
     Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_UnleashFace)
     Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_UnleashArms)
@@ -2241,7 +2241,7 @@ EvtScript EVS_Attack_DirectLightning = {
             Call(SetGoalToTarget, ACTOR_SELF)
             Call(GetGoalPos, ACTOR_SELF, LVarD, LVarE, LVarF)
             Sub(LVarD, 100)
-            PlayEffect(EFFECT_LIGHTNING_BOLT, 0, LVarA, LVarB, LVarC, LVarD, 0, LVarF, Float(1.5), 20)
+            PlayEffect(EFFECT_LIGHTNING_BOLT, 0, LVarA, LVarB, LVarC, LVarD, 0, LVarF, 1.5, 20)
             Call(EnemyTestTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_TRIGGER_LUCKY, 0, 0, 0)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_IdleSadBody)
             Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_IdleSadFace)
@@ -2262,35 +2262,35 @@ EvtScript EVS_Attack_DirectLightning = {
             Add(LVar5, 1)
             Thread
                 Call(GetActorVar, ACTOR_SELF, AVAR_ScaleX, LVar6)
-                SetF(LVar7, Float(0.725))
-                SetF(LVar8, Float(0.242))
+                SetF(LVar7, 0.725)
+                SetF(LVar8, 0.242)
                 MulF(LVar7, LVar6)
                 MulF(LVar8, LVar6)
                 SubF(LVar0, LVar7)
                 SetF(LVar9, LVar8)
                 MulF(LVar9, 3)
                 AddF(LVar9, LVar0)
-                PlayEffect(EFFECT_LIGHTNING_BOLT, 0, LVar9, LVar1, LVar2, LVar3, LVar4, LVar5, Float(1.2), 10)
+                PlayEffect(EFFECT_LIGHTNING_BOLT, 0, LVar9, LVar1, LVar2, LVar3, LVar4, LVar5, 1.2, 10)
                 Wait(3)
                 SetF(LVar9, LVar8)
                 MulF(LVar9, 1)
                 AddF(LVar9, LVar0)
-                PlayEffect(EFFECT_LIGHTNING_BOLT, 0, LVar9, LVar1, LVar2, LVar3, LVar4, LVar5, Float(1.2), 10)
+                PlayEffect(EFFECT_LIGHTNING_BOLT, 0, LVar9, LVar1, LVar2, LVar3, LVar4, LVar5, 1.2, 10)
                 Wait(3)
                 SetF(LVar9, LVar8)
                 MulF(LVar9, 4)
                 AddF(LVar9, LVar0)
-                PlayEffect(EFFECT_LIGHTNING_BOLT, 0, LVar9, LVar1, LVar2, LVar3, LVar4, LVar5, Float(1.2), 10)
+                PlayEffect(EFFECT_LIGHTNING_BOLT, 0, LVar9, LVar1, LVar2, LVar3, LVar4, LVar5, 1.2, 10)
                 Wait(3)
                 SetF(LVar9, LVar8)
                 MulF(LVar9, 2)
                 AddF(LVar9, LVar0)
-                PlayEffect(EFFECT_LIGHTNING_BOLT, 0, LVar9, LVar1, LVar2, LVar3, LVar4, LVar5, Float(1.2), 10)
+                PlayEffect(EFFECT_LIGHTNING_BOLT, 0, LVar9, LVar1, LVar2, LVar3, LVar4, LVar5, 1.2, 10)
                 Wait(3)
                 SetF(LVar9, LVar8)
                 MulF(LVar9, 5)
                 AddF(LVar9, LVar0)
-                PlayEffect(EFFECT_LIGHTNING_BOLT, 0, LVar9, LVar1, LVar2, LVar3, LVar4, LVar5, Float(1.2), 10)
+                PlayEffect(EFFECT_LIGHTNING_BOLT, 0, LVar9, LVar1, LVar2, LVar3, LVar4, LVar5, 1.2, 10)
             EndThread
             Wait(2)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_IdleSadBody)
@@ -2312,35 +2312,35 @@ EvtScript EVS_Attack_DirectLightning = {
     Add(LVar5, 1)
     Thread
         Call(GetActorVar, ACTOR_SELF, AVAR_ScaleX, LVar6)
-        SetF(LVar7, Float(0.725))
-        SetF(LVar8, Float(0.242))
+        SetF(LVar7, 0.725)
+        SetF(LVar8, 0.242)
         MulF(LVar7, LVar6)
         MulF(LVar8, LVar6)
         SubF(LVar0, LVar7)
         SetF(LVar9, LVar8)
         MulF(LVar9, 3)
         AddF(LVar9, LVar0)
-        PlayEffect(EFFECT_LIGHTNING_BOLT, 0, LVar9, LVar1, LVar2, LVar3, LVar4, LVar5, Float(1.2), 10)
+        PlayEffect(EFFECT_LIGHTNING_BOLT, 0, LVar9, LVar1, LVar2, LVar3, LVar4, LVar5, 1.2, 10)
         Wait(3)
         SetF(LVar9, LVar8)
         MulF(LVar9, 1)
         AddF(LVar9, LVar0)
-        PlayEffect(EFFECT_LIGHTNING_BOLT, 0, LVar9, LVar1, LVar2, LVar3, LVar4, LVar5, Float(1.2), 10)
+        PlayEffect(EFFECT_LIGHTNING_BOLT, 0, LVar9, LVar1, LVar2, LVar3, LVar4, LVar5, 1.2, 10)
         Wait(3)
         SetF(LVar9, LVar8)
         MulF(LVar9, 4)
         AddF(LVar9, LVar0)
-        PlayEffect(EFFECT_LIGHTNING_BOLT, 0, LVar9, LVar1, LVar2, LVar3, LVar4, LVar5, Float(1.2), 10)
+        PlayEffect(EFFECT_LIGHTNING_BOLT, 0, LVar9, LVar1, LVar2, LVar3, LVar4, LVar5, 1.2, 10)
         Wait(3)
         SetF(LVar9, LVar8)
         MulF(LVar9, 2)
         AddF(LVar9, LVar0)
-        PlayEffect(EFFECT_LIGHTNING_BOLT, 0, LVar9, LVar1, LVar2, LVar3, LVar4, LVar5, Float(1.2), 10)
+        PlayEffect(EFFECT_LIGHTNING_BOLT, 0, LVar9, LVar1, LVar2, LVar3, LVar4, LVar5, 1.2, 10)
         Wait(3)
         SetF(LVar9, LVar8)
         MulF(LVar9, 5)
         AddF(LVar9, LVar0)
-        PlayEffect(EFFECT_LIGHTNING_BOLT, 0, LVar9, LVar1, LVar2, LVar3, LVar4, LVar5, Float(1.2), 10)
+        PlayEffect(EFFECT_LIGHTNING_BOLT, 0, LVar9, LVar1, LVar2, LVar3, LVar4, LVar5, 1.2, 10)
     EndThread
     Wait(2)
     Wait(2)
@@ -2388,8 +2388,8 @@ EvtScript EVS_Attack_GroupSlam = {
     Call(GetActorVar, ACTOR_SELF, AVAR_ScaleY, LVar1)
     Set(LVarF, 0)
     Loop(20)
-        Call(CosInterpMinMax, LVarF, LVar2, Float(1.0), Float(1.3), 10, 0, 0)
-        Call(CosInterpMinMax, LVarF, LVar3, Float(1.0), Float(0.7), 10, 0, 0)
+        Call(CosInterpMinMax, LVarF, LVar2, 1.0, 1.3, 10, 0, 0)
+        Call(CosInterpMinMax, LVarF, LVar3, 1.0, 0.7, 10, 0, 0)
         MulF(LVar2, LVar0)
         MulF(LVar3, LVar1)
         Call(SetActorVar, ACTOR_SELF, AVAR_ScaleX, LVar2)
@@ -2399,8 +2399,8 @@ EvtScript EVS_Attack_GroupSlam = {
     EndLoop
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_HUFF_N_PUFF_JIGGLE)
     Loop(20)
-        Call(CosInterpMinMax, LVarF, LVar2, Float(1.0), Float(1.2), 10, 0, 0)
-        Call(CosInterpMinMax, LVarF, LVar3, Float(1.0), Float(0.8), 10, 0, 0)
+        Call(CosInterpMinMax, LVarF, LVar2, 1.0, 1.2, 10, 0, 0)
+        Call(CosInterpMinMax, LVarF, LVar3, 1.0, 0.8, 10, 0, 0)
         MulF(LVar2, LVar0)
         MulF(LVar3, LVar1)
         Call(SetActorVar, ACTOR_SELF, AVAR_ScaleX, LVar2)
@@ -2439,7 +2439,7 @@ EvtScript EVS_Attack_GroupSlam = {
                 Set(LVarF, idx) \
                 Mul(LVarF, 36) \
                 Add(LVarF, -90) \
-                Call(AddVectorPolar, LVarD, LVarE, Float(60.0), LVarF) \
+                Call(AddVectorPolar, LVarD, LVarE, 60.0, LVarF) \
                 Call(SetActorPos, ArrayVar(idx), LVarD, LVarB, LVarE) \
             EndThread \
             Add(LVar9, 1) \
@@ -2500,7 +2500,7 @@ EvtScript EVS_Attack_GroupSlam = {
         PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar1, LVar4, LVar3, 60, 8, 66, 30)
     EndThread
     Thread
-        Call(ShakeCam, CAM_BATTLE, 0, 20, Float(1.0))
+        Call(ShakeCam, CAM_BATTLE, 0, 20, 1.0)
     EndThread
     Thread
         Call(GetActorVar, ACTOR_SELF, AVAR_ScaleX, LVar0)
@@ -2508,8 +2508,8 @@ EvtScript EVS_Attack_GroupSlam = {
         Set(LVarF, 0)
         Call(PlaySoundAtActor, ACTOR_SELF, SOUND_HUFF_N_PUFF_WOBBLE)
         Loop(20)
-            Call(CosInterpMinMax, LVarF, LVar2, Float(1.0), Float(1.5), 10, 0, 0)
-            Call(CosInterpMinMax, LVarF, LVar3, Float(1.0), Float(0.5), 10, 0, 0)
+            Call(CosInterpMinMax, LVarF, LVar2, 1.0, 1.5, 10, 0, 0)
+            Call(CosInterpMinMax, LVarF, LVar3, 1.0, 0.5, 10, 0, 0)
             MulF(LVar2, LVar0)
             MulF(LVar3, LVar1)
             Call(SetActorVar, ACTOR_SELF, AVAR_ScaleX, LVar2)
@@ -2519,8 +2519,8 @@ EvtScript EVS_Attack_GroupSlam = {
         EndLoop
         Call(PlaySoundAtActor, ACTOR_SELF, SOUND_HUFF_N_PUFF_WOBBLE)
         Loop(20)
-            Call(CosInterpMinMax, LVarF, LVar2, Float(1.0), Float(1.2), 10, 0, 0)
-            Call(CosInterpMinMax, LVarF, LVar3, Float(1.0), Float(0.8), 10, 0, 0)
+            Call(CosInterpMinMax, LVarF, LVar2, 1.0, 1.2, 10, 0, 0)
+            Call(CosInterpMinMax, LVarF, LVar3, 1.0, 0.8, 10, 0, 0)
             MulF(LVar2, LVar0)
             MulF(LVar3, LVar1)
             Call(SetActorVar, ACTOR_SELF, AVAR_ScaleX, LVar2)
@@ -2550,8 +2550,8 @@ EvtScript EVS_Attack_GroupSlam = {
                 Call(GetActorVar, ArrayVar(idx), AVAR_TuffPuff_ScaleY, LVar1) \
                 Set(LVarF, 0) \
                 Loop(20) \
-                    Call(CosInterpMinMax, LVarF, LVar2, Float(1.0), Float(1.5), 10, 0, 0) \
-                    Call(CosInterpMinMax, LVarF, LVar3, Float(1.0), Float(0.5), 10, 0, 0) \
+                    Call(CosInterpMinMax, LVarF, LVar2, 1.0, 1.5, 10, 0, 0) \
+                    Call(CosInterpMinMax, LVarF, LVar3, 1.0, 0.5, 10, 0, 0) \
                     MulF(LVar2, LVar0) \
                     MulF(LVar3, LVar1) \
                     Call(SetActorVar, ArrayVar(idx), AVAR_TuffPuff_ScaleX, LVar2) \
@@ -2560,8 +2560,8 @@ EvtScript EVS_Attack_GroupSlam = {
                     Wait(1) \
                 EndLoop \
                 Loop(20) \
-                    Call(CosInterpMinMax, LVarF, LVar2, Float(1.0), Float(1.2), 10, 0, 0) \
-                    Call(CosInterpMinMax, LVarF, LVar3, Float(1.0), Float(0.8), 10, 0, 0) \
+                    Call(CosInterpMinMax, LVarF, LVar2, 1.0, 1.2, 10, 0, 0) \
+                    Call(CosInterpMinMax, LVarF, LVar3, 1.0, 0.8, 10, 0, 0) \
                     MulF(LVar2, LVar0) \
                     MulF(LVar3, LVar1) \
                     Call(SetActorVar, ArrayVar(idx), AVAR_TuffPuff_ScaleX, LVar2) \
@@ -2715,9 +2715,9 @@ EvtScript EVS_TuffPuff_SqueezePlayer = {
         Add(LVarC, LVarB)
         Set(LVar9, LVarC)
         Loop(LVarC)
-            Call(GetLerpValue, EASING_CUBIC_OUT, Float(100.0), Float(40.0), LVarF, LVar9, LVar0)
+            Call(GetLerpValue, EASING_CUBIC_OUT, 100.0, 40.0, LVarF, LVar9, LVar0)
             MulF(LVar0, LVarD)
-            DivF(LVar0, Float(100.0))
+            DivF(LVar0, 100.0)
             Call(GetActorPos, ACTOR_PLAYER, LVar1, LVar2, LVar3)
             Call(GetActorPos, ACTOR_SELF, LVar4, LVar5, LVar6)
             Call(AddVectorPolar, LVar1, LVar3, LVar0, LVarE)
@@ -2734,9 +2734,9 @@ EvtScript EVS_TuffPuff_SqueezePlayer = {
         Set(LVarF, 0)
         Set(LVarC, LVarB)
         Loop(LVarC)
-            Call(GetLerpValue, EASING_QUARTIC_OUT, Float(40.0), Float(100.0), LVarF, LVarB, LVar0)
+            Call(GetLerpValue, EASING_QUARTIC_OUT, 40.0, 100.0, LVarF, LVarB, LVar0)
             MulF(LVar0, LVarD)
-            DivF(LVar0, Float(100.0))
+            DivF(LVar0, 100.0)
             Call(GetActorPos, ACTOR_PLAYER, LVar1, LVar2, LVar3)
             Call(GetActorPos, ACTOR_SELF, LVar4, LVar5, LVar6)
             Call(AddVectorPolar, LVar1, LVar3, LVar0, LVarE)
@@ -2785,7 +2785,7 @@ EvtScript EVS_Attack_TuffPuffSwarm = {
     #undef HNP_ADD_CHILD
 
     // radial increment will be stored in LVarB
-    SetF(LVarB, Float(360.0))
+    SetF(LVarB, 360.0)
     DivF(LVarB, LVarA)
     Thread
         Wait(10)
@@ -2812,8 +2812,8 @@ EvtScript EVS_Attack_TuffPuffSwarm = {
             Thread \
                 Call(GetActorPos, ACTOR_PLAYER, LVar1, LVar2, LVar3) \
                 MulF(LVarB, LVarA) \
-                AddF(LVarB, Float(100.0)) \
-                Call(AddVectorPolar, LVar1, LVar3, Float(20.0), LVarB) \
+                AddF(LVarB, 100.0) \
+                Call(AddVectorPolar, LVar1, LVar3, 20.0, LVarB) \
                 Call(RandInt, 20, LVar4) \
                 Sub(LVar4, 10) \
                 Add(LVar4, 19) \
@@ -2899,10 +2899,10 @@ EvtScript EVS_Attack_TuffPuffSwarm = {
                         Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2) \
                         Call(GetActorPos, ArrayVar(idx), LVar3, LVar4, LVar5) \
                         Call(Atan2, LVar6, LVar0, LVar2, LVar3, LVar5) \
-                        DivF(LVar6, Float(2.0)) \
-                        AddF(LVar6, Float(90.0)) \
-                        Call(AddVectorPolar, LVar0, LVar1, Float(70.0), LVar6) \
-                        Call(SetActorJumpGravity, ArrayVar(idx), Float(1.0)) \
+                        DivF(LVar6, 2.0) \
+                        AddF(LVar6, 90.0) \
+                        Call(AddVectorPolar, LVar0, LVar1, 70.0, LVar6) \
+                        Call(SetActorJumpGravity, ArrayVar(idx), 1.0) \
                         Call(SetGoalPos, ArrayVar(idx), LVar0, LVar1, LVar2) \
                         Call(JumpToGoal, ArrayVar(idx), 20, false, false, false) \
                     EndThread \
@@ -3050,10 +3050,10 @@ EvtScript EVS_Attack_TuffPuffSwarm = {
                         Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2) \
                         Call(GetActorPos, ArrayVar(idx), LVar3, LVar4, LVar5) \
                         Call(Atan2, LVar6, LVar0, LVar2, LVar3, LVar5) \
-                        DivF(LVar6, Float(2.0)) \
-                        AddF(LVar6, Float(90.0)) \
-                        Call(AddVectorPolar, LVar0, LVar1, Float(70.0), LVar6) \
-                        Call(SetActorJumpGravity, ArrayVar(idx), Float(1.0)) \
+                        DivF(LVar6, 2.0) \
+                        AddF(LVar6, 90.0) \
+                        Call(AddVectorPolar, LVar0, LVar1, 70.0, LVar6) \
+                        Call(SetActorJumpGravity, ArrayVar(idx), 1.0) \
                         Call(SetGoalPos, ArrayVar(idx), LVar0, LVar1, LVar2) \
                         Call(JumpToGoal, ArrayVar(idx), 20, false, false, false) \
                     EndThread \
@@ -3079,7 +3079,7 @@ EvtScript EVS_Attack_TuffPuffSwarm = {
                         Call(SetActorYaw, ACTOR_PLAYER, 0)
                     EndThread
                     Call(SetJumpAnimations, ACTOR_PLAYER, 0, ANIM_Mario1_Jump, ANIM_Mario1_Jump, ANIM_Mario1_Land)
-                    Call(SetActorJumpGravity, ACTOR_PLAYER, Float(1.5))
+                    Call(SetActorJumpGravity, ACTOR_PLAYER, 1.5)
                     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
                     Call(SetGoalPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
                     Call(PlayerHopToGoal, 20, 0, 1)

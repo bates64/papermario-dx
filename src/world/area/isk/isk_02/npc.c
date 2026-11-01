@@ -16,7 +16,7 @@ EvtScript EVS_NpcIdle_Pokey_01 = {
     Call(NpcMoveTo, NPC_SELF, -315, 455, 10)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION, false)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_BEGIN_WITH_CHASING, true)
-    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_PokeyMummy_Wander))
+    Call(BindNpcAI, NPC_SELF, EVS_NpcAI_PokeyMummy_Wander)
     Return
     End
 };
@@ -35,7 +35,7 @@ EvtScript EVS_NpcIdle_Pokey_02 = {
     Call(NpcMoveTo, NPC_SELF, -145, 535, 10)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION, false)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_BEGIN_WITH_CHASING, true)
-    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_PokeyMummy_Wander))
+    Call(BindNpcAI, NPC_SELF, EVS_NpcAI_PokeyMummy_Wander)
     Return
     End
 };
@@ -54,27 +54,27 @@ EvtScript EVS_NpcIdle_Pokey_03 = {
     Call(NpcMoveTo, NPC_SELF, 50, 550, 10)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION, false)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_BEGIN_WITH_CHASING, true)
-    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_PokeyMummy_Wander))
+    Call(BindNpcAI, NPC_SELF, EVS_NpcAI_PokeyMummy_Wander)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Pokey_01 = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Pokey_01))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Pokey_01)
     Call(SetOwnerInstigatorValue, 3)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Pokey_02 = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Pokey_02))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Pokey_02)
     Call(SetOwnerInstigatorValue, 3)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Pokey_03 = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Pokey_03))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Pokey_03)
     Call(SetOwnerInstigatorValue, 3)
     Return
     End

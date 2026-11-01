@@ -24,7 +24,7 @@ EvtScript EVS_Scene_MeetParakarry = {
         Call(PlaySoundAtPlayer, SOUND_EMOTE_QUESTION, SOUND_SPACE_DEFAULT)
         Call(ShowEmote, 0, EMOTE_QUESTION, 0, 20, EMOTER_PLAYER, 0, 0, 0, 0)
     EndThread
-    Call(AdjustCam, CAM_DEFAULT, Float(3.0 / DT), 30, 300, Float(15.0), Float(-9.5))
+    Call(AdjustCam, CAM_DEFAULT, 3.0 / DT, 30, 300, 15.0, -9.5)
     Thread
         Call(SetPlayerAnimation, ANIM_MarioW2_LookAround)
         Wait(20 * DT)
@@ -73,7 +73,7 @@ EvtScript EVS_Scene_MeetParakarry = {
     Call(SetPlayerAnimation, ANIM_Mario1_Hurt)
     Call(SetNpcAnimation, NPC_Parakarry, ANIM_WorldParakarry_HurtStill)
     Thread
-        Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(2.0))
+        Call(ShakeCam, CAM_DEFAULT, 0, 5, 2.0)
     EndThread
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(GetNpcPos, NPC_Parakarry, LVar3, LVar4, LVar5)
@@ -92,7 +92,7 @@ EvtScript EVS_Scene_MeetParakarry = {
         Set(LVar2, -380)
     EndIf
     Thread
-        Call(SetNpcJumpscale, NPC_Parakarry, Float(1.0))
+        Call(SetNpcJumpscale, NPC_Parakarry, 1.0)
         Call(GetNpcPos, NPC_Parakarry, LVar0, LVar1, LVar3)
         Add(LVar0, 30)
         Call(NpcJump1, NPC_Parakarry, LVar0, 215, LVar2, 15 * DT)
@@ -100,13 +100,13 @@ EvtScript EVS_Scene_MeetParakarry = {
         Call(SetNpcAnimation, NPC_Parakarry, ANIM_WorldParakarry_Hurt)
         Call(NpcJump1, NPC_Parakarry, LVar0, 215, LVar2, 8 * DT)
     EndThread
-    Call(SetPlayerJumpscale, Float(1.0))
+    Call(SetPlayerJumpscale, 1.0)
     Sub(LVar0, 30)
     Call(PlayerJump1, LVar0, LVar1, LVar2, 15 * DT)
     Call(SetPlayerPos, LVar0, LVar1, LVar2)
     Call(PlaySoundAt, SOUND_TRIP, SOUND_SPACE_DEFAULT, LVarA, LVarB, LVarC)
     Thread
-        Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(1.0))
+        Call(ShakeCam, CAM_DEFAULT, 0, 5, 1.0)
     EndThread
     Sub(LVar0, 15)
     Call(SetPlayerFlagBits, PS_FLAG_NO_FLIPPING, true)
@@ -116,7 +116,7 @@ EvtScript EVS_Scene_MeetParakarry = {
     Call(PlayerJump1, LVar0, LVar1, LVar2, 8 * DT)
     Call(SetPlayerPos, LVar0, LVar1, LVar2)
     Thread
-        Call(ShakeCam, CAM_DEFAULT, 0, 3, Float(1.0))
+        Call(ShakeCam, CAM_DEFAULT, 0, 3, 1.0)
     EndThread
     Wait(20 * DT)
     Call(NpcFaceNpc, NPC_PARTNER, NPC_Parakarry, 0)
@@ -130,11 +130,11 @@ EvtScript EVS_Scene_MeetParakarry = {
     Call(InterpPlayerYaw, 90, 0)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Wait(30 * DT)
-    Call(AdjustCam, CAM_DEFAULT, Float(3.0 / DT), 35, 255, Float(17.5), Float(-11.5))
+    Call(AdjustCam, CAM_DEFAULT, 3.0 / DT, 35, 255, 17.5, -11.5)
     Call(SetNpcAnimation, NPC_Parakarry, ANIM_WorldParakarry_Walk)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Add(LVar0, 60)
-    Call(SetNpcSpeed, NPC_Parakarry, Float(3.0))
+    Call(SetNpcSpeed, NPC_Parakarry, 3.0)
     Call(NpcMoveTo, NPC_Parakarry, LVar0, LVar2, 0)
     Wait(10 * DT)
     Call(SetNpcAnimation, NPC_Parakarry, ANIM_WorldParakarry_Idle)
@@ -148,10 +148,10 @@ EvtScript EVS_Scene_MeetParakarry = {
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Call(SpeakToPlayer, NPC_Parakarry, ANIM_WorldParakarry_Talk, ANIM_WorldParakarry_Idle, 0, MSG_CH2_0011)
     Set(GB_StoryProgress, STORY_CH2_SPOKE_WITH_PARAKARRY)
-    Call(ResetCam, CAM_DEFAULT, Float(3.0 / DT))
+    Call(ResetCam, CAM_DEFAULT, 3.0 / DT)
     Call(DisablePlayerPhysics, false)
     Call(DisablePlayerInput, false)
-    Call(BindNpcAI, NPC_Parakarry, Ref(EVS_NpcIdle_Parakarry))
+    Call(BindNpcAI, NPC_Parakarry, EVS_NpcIdle_Parakarry)
     Return
     End
 };
@@ -183,7 +183,7 @@ EvtScript EVS_NpcInteract_Parakarry = {
             Call(PlayerFaceNpc, NPC_Parakarry, false)
             Wait(10 * DT)
             Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
-            Call(AdjustCam, CAM_DEFAULT, Float(4.0 / DT), Float(0.0), Float(300.0), Float(17.5), Float(-10.0))
+            Call(AdjustCam, CAM_DEFAULT, 4.0 / DT, 0.0, 300.0, 17.5, -10.0)
         EndIf
     EndIf
     EVT_CHOOSE_KEY_ITEM_FROM(LetterList, NPC_Parakarry)
@@ -201,7 +201,7 @@ EvtScript EVS_NpcInteract_Parakarry = {
                     Call(ShowChoice, MSG_Choice_000F)
                     IfNe(LVar0, 0)
                         Call(ContinueSpeech, NPC_Parakarry, ANIM_WorldParakarry_Talk, ANIM_WorldParakarry_Idle, 0, MSG_CH2_001B)
-                        Call(ResetCam, CAM_DEFAULT, Float(4.0 / DT))
+                        Call(ResetCam, CAM_DEFAULT, 4.0 / DT)
                         Return
                     EndIf
                     Set(LFlag0, true)
@@ -228,7 +228,7 @@ EvtScript EVS_NpcInteract_Parakarry = {
                         Call(ShowChoice, MSG_Choice_000F)
                         IfNe(LVar0, 0)
                             Call(ContinueSpeech, NPC_Parakarry, ANIM_WorldParakarry_Talk, ANIM_WorldParakarry_Idle, 0, MSG_CH2_001B)
-                            Call(ResetCam, CAM_DEFAULT, Float(4.0))
+                            Call(ResetCam, CAM_DEFAULT, 4.0)
                             Return
                         EndIf
                     EndIf
@@ -240,7 +240,7 @@ EvtScript EVS_NpcInteract_Parakarry = {
         Call(ContinueSpeech, NPC_Parakarry, ANIM_WorldParakarry_Talk, ANIM_WorldParakarry_Idle, 0, MSG_CH2_001D)
         Call(ChangeNpcToPartner, NPC_Parakarry, PARTNER_PARAKARRY)
         Set(GB_StoryProgress, STORY_CH2_PARAKARRY_JOINED_PARTY)
-        Call(LoadPartyImage, Ref("party_pareta"))
+        Call(LoadPartyImage, "party_pareta")
         Exec(EVS_PushSong)
         Wait(15 * DT)
         Call(ShowMessageAtScreenPos, MSG_Menus_018C, 160, 40)
@@ -251,7 +251,7 @@ EvtScript EVS_NpcInteract_Parakarry = {
         Call(AddItem, ITEM_LETTER_TO_KOLORADO, EVT_IGNORE_ARG)
         Call(AddItem, ITEM_LETTER_CHAIN_GOOMPAPA_1, EVT_IGNORE_ARG)
     EndIf
-    Call(ResetCam, CAM_DEFAULT, Float(4.0 / DT))
+    Call(ResetCam, CAM_DEFAULT, 4.0 / DT)
     Call(EnablePartnerAI)
     Return
     Return
@@ -259,7 +259,7 @@ EvtScript EVS_NpcInteract_Parakarry = {
 };
 
 EvtScript EVS_NpcIdle_Parakarry = {
-    Call(SetNpcSpeed, NPC_SELF, Float(1.0))
+    Call(SetNpcSpeed, NPC_SELF, 1.0)
     Add(LVar0, -670)
     Add(LVar2, -485)
     Loop(0)
@@ -285,12 +285,12 @@ EvtScript EVS_NpcIdle_Parakarry = {
 };
 
 EvtScript EVS_NpcInit_Parakarry = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Parakarry))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Parakarry)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH2_SPOKE_WITH_PARAKARRY)
             Call(SetNpcPos, NPC_Parakarry, NPC_DISPOSE_LOCATION)
         CaseLt(STORY_CH2_PARAKARRY_JOINED_PARTY)
-            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Parakarry))
+            Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Parakarry)
         CaseDefault
             Call(RemoveNpc, NPC_SELF)
     EndSwitch

@@ -162,7 +162,7 @@ ActorPartBlueprint HoleParts[] = {
 EvtScript EVS_Hole_Init = {
     Call(GetActorVar, ACTOR_SELF, AVAR_IN_Hole_Small, LVar0)
     IfEq(LVar0, true)
-        Call(SetPartScale, ACTOR_SELF, PRT_MAIN, Float(0.4), Float(0.4), Float(0.4))
+        Call(SetPartScale, ACTOR_SELF, PRT_MAIN, 0.4, 0.4, 0.4)
     EndIf
     Return
     End
@@ -204,9 +204,9 @@ Formation SmallHoleFormation = {
 EvtScript EVS_CreateEmptyHole = {
     Call(GetStatusFlags, ACTOR_SELF, LVar0)
     IfFlag(LVar0, STATUS_FLAG_SHRINK)
-        Call(SummonEnemy, Ref(SmallHoleFormation), false)
+        Call(SummonEnemy, SmallHoleFormation, false)
     Else
-        Call(SummonEnemy, Ref(HoleFormation), false)
+        Call(SummonEnemy, HoleFormation, false)
     EndIf
     Call(GetActorPos, ACTOR_SELF, LVar1, LVar2, LVar3)
     Sub(LVar3, 1)
@@ -216,9 +216,9 @@ EvtScript EVS_CreateEmptyHole = {
 };
 
 EvtScript EVS_Init = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
     Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_NO_SHADOW, true)
     Return
     End
@@ -273,11 +273,11 @@ EvtScript EVS_HandleEvent = {
             Call(GetLastElement, LVar0)
             IfFlag(LVar0, DAMAGE_TYPE_SMASH)
                 Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BURROW_DIG)
-                Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, Float(2.0))
+                Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, 2.0)
                 Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_MontyMole_Burrow)
                 Wait(80)
                 Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BURROW_SURFACE)
-                Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, Float(1.0))
+                Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, 1.0)
                 Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_MontyMole_Emerge)
                 Wait(20)
                 Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_MontyMole_Sleep)
@@ -314,7 +314,7 @@ EvtScript EVS_HandleEvent = {
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_MontyMole_HurtDropDown)
             Wait(15)
             Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_TARGET_ONLY | ACTOR_FLAG_NO_DMG_APPLY, true)
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(EmptyHoleAnims))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, EmptyHoleAnims)
             Return
         CaseEq(EVENT_BEGIN_AIR_LIFT)
             SetConst(LVar0, PRT_MAIN)
@@ -338,11 +338,11 @@ EvtScript EVS_HandleEvent = {
             Return
         CaseEq(EVENT_AIR_LIFT_FAILED)
             Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BURROW_DIG)
-            Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, Float(2.0))
+            Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, 2.0)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_MontyMole_Burrow)
             Wait(40)
             Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BURROW_SURFACE)
-            Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, Float(1.0))
+            Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, 1.0)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_MontyMole_Emerge)
             Wait(20)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_MontyMole_Sleep)
@@ -381,9 +381,9 @@ EvtScript EVS_TakeTurn = {
     Call(SetPartFlagBits, ACTOR_SELF, PRT_ROCK, ACTOR_PART_FLAG_INVISIBLE, false)
     Call(GetStatusFlags, ACTOR_SELF, LVar0)
     IfFlag(LVar0, STATUS_FLAG_SHRINK)
-        Call(SetPartScale, ACTOR_SELF, PRT_ROCK, Float(0.4), Float(0.4), Float(0.4))
+        Call(SetPartScale, ACTOR_SELF, PRT_ROCK, 0.4, 0.4, 0.4)
     Else
-        Call(SetPartScale, ACTOR_SELF, PRT_ROCK, Float(1.0), Float(1.0), Float(1.0))
+        Call(SetPartScale, ACTOR_SELF, PRT_ROCK, 1.0, 1.0, 1.0)
     EndIf
     Call(PlaySoundAtPart, ACTOR_SELF, PRT_ROCK, SOUND_MOLE_THROW)
     Call(SetPartSounds, ACTOR_SELF, PRT_ROCK, ACTOR_SOUND_FLY, SOUND_NONE, SOUND_NONE)
@@ -397,8 +397,8 @@ EvtScript EVS_TakeTurn = {
             Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Sub(LVar0, 100)
             Set(LVar1, -5)
-            Call(SetPartMoveSpeed, ACTOR_SELF, PRT_ROCK, Float(12.0))
-            Call(SetPartJumpGravity, ACTOR_SELF, PRT_ROCK, Float(0.1))
+            Call(SetPartMoveSpeed, ACTOR_SELF, PRT_ROCK, 12.0)
+            Call(SetPartJumpGravity, ACTOR_SELF, PRT_ROCK, 0.1)
             Call(SetAnimation, ACTOR_SELF, PRT_ROCK, ANIM_MontyMole_Rock)
             Call(FlyPartTo, ACTOR_SELF, PRT_ROCK, LVar0, LVar1, LVar2, 0, 30, EASING_LINEAR)
             Call(SetPartFlagBits, ACTOR_SELF, PRT_ROCK, ACTOR_PART_FLAG_INVISIBLE, true)
@@ -414,8 +414,8 @@ EvtScript EVS_TakeTurn = {
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-    Call(SetPartMoveSpeed, ACTOR_SELF, PRT_ROCK, Float(12.0))
-    Call(SetPartJumpGravity, ACTOR_SELF, PRT_ROCK, Float(0.1))
+    Call(SetPartMoveSpeed, ACTOR_SELF, PRT_ROCK, 12.0)
+    Call(SetPartJumpGravity, ACTOR_SELF, PRT_ROCK, 0.1)
     Call(SetAnimation, ACTOR_SELF, PRT_ROCK, ANIM_MontyMole_Rock)
     Call(FlyPartTo, ACTOR_SELF, PRT_ROCK, LVar0, LVar1, LVar2, 0, 20, EASING_LINEAR)
     Wait(2)
@@ -426,10 +426,10 @@ EvtScript EVS_TakeTurn = {
             Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
             Sub(LVar0, 55)
             Set(LVar1, 0)
-            Call(SetPartMoveSpeed, ACTOR_SELF, PRT_ROCK, Float(6.0))
-            Call(SetPartJumpGravity, ACTOR_SELF, PRT_ROCK, Float(0.1))
+            Call(SetPartMoveSpeed, ACTOR_SELF, PRT_ROCK, 6.0)
+            Call(SetPartJumpGravity, ACTOR_SELF, PRT_ROCK, 0.1)
             Call(FlyPartTo, ACTOR_SELF, PRT_ROCK, LVar0, LVar1, LVar2, 0, 25, EASING_LINEAR)
-            Call(SetPartMoveSpeed, ACTOR_SELF, PRT_ROCK, Float(4.0))
+            Call(SetPartMoveSpeed, ACTOR_SELF, PRT_ROCK, 4.0)
             Sub(LVar0, 20)
             Call(FlyPartTo, ACTOR_SELF, PRT_ROCK, LVar0, LVar1, LVar2, 0, 21, EASING_LINEAR)
             Call(SetPartFlagBits, ACTOR_SELF, PRT_ROCK, ACTOR_PART_FLAG_INVISIBLE, true)

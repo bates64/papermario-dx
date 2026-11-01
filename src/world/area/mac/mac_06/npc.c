@@ -168,9 +168,9 @@ EvtScript EVS_NpcIdle_Whale = {
         IfEq(GF_StartedChapter5, false)
             Set(GF_StartedChapter5, true)
             Call(FadeOutMusic, 0, 1500)
-            Call(GotoMapSpecial, Ref("kmr_22"), kmr_22_ENTRY_5, TRANSITION_BEGIN_OR_END_CHAPTER)
+            Call(GotoMapSpecial, "kmr_22", kmr_22_ENTRY_5, TRANSITION_BEGIN_OR_END_CHAPTER)
         Else
-            Call(GotoMap, Ref("jan_00"), jan_00_ENTRY_0)
+            Call(GotoMap, "jan_00", jan_00_ENTRY_0)
         EndIf
     Else
         Call(GetNpcPos, NPC_Whale, LVar0, LVar1, LVar2)
@@ -188,7 +188,7 @@ EvtScript EVS_NpcIdle_Whale = {
         Wait(150)
         Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Swim)
         Call(NpcFlyTo, NPC_Whale, -500, LVar1, 500, 120, 0, EASING_COS_IN)
-        Call(GotoMap, Ref("mac_05"), mac_05_ENTRY_1)
+        Call(GotoMap, "mac_05", mac_05_ENTRY_1)
     EndIf
     Return
     End
@@ -267,7 +267,7 @@ EvtScript EVS_NpcInit_Whale = {
         Call(InterpNpcYaw, NPC_SELF, 270, 0)
         Call(SetNpcPos, NPC_SELF, 300, 0, 500)
     EndIf
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Whale))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Whale)
     Call(SetNpcAnimation, NPC_SELF, XNIM_Whale_Swim)
     Call(DisablePlayerPhysics, true)
     Call(DisablePlayerInput, true)
@@ -301,9 +301,9 @@ EvtScript EVS_NpcInit_Whale = {
         Call(AwaitSkipScenePrompt)
         Call(GetEntryID, LVar0)
         IfEq(LVar0, mac_06_ENTRY_0)
-            Call(GotoMap, Ref("jan_00"), jan_00_ENTRY_0)
+            Call(GotoMap, "jan_00", jan_00_ENTRY_0)
         Else
-            Call(GotoMap, Ref("mac_05"), mac_05_ENTRY_1)
+            Call(GotoMap, "mac_05", mac_05_ENTRY_1)
         EndIf
     EndThread
     Return
@@ -339,7 +339,7 @@ EvtScript EVS_FlyingGull = {
     Set(LFlag1, false)
     SetF(LVar7, 0)
     Label(10)
-        Call(LoadPath, 500, Ref(FlightPath), ARRAY_COUNT(FlightPath), EASING_LINEAR)
+        Call(LoadPath, 500, FlightPath, ARRAY_COUNT(FlightPath), EASING_LINEAR)
         Label(0)
             Call(GetNextPathPos)
             Call(TranslateModel, MODEL_hontai, LVar1, LVar2, LVar3)
@@ -382,9 +382,9 @@ EvtScript EVS_NpcIdle_JrTroopa = {
             Wait(5)
         EndLoop
     EndChildThread
-    Call(SetNpcSpeed, NPC_SELF, Float(2.0))
+    Call(SetNpcSpeed, NPC_SELF, 2.0)
     Call(NpcMoveTo, NPC_SELF, -300, 500, 0)
-    Call(GotoMap, Ref("mac_05"), mac_05_ENTRY_1)
+    Call(GotoMap, "mac_05", mac_05_ENTRY_1)
     Wait(100)
     Return
     End
@@ -393,7 +393,7 @@ EvtScript EVS_NpcIdle_JrTroopa = {
 EvtScript EVS_NpcInit_JrTroopa = {
     IfGe(GB_StoryProgress, STORY_CH5_SUSHIE_JOINED_PARTY)
         IfEq(GF_MAC01_Defeated_JrTroopa4, false)
-            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_JrTroopa))
+            Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_JrTroopa)
             Return
         EndIf
     EndIf

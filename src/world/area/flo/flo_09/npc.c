@@ -17,7 +17,7 @@ EvtScript EVS_NpcAI_Bzzap_02 = {
                     Call(SetNpcJumpscale, NPC_SELF, 0)
                     Call(NpcJump0, NPC_SELF, LVar0, 50, LVar2, 15)
                     Call(SetSelfVar, 0, 1)
-                    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_Bzzap_Wander))
+                    Call(BindNpcAI, NPC_SELF, EVS_NpcAI_Bzzap_Wander)
                 EndIf
             CaseEq(2)
                 Call(DisablePlayerInput, true)
@@ -38,7 +38,7 @@ EvtScript EVS_NpcDefeat_Bzzap_02 = {
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
             Call(SetSelfVar, 0, 2)
-            Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_Bzzap_02))
+            Call(BindNpcAI, NPC_SELF, EVS_NpcAI_Bzzap_02)
             Call(DoNpcDefeat)
         CaseEq(OUTCOME_PLAYER_LOST)
         CaseEq(OUTCOME_PLAYER_FLED)
@@ -48,8 +48,8 @@ EvtScript EVS_NpcDefeat_Bzzap_02 = {
 };
 
 EvtScript EVS_NpcInit_Bzzap_02 = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcAI_Bzzap_02))
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Bzzap_02))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcAI_Bzzap_02)
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_Bzzap_02)
     Return
     End
 };

@@ -23,10 +23,10 @@ EvtScript EVS_ExitWalk_isk_07_0 = EVT_EXIT_WALK(40, isk_08_ENTRY_2, "isk_07", is
 EvtScript EVS_ExitWalk_isk_11_0 = EVT_EXIT_WALK(40, isk_08_ENTRY_3, "isk_11", isk_11_ENTRY_0);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_isk_09_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilinw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_isk_10_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_isk_07_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deiline, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_isk_11_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitWalk_isk_09_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilinw, 1, 0)
+    BindTrigger(EVS_ExitWalk_isk_10_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitWalk_isk_07_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deiline, 1, 0)
+    BindTrigger(EVS_ExitWalk_isk_11_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     Return
     End
 };
@@ -36,7 +36,7 @@ EvtScript EVS_Main = {
     Call(SetSpriteShading, SHADING_ISK_08)
     Call(SetupLandingCamAdjust)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Call(MakeNpcs, true, DefaultNPCs)
     ExecWait(EVS_SetupFlames)
     ExecWait(EVS_SetupBombableWall)
 #if VERSION_PAL
@@ -51,7 +51,7 @@ EvtScript EVS_Main = {
             Call(SetMusic, 0, SONG_DRY_DRY_RUINS, 0, VOL_LEVEL_FULL)
     EndSwitch
 #endif
-    Set(LVar0, Ref(EVS_BindExitTriggers))
+    Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     Return
     End

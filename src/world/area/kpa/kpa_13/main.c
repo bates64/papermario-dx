@@ -5,9 +5,9 @@ EvtScript EVS_ExitWalk_kpa_15_0 = EVT_EXIT_WALK(60, kpa_13_ENTRY_2, "kpa_15", kp
 EvtScript EVS_ExitWalk_kpa_14_0 = EVT_EXIT_WALK(60, kpa_13_ENTRY_1, "kpa_14", kpa_14_ENTRY_0);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_kpa_12_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_kpa_15_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilin, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_kpa_14_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitWalk_kpa_12_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitWalk_kpa_15_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilin, 1, 0)
+    BindTrigger(EVS_ExitWalk_kpa_14_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     Return
     End
 };
@@ -56,7 +56,7 @@ EvtScript EVS_Main = {
         Call(EnableGroup, MODEL_before, false)
     EndIf
     Exec(EVS_SetupMusic)
-    Set(LVar0, Ref(EVS_BindExitTriggers))
+    Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     Wait(1)
     IfEq(GF_KPA16_ShutOffLava, false)
@@ -82,7 +82,7 @@ EvtScript EVS_Main = {
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o1075, SURFACE_TYPE_LAVA)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_deilin, SURFACE_TYPE_LAVA)
             Thread
-                Call(ResetFromLava, Ref(SafeFloorColliders))
+                Call(ResetFromLava, SafeFloorColliders)
             EndThread
         EndThread
     EndIf

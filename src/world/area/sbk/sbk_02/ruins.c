@@ -66,7 +66,7 @@ EvtScript EVS_Pedestal_Sink = {
         Call(RotateModel, MODEL_point_iwa, LVar2, 0, 1, 0)
         Call(TranslateModel, MODEL_point_iwa, 0, LVar0, 0)
         Sub(LVar2, 10)
-        AddF(LVar3, Float(0.2))
+        AddF(LVar3, 0.2)
         Wait(1)
         IfEq(LVar1, 0)
             BreakLoop
@@ -90,8 +90,8 @@ s32 ModelList_Translucent[] = {
 EvtScript EVS_DarkenEnvironment = {
     Call(SetModelTintMode, APPLY_TINT_BG, nullptr, ENV_TINT_REMAP)
     Call(SetModelTintMode, APPLY_TINT_GROUPS, -1, ENV_TINT_REMAP)
-    Call(SetModelTintMode, APPLY_TINT_GROUPS, Ref(ModelList_Solid), ENV_TINT_NONE)
-    Call(SetModelTintMode, APPLY_TINT_MODELS, Ref(ModelList_Translucent), ENV_TINT_NONE)
+    Call(SetModelTintMode, APPLY_TINT_GROUPS, ModelList_Solid, ENV_TINT_NONE)
+    Call(SetModelTintMode, APPLY_TINT_MODELS, ModelList_Translucent, ENV_TINT_NONE)
     Call(InterpWorldEnvColor, 255, 255, 255, 0, 0, 0, 0)
     Wait(1)
     Call(InterpWorldEnvColor, 44, 32, 177, 0, 0, 0, 60)
@@ -134,14 +134,14 @@ EvtScript EVS_SandRing_Appear = {
     Loop(100)
         Set(LVar3, LVar2)
         DivF(LVar3, 80)
-        Call(ScaleModel, MODEL_o225, LVar3, Float(1.0), LVar3)
+        Call(ScaleModel, MODEL_o225, LVar3, 1.0, LVar3)
         Call(TranslateModel, MODEL_o225, 0, LVar0, 0)
         Add(LVar0, 1)
         Add(LVar2, 1)
         Wait(1)
     EndLoop
     Loop(0)
-        Call(ScaleModel, MODEL_o225, LVar3, Float(1.0), LVar3)
+        Call(ScaleModel, MODEL_o225, LVar3, 1.0, LVar3)
         Wait(1)
     EndLoop
     Return
@@ -156,14 +156,14 @@ EvtScript EVS_SandRingClone_Appear = {
     Loop(100)
         Set(LVar3, LVar2)
         DivF(LVar3, 110)
-        Call(ScaleModel, CLONED_MODEL(0), LVar3, Float(1.0), LVar3)
+        Call(ScaleModel, CLONED_MODEL(0), LVar3, 1.0, LVar3)
         Call(TranslateModel, CLONED_MODEL(0), 0, LVar0, 0)
         Add(LVar0, 1)
         Add(LVar2, 1)
         Wait(1)
     EndLoop
     Loop(0)
-        Call(ScaleModel, CLONED_MODEL(0), LVar3, Float(1.0), LVar3)
+        Call(ScaleModel, CLONED_MODEL(0), LVar3, 1.0, LVar3)
         Wait(1)
     EndLoop
     Return
@@ -174,9 +174,9 @@ EvtScript EVS_SandRing_Vanish = {
     Call(EnableModel, MODEL_o225, true)
     Set(LVar0, 0)
     Set(LVar2, 100)
-    SetF(LVar3, Float(1.25))
+    SetF(LVar3, 1.25)
     Loop(20)
-        Call(ScaleModel, MODEL_o225, LVar3, Float(1.0), LVar3)
+        Call(ScaleModel, MODEL_o225, LVar3, 1.0, LVar3)
         Wait(1)
     EndLoop
     Loop(70)
@@ -198,9 +198,9 @@ EvtScript EVS_SandRingClone_Vanish = {
     Call(EnableModel, CLONED_MODEL(0), true)
     Set(LVar0, 0)
     Set(LVar2, 100)
-    SetF(LVar3, Float(0.909))
+    SetF(LVar3, 0.909)
     Loop(20)
-        Call(ScaleModel, CLONED_MODEL(0), LVar3, Float(1.0), LVar3)
+        Call(ScaleModel, CLONED_MODEL(0), LVar3, 1.0, LVar3)
         Wait(1)
     EndLoop
     Loop(70)
@@ -400,7 +400,7 @@ EvtScript EVS_Ruins_FinishRising = {
             BreakLoop
         EndIf
     EndLoop
-    Call(ShakeCam, CAM_DEFAULT, 0, 10, Float(1.0))
+    Call(ShakeCam, CAM_DEFAULT, 0, 10, 1.0)
     Return
     End
 };
@@ -550,7 +550,7 @@ EvtScript EVS_Steps_FinishRising = {
 EvtScript EVS_Steps_Unfold = {
     Call(PlaySoundAt, SOUND_SBK_RUINS_STEPS_UNFOLD, SOUND_SPACE_DEFAULT, 0, 39, -80)
     Thread
-        Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(0.2))
+        Call(ShakeCam, CAM_DEFAULT, 0, 5, 0.2)
     EndThread
     Call(MakeLerp, 0, -180, 180, EASING_QUADRATIC_OUT)
     Loop(0)
@@ -569,7 +569,7 @@ EvtScript EVS_Steps_Unfold = {
     Wait(3)
     PlayEffect(EFFECT_SMOKE_IMPACT, 0, -61, 2, -83, 20, 10, 0, 60)
     PlayEffect(EFFECT_DUST, 2, -61, 2, -83, 60)
-    Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(1.0))
+    Call(ShakeCam, CAM_DEFAULT, 0, 5, 1.0)
     Return
     End
 };
@@ -591,19 +591,19 @@ EvtScript EVS_OnInteract_Pedestal = {
     Call(SetMusic, 0, SONG_DRY_DRY_RUINS_APPEAR, BGM_VARIATION_1, VOL_LEVEL_FULL)
     Call(UseSettingsFrom, CAM_DEFAULT, 0, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, 210, 0, 137)
-    Call(SetCamPosA, CAM_DEFAULT, Float(150.0), Float(500.0))
-    Call(SetCamPosB, CAM_DEFAULT, Float(-450.0), Float(-500.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(15.0), Float(-7.0))
-    Call(SetCamDistance, CAM_DEFAULT, Float(500.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(0.2))
+    Call(SetCamPosA, CAM_DEFAULT, 150.0, 500.0)
+    Call(SetCamPosB, CAM_DEFAULT, -450.0, -500.0)
+    Call(SetCamPitch, CAM_DEFAULT, 15.0, -7.0)
+    Call(SetCamDistance, CAM_DEFAULT, 500.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 0.2)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(10)
     Set(LVar0, 180)
     ExecWait(EVS_SetChompStatueRotation)
     Thread
-        Call(ShakeCam, CAM_DEFAULT, 0, 120, Float(0.2))
-        Call(ShakeCam, CAM_DEFAULT, 0, 300, Float(0.5))
-        Call(ShakeCam, CAM_DEFAULT, 0, 300, Float(0.2))
+        Call(ShakeCam, CAM_DEFAULT, 0, 120, 0.2)
+        Call(ShakeCam, CAM_DEFAULT, 0, 300, 0.5)
+        Call(ShakeCam, CAM_DEFAULT, 0, 300, 0.2)
     EndThread
     Exec(EVS_Pedestal_Sink)
     Wait(30)
@@ -617,7 +617,7 @@ EvtScript EVS_OnInteract_Pedestal = {
     EndIf
     Thread
         Wait(10)
-        Call(SetPlayerSpeed, Float(3.0))
+        Call(SetPlayerSpeed, 3.0)
         Call(PlayerMoveTo, LVar0, 80, 0)
         Call(FacePlayerTowardPoint, 0, 0, 0)
     EndThread
@@ -633,17 +633,17 @@ EvtScript EVS_OnInteract_Pedestal = {
     Exec(EVS_Ruins_Arise)
     Exec(EVS_Steps_Arise)
     Wait(100)
-    Call(SetCamPitch, CAM_DEFAULT, Float(8.0), Float(-9.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(0.2))
+    Call(SetCamPitch, CAM_DEFAULT, 8.0, -9.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 0.2)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(80)
     Exec(EVS_InterpChompStatueRotation)
     Wait(60)
     Wait(50)
     IfEq(LFlag0, false)
-        Call(GotoMap, Ref("sbk_30"), sbk_30_ENTRY_4)
+        Call(GotoMap, "sbk_30", sbk_30_ENTRY_4)
     Else
-        Call(GotoMap, Ref("sbk_30"), sbk_30_ENTRY_5)
+        Call(GotoMap, "sbk_30", sbk_30_ENTRY_5)
     EndIf
     Wait(100)
     Return
@@ -658,7 +658,7 @@ EvtScript EVS_SetupRuins = {
         CaseLt(STORY_CH2_UNCOVERED_DRY_DRY_RUINS)
             Call(EnableGroup, MODEL_day_version, false)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_ruin, COLLIDER_FLAGS_UPPER_MASK)
-            BindPadlock(Ref(EVS_OnInteract_Pedestal), TRIGGER_WALL_PRESS_A, COLLIDER_iwa, Ref(PedestalKeyList), 0, 1)
+            BindPadlock(EVS_OnInteract_Pedestal, TRIGGER_WALL_PRESS_A, COLLIDER_iwa, PedestalKeyList, 0, 1)
         CaseDefault
             Call(EnableModel, MODEL_point_iwa, false)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_pikapika, COLLIDER_FLAGS_UPPER_MASK)
@@ -680,20 +680,20 @@ EvtScript EVS_Ruins_Arise_Continued = {
     Call(EnableModel, MODEL_point_iwa, false)
     Call(EnableGroup, MODEL_day_version, false)
     Thread
-        Call(ShakeCam, CAM_DEFAULT, 0, 400, Float(0.2))
+        Call(ShakeCam, CAM_DEFAULT, 0, 400, 0.2)
     EndThread
     Call(UseSettingsFrom, CAM_DEFAULT, 0, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, 210, 0, 137)
-    Call(SetCamPosA, CAM_DEFAULT, Float(150.0), Float(500.0))
-    Call(SetCamPosB, CAM_DEFAULT, Float(-450.0), Float(-500.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(8.0), Float(-9.0))
-    Call(SetCamDistance, CAM_DEFAULT, Float(500.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamPosA, CAM_DEFAULT, 150.0, 500.0)
+    Call(SetCamPosB, CAM_DEFAULT, -450.0, -500.0)
+    Call(SetCamPitch, CAM_DEFAULT, 8.0, -9.0)
+    Call(SetCamDistance, CAM_DEFAULT, 500.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(SetModelTintMode, APPLY_TINT_BG, nullptr, ENV_TINT_REMAP)
     Call(SetModelTintMode, APPLY_TINT_GROUPS, -1, ENV_TINT_REMAP)
-    Call(SetModelTintMode, APPLY_TINT_GROUPS, Ref(ModelList_Solid), ENV_TINT_NONE)
-    Call(SetModelTintMode, APPLY_TINT_MODELS, Ref(ModelList_Translucent), ENV_TINT_NONE)
+    Call(SetModelTintMode, APPLY_TINT_GROUPS, ModelList_Solid, ENV_TINT_NONE)
+    Call(SetModelTintMode, APPLY_TINT_MODELS, ModelList_Translucent, ENV_TINT_NONE)
     Call(InterpWorldEnvColor, 44, 32, 177, 0, 0, 0, 0)
     Exec(EVS_Ruins_FinishRising)
     Exec(EVS_Steps_FinishRising)
@@ -703,25 +703,25 @@ EvtScript EVS_Ruins_Arise_Continued = {
     Exec(EVS_SandRingClone_Vanish)
     Wait(20)
     Exec(EVS_LightRays_Vanish)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(UseSettingsFrom, CAM_DEFAULT, 0, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, 0, 0, 0)
-    Call(SetCamPitch, CAM_DEFAULT, Float(4.0), Float(-6.5))
-    Call(SetCamDistance, CAM_DEFAULT, Float(790.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(0.2))
+    Call(SetCamPitch, CAM_DEFAULT, 4.0, -6.5)
+    Call(SetCamDistance, CAM_DEFAULT, 790.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 0.2)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(100)
     Exec(EVS_Doors_Open)
     Wait(100)
     ExecWait(EVS_Steps_Unfold)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_ruin, COLLIDER_FLAGS_UPPER_MASK)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Wait(60)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_NONE)
     Call(DisablePlayerInput, false)

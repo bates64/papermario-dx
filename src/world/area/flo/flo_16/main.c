@@ -5,8 +5,8 @@ EvtScript EVS_ExitWalk_flo_00_4 = EVT_EXIT_WALK(60, flo_16_ENTRY_0, "flo_00", fl
 EvtScript EVS_ExitWalk_flo_17_0 = EVT_EXIT_WALK(60, flo_16_ENTRY_1, "flo_17", flo_17_ENTRY_0);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_flo_00_4), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_flo_17_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitWalk_flo_00_4, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitWalk_flo_17_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     Return
     End
 };
@@ -21,12 +21,12 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_FLOWER_FIELDS)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Call(MakeNpcs, false, Ref(DefaultNPCs))
+    Call(MakeNpcs, false, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     Exec(EVS_SetupVines)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o174, SURFACE_TYPE_SPIKES)
     Thread
-        Call(ResetFromLava, Ref(SafeFloorColliders))
+        Call(ResetFromLava, SafeFloorColliders)
     EndThread
     // vines scrolling left
     Call(SetTexPanner, MODEL_o59, TEX_PANNER_1)
@@ -57,7 +57,7 @@ EvtScript EVS_Main = {
     Exec(EVS_SetupPillarPuzzle)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitw, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilite, COLLIDER_FLAGS_UPPER_MASK)
-    Set(LVar0, Ref(EVS_BindExitTriggers))
+    Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     ExecWait(EVS_SetupMusic)
     IfGe(GB_StoryProgress, STORY_CH6_DESTROYED_PUFF_PUFF_MACHINE)

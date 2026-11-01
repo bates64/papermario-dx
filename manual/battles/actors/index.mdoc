@@ -181,8 +181,8 @@ The blueprint's `initScript` runs when the actor spawns. It binds the EVT script
 
 ```c
 EvtScript EVS_Init = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
     Return
     End
 };
@@ -191,4 +191,4 @@ EvtScript EVS_Init = {
 - **`EVS_TakeTurn`** is the actor's AI, and runs on its turn. See [Attacks](/papermario-dx/battles/actors/attacks/).
 - **`EVS_HandleEvent`** responds to things that happen to the actor, such as being hit or defeated. See [Handle events](/papermario-dx/battles/actors/handling-events/).
 
-To make the actor move while it waits for its turn, such as the Goomba shuffling back and forth, write an idle EVT script and bind it with `Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))`. For an example, see `battle/actor/goomba.c`.
+To make the actor move while it waits for its turn, such as the Goomba shuffling back and forth, write an idle EVT script and bind it with `Call(BindIdle, ACTOR_SELF, EVS_Idle)`. For an example, see `battle/actor/goomba.c`.

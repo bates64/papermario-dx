@@ -4,7 +4,7 @@
 EvtScript EVS_ExitWalk_sam_02_0 = EVT_EXIT_WALK(60, sam_01_ENTRY_0, "sam_02", sam_02_ENTRY_0);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_sam_02_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitWalk_sam_02_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     Return
     End
 };
@@ -63,7 +63,7 @@ EvtScript EVS_SetupHerringway = {
             Call(SetNpcFlagBits, NPC_Herringway, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
         EndThread
         Set(GB_StoryProgress, STORY_CH7_HERRINGWAY_AT_MAYORS_HOUSE)
-        Call(BindNpcInteract, NPC_Herringway, Ref(EVS_NpcInteract_Herringway))
+        Call(BindNpcInteract, NPC_Herringway, EVS_NpcInteract_Herringway)
         ExecWait(EVS_SetupMayorRooms)
     EndIf
     Return
@@ -76,11 +76,11 @@ EvtScript EVS_Main = {
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_MAYOR_MURDER_MYSTERY)
-            Call(MakeNpcs, false, Ref(BeforeNPCs))
+            Call(MakeNpcs, false, BeforeNPCs)
         CaseLt(STORY_CH7_MAYOR_MURDER_SOLVED)
-            Call(MakeNpcs, false, Ref(MysteryNPCs))
+            Call(MakeNpcs, false, MysteryNPCs)
         CaseGe(STORY_CH7_MAYOR_MURDER_SOLVED)
-            Call(MakeNpcs, false, Ref(AfterNPCs))
+            Call(MakeNpcs, false, AfterNPCs)
     EndSwitch
     ExecWait(EVS_MakeEntities)
     ExecWait(EVS_SetupMusic)
@@ -95,7 +95,7 @@ EvtScript EVS_Main = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o408, SURFACE_TYPE_SNOW)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o409, SURFACE_TYPE_SNOW)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_deilie, SURFACE_TYPE_SNOW)
-    Set(LVar0, Ref(EVS_BindExitTriggers))
+    Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     Wait(1)
     Exec(EVS_SetupHerringway)

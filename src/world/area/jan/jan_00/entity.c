@@ -14,7 +14,7 @@ EvtScript EVS_MakeEntities = {
     IfNe(LVar0, jan_00_ENTRY_0)
         Exec(EVS_MakeFlowerCoins)
     EndIf
-    Call(MakeEntity, Ref(Entity_SpinningFlower), 15, 0, 415, 0, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_SpinningFlower, 15, 0, 415, 0, MAKE_ENTITY_END)
     Return
     End
 };

@@ -23,7 +23,7 @@ EvtScript EVS_NpcAI_FrostClubba_Wander = {
     Call(SetSelfVar, AI_VAR_MELEE_PRE_TIME, 3)
     Call(SetSelfVar, AI_VAR_MELEE_SWING_TIME, 7)
     Call(SetSelfVar, AI_VAR_MELEE_POST_TIME, 6)
-    Call(WanderMeleeAI_Main, Ref(AISettings_FrostClubba_Wander))
+    Call(WanderMeleeAI_Main, AISettings_FrostClubba_Wander)
     Return
     End
 };

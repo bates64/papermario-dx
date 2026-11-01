@@ -12,7 +12,7 @@ API_CALLABLE(WaitForPlayerTouchingGround) {
 
 EvtScript EVS_SetupSwitch = {
     Call(ParentColliderToModel, COLLIDER_o2022, MODEL_g313)
-    BindTrigger(Ref(EVS_OnTouch_StairSwitch), TRIGGER_FLOOR_TOUCH, COLLIDER_o2022, 1, 0)
+    BindTrigger(EVS_OnTouch_StairSwitch, TRIGGER_FLOOR_TOUCH, COLLIDER_o2022, 1, 0)
     Return
     End
 };

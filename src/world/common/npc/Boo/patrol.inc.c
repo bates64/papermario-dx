@@ -111,7 +111,7 @@ MobileAISettings AISettings_Boo_Patrol = {
 };
 
 EvtScript EVS_NpcAI_Boo_Patrol = {
-    Call(BooPatrolAI_Main, Ref(AISettings_Boo_Patrol))
+    Call(BooPatrolAI_Main, AISettings_Boo_Patrol)
     Return
     End
 };

@@ -46,7 +46,7 @@ EvtScript EVS_NpcAI_Goompa = {
             Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_NONE)
             Call(GetPlayerPos, LVar0, LVar1, LVar2)
             Add(LVar0, 30)
-            Call(SetNpcSpeed, NPC_PARTNER, Float(2.0 / DT))
+            Call(SetNpcSpeed, NPC_PARTNER, 2.0 / DT)
             Call(NpcMoveTo, LVar0, LVar1, LVar2, 0)
             Wait(5 * DT)
             Call(DisablePartnerAI, false)
@@ -78,7 +78,7 @@ EvtScript EVS_NpcAI_Goompa = {
                 Call(DisablePartnerAI, false)
                 Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION, true)
                 Call(SetNpcAnimation, NPC_PARTNER, ANIM_Goompa_Walk)
-                Call(SetNpcSpeed, NPC_PARTNER, Float(3.0))
+                Call(SetNpcSpeed, NPC_PARTNER, 3.0)
                 Call(NpcMoveTo, NPC_PARTNER, 420, 6, 0)
                 Thread
                     Wait(3 * DT)
@@ -88,12 +88,12 @@ EvtScript EVS_NpcAI_Goompa = {
                 Call(SetNpcAnimation, NPC_PARTNER, ANIM_Goompa_Idle)
                 Wait(10 * DT)
                 Thread
-                    Call(SetPlayerSpeed, Float(3.0 / DT))
+                    Call(SetPlayerSpeed, 3.0 / DT)
                     Call(PlayerMoveTo, 395, 0, 0)
                     Call(InterpPlayerYaw, 90, 0)
                 EndThread
                 Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_FLYING, true)
-                Call(SetNpcSpeed, NPC_PARTNER, Float(6.0))
+                Call(SetNpcSpeed, NPC_PARTNER, 6.0)
                 Call(SetNpcAnimation, NPC_PARTNER, ANIM_Goompa_Run)
                 Call(NpcMoveTo, NPC_PARTNER, 582, 6, 0)
                 Call(SetNpcAnimation, NPC_PARTNER, ANIM_Goompa_Idle)
@@ -114,7 +114,7 @@ EvtScript EVS_NpcAI_Goompa = {
                     Call(SetNpcRotation, NPC_PARTNER, 0, 0, 0)
                 EndThread
                 Thread
-                    Call(ShakeCam, CAM_DEFAULT, 0, 15 * DT, Float(1.0))
+                    Call(ShakeCam, CAM_DEFAULT, 0, 15 * DT, 1.0)
                 EndThread
                 PlayEffect(EFFECT_DAMAGE_STARS, FX_DAMAGE_STARS_1, 495, 15, 9, 460, 15, 9, 6)
                 Call(SetNpcAnimation, NPC_PARTNER, ANIM_Goompa_Injured)
@@ -157,17 +157,17 @@ EvtScript EVS_NpcIdle_JrTroopa = {
                 Call(GetPlayerPos, LVar0, LVar1, LVar2)
                 Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
                 Call(SetPanTarget, CAM_DEFAULT, 430, LVar1, LVar2)
-                Call(SetCamDistance, CAM_DEFAULT, Float(275.0))
-                Call(SetCamPitch, CAM_DEFAULT, Float(17.5), Float(-7.5))
-                Call(SetCamSpeed, CAM_DEFAULT, Float(2.0 / DT))
+                Call(SetCamDistance, CAM_DEFAULT, 275.0)
+                Call(SetCamPitch, CAM_DEFAULT, 17.5, -7.5)
+                Call(SetCamSpeed, CAM_DEFAULT, 2.0 / DT)
                 Call(PanToTarget, CAM_DEFAULT, 0, true)
-                Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+                Call(WaitForCam, CAM_DEFAULT, 1.0)
             EndThread
             Call(SetNpcPos, NPC_JrTroopa, 630, 0, 0)
             Call(EnableNpcShadow, NPC_SELF, true)
             Wait(1)
             Call(PlayerFaceNpc, NPC_JrTroopa, 3)
-            Call(SetNpcSpeed, NPC_JrTroopa, Float(3.0 / DT))
+            Call(SetNpcSpeed, NPC_JrTroopa, 3.0 / DT)
             Call(SetNpcAnimation, NPC_JrTroopa, ANIM_JrTroopa_Run)
             Call(NpcMoveTo, NPC_JrTroopa, 465, 0, 0)
             Call(SetNpcAnimation, NPC_JrTroopa, ANIM_JrTroopa_PointIdle)
@@ -178,9 +178,9 @@ EvtScript EVS_NpcIdle_JrTroopa = {
                 Call(GetPlayerPos, LVar0, LVar1, LVar2)
                 Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
                 Call(SetPanTarget, CAM_DEFAULT, 430, LVar1, LVar2)
-                Call(SetCamSpeed, CAM_DEFAULT, Float(4.0 / DT))
+                Call(SetCamSpeed, CAM_DEFAULT, 4.0 / DT)
                 Call(PanToTarget, CAM_DEFAULT, 0, true)
-                Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+                Call(WaitForCam, CAM_DEFAULT, 1.0)
                 Call(PanToTarget, CAM_DEFAULT, 0, false)
             EndThread
             Call(StartBossBattle, SONG_JR_TROOPA_BATTLE)
@@ -198,15 +198,15 @@ EvtScript EVS_NpcDefeat_JrTroopa = {
             Call(GetPlayerPos, LVar0, LVar1, LVar2)
             Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
             Call(SetPanTarget, CAM_DEFAULT, 400, LVar1, LVar2)
-            Call(SetCamDistance, CAM_DEFAULT, Float(275.0))
-            Call(SetCamPitch, CAM_DEFAULT, Float(15.0), Float(-7.5))
-            Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+            Call(SetCamDistance, CAM_DEFAULT, 275.0)
+            Call(SetCamPitch, CAM_DEFAULT, 15.0, -7.5)
+            Call(SetCamSpeed, CAM_DEFAULT, 90.0)
             Call(PanToTarget, CAM_DEFAULT, 0, true)
-            Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+            Call(WaitForCam, CAM_DEFAULT, 1.0)
             Call(PlayerFaceNpc, NPC_SELF, false)
             Call(SetNpcAnimation, NPC_SELF, ANIM_JrTroopa_Hurt)
             Call(SpeakToPlayer, NPC_SELF, ANIM_JrTroopa_Hurt, ANIM_JrTroopa_Hurt, 0, MSG_CH0_00B5)
-            Call(SetNpcSpeed, NPC_SELF, Float(6.0 / DT))
+            Call(SetNpcSpeed, NPC_SELF, 6.0 / DT)
             Call(SetNpcAnimation, NPC_SELF, ANIM_JrTroopa_Run)
             Call(NpcMoveTo, NPC_SELF, 564, 10, 0)
             Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
@@ -219,7 +219,7 @@ EvtScript EVS_NpcDefeat_JrTroopa = {
             Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
             Thread
 #if VERSION_PAL
-                Call(ResetCam, CAM_DEFAULT, Float(4 * DT))
+                Call(ResetCam, CAM_DEFAULT, 4 * DT)
 #else
                 Call(ResetCam, CAM_DEFAULT, 4)
 #endif
@@ -248,8 +248,8 @@ NpcSettings NpcSettings_Goompa = {
 EvtScript EVS_NpcInit_JrTroopa = {
     Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     Call(EnableNpcShadow, NPC_SELF, false)
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_JrTroopa))
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_JrTroopa))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_JrTroopa)
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_JrTroopa)
     Return
     End
 };

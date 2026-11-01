@@ -28,14 +28,14 @@ API_CALLABLE(SetSpringPosition) {
 
 EvtScript EVS_MakeEntities = {
     IfEq(GF_KPA133_BlueSwitch, false)
-        Call(MakeEntity, Ref(Entity_BlueSwitch), 60, 115, 10, 0, MAKE_ENTITY_END)
+        Call(MakeEntity, Entity_BlueSwitch, 60, 115, 10, 0, MAKE_ENTITY_END)
         Call(AssignSwitchFlag, EVT_INDEX_OF_AREA_FLAG(AF_KPA133_HitWaterSwitch))
-        Call(AssignScript, Ref(EVS_TriggerSwitch))
+        Call(AssignScript, EVS_TriggerSwitch)
     EndIf
     IfEq(GF_KPA133_BlueSwitch, true)
-        Call(MakeEntity, Ref(Entity_SimpleSpring), 150, 115, 0, 90, 60, MAKE_ENTITY_END)
+        Call(MakeEntity, Entity_SimpleSpring, 150, 115, 0, 90, 60, MAKE_ENTITY_END)
     Else
-        Call(MakeEntity, Ref(Entity_SimpleSpring), 150, 150, -105, 90, 60, MAKE_ENTITY_END)
+        Call(MakeEntity, Entity_SimpleSpring, 150, 150, -105, 90, 60, MAKE_ENTITY_END)
         Set(MV_SpringEntityID, LVar0)
         Call(SetSpringRotation, -90, 0, 0)
         Exec(EVS_SetupHiddenSpring)
@@ -69,7 +69,7 @@ EvtScript EVS_SetupHiddenSpring = {
                 Wait(2)
                 Call(InterpPlayerYaw, LVar4, 0)
                 Wait(2)
-                Call(SetPlayerJumpscale, Float(2.0))
+                Call(SetPlayerJumpscale, 2.0)
                 Call(SetPlayerAnimation, ANIM_Mario1_Flail)
                 Call(PlayerJump1, LVar3, LVar1, LVar2, 10)
                 Call(SetPlayerAnimation, ANIM_Mario1_Idle)
@@ -122,7 +122,7 @@ EvtScript EVS_SetupHiddenSpring = {
     EndThread
     Wait(3)
     Call(SetNpcPos, NPC_Dummy, 150, 150, -105)
-    Call(SetNpcJumpscale, NPC_Dummy, Float(1.0))
+    Call(SetNpcJumpscale, NPC_Dummy, 1.0)
     Call(NpcJump0, NPC_Dummy, 150, 115, 0, 17)
     Call(GetNpcPos, NPC_Dummy, LVar0, LVar1, LVar2)
     Wait(20)

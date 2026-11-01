@@ -52,32 +52,32 @@ EvtScript EVS_OnBreakBlockG = {
 
 EvtScript EVS_MakeEntities = {
     IfEq(GF_KZN17_Hammer3BlockA, false)
-        Call(MakeEntity, Ref(Entity_Hammer3Block), -195, 50, 27, 0, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(EVS_OnBreakBlockA))
+        Call(MakeEntity, Entity_Hammer3Block, -195, 50, 27, 0, MAKE_ENTITY_END)
+        Call(AssignScript, EVS_OnBreakBlockA)
     EndIf
     IfEq(GF_KZN17_Hammer3BlockB, false)
-        Call(MakeEntity, Ref(Entity_Hammer3Block), -245, 60, 27, 0, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(EVS_OnBreakBlockB))
+        Call(MakeEntity, Entity_Hammer3Block, -245, 60, 27, 0, MAKE_ENTITY_END)
+        Call(AssignScript, EVS_OnBreakBlockB)
     EndIf
     IfEq(GF_KZN17_Hammer3BlockC, false)
-        Call(MakeEntity, Ref(Entity_Hammer3Block), -295, 70, 27, 0, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(EVS_OnBreakBlockC))
+        Call(MakeEntity, Entity_Hammer3Block, -295, 70, 27, 0, MAKE_ENTITY_END)
+        Call(AssignScript, EVS_OnBreakBlockC)
     EndIf
     IfEq(GF_KZN17_Hammer3BlockD, false)
-        Call(MakeEntity, Ref(Entity_Hammer3Block), -345, 80, 27, 0, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(EVS_OnBreakBlockD))
+        Call(MakeEntity, Entity_Hammer3Block, -345, 80, 27, 0, MAKE_ENTITY_END)
+        Call(AssignScript, EVS_OnBreakBlockD)
     EndIf
     IfEq(GF_KZN17_Hammer3BlockE, false)
-        Call(MakeEntity, Ref(Entity_Hammer3Block), -395, 90, 27, 0, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(EVS_OnBreakBlockE))
+        Call(MakeEntity, Entity_Hammer3Block, -395, 90, 27, 0, MAKE_ENTITY_END)
+        Call(AssignScript, EVS_OnBreakBlockE)
     EndIf
     IfEq(GF_KZN17_Hammer3BlockF, false)
-        Call(MakeEntity, Ref(Entity_Hammer3Block), -445, 100, 27, 0, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(EVS_OnBreakBlockF))
+        Call(MakeEntity, Entity_Hammer3Block, -445, 100, 27, 0, MAKE_ENTITY_END)
+        Call(AssignScript, EVS_OnBreakBlockF)
     EndIf
     IfEq(GF_KZN17_Hammer3BlockG, false)
-        Call(MakeEntity, Ref(Entity_Hammer3Block), -495, 110, 27, 0, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(EVS_OnBreakBlockG))
+        Call(MakeEntity, Entity_Hammer3Block, -495, 110, 27, 0, MAKE_ENTITY_END)
+        Call(AssignScript, EVS_OnBreakBlockG)
     EndIf
     Call(CreatePushBlockGrid, 0, 29, 2, -119, -3, 5, 0)
     Call(SetPushBlock, 0, 28, 1, PUSH_GRID_BLOCK)

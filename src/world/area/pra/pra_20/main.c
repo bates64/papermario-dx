@@ -26,15 +26,15 @@ EvtScript EVS_ExitDoor_pra_21_0 = {
     Set(LVar0, pra_20_ENTRY_1)
     Set(LVar1, COLLIDER_deilittssw)
     IfEq(GF_PRA_BrokeIllusion, false)
-        Set(LVar2, Ref(NearSingleDoorModels))
-        Set(LVar3, Ref(FarSingleDoorModels))
+        Set(LVar2, NearSingleDoorModels)
+        Set(LVar3, FarSingleDoorModels)
     Else
-        Set(LVar2, Ref(NearSingleDoorModels))
-        Set(LVar3, Ref(ModelListNone))
+        Set(LVar2, NearSingleDoorModels)
+        Set(LVar3, ModelListNone)
     EndIf
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, Ref("pra_21"), pra_21_ENTRY_0)
+    Call(GotoMap, "pra_21", pra_21_ENTRY_0)
     Wait(100)
     Return
     End
@@ -46,15 +46,15 @@ EvtScript EVS_ExitDoors_pra_29_0 = {
     Set(LVar0, pra_20_ENTRY_2)
     Set(LVar1, COLLIDER_deilittse)
     IfEq(GF_PRA_BrokeIllusion, false)
-        Set(LVar2, Ref(BothRightDoorModelsL))
-        Set(LVar3, Ref(BothRightDoorModelsR))
+        Set(LVar2, BothRightDoorModelsL)
+        Set(LVar3, BothRightDoorModelsR)
     Else
-        Set(LVar2, Ref(NearRightDoorModelsL))
-        Set(LVar3, Ref(NearRightDoorModelsR))
+        Set(LVar2, NearRightDoorModelsL)
+        Set(LVar3, NearRightDoorModelsR)
     EndIf
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, Ref("pra_29"), pra_29_ENTRY_0)
+    Call(GotoMap, "pra_29", pra_29_ENTRY_0)
     Wait(100)
     Return
     End
@@ -66,15 +66,15 @@ EvtScript EVS_ExitDoors_pra_29_3 = {
     Set(LVar0, pra_20_ENTRY_3)
     Set(LVar1, COLLIDER_deilittne)
     IfEq(GF_PRA_BrokeIllusion, false)
-        Set(LVar2, Ref(BothRightDoorModelsL))
-        Set(LVar3, Ref(BothRightDoorModelsR))
+        Set(LVar2, BothRightDoorModelsL)
+        Set(LVar3, BothRightDoorModelsR)
     Else
-        Set(LVar2, Ref(BackRightDoorModelsL))
-        Set(LVar3, Ref(BackRightDoorModelsR))
+        Set(LVar2, BackRightDoorModelsL)
+        Set(LVar3, BackRightDoorModelsR)
     EndIf
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, Ref("pra_29"), pra_29_ENTRY_3)
+    Call(GotoMap, "pra_29", pra_29_ENTRY_3)
     Wait(100)
     Return
     End
@@ -86,26 +86,26 @@ EvtScript EVS_ExitDoor_pra_22_0 = {
     Set(LVar0, pra_20_ENTRY_4)
     Set(LVar1, COLLIDER_deilittnnw)
     IfEq(GF_PRA_BrokeIllusion, false)
-        Set(LVar2, Ref(NearSingleDoorModels))
-        Set(LVar3, Ref(FarSingleDoorModels))
+        Set(LVar2, NearSingleDoorModels)
+        Set(LVar3, FarSingleDoorModels)
     Else
-        Set(LVar2, Ref(ModelListNone))
-        Set(LVar3, Ref(FarSingleDoorModels))
+        Set(LVar2, ModelListNone)
+        Set(LVar3, FarSingleDoorModels)
     EndIf
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, Ref("pra_22"), pra_22_ENTRY_0)
+    Call(GotoMap, "pra_22", pra_22_ENTRY_0)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_pra_19_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deilisw, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoor_pra_21_0), TRIGGER_WALL_PRESS_A, COLLIDER_deilittssw, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoors_pra_29_0), TRIGGER_WALL_PRESS_A, COLLIDER_deilittse, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoors_pra_29_3), TRIGGER_WALL_PRESS_A, COLLIDER_deilittne, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoor_pra_22_0), TRIGGER_WALL_PRESS_A, COLLIDER_deilittnnw, 1, 0)
+    BindTrigger(EVS_ExitWalk_pra_19_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deilisw, 1, 0)
+    BindTrigger(EVS_ExitDoor_pra_21_0, TRIGGER_WALL_PRESS_A, COLLIDER_deilittssw, 1, 0)
+    BindTrigger(EVS_ExitDoors_pra_29_0, TRIGGER_WALL_PRESS_A, COLLIDER_deilittse, 1, 0)
+    BindTrigger(EVS_ExitDoors_pra_29_3, TRIGGER_WALL_PRESS_A, COLLIDER_deilittne, 1, 0)
+    BindTrigger(EVS_ExitDoor_pra_22_0, TRIGGER_WALL_PRESS_A, COLLIDER_deilittnnw, 1, 0)
     Return
     End
 };
@@ -114,45 +114,45 @@ EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(pra_20_ENTRY_0)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
         CaseEq(pra_20_ENTRY_1)
             IfEq(GF_PRA_BrokeIllusion, false)
-                Set(LVar2, Ref(NearSingleDoorModels))
-                Set(LVar3, Ref(FarSingleDoorModels))
+                Set(LVar2, NearSingleDoorModels)
+                Set(LVar3, FarSingleDoorModels)
             Else
-                Set(LVar2, Ref(NearSingleDoorModels))
-                Set(LVar3, Ref(ModelListNone))
+                Set(LVar2, NearSingleDoorModels)
+                Set(LVar3, ModelListNone)
             EndIf
             ExecWait(BaseEnterDoor)
             Exec(EVS_BindExitTriggers)
         CaseEq(pra_20_ENTRY_2)
             IfEq(GF_PRA_BrokeIllusion, false)
-                Set(LVar2, Ref(BothRightDoorModelsL))
-                Set(LVar3, Ref(BothRightDoorModelsR))
+                Set(LVar2, BothRightDoorModelsL)
+                Set(LVar3, BothRightDoorModelsR)
             Else
-                Set(LVar2, Ref(NearRightDoorModelsL))
-                Set(LVar3, Ref(NearRightDoorModelsR))
+                Set(LVar2, NearRightDoorModelsL)
+                Set(LVar3, NearRightDoorModelsR)
             EndIf
             ExecWait(BaseEnterDoor)
             Exec(EVS_BindExitTriggers)
         CaseEq(pra_20_ENTRY_3)
             IfEq(GF_PRA_BrokeIllusion, false)
-                Set(LVar2, Ref(BothRightDoorModelsL))
-                Set(LVar3, Ref(BothRightDoorModelsR))
+                Set(LVar2, BothRightDoorModelsL)
+                Set(LVar3, BothRightDoorModelsR)
             Else
-                Set(LVar2, Ref(BackRightDoorModelsL))
-                Set(LVar3, Ref(BackRightDoorModelsR))
+                Set(LVar2, BackRightDoorModelsL)
+                Set(LVar3, BackRightDoorModelsR)
             EndIf
             ExecWait(BaseEnterDoor)
             Exec(EVS_BindExitTriggers)
         CaseEq(pra_20_ENTRY_4)
             IfEq(GF_PRA_BrokeIllusion, false)
-                Set(LVar2, Ref(NearSingleDoorModels))
-                Set(LVar3, Ref(FarSingleDoorModels))
+                Set(LVar2, NearSingleDoorModels)
+                Set(LVar3, FarSingleDoorModels)
             Else
-                Set(LVar2, Ref(FarSingleDoorModels))
-                Set(LVar3, Ref(ModelListNone))
+                Set(LVar2, FarSingleDoorModels)
+                Set(LVar3, ModelListNone)
             EndIf
             ExecWait(BaseEnterDoor)
             Exec(EVS_BindExitTriggers)

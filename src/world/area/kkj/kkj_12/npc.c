@@ -69,7 +69,7 @@ EvtScript EVS_NpcInteract_Koopatrol_02 = {
     Call(DisablePlayerInput, true)
     Call(GetPeachDisguise, LVar0)
     IfEq(LVar0, PEACH_DISGUISE_CLUBBA)
-        Call(AdjustCam, CAM_DEFAULT, Float(5.0 / DT), 0, Float(350.0), Float(15.0), Float(-7.0))
+        Call(AdjustCam, CAM_DEFAULT, 5.0 / DT, 0, 350.0, 15.0, -7.0)
         Call(SpeakToPlayer, NPC_SELF, ANIM_WorldKoopatrol_TalkFlashlight, ANIM_WorldKoopatrol_IdleFlashlight, 0, MSG_Peach_0147)
         Thread
             Loop(0)
@@ -82,19 +82,19 @@ EvtScript EVS_NpcInteract_Koopatrol_02 = {
         EndThread
         Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
         Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_WalkFlashlight)
-        Call(SetNpcSpeed, NPC_SELF, Float(2.0 / DT))
+        Call(SetNpcSpeed, NPC_SELF, 2.0 / DT)
         Call(NpcMoveTo, NPC_SELF, 1050, 0, 0)
         Call(SpeakToPlayer, NPC_SELF, ANIM_WorldKoopatrol_TalkFlashlight, ANIM_WorldKoopatrol_IdleFlashlight, 0, MSG_Peach_0148)
         Call(NpcMoveTo, NPC_SELF, 900, 0, 0)
         Call(SetNpcPos, NPC_SELF, 0, -500, 0)
         Set(GF_KKJ12_TrickedGuard, true)
-        BindTrigger(Ref(EVS_ExitDoors_kkj_13_0), TRIGGER_WALL_PRESS_A, COLLIDER_deilit2, 1, 0)
-        Call(ResetCam, CAM_DEFAULT, Float(4.0 / DT))
+        BindTrigger(EVS_ExitDoors_kkj_13_0, TRIGGER_WALL_PRESS_A, COLLIDER_deilit2, 1, 0)
+        Call(ResetCam, CAM_DEFAULT, 4.0 / DT)
         Call(DisablePlayerInput, false)
         Return
     EndIf
     IfEq(GF_KKJ11_TrickedGuard, false)
-        Call(AdjustCam, CAM_DEFAULT, Float(5.0 / DT), 0, Float(350.0), Float(15.0), Float(-7.0))
+        Call(AdjustCam, CAM_DEFAULT, 5.0 / DT, 0, 350.0, 15.0, -7.0)
         Call(SpeakToPlayer, NPC_SELF, ANIM_WorldKoopatrol_TalkFlashlight, ANIM_WorldKoopatrol_IdleFlashlight, 0, MSG_Peach_0144)
         Wait(10 * DT)
         Set(LVar0, ITEM_PEACH_KEY)
@@ -103,7 +103,7 @@ EvtScript EVS_NpcInteract_Koopatrol_02 = {
         Set(GF_KKJ11_TrickedGuard, true)
         Call(SpeakToPlayer, NPC_SELF, ANIM_WorldKoopatrol_TalkFlashlight, ANIM_WorldKoopatrol_IdleFlashlight, 0, MSG_Peach_0145)
         Call(InterpNpcYaw, NPC_SELF, 270, 0)
-        Call(ResetCam, CAM_DEFAULT, Float(5.0 / DT))
+        Call(ResetCam, CAM_DEFAULT, 5.0 / DT)
     Else
         Call(SpeakToPlayer, NPC_SELF, ANIM_WorldKoopatrol_TalkFlashlight, ANIM_WorldKoopatrol_IdleFlashlight, 16, MSG_Peach_0146)
     EndIf
@@ -128,14 +128,14 @@ EvtScript EVS_CapturePeach = {
     Call(GetApproachPeachPos, NPC_SELF, 100, LVar3, LVar0, LVar2)
     IfNe(LVar3, 0)
         Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_RunFlashlight)
-        Call(SetNpcSpeed, NPC_SELF, Float(5.0))
+        Call(SetNpcSpeed, NPC_SELF, 5.0)
         Call(NpcMoveTo, NPC_SELF, LVar0, LVar2, 0)
         Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_IdleFlashlight)
     EndIf
     Call(SpeakToPlayer, NPC_SELF, ANIM_WorldKoopatrol_TalkFlashlight, ANIM_WorldKoopatrol_IdleFlashlight, 0, MSG_Peach_0175)
     Call(SetPlayerAnimation, ANIM_Peach2_ForwardSad)
     Wait(20)
-    Call(GotoMapSpecial, Ref("kkj_14"), kkj_14_ENTRY_B, TRANSITION_PEACH_CAPTURED)
+    Call(GotoMapSpecial, "kkj_14", kkj_14_ENTRY_B, TRANSITION_PEACH_CAPTURED)
     Wait(100)
     Call(DisablePlayerInput, false)
     Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
@@ -153,7 +153,7 @@ EvtScript EVS_NpcIdle_Koopatrol_01 = {
                 IfEq(LVar1, PEACH_DISGUISE_NONE)
                     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_CANT_INTERACT, true)
                     IfNe(LVar0, 0)
-                        Call(BindNpcAI, NPC_SELF, Ref(EVS_CapturePeach))
+                        Call(BindNpcAI, NPC_SELF, EVS_CapturePeach)
                         Set(LVar2, 1)
                     EndIf
                 Else
@@ -163,7 +163,7 @@ EvtScript EVS_NpcIdle_Koopatrol_01 = {
             Wait(1)
         EndLoop
     EndThread
-    Call(SetNpcSpeed, NPC_SELF, Float(2.0))
+    Call(SetNpcSpeed, NPC_SELF, 2.0)
     Loop(0)
         Call(NpcMoveTo, NPC_SELF, 900, 0, 0)
         Call(GetAngleBetweenPoints, LVar0, 900, 0, 800, 0)
@@ -186,7 +186,7 @@ EvtScript EVS_NpcIdle_Koopatrol_02 = {
                 IfEq(LVar1, PEACH_DISGUISE_NONE)
                     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_CANT_INTERACT, true)
                     IfNe(LVar0, 0)
-                        Call(BindNpcAI, NPC_SELF, Ref(EVS_CapturePeach))
+                        Call(BindNpcAI, NPC_SELF, EVS_CapturePeach)
                         Set(LVar2, 1)
                     EndIf
                 Else
@@ -203,8 +203,8 @@ EvtScript EVS_NpcIdle_Koopatrol_02 = {
 EvtScript EVS_NpcInit_Koopatrol_01 = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_WalkFlashlight)
     Call(SetNpcPos, NPC_SELF, 800, 110, 0)
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Koopatrol_01))
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Koopatrol_01))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Koopatrol_01)
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Koopatrol_01)
     Return
     End
 };
@@ -219,8 +219,8 @@ EvtScript EVS_NpcInit_Koopatrol_02 = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_IdleFlashlight)
     Call(SetNpcPos, NPC_SELF, 1170, 110, 0)
     Call(SetNpcYaw, NPC_SELF, 270)
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Koopatrol_02))
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Koopatrol_02))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Koopatrol_02)
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Koopatrol_02)
     Return
     End
 };

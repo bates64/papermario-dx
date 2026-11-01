@@ -30,7 +30,7 @@ EvtScript EVS_NpcAI_Sentinel_Wander = {
     Call(SetSelfVar, AI_VAR_FLYING_CHASE_VELY, AI_PACK_FLT(-6.5f))
     Call(SetSelfVar, AI_VAR_FLYING_CHASE_ACCEL, AI_PACK_FLT(0.3f))
     Call(SetSelfVar, AI_VAR_FLYING_BOB_AMPLITUDE, AI_PACK_FLT(6.0f))
-    Call(SentinelAI_Main, Ref(AISettings_Sentinel_Wander))
+    Call(SentinelAI_Main, AISettings_Sentinel_Wander)
     // AI returns control to script when the player is caught
     Call(DisablePlayerInput, true)
     Wait(2)
@@ -81,7 +81,7 @@ EvtScript EVS_NpcAI_Sentinel_Wander = {
         Call(NpcJump0, NPC_PARTNER, LVar0, LVar1, LVar2, 10)
     EndThread
     Wait(30)
-    Call(GotoMap, Ref("dgb_00"), dgb_00_ENTRY_2)
+    Call(GotoMap, "dgb_00", dgb_00_ENTRY_2)
     Wait(100)
     Return
     End

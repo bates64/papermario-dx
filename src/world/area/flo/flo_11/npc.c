@@ -77,7 +77,7 @@ EvtScript EVS_LakitusFlying_Search = {
     Set(LVar0, 5)
     ExecGetTID(EVS_PlayFlightSounds, MV_FlyingSoundsScript)
     Thread
-        Call(LoadPath, 160 * DT, Ref(FlightPath_Lakitu_01_Search),
+        Call(LoadPath, 160 * DT, FlightPath_Lakitu_01_Search,
             ARRAY_COUNT(FlightPath_Lakitu_01_Search), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
@@ -88,7 +88,7 @@ EvtScript EVS_LakitusFlying_Search = {
             EndIf
         EndLoop
     EndThread
-    Call(LoadPath, 160 * DT, Ref(FlightPath_Lakitu_02_Search),
+    Call(LoadPath, 160 * DT, FlightPath_Lakitu_02_Search,
         ARRAY_COUNT(FlightPath_Lakitu_02_Search), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
@@ -105,7 +105,7 @@ EvtScript EVS_LakitusFlying_Search = {
 
 EvtScript EVS_LakitusFlying_Gather = {
     Thread
-        Call(LoadPath, 30 * DT, Ref(FlightPath_Lakitu_01_Gather),
+        Call(LoadPath, 30 * DT, FlightPath_Lakitu_01_Gather,
             ARRAY_COUNT(FlightPath_Lakitu_01_Gather), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
@@ -116,7 +116,7 @@ EvtScript EVS_LakitusFlying_Gather = {
             EndIf
         EndLoop
     EndThread
-    Call(LoadPath, 45 * DT, Ref(FlightPath_Lakitu_02_Gather),
+    Call(LoadPath, 45 * DT, FlightPath_Lakitu_02_Gather,
         ARRAY_COUNT(FlightPath_Lakitu_02_Gather), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
@@ -135,7 +135,7 @@ EvtScript EVS_LakitusFlying_Attack = {
     Set(LVar0, 4)
     ExecGetTID(EVS_PlayFlightSounds, MV_FlyingSoundsScript)
     Thread
-        Call(LoadPath, 35 * DT, Ref(FlightPath_Lakitu_01_Attack),
+        Call(LoadPath, 35 * DT, FlightPath_Lakitu_01_Attack,
             ARRAY_COUNT(FlightPath_Lakitu_01_Attack), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
@@ -146,7 +146,7 @@ EvtScript EVS_LakitusFlying_Attack = {
             EndIf
         EndLoop
     EndThread
-    Call(LoadPath, 35 * DT, Ref(FlightPath_Lakitu_02_Attack),
+    Call(LoadPath, 35 * DT, FlightPath_Lakitu_02_Attack,
         ARRAY_COUNT(FlightPath_Lakitu_02_Attack), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
@@ -162,7 +162,7 @@ EvtScript EVS_LakitusFlying_Attack = {
 
 EvtScript EVS_LakitusFlying_Flee = {
     Thread
-        Call(LoadPath, 40 * DT, Ref(FlightPath_Lakitu_01_Flee),
+        Call(LoadPath, 40 * DT, FlightPath_Lakitu_01_Flee,
             ARRAY_COUNT(FlightPath_Lakitu_01_Flee), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
@@ -174,7 +174,7 @@ EvtScript EVS_LakitusFlying_Flee = {
         EndLoop
         Call(SetNpcPos, NPC_Lakitu_01, NPC_DISPOSE_LOCATION)
     EndThread
-    Call(LoadPath, 40 * DT, Ref(FlightPath_Lakitu_02_Flee),
+    Call(LoadPath, 40 * DT, FlightPath_Lakitu_02_Flee,
         ARRAY_COUNT(FlightPath_Lakitu_02_Flee), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
@@ -217,27 +217,27 @@ EvtScript EVS_Scene_LakituAmbush = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(25.0), Float(-7.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
+    Call(SetCamPitch, CAM_DEFAULT, 25.0, -7.0)
     Call(SetCamDistance, CAM_DEFAULT, 450)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Wait(20)
     Set(LVar0, 270)
     Set(LVar1, 100)
     Set(LVar2, -87)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamPitch, CAM_DEFAULT, Float(14.0), Float(-11.0))
+    Call(SetCamPitch, CAM_DEFAULT, 14.0, -11.0)
     Call(SetCamPosA, CAM_DEFAULT, 87, 0)
     Call(SetCamPosB, CAM_DEFAULT, 0, -50)
     Call(SetCamPosC, CAM_DEFAULT, 87, 0)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(1.0 / DT))
+    Call(SetCamSpeed, CAM_DEFAULT, 1.0 / DT)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Wait(30 * DT)
     Call(SetCamDistance, CAM_DEFAULT, 150)
-    Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-16.0))
+    Call(SetCamPitch, CAM_DEFAULT, 17.0, -16.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Loop(0)
         Wait(1)
@@ -260,13 +260,13 @@ EvtScript EVS_Scene_LakituAmbush = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(14.0), Float(-11.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
+    Call(SetCamPitch, CAM_DEFAULT, 14.0, -11.0)
     Call(SetCamDistance, CAM_DEFAULT, 450)
     Call(SetCamPosA, CAM_DEFAULT, 87, 0)
     Call(SetCamPosB, CAM_DEFAULT, 0, -50)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Exec(EVS_LakitusFlying_Attack)
     Call(SetNpcVar, NPC_Lakitu_01, 0, 1)
     Return
@@ -282,7 +282,7 @@ EvtScript EVS_NpcIdle_Lakitu_01 = {
         Wait(1)
     EndLoop
     Thread
-        Call(AdjustCam, CAM_DEFAULT, Float(4.0), 0, 1000, Float(14.0), Float(-11.0))
+        Call(AdjustCam, CAM_DEFAULT, 4.0, 0, 1000, 14.0, -11.0)
     EndThread
     Call(StartBossBattle, SONG_SPECIAL_BATTLE)
     Return
@@ -302,14 +302,14 @@ EvtScript EVS_NpcDefeat_Lakitu_01 = {
             Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
             Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
             Call(SetCamDistance, CAM_DEFAULT, 900)
-            Call(SetCamPitch, CAM_DEFAULT, Float(24.0), Float(-4.0))
-            Call(SetCamPosA, CAM_DEFAULT, Float(-95.0), Float(0.0))
-            Call(SetCamPosB, CAM_DEFAULT, Float(0.0), Float(-50.0))
-            Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+            Call(SetCamPitch, CAM_DEFAULT, 24.0, -4.0)
+            Call(SetCamPosA, CAM_DEFAULT, -95.0, 0.0)
+            Call(SetCamPosB, CAM_DEFAULT, 0.0, -50.0)
+            Call(SetCamSpeed, CAM_DEFAULT, 90.0)
             Call(PanToTarget, CAM_DEFAULT, 0, true)
-            Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+            Call(WaitForCam, CAM_DEFAULT, 1.0)
             ExecWait(EVS_LakitusFlying_Flee)
-            Call(ResetCam, CAM_DEFAULT, Float(4.0))
+            Call(ResetCam, CAM_DEFAULT, 4.0)
             Set(GF_FLO11_Defeated_Lakitus, true)
             Set(MV_LakituAmbushState, 1)
             Call(DisablePlayerInput, false)
@@ -342,8 +342,8 @@ EvtScript EVS_NpcInit_Lakitu_01 = {
         IfGe(GB_StoryProgress, STORY_CH6_GOT_MAGICAL_BEAN)
             IfEq(GF_FLO10_LilyRequestedWaterStone, true)
                 Set(MV_LakituAmbushState, 0)
-                Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Lakitu_01))
-                Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Lakitu_01))
+                Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Lakitu_01)
+                Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_Lakitu_01)
                 Call(SetNpcPos, NPC_Lakitu_01, 350, 120, -220)
                 Call(InterpNpcYaw, NPC_Lakitu_01, 270, 1)
             EndIf
@@ -358,7 +358,7 @@ EvtScript EVS_NpcInit_Lakitu_02 = {
     IfEq(GF_FLO11_Defeated_Lakitus, false)
         IfGe(GB_StoryProgress, STORY_CH6_GOT_MAGICAL_BEAN)
             IfEq(GF_FLO10_LilyRequestedWaterStone, true)
-                Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Lakitu_02))
+                Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_Lakitu_02)
                 Call(SetNpcPos, NPC_Lakitu_02, 200, 110, 29)
                 Call(InterpNpcYaw, NPC_Lakitu_02, 0, 1)
             EndIf

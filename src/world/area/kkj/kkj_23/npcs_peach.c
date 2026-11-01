@@ -56,14 +56,14 @@ EvtScript EVS_CapturePeach = {
     Call(GetApproachPeachPos, NPC_SELF, 50, LVar3, LVar0, LVar2)
     IfNe(LVar3, 0)
         Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Run)
-        Call(SetNpcSpeed, NPC_SELF, Float(5.0))
+        Call(SetNpcSpeed, NPC_SELF, 5.0)
         Call(NpcMoveTo, NPC_SELF, LVar0, LVar2, 0)
         Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Idle)
     EndIf
     Call(SpeakToPlayer, NPC_SELF, ANIM_WorldKoopatrol_Talk, ANIM_WorldKoopatrol_Idle, 0, MSG_Peach_0175)
     Call(SetPlayerAnimation, ANIM_Peach2_ForwardSad)
     Wait(20)
-    Call(GotoMapSpecial, Ref("kkj_14"), kkj_14_ENTRY_B, TRANSITION_PEACH_CAPTURED)
+    Call(GotoMapSpecial, "kkj_14", kkj_14_ENTRY_B, TRANSITION_PEACH_CAPTURED)
     Wait(100)
     Call(DisablePlayerInput, false)
     Return
@@ -75,7 +75,7 @@ EvtScript EVS_Koopatrol_WatchForPeach = {
         Call(GetPeachDisguise, LVar1)
         IfEq(LVar1, PEACH_DISGUISE_NONE)
             Call(SetSelfEnemyFlagBits, ENEMY_FLAG_CANT_INTERACT, true)
-            Call(BindNpcAI, NPC_SELF, Ref(EVS_CapturePeach))
+            Call(BindNpcAI, NPC_SELF, EVS_CapturePeach)
             Return
         Else
             Call(SetSelfEnemyFlagBits, ENEMY_FLAG_CANT_INTERACT, false)
@@ -106,8 +106,8 @@ EvtScript EVS_NpcInit_Koopatrol_01 = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Idle)
     Call(SetNpcPos, NPC_SELF, 140, 0, -80)
     Call(SetNpcYaw, NPC_SELF, 90)
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Koopatrol_01))
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Koopatrol_01))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Koopatrol_01)
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Koopatrol_01)
     Return
     End
 };

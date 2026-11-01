@@ -34,7 +34,7 @@ EvtScript EVS_Wisterwood_Exit = {
         EndIf
     EndLoop
     Call(PlaySoundAtCollider, COLLIDER_deilittn, SOUND_WOODEN_DOOR_CLOSE, SOUND_SPACE_DEFAULT)
-    Call(GotoMap, Ref("mac_01"), mac_01_ENTRY_5)
+    Call(GotoMap, "mac_01", mac_01_ENTRY_5)
     Wait(100)
     Return
     End
@@ -81,12 +81,12 @@ EvtScript EVS_ExitWalk_flo_09_0 = EVT_EXIT_WALK(60, flo_00_ENTRY_5, "flo_09", fl
 EvtScript EVS_ExitWalk_flo_08_0 = EVT_EXIT_WALK(60, flo_00_ENTRY_6, "flo_08", flo_08_ENTRY_0);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_flo_14_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilinw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_flo_23_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_flo_25_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilisw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_flo_16_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deiline, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_flo_09_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_flo_08_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilise, 1, 0)
+    BindTrigger(EVS_ExitWalk_flo_14_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilinw, 1, 0)
+    BindTrigger(EVS_ExitWalk_flo_23_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitWalk_flo_25_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilisw, 1, 0)
+    BindTrigger(EVS_ExitWalk_flo_16_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deiline, 1, 0)
+    BindTrigger(EVS_ExitWalk_flo_09_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitWalk_flo_08_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilise, 1, 0)
     Return
     End
 };
@@ -108,7 +108,7 @@ EvtScript EVS_EnterMap = {
                     Exec(EVS_BindExitTriggers)
                 EndThread
             CaseRange(flo_00_ENTRY_1, flo_00_ENTRY_6)
-                Set(LVar0, Ref(EVS_BindExitTriggers))
+                Set(LVar0, EVS_BindExitTriggers)
                 Exec(EnterWalk)
             CaseEq(flo_00_ENTRY_7)
                 Thread
@@ -122,7 +122,7 @@ EvtScript EVS_EnterMap = {
                 EndThread
             CaseEq(flo_00_ENTRY_9)
                 Exec(EVS_Scene_SunReturns)
-                Set(LVar0, Ref(EVS_BindExitTriggers))
+                Set(LVar0, EVS_BindExitTriggers)
                 Exec(EnterWalk)
             CaseEq(flo_00_ENTRY_A)
                 Exec(EVS_BindExitTriggers)
@@ -130,7 +130,7 @@ EvtScript EVS_EnterMap = {
                 Exec(EVS_Scene_Epilogue)
         EndSwitch
     EndIf
-    BindTrigger(Ref(EVS_Interact_Wisterwood), TRIGGER_WALL_PRESS_A, COLLIDER_deilittn, 1, 0)
+    BindTrigger(EVS_Interact_Wisterwood, TRIGGER_WALL_PRESS_A, COLLIDER_deilittn, 1, 0)
     Return
     End
 };
@@ -146,9 +146,9 @@ EvtScript EVS_Main = {
     Set(GF_MAC01_RowfBadgesChosen, false)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, flo_00_ENTRY_B)
-        Call(MakeNpcs, false, Ref(EpilogueNPCs))
+        Call(MakeNpcs, false, EpilogueNPCs)
     Else
-        Call(MakeNpcs, false, Ref(DefaultNPCs))
+        Call(MakeNpcs, false, DefaultNPCs)
     EndIf
     ExecWait(EVS_MakeEntities)
     Call(ParentColliderToModel, COLLIDER_o240, MODEL_o142)

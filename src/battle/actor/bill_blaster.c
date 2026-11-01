@@ -113,9 +113,9 @@ s32 DefaultAnims[] = {
 };
 
 EvtScript EVS_Init = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
     Call(SetActorVar, ACTOR_SELF, AVAR_HasBullet, false)
     Return
     End
@@ -215,7 +215,7 @@ EvtScript EVS_Move_FireBullet = {
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BillBlaster_Fire)
     Wait(13)
     Thread
-        Call(ShakeCam, CAM_BATTLE, 0, 10, Float(1.0))
+        Call(ShakeCam, CAM_BATTLE, 0, 10, 1.0)
     EndThread
     Call(StartRumble, BTL_RUMBLE_PLAYER_HEAVY)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BULLET_BILL_FIRE)
@@ -223,11 +223,11 @@ EvtScript EVS_Move_FireBullet = {
     Sub(LVar0, 33)
     Add(LVar1, 19)
     Add(LVar2, 3)
-    PlayEffect(EFFECT_BLAST, 0, LVar0, LVar1, LVar2, Float(3.0), 5)
-    PlayEffect(EFFECT_BLAST, 0, LVar0, LVar1, LVar2, Float(3.0), 5)
+    PlayEffect(EFFECT_BLAST, 0, LVar0, LVar1, LVar2, 3.0, 5)
+    PlayEffect(EFFECT_BLAST, 0, LVar0, LVar1, LVar2, 3.0, 5)
     Wait(2)
     Call(SetBulletInitVars)
-    Call(SummonEnemy, Ref(BulletFormation), false)
+    Call(SummonEnemy, BulletFormation, false)
     Call(SetActorVar, ACTOR_SELF, AVAR_BulletID, LVar0)
     Call(SetActorVar, ACTOR_SELF, AVAR_HasBullet, true)
     Return

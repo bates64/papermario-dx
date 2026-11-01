@@ -15,7 +15,7 @@ MobileAISettings AISettings_Duplighost_Patrol = {
 };
 
 EvtScript EVS_NpcAI_Duplighost_Patrol = {
-    Call(PatrolNoAttackAI_Main, Ref(AISettings_Duplighost_Patrol))
+    Call(PatrolNoAttackAI_Main, AISettings_Duplighost_Patrol)
     Return
     End
 };

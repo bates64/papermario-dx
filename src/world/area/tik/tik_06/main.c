@@ -6,7 +6,7 @@ EvtScript EVS_ExitWalk_tik_01_0 = EVT_EXIT_WALK(60, tik_06_ENTRY_0, "tik_01", ti
 EvtScript EVS_ExitWalk_tik_18_0 = EVT_EXIT_WALK(60, tik_06_ENTRY_1, "tik_18", tik_18_ENTRY_0);
 
 EvtScript EVS_GotoMap_mac_02_4 = {
-    Call(GotoMap, Ref("mac_02"), mac_02_ENTRY_4)
+    Call(GotoMap, "mac_02", mac_02_ENTRY_4)
     Wait(100)
     Return
     End
@@ -15,7 +15,7 @@ EvtScript EVS_GotoMap_mac_02_4 = {
 EvtScript EVS_OnEnterPipe_Upward = EVT_EXIT_PIPE_HORIZONTAL(tik_06_ENTRY_3, COLLIDER_o89, EVS_GotoMap_mac_02_4);
 
 EvtScript EVS_GotoMap_tik_08_3 = {
-    Call(GotoMap, Ref("tik_08"), tik_08_ENTRY_3)
+    Call(GotoMap, "tik_08", tik_08_ENTRY_3)
     Wait(100)
     Return
     End
@@ -24,10 +24,10 @@ EvtScript EVS_GotoMap_tik_08_3 = {
 EvtScript EVS_OnEnterPipe_Downward = EVT_EXIT_PIPE_VERTICAL(tik_06_ENTRY_2, COLLIDER_o57, EVS_GotoMap_tik_08_3);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_tik_01_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_tik_18_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
-    BindTrigger(Ref(EVS_OnEnterPipe_Upward), TRIGGER_WALL_PUSH, COLLIDER_o89, 1, 0)
-    BindTrigger(Ref(EVS_OnEnterPipe_Downward), TRIGGER_FLOOR_TOUCH, COLLIDER_o57, 1, 0)
+    BindTrigger(EVS_ExitWalk_tik_01_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitWalk_tik_18_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_OnEnterPipe_Upward, TRIGGER_WALL_PUSH, COLLIDER_o89, 1, 0)
+    BindTrigger(EVS_OnEnterPipe_Downward, TRIGGER_FLOOR_TOUCH, COLLIDER_o57, 1, 0)
     Return
     End
 };
@@ -42,14 +42,14 @@ EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(tik_06_ENTRY_2)
-            Set(LVarA, Ref(EVS_BindExitTriggers))
+            Set(LVarA, EVS_BindExitTriggers)
             Exec(EVS_Pipe_EnterVertical)
         CaseEq(tik_06_ENTRY_3)
-            Set(LVarA, Ref(EVS_BindExitTriggers))
+            Set(LVarA, EVS_BindExitTriggers)
             Set(LVarB, COLLIDER_o89)
             Exec(EVS_Pipe_EnterHorizontal)
         CaseDefault
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
     EndSwitch
     Return

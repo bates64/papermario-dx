@@ -48,17 +48,17 @@ EvtScript EVS_UseMove_Impl = {
                 CaseEq(0)
                     Call(StartRumble, BTL_RUMBLE_PLAYER_MIN)
                     Thread
-                        Call(ShakeCam, CAM_BATTLE, 0, 10, Float(1.3))
+                        Call(ShakeCam, CAM_BATTLE, 0, 10, 1.3)
                     EndThread
                 CaseEq(1)
                     Call(StartRumble, BTL_RUMBLE_PLAYER_LIGHT)
                     Thread
-                        Call(ShakeCam, CAM_BATTLE, 0, 10, Float(1.6))
+                        Call(ShakeCam, CAM_BATTLE, 0, 10, 1.6)
                     EndThread
                 CaseEq(2)
                     Call(StartRumble, BTL_RUMBLE_PLAYER_HEAVY)
                     Thread
-                        Call(ShakeCam, CAM_BATTLE, 0, 10, Float(1.9))
+                        Call(ShakeCam, CAM_BATTLE, 0, 10, 1.9)
                     EndThread
             EndSwitch
         CaseDefault
@@ -67,17 +67,17 @@ EvtScript EVS_UseMove_Impl = {
                 CaseEq(0)
                     Call(StartRumble, BTL_RUMBLE_PLAYER_MIN)
                     Thread
-                        Call(ShakeCam, CAM_BATTLE, 0, 2, Float(1.3))
+                        Call(ShakeCam, CAM_BATTLE, 0, 2, 1.3)
                     EndThread
                 CaseEq(1)
                     Call(StartRumble, BTL_RUMBLE_PLAYER_LIGHT)
                     Thread
-                        Call(ShakeCam, CAM_BATTLE, 0, 2, Float(1.6))
+                        Call(ShakeCam, CAM_BATTLE, 0, 2, 1.6)
                     EndThread
                 CaseEq(2)
                     Call(StartRumble, BTL_RUMBLE_PLAYER_HEAVY)
                     Thread
-                        Call(ShakeCam, CAM_BATTLE, 0, 2, Float(1.9))
+                        Call(ShakeCam, CAM_BATTLE, 0, 2, 1.9)
                     EndThread
             EndSwitch
     EndSwitch

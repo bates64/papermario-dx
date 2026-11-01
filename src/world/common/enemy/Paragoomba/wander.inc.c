@@ -21,7 +21,7 @@ EvtScript EVS_NpcAI_Paragoomba_Wander = {
     Call(SetSelfVar, AI_VAR_FLYING_CHASE_VELY, AI_PACK_FLT(-5.0f))
     Call(SetSelfVar, AI_VAR_FLYING_CHASE_ACCEL, AI_PACK_FLT(0.21f))
     Call(SetSelfVar, AI_VAR_FLYING_BOB_AMPLITUDE, AI_PACK_FLT(5.8f))
-    Call(FlyingAI_Main, Ref(AISettings_Paragoomba_Wander))
+    Call(FlyingAI_Main, AISettings_Paragoomba_Wander)
     Return
     End
 };

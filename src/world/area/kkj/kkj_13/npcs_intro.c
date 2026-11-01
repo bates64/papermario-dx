@@ -23,8 +23,8 @@ EvtScript EVS_NpcDefeat_Bowser_Body_Intro = {
 };
 
 EvtScript EVS_NpcInit_Bowser_Body_Intro = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_BowserAwaitBattle_Intro))
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Bowser_Body_Intro))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_BowserAwaitBattle_Intro)
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_Bowser_Body_Intro)
     Return
     End
 };

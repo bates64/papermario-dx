@@ -12,14 +12,14 @@ EvtScript EVS_NpcIdle_TubbasHeart = {
     EndLoop
     Thread
         Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_CONSTRAIN_BETWEEN_POINTS, true)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(4.0 / DT))
+        Call(SetCamSpeed, CAM_DEFAULT, 4.0 / DT)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Add(LVar0, 50)
         Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
         Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
         Call(SetCamDistance, CAM_DEFAULT, 3000)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
-        Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+        Call(WaitForCam, CAM_DEFAULT, 1.0)
     EndThread
     Call(StartBossBattle, SONG_TUBBA_BLUBBA_BATTLE)
     Return
@@ -72,7 +72,7 @@ Vec3i HeartJumpPath[] = {
 EvtScript EVS_Scene_HeartEscape = {
     Thread
         Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_CONSTRAIN_BETWEEN_POINTS, true)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+        Call(SetCamSpeed, CAM_DEFAULT, 90.0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Add(LVar0, 50)
         Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -84,7 +84,7 @@ EvtScript EVS_Scene_HeartEscape = {
     Call(PlayerFaceNpc, NPC_TubbasHeart, true)
     Loop(2)
         Call(GetNpcPos, NPC_TubbasHeart, LVar0, LVar1, LVar2)
-        Call(SetNpcJumpscale, NPC_TubbasHeart, Float(2.5))
+        Call(SetNpcJumpscale, NPC_TubbasHeart, 2.5)
         Call(PlaySoundAtNpc, NPC_SELF, SOUND_TUBBA_HEART_JUMP, SOUND_SPACE_DEFAULT)
         Call(NpcJump0, NPC_TubbasHeart, LVar0, LVar1, LVar2, 12 * DT)
         Wait(1)
@@ -92,8 +92,8 @@ EvtScript EVS_Scene_HeartEscape = {
     Thread
         Wait(10 * DT)
         Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, true)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(2.0 / DT))
-        Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-7.0))
+        Call(SetCamSpeed, CAM_DEFAULT, 2.0 / DT)
+        Call(SetCamPitch, CAM_DEFAULT, 17.0, -7.0)
         Call(SetCamDistance, CAM_DEFAULT, 450)
         Call(SetCamPosA, CAM_DEFAULT, -56, 70)
         Call(SetCamPosB, CAM_DEFAULT, -90, 40)
@@ -101,7 +101,7 @@ EvtScript EVS_Scene_HeartEscape = {
         Call(PanToTarget, CAM_DEFAULT, 0, true)
     EndThread
     Call(PlayerFaceNpc, NPC_TubbasHeart, true)
-    UseBuf(Ref(HeartJumpPath))
+    UseBuf(HeartJumpPath)
     Loop(0)
         BufRead3(LVar0, LVar1, LVar2)
         IfEq(LVar0, SUBLIST_DONE)
@@ -124,13 +124,13 @@ EvtScript EVS_Scene_HeartEscape = {
     Exec(EVS_Heart_CloseDoor)
     Wait(30 * DT)
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_CONSTRAIN_BETWEEN_POINTS, true)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamDistance, CAM_DEFAULT, 450)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Set(GB_StoryProgress, STORY_CH3_HEART_FLED_FIRST_TUNNEL)
     Return
@@ -142,8 +142,8 @@ EvtScript EVS_NpcInit_TubbasHeart = {
         Call(RemoveNpc, NPC_SELF)
     Else
         Call(SetSelfVar, 0, 0)
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_TubbasHeart))
-        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_Scene_HeartEscape))
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_TubbasHeart)
+        Call(BindNpcDefeat, NPC_SELF, EVS_Scene_HeartEscape)
     EndIf
     Return
     End

@@ -57,7 +57,7 @@ EvtScript EVS_Scene_TubbaFallsAsleep = {
     Loop(3)
         Call(SetPlayerAnimation, ANIM_MarioW2_JoltAwake)
         Call(PlaySoundAt, SOUND_HEAVY_NPC_STEP_C, SOUND_SPACE_DEFAULT, 382, 0, 218)
-        Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(1.0))
+        Call(ShakeCam, CAM_DEFAULT, 0, 5, 1.0)
         Wait(20)
         Call(SetPlayerAnimation, ANIM_Mario1_Idle)
         Wait(10)
@@ -69,10 +69,10 @@ EvtScript EVS_Scene_TubbaFallsAsleep = {
         Wait(10)
     EndLoop
     Call(UseSettingsFrom, CAM_DEFAULT, -40, 0, 180)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(SetPanTarget, CAM_DEFAULT, -40, 0, 180)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(SetPlayerPos, 740, 0, 180)
     Call(SetNpcPos, NPC_PARTNER, 765, 0, 180)
     Call(InterpPlayerYaw, 270, 0)
@@ -92,7 +92,7 @@ EvtScript EVS_Scene_TubbaFallsAsleep = {
     Thread
         Loop(3)
             Call(PlaySoundAtNpc, NPC_SELF, SOUND_HEAVY_NPC_STEP_C, SOUND_SPACE_DEFAULT)
-            Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(0.3))
+            Call(ShakeCam, CAM_DEFAULT, 0, 5, 0.3)
             Wait(5)
         EndLoop
     EndThread
@@ -126,14 +126,14 @@ EvtScript EVS_Scene_TubbaFallsAsleep = {
                 BreakLoop
             EndIf
             Call(PlaySoundAtNpc, NPC_SELF, SOUND_HEAVY_NPC_STEP_C, SOUND_SPACE_DEFAULT)
-            Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(0.3))
+            Call(ShakeCam, CAM_DEFAULT, 0, 5, 0.3)
             Wait(9)
             Call(GetSelfVar, 0, LVar0)
             IfEq(LVar0, 1)
                 BreakLoop
             EndIf
             Call(PlaySoundAtNpc, NPC_SELF, SOUND_HEAVY_NPC_STEP_C, SOUND_SPACE_DEFAULT)
-            Call(ShakeCam, CAM_DEFAULT, 0, 2, Float(0.15))
+            Call(ShakeCam, CAM_DEFAULT, 0, 2, 0.15)
             Wait(12)
         EndLoop
     EndThread
@@ -148,7 +148,7 @@ EvtScript EVS_Scene_TubbaFallsAsleep = {
             EndIf
         EndLoop
     EndThread
-    Call(SetNpcSpeed, NPC_SELF, Float(4.0))
+    Call(SetNpcSpeed, NPC_SELF, 4.0)
     Call(NpcMoveTo, NPC_SELF, 45, 215, 0)
     Call(NpcMoveTo, NPC_SELF, 140, 245, 0)
     Call(NpcMoveTo, NPC_SELF, 615, 245, 0)
@@ -167,25 +167,25 @@ EvtScript EVS_Scene_TubbaFallsAsleep = {
         Wait(5)
     EndThread
     Wait(5)
-    Call(SetNpcJumpscale, NPC_SELF, Float(0.7))
+    Call(SetNpcJumpscale, NPC_SELF, 0.7)
     Call(NpcJump0, NPC_SELF, 600, 50, 115, 20)
     Thread
-        Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(0.3))
+        Call(ShakeCam, CAM_DEFAULT, 0, 5, 0.3)
     EndThread
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_StillWake)
-    Call(SetNpcScale, NPC_SELF, Float(1.25), Float(1.2), Float(1.25))
+    Call(SetNpcScale, NPC_SELF, 1.25, 1.2, 1.25)
     Wait(1)
-    Call(SetNpcScale, NPC_SELF, Float(1.35), Float(1.15), Float(1.25))
+    Call(SetNpcScale, NPC_SELF, 1.35, 1.15, 1.25)
     Wait(1)
-    Call(SetNpcScale, NPC_SELF, Float(1.45), Float(1.05), Float(1.25))
+    Call(SetNpcScale, NPC_SELF, 1.45, 1.05, 1.25)
     Wait(1)
-    Call(SetNpcScale, NPC_SELF, Float(1.35), Float(1.15), Float(1.25))
+    Call(SetNpcScale, NPC_SELF, 1.35, 1.15, 1.25)
     Wait(1)
-    Call(SetNpcScale, NPC_SELF, Float(1.25), Float(1.2), Float(1.25))
+    Call(SetNpcScale, NPC_SELF, 1.25, 1.2, 1.25)
     Wait(1)
     Call(GetNpcPos, NPC_SELF, LVar3, LVar4, LVar5)
     Thread
-        Call(SetNpcJumpscale, NPC_SELF, Float(0.5))
+        Call(SetNpcJumpscale, NPC_SELF, 0.5)
         Call(NpcJump0, NPC_SELF, LVar3, 30, LVar5, 23)
     EndThread
     Wait(2)
@@ -210,11 +210,11 @@ EvtScript EVS_Scene_TubbaFallsAsleep = {
         EndIf
     EndLoop
     Thread
-        Call(ShakeCam, CAM_DEFAULT, 0, 10, Float(0.4))
+        Call(ShakeCam, CAM_DEFAULT, 0, 10, 0.4)
     EndThread
     Wait(5)
     Call(FadeOutMusic, 0, 1000)
-    Call(SetNpcScale, NPC_SELF, Float(1.25), Float(1.25), Float(1.25))
+    Call(SetNpcScale, NPC_SELF, 1.25, 1.25, 1.25)
     Call(SetNpcPos, NPC_SELF, LVar3, LVar4, LVar5)
     Call(SetNpcRotationPivot, NPC_SELF, 0)
     Call(SetNpcRotation, NPC_SELF, 0, 0, 0)
@@ -246,9 +246,9 @@ EvtScript EVS_Scene_TubbaFallsAsleep = {
     Wait(30)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(2.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 2.0)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Set(GB_StoryProgress, STORY_CH3_TUBBA_BEGAN_NAPPING)
     Call(DisablePlayerInput, false)
@@ -257,7 +257,7 @@ EvtScript EVS_Scene_TubbaFallsAsleep = {
 };
 
 EvtScript EVS_NpcIdle_Tubba_Asleep = {
-    Call(SetNpcScale, NPC_SELF, Float(1.25), Float(1.25), Float(1.25))
+    Call(SetNpcScale, NPC_SELF, 1.25, 1.25, 1.25)
     Call(SetNpcPos, NPC_SELF, 600, 50, 115)
     Call(SetNpcRotationPivot, NPC_SELF, 0)
     Call(SetNpcRotation, NPC_SELF, 0, 0, 0)
@@ -310,7 +310,7 @@ EvtScript EVS_NpcAI_Tubba_WakeUp = {
     Wait(12)
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_LandAngry)
     Wait(5)
-    Call(BindNpcAI, NPC_Tubba, Ref(EVS_NpcAI_Tubba_Chase))
+    Call(BindNpcAI, NPC_Tubba, EVS_NpcAI_Tubba_Chase)
     Return
     End
 };
@@ -320,13 +320,13 @@ EvtScript EVS_NpcAI_Tubba_Chase = {
     Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_RunAngry)
     Thread
         Loop(0)
-            Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(2.0))
+            Call(ShakeCam, CAM_DEFAULT, 0, 5, 2.0)
             Wait(5)
-            Call(ShakeCam, CAM_DEFAULT, 0, 2, Float(1.0))
+            Call(ShakeCam, CAM_DEFAULT, 0, 2, 1.0)
             Wait(8)
         EndLoop
     EndThread
-    Call(PatrolNoAttackAI_Main, Ref(AISettings_Tubba_Patrol))
+    Call(PatrolNoAttackAI_Main, AISettings_Tubba_Patrol)
     Return
     End
 };
@@ -340,24 +340,24 @@ API_CALLABLE(PostBattleHideWorld) {
 // failsafe if the player somehow defeats Tubba
 EvtScript EVS_NpcDefeat_Tubba = {
     Call(PostBattleHideWorld)
-    Call(GotoMap, Ref("dgb_01"), dgb_01_ENTRY_6)
+    Call(GotoMap, "dgb_01", dgb_01_ENTRY_6)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Tubba = {
-    Call(SetNpcScale, NPC_SELF, Float(1.25), Float(1.25), Float(1.25))
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Tubba))
+    Call(SetNpcScale, NPC_SELF, 1.25, 1.25, 1.25)
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_Tubba)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_TUBBA_BEGAN_NAPPING)
-            Call(BindNpcIdle, NPC_SELF, Ref(EVS_Scene_TubbaFallsAsleep))
+            Call(BindNpcIdle, NPC_SELF, EVS_Scene_TubbaFallsAsleep)
         CaseLt(STORY_CH3_TUBBA_WOKE_UP)
-            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Tubba_Asleep))
+            Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Tubba_Asleep)
         CaseLt(STORY_CH3_TUBBA_SMASHED_THE_BRIDGES)
             Call(SetNpcPos, NPC_SELF, 245, 0, 250)
             Call(SetNpcYaw, NPC_SELF, 270)
-            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcAI_Tubba_Chase))
+            Call(BindNpcIdle, NPC_SELF, EVS_NpcAI_Tubba_Chase)
         CaseLt(STORY_CH3_TUBBA_CHASED_MARIO_IN_FOYER)
             Call(RemoveNpc, NPC_SELF)
     EndSwitch
@@ -377,13 +377,13 @@ EvtScript EVS_Scene_YakkeyShouts = {
     Wait(40)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcPos, NPC_SELF, 845, 0, 140)
-    Call(SetNpcJumpscale, NPC_SELF, Float(0.8))
+    Call(SetNpcJumpscale, NPC_SELF, 0.8)
     Call(NpcJump1, NPC_SELF, 845, 35, 145, 15)
     Call(PlayerFaceNpc, NPC_SELF, false)
     Wait(15)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(SetCamDistance, CAM_DEFAULT, 300)
     Call(SetCamPosB, CAM_DEFAULT, 800, 245)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -398,12 +398,12 @@ EvtScript EVS_Scene_YakkeyShouts = {
         Call(ContinueSpeech, NPC_SELF, ANIM_Yakkey_Talk, ANIM_Yakkey_Idle, 0, MSG_CH3_00F9)
     EndIf
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(4.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 4.0)
     Call(UseSettingsFrom, CAM_DEFAULT, 740, LVar1, LVar2)
     Call(SetCamDistance, CAM_DEFAULT, 600)
     Call(SetCamPosB, CAM_DEFAULT, 800, 245)
     Call(SetPanTarget, CAM_DEFAULT, 740, LVar1, LVar2)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Thread
         Set(MF_Sync_YakkeyDialogue, false)
         Call(SpeakToPlayer, NPC_SELF, ANIM_Yakkey_Talk, ANIM_Yakkey_Idle, 517, MSG_CH3_00FA)
@@ -412,12 +412,12 @@ EvtScript EVS_Scene_YakkeyShouts = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Loop(0)
-        Call(SetCamDistance, CAM_DEFAULT, Float(550.0))
-        Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+        Call(SetCamDistance, CAM_DEFAULT, 550.0)
+        Call(SetCamSpeed, CAM_DEFAULT, 90.0)
         Call(SetPanTarget, CAM_DEFAULT, 740, LVar1, LVar2)
         Wait(1)
-        Call(SetCamDistance, CAM_DEFAULT, Float(600.0))
-        Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+        Call(SetCamDistance, CAM_DEFAULT, 600.0)
+        Call(SetCamSpeed, CAM_DEFAULT, 90.0)
         Call(SetPanTarget, CAM_DEFAULT, 740, LVar1, LVar2)
         Wait(1)
         IfEq(MF_Sync_YakkeyDialogue, true)
@@ -438,7 +438,7 @@ EvtScript EVS_Scene_YakkeyShouts = {
             Call(RandInt, 40, LVar1)
             Add(LVar0, 537)
             Add(LVar1, 110)
-            PlayEffect(EFFECT_SMOKE_BURST, 2, LVar0, LVar1, 128, Float(0.3), 24)
+            PlayEffect(EFFECT_SMOKE_BURST, 2, LVar0, LVar1, 128, 0.3, 24)
             Wait(5)
         EndLoop
     EndThread
@@ -462,15 +462,15 @@ EvtScript EVS_Scene_YakkeyShouts = {
     EndSwitch
     Call(EnablePartnerAI)
     Wait(15)
-    Call(BindNpcAI, NPC_Tubba, Ref(EVS_NpcAI_Tubba_WakeUp))
+    Call(BindNpcAI, NPC_Tubba, EVS_NpcAI_Tubba_WakeUp)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(4.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 4.0)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
-    Call(SetNpcJumpscale, NPC_SELF, Float(1.0))
+    Call(SetNpcJumpscale, NPC_SELF, 1.0)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Sub(LVar1, 10)
     Call(NpcJump0, NPC_SELF, LVar0, LVar1, LVar2, 10)
@@ -483,7 +483,7 @@ EvtScript EVS_Scene_YakkeyShouts = {
 
 EvtScript EVS_NpcInit_Yakkey = {
     Call(SetSelfVar, 0, 0)
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_Scene_YakkeyShouts))
+    Call(BindNpcIdle, NPC_SELF, EVS_Scene_YakkeyShouts)
     Return
     End
 };

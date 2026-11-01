@@ -212,9 +212,9 @@ s32 DefaultAnims[] = {
 };
 
 EvtScript EVS_Init = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
     Call(SetPartMovementVar, ACTOR_SELF, PRT_MEMBER_01, HOME_OFFSET_X, 0)
     Call(SetPartMovementVar, ACTOR_SELF, PRT_MEMBER_01, HOME_OFFSET_Z, -10)
     Call(SetPartMovementVar, ACTOR_SELF, PRT_MEMBER_02, HOME_OFFSET_X, 10)
@@ -239,7 +239,7 @@ EvtScript EVS_Init = {
     Call(HPBarToHome, ACTOR_SELF)
     Set(LVar0, PRT_MEMBER_01)
     Set(LVar1, ANIM_TankGuy_Flee)
-    Set(LVar4, Float(4.0))
+    Set(LVar4, 4.0)
     Set(LVar5, 5)
     Loop(NUM_MEMBERS)
         Thread

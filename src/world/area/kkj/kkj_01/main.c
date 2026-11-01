@@ -22,14 +22,14 @@ EvtScript EVS_ShowMessage_CantOpen = {
 
 EvtScript EVS_BindExitTriggers = {
     IfEq(AF_KKJ01_MarioLetIntoBedroom, true)
-        BindTrigger(Ref(EVS_ExitDoors_kkj_14_0), TRIGGER_WALL_PRESS_A, COLLIDER_ttn2, 1, 0)
+        BindTrigger(EVS_ExitDoors_kkj_14_0, TRIGGER_WALL_PRESS_A, COLLIDER_ttn2, 1, 0)
     EndIf
-    BindTrigger(Ref(EVS_ShowMessage_CantOpen), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
-    BindTrigger(Ref(EVS_ShowMessage_CantOpen), TRIGGER_WALL_PRESS_A, COLLIDER_ttsw, 1, 0)
-    BindTrigger(Ref(EVS_ShowMessage_CantOpen), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
-    BindTrigger(Ref(EVS_ShowMessage_CantOpen), TRIGGER_WALL_PRESS_A, COLLIDER_ttse, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoors_kkj_00_1), TRIGGER_WALL_PRESS_A, COLLIDER_tts, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoors_kkj_02_0), TRIGGER_WALL_PRESS_A, COLLIDER_ttn, 1, 0)
+    BindTrigger(EVS_ShowMessage_CantOpen, TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
+    BindTrigger(EVS_ShowMessage_CantOpen, TRIGGER_WALL_PRESS_A, COLLIDER_ttsw, 1, 0)
+    BindTrigger(EVS_ShowMessage_CantOpen, TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
+    BindTrigger(EVS_ShowMessage_CantOpen, TRIGGER_WALL_PRESS_A, COLLIDER_ttse, 1, 0)
+    BindTrigger(EVS_ExitDoors_kkj_00_1, TRIGGER_WALL_PRESS_A, COLLIDER_tts, 1, 0)
+    BindTrigger(EVS_ExitDoors_kkj_02_0, TRIGGER_WALL_PRESS_A, COLLIDER_ttn, 1, 0)
     Return
     End
 };
@@ -77,7 +77,7 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_PEACH_CASTLE_GROUNDS)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, false, Ref(DefaultNPCs))
+    Call(MakeNpcs, false, DefaultNPCs)
     IfNe(GB_StoryProgress, STORY_INTRO)
         Call(EnableModel, MODEL_g74, false)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_g77, COLLIDER_FLAGS_UPPER_MASK)

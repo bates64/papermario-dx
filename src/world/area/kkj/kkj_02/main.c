@@ -6,8 +6,8 @@ EvtScript EVS_ExitDoors_kkj_03_0 =
     EVT_EXIT_DOUBLE_DOOR(kkj_02_ENTRY_1, "kkj_03", kkj_03_ENTRY_0, COLLIDER_deilit2, MODEL_door4, MODEL_door3);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitDoors_kkj_01_1), TRIGGER_WALL_PRESS_A, COLLIDER_deilit1, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoors_kkj_03_0), TRIGGER_WALL_PRESS_A, COLLIDER_deilit2, 1, 0)
+    BindTrigger(EVS_ExitDoors_kkj_01_1, TRIGGER_WALL_PRESS_A, COLLIDER_deilit1, 1, 0)
+    BindTrigger(EVS_ExitDoors_kkj_03_0, TRIGGER_WALL_PRESS_A, COLLIDER_deilit2, 1, 0)
     Return
     End
 };
@@ -32,7 +32,7 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_PEACH_CASTLE_GROUNDS)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, false, Ref(DefaultNPCs))
+    Call(MakeNpcs, false, DefaultNPCs)
     Exec(EVS_SetupMusic)
     Call(UseDoorSounds, DOOR_SOUNDS_LARGE)
     Exec(EVS_BindExitTriggers)

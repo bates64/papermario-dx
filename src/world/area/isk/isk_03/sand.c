@@ -19,12 +19,12 @@ EvtScript EVS_TexPan_DrippingSand = {
 };
 
 EvtScript EVS_Camera_LookAtDrain = {
-    Call(SetCamSpeed, CAM_DEFAULT, Float(1.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 1.0)
     Call(UseSettingsFrom, CAM_DEFAULT, 454, 35, 285)
     Call(SetCamDistance, CAM_DEFAULT, 400)
     Call(SetCamPosA, CAM_DEFAULT, 250, 40)
     Call(SetCamPosB, CAM_DEFAULT, 566, -50)
-    Call(SetCamPitch, CAM_DEFAULT, Float(13.6), Float(-1.5))
+    Call(SetCamPitch, CAM_DEFAULT, 13.6, -1.5)
     Call(SetPanTarget, CAM_DEFAULT, 429, 35, 278)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Return
@@ -32,15 +32,15 @@ EvtScript EVS_Camera_LookAtDrain = {
 };
 
 EvtScript EVS_Camera_LookBelow = {
-    Call(SetCamSpeed, CAM_DEFAULT, Float(0.5))
-    Call(SetCamPitch, CAM_DEFAULT, Float(3.4), Float(-5.5))
+    Call(SetCamSpeed, CAM_DEFAULT, 0.5)
+    Call(SetCamPitch, CAM_DEFAULT, 3.4, -5.5)
     Call(SetPanTarget, CAM_DEFAULT, 429, -153, 278)
     Return
     End
 };
 
 EvtScript EVS_Camera_Reset = {
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(UseSettingsFrom, CAM_DEFAULT, 430, 35, 295)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -119,7 +119,7 @@ EvtScript EVS_RescaleDrainingSand = {
     Call(MakeLerp, 0, 100, 60, EASING_QUADRATIC_IN)
     Label(10)
         Call(UpdateLerp)
-        Call(ScaleModel, MODEL_o1351, Float(1.0), LVar0, Float(1.0))
+        Call(ScaleModel, MODEL_o1351, 1.0, LVar0, 1.0)
         Wait(1)
         IfEq(LVar1, 1)
             Goto(10)
@@ -258,7 +258,7 @@ EvtScript EVS_SetupSand = {
     Set(AF_ISK03_SandSwitchActivated, false)
     Call(MakeTransformGroup, MODEL_g206)
     IfLt(GB_StoryProgress, STORY_CH2_DRAINED_FIRST_SAND_ROOM)
-        BindTrigger(Ref(EVS_Scene_DrainSand), TRIGGER_AREA_FLAG_SET, AF_ISK03_SandSwitchActivated, 1, 0)
+        BindTrigger(EVS_Scene_DrainSand, TRIGGER_AREA_FLAG_SET, AF_ISK03_SandSwitchActivated, 1, 0)
         Call(EnableModel, MODEL_o1343, false)
         Call(EnableModel, MODEL_o1344, false)
         Call(EnableModel, MODEL_o1345, false)

@@ -12,7 +12,7 @@ MobileAISettings AISettings_Dryite_Patrol = {
 };
 
 EvtScript EVS_NpcAI_Dryite_Patrol = {
-    Call(PatrolNoAttackAI_Main, Ref(AISettings_Dryite_Patrol))
+    Call(PatrolNoAttackAI_Main, AISettings_Dryite_Patrol)
     Return
     End
 };

@@ -6,10 +6,10 @@ EvtScript EVS_ExitWalk_omo_06_0 = EVT_EXIT_WALK(60, omo_17_ENTRY_2, "omo_06", om
 EvtScript EVS_ExitWalk_omo_06_1 = EVT_EXIT_WALK(60, omo_17_ENTRY_3, "omo_06", omo_06_ENTRY_1);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_omo_05_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_omo_05_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deili5, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_omo_06_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deili2, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_omo_06_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deili6, 1, 0)
+    BindTrigger(EVS_ExitWalk_omo_05_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
+    BindTrigger(EVS_ExitWalk_omo_05_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deili5, 1, 0)
+    BindTrigger(EVS_ExitWalk_omo_06_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deili2, 1, 0)
+    BindTrigger(EVS_ExitWalk_omo_06_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deili6, 1, 0)
     Return
     End
 };
@@ -18,7 +18,7 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_SHY_GUYS_TOYBOX)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Call(MakeNpcs, true, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     ExecWait(EVS_SetupGizmos)
     Call(SetMusic, 0, SONG_SHY_GUY_TOYBOX, 0, VOL_LEVEL_FULL)
@@ -29,7 +29,7 @@ EvtScript EVS_Main = {
             Wait(3)
         CaseDefault
             Call(SetGroupVisibility, MODEL_popo, MODEL_GROUP_HIDDEN)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
             Wait(1)
     EndSwitch

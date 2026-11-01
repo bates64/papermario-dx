@@ -197,25 +197,25 @@ EvtScript EVS_NpcInteract_WaterfrontKid2 = {
 };
 
 EvtScript EVS_NpcInit_WaterfrontDad = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_WaterfrontDad))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_WaterfrontDad)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_WaterfrontMom = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_WaterfrontMom))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_WaterfrontMom)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_WaterfrontKid1 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_WaterfrontKid1))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_WaterfrontKid1)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_WaterfrontKid2 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_WaterfrontKid2))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_WaterfrontKid2)
     Return
     End
 };

@@ -75,7 +75,7 @@ EvtScript EVS_SetupNarrator = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(hos_05_ENTRY_3)
-            Call(SetCurtainCallback, Ref(curtain_callback_narration))
+            Call(SetCurtainCallback, curtain_callback_narration)
     EndSwitch
     Return
     End

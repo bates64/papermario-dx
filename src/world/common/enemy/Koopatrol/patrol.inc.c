@@ -21,7 +21,7 @@ EvtScript EVS_NpcAI_Koopatrol_Patrol = {
     Call(SetSelfVar, AI_VAR_TACKLE_MIN_CHASE_TIME, 15)
     Call(SetSelfVar, AI_VAR_TACKLE_POST_DELAY, 10)
     Call(SetSelfVar, AI_VAR_TACKLE_TYPE, TACKLER_KOOPATROL)
-    Call(TacklePatrolAI_Main, Ref(AISettings_Koopatrol_Patrol))
+    Call(TacklePatrolAI_Main, AISettings_Koopatrol_Patrol)
     Return
     End
 };

@@ -11,7 +11,7 @@ EvtScript EVS_SetupSpikes = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o215, SURFACE_TYPE_SPIKES)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o216, SURFACE_TYPE_SPIKES)
     Thread
-        Call(ResetFromLava, Ref(SafeFloorColliders))
+        Call(ResetFromLava, SafeFloorColliders)
     EndThread
     Wait(50)
     Call(TranslateModel, MODEL_o190, 0, 0, 0)

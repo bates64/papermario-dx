@@ -207,7 +207,7 @@ EvtScript EVS_EnterForest = {
     Set(LVar2, -1)
     Exec(EVS_OpenGate)
     Wait(20)
-    Call(SetPlayerSpeed, Float(3.0))
+    Call(SetPlayerSpeed, 3.0)
     Call(PlayerMoveTo, -185, 0, 0)
     Set(LVar2, -1)
     Exec(EVS_CloseGate)
@@ -221,7 +221,7 @@ EvtScript EVS_LeaveForest = {
     Set(LVar2, 1)
     Exec(EVS_OpenGate)
     Wait(20)
-    Call(SetPlayerSpeed, Float(3.0))
+    Call(SetPlayerSpeed, 3.0)
     Call(PlayerMoveTo, -20, 0, 0)
     Set(LVar2, 1)
     Exec(EVS_CloseGate)
@@ -256,10 +256,10 @@ EvtScript EVS_UseGate = {
 
 EvtScript EVS_FlyDownToGate = {
     Thread
-        Call(SetNpcJumpscale, NPC_GateBoo_02, Float(0.0))
+        Call(SetNpcJumpscale, NPC_GateBoo_02, 0.0)
         Call(NpcJump1, NPC_GateBoo_02, -66, 13, -15, 20)
     EndThread
-    Call(SetNpcJumpscale, NPC_GateBoo_01, Float(0.0))
+    Call(SetNpcJumpscale, NPC_GateBoo_01, 0.0)
     Call(NpcJump1, NPC_GateBoo_01, -89, 14, 28, 20)
     Wait(15)
     Return
@@ -333,7 +333,7 @@ EvtScript EVS_Scene_UnlockGate = {
     Call(SetNpcPos, NPC_GateBoo_01, -103, 65, 64)
     Call(SetNpcPos, NPC_GateBoo_02, -45, 65, -66)
     Call(PlaySoundAtNpc, NPC_GateBoo_01, SOUND_BOO_VANISH_A, SOUND_SPACE_DEFAULT)
-    SetF(LVar0, Float(0.0))
+    SetF(LVar0, 0.0)
     Loop(20 * DT)
         AddF(LVar0, Float(240.0 / (s32)(20 * DT)))
         Call(SetNpcImgFXParams, NPC_GateBoo_01, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
@@ -363,7 +363,7 @@ EvtScript EVS_Scene_UnlockGate = {
     ExecWait(EVS_HaveBoosCloseGate)
     Wait(10 * DT)
     Call(PlaySoundAtNpc, NPC_GateBoo_01, SOUND_BOO_APPEAR_A, SOUND_SPACE_DEFAULT)
-    SetF(LVar0, Float(240.0))
+    SetF(LVar0, 240.0)
     Loop(20 * DT)
         SubF(LVar0, Float(240.0 / (s32)(20 * DT)))
         Call(SetNpcImgFXParams, NPC_GateBoo_01, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
@@ -380,7 +380,7 @@ EvtScript EVS_Scene_UnlockGate = {
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerAnimation, ANIM_Mario1_Jump)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
-    Call(SetPlayerJumpscale, Float(1.5))
+    Call(SetPlayerJumpscale, 1.5)
     Call(PlayerJump, LVar0, LVar1, LVar2, 14 * DT)
     Call(SetPlayerAnimation, ANIM_Mario1_Land)
     Call(DisablePlayerPhysics, false)
@@ -389,7 +389,7 @@ EvtScript EVS_Scene_UnlockGate = {
     Call(PutPartnerAway)
     Call(DisablePlayerInput, false)
     Set(AF_MIM12_BackgroundLitUp, true)
-    BindTrigger(Ref(EVS_UseGate), TRIGGER_WALL_PRESS_A, COLLIDER_o67, 1, 0)
+    BindTrigger(EVS_UseGate, TRIGGER_WALL_PRESS_A, COLLIDER_o67, 1, 0)
     Return
     End
 };
@@ -398,7 +398,7 @@ EvtScript EVS_SetupForestGate = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_BOW_JOINED_PARTY)
             Call(InitializeForestFogProperties)
-            BindTrigger(Ref(EVS_CantOpenGateMessage), TRIGGER_WALL_PRESS_A, COLLIDER_o67, 1, 0)
+            BindTrigger(EVS_CantOpenGateMessage, TRIGGER_WALL_PRESS_A, COLLIDER_o67, 1, 0)
         CaseLt(STORY_CH3_UNLOCKED_GUSTY_GULCH)
             Call(InitializeForestFogProperties)
             Loop(0)
@@ -419,7 +419,7 @@ EvtScript EVS_SetupForestGate = {
                 Call(InitializeGustyFogProperties)
                 Call(EnableSpriteShading, false)
             EndIf
-            BindTrigger(Ref(EVS_UseGate), TRIGGER_WALL_PRESS_A, COLLIDER_o67, 1, 0)
+            BindTrigger(EVS_UseGate, TRIGGER_WALL_PRESS_A, COLLIDER_o67, 1, 0)
     EndSwitch
     Return
     End

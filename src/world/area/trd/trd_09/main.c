@@ -12,8 +12,8 @@ EvtScript EVS_ExitDoors_trd_10_0 =
     EVT_EXIT_DOUBLE_DOOR(trd_09_ENTRY_1, "trd_10", trd_10_ENTRY_0, COLLIDER_tt4, MODEL_o60, MODEL_o65);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitDoors_trd_01_3), TRIGGER_WALL_PRESS_A, COLLIDER_tt5, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoors_trd_10_0), TRIGGER_WALL_PRESS_A, COLLIDER_tt4, 1, 0)
+    BindTrigger(EVS_ExitDoors_trd_01_3, TRIGGER_WALL_PRESS_A, COLLIDER_tt5, 1, 0)
+    BindTrigger(EVS_ExitDoors_trd_10_0, TRIGGER_WALL_PRESS_A, COLLIDER_tt4, 1, 0)
     Return
     End
 };
@@ -50,13 +50,13 @@ EvtScript EVS_Main = {
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Call(GetDemoState, LVar0)
     IfNe(LVar0, DEMO_STATE_NONE)
-        Call(MakeNpcs, true, Ref(DemoNPCs))
+        Call(MakeNpcs, true, DemoNPCs)
         ExecWait(EVS_MakeEntities)
         ExecWait(EVS_PlayDemoScene)
         Return
     EndIf
     IfLe(GB_StoryProgress, STORY_CH1_DEFEATED_KOOPA_BROS)
-        Call(MakeNpcs, true, Ref(DefaultNPCs))
+        Call(MakeNpcs, true, DefaultNPCs)
     EndIf
     IfEq(GF_TRD09_Defeated_BillBlasters, true)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o85, COLLIDER_FLAGS_UPPER_MASK)

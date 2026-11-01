@@ -15,7 +15,7 @@ EvtScript EVS_Scene_MeetingPeach = {
     Call(SetMusic, 0, SONG_PRISONER_PEACH_THEME, 0, VOL_LEVEL_FULL)
     Call(PlayerFaceNpc, NPC_Peach, false)
     Call(SetNpcAnimation, NPC_Peach, ANIM_Peach1_Walk)
-    Call(SetNpcSpeed, NPC_Peach, Float(2.0 / DT))
+    Call(SetNpcSpeed, NPC_Peach, 2.0 / DT)
     Call(NpcMoveTo, NPC_Peach, 625, 0, 0)
     Call(SetNpcAnimation, NPC_Peach, ANIM_Peach1_Idle)
     Wait(10 * DT)
@@ -27,7 +27,7 @@ EvtScript EVS_Scene_MeetingPeach = {
     Wait(10 * DT)
     Call(SetNpcAnimation, NPC_Peach, ANIM_Peach1_Idle)
     Thread
-        Call(SetCamProperties, CAM_DEFAULT, Float(5.0 / DT), 600, 0, -12, Float(325.0), Float(17.0), Float(-9.0))
+        Call(SetCamProperties, CAM_DEFAULT, 5.0 / DT, 600, 0, -12, 325.0, 17.0, -9.0)
     EndThread
     Call(PlayerMoveTo, 575, 0, 20 * DT)
     Wait(10 * DT)
@@ -67,10 +67,10 @@ EvtScript EVS_Scene_MeetingPeach = {
     Wait(17 * DT)
     Thread
         Call(PlaySound, SOUND_LOOP_KKJ_RUMBLING)
-        Call(ShakeCam, CAM_DEFAULT, 0, 200 * DT, Float(1.0))
+        Call(ShakeCam, CAM_DEFAULT, 0, 200 * DT, 1.0)
     EndThread
     Wait(60 * DT)
-    Call(GotoMap, Ref("osr_04"), osr_04_ENTRY_0)
+    Call(GotoMap, "osr_04", osr_04_ENTRY_0)
     Wait(100 * DT)
     Call(DisablePlayerInput, false)
     Return
@@ -109,7 +109,7 @@ EvtScript EVS_Scene_Ascending = {
     Exec(EVS_MoveClouds)
     Call(UseSettingsFrom, CAM_DEFAULT, 600, 0, -15)
     Call(SetPanTarget, CAM_DEFAULT, 600, 0, -15)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Thread
         Call(SetPlayerJumpscale, 0)
@@ -137,10 +137,10 @@ EvtScript EVS_Scene_Ascending = {
     EndThread
     Thread
         Call(PlaySound, SOUND_LOOP_KKJ_RUMBLING)
-        Call(ShakeCam, CAM_DEFAULT, 0, 200, Float(1.0))
+        Call(ShakeCam, CAM_DEFAULT, 0, 200, 1.0)
     EndThread
     Wait(100 * DT)
-    Call(GotoMap, Ref("osr_03"), osr_03_ENTRY_1)
+    Call(GotoMap, "osr_03", osr_03_ENTRY_1)
     Wait(100 * DT)
     Call(DisablePlayerInput, false)
     Return

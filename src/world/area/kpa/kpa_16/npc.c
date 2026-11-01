@@ -39,20 +39,20 @@ EvtScript EVS_Scene_LavaShutoff = {
     Wait(1)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamDistance, CAM_DEFAULT, Float(350.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(1.0 / DT))
+    Call(SetCamDistance, CAM_DEFAULT, 350.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 1.0 / DT)
     Call(SetPanTarget, CAM_DEFAULT, 330, 230, -150)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(1)
     Call(SetPanTarget, CAM_DEFAULT, 330, 170, -150)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Thread
         Call(MuteAmbience)
         SetF(LVar2, 1)
         Call(MakeLerp, 0, -20, 100 * DT, EASING_LINEAR)
         Loop(0)
             Call(UpdateLerp)
-            AddF(LVar2, Float(-0.01))
+            AddF(LVar2, -0.01)
             Call(TranslateModel, MODEL_o1283, 0, LVar0, 0)
             Call(TranslateModel, MODEL_o1282, 0, LVar0, 0)
             Call(ScaleModel, MODEL_o1282, LVar2, 1, 1)
@@ -86,7 +86,7 @@ EvtScript EVS_Scene_LavaShutoff = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o782, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o954, COLLIDER_FLAGS_UPPER_MASK)
     Set(GF_KPA16_ShutOffLava, true)
-    Call(ResetCam, CAM_DEFAULT, Float(90.0))
+    Call(ResetCam, CAM_DEFAULT, 90.0)
     Call(MakeLerp, 255, 0, 50 * DT, EASING_LINEAR)
     Loop(0)
         Call(UpdateLerp)
@@ -126,16 +126,16 @@ EvtScript EVS_Scene_LavaShutoff = {
 EvtScript EVS_ChargeAtPlayer = {
     ChildThread
         Wait(15 * DT)
-        Call(SetNpcSpeed, NPC_Koopatrol_01, Float(3.0 / DT))
+        Call(SetNpcSpeed, NPC_Koopatrol_01, 3.0 / DT)
         Call(NpcMoveTo, NPC_Koopatrol_01, 650, -145, 0)
     EndChildThread
     ChildThread
         Wait(10 * DT)
-        Call(SetNpcSpeed, NPC_Koopatrol_03, Float(3.5 / DT))
+        Call(SetNpcSpeed, NPC_Koopatrol_03, 3.5 / DT)
         Call(NpcMoveTo, NPC_Koopatrol_03, 650, -165, 0)
     EndChildThread
     Wait(5 * DT)
-    Call(SetNpcSpeed, NPC_Koopatrol_02, Float(4.0 / DT))
+    Call(SetNpcSpeed, NPC_Koopatrol_02, 4.0 / DT)
     Call(NpcMoveTo, NPC_Koopatrol_02, 650, -120, 0)
     Return
     End
@@ -173,13 +173,13 @@ EvtScript EVS_NpcIdle_Guards = {
     Wait(10 * DT)
     Call(UseSettingsFrom, CAM_DEFAULT, 555, 230, -150)
     Call(SetPanTarget, CAM_DEFAULT, 555, 230, -150)
-    Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(10.0), Float(-10.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamDistance, CAM_DEFAULT, 300.0)
+    Call(SetCamPitch, CAM_DEFAULT, 10.0, -10.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Thread
-        Call(SetPlayerSpeed, Float(3.0 / DT))
+        Call(SetPlayerSpeed, 3.0 / DT)
         Call(PlayerMoveTo, 680, -145, 0)
         Call(InterpPlayerYaw, 270, 0)
     EndThread
@@ -187,7 +187,7 @@ EvtScript EVS_NpcIdle_Guards = {
     Thread
         Wait(30 * DT)
         Call(SetNpcAnimation, NPC_Koopatrol_02, ANIM_WorldKoopatrol_Run)
-        Call(SetNpcSpeed, NPC_Koopatrol_02, Float(4.0 / DT))
+        Call(SetNpcSpeed, NPC_Koopatrol_02, 4.0 / DT)
         Label(10)
         Call(NpcMoveTo, NPC_Koopatrol_02, 550, -165, 0)
         Wait(5 * DT)
@@ -204,7 +204,7 @@ EvtScript EVS_NpcIdle_Guards = {
     Call(SpeakToPlayer, NPC_Koopatrol_01, ANIM_WorldKoopatrol_Run, ANIM_WorldKoopatrol_Run, 1, MSG_CH8_0017)
     Thread
         Wait(5)
-        Call(SetNpcJumpscale, NPC_Koopatrol_03, Float(1.0))
+        Call(SetNpcJumpscale, NPC_Koopatrol_03, 1.0)
         Call(GetNpcPos, NPC_Koopatrol_03, LVar0, LVar1, LVar2)
         Call(NpcJump0, NPC_Koopatrol_03, LVar0, LVar1, LVar2, 20 * DT)
     EndThread
@@ -229,7 +229,7 @@ EvtScript EVS_NpcIdle_Guards = {
         Call(InterpNpcYaw, NPC_Koopatrol_01, 90, 0)
     EndThread
     Call(SpeakToPlayer, NPC_Koopatrol_02, ANIM_WorldKoopatrol_Talk, ANIM_WorldKoopatrol_Idle, 0, MSG_CH8_001A)
-    Call(ResetCam, CAM_DEFAULT, Float(90.0))
+    Call(ResetCam, CAM_DEFAULT, 90.0)
     Call(SetNpcAnimation, NPC_Koopatrol_01, ANIM_WorldKoopatrol_Run)
     Call(SetNpcAnimation, NPC_Koopatrol_02, ANIM_WorldKoopatrol_Run)
     Call(SetNpcAnimation, NPC_Koopatrol_03, ANIM_WorldKoopatrol_Run)
@@ -272,8 +272,8 @@ EvtScript EVS_NpcInit_Guards = {
         Exec(EVS_Scene_LavaShutoff)
     EndIf
     IfEq(GF_KPA16_Defeated_SwitchGuards, false)
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Guards))
-        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Guards))
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Guards)
+        Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_Guards)
     Else
         Call(RemoveNpc, NPC_Magikoopa)
         Call(RemoveNpc, NPC_Koopatrol_02)

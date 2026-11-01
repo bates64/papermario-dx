@@ -20,10 +20,10 @@ EvtScript EVS_ExitDoors_trd_04_3 =
     EVT_EXIT_DOUBLE_DOOR(trd_05_ENTRY_3, "trd_04", trd_04_ENTRY_3, COLLIDER_ttw2, MODEL_doa7, MODEL_doa8);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitDoors_trd_04_1), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_trd_00_3), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoors_trd_00_2), TRIGGER_WALL_PRESS_A, COLLIDER_ttse, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoors_trd_04_3), TRIGGER_WALL_PRESS_A, COLLIDER_ttw2, 1, 0)
+    BindTrigger(EVS_ExitDoors_trd_04_1, TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
+    BindTrigger(EVS_ExitWalk_trd_00_3, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitDoors_trd_00_2, TRIGGER_WALL_PRESS_A, COLLIDER_ttse, 1, 0)
+    BindTrigger(EVS_ExitDoors_trd_04_3, TRIGGER_WALL_PRESS_A, COLLIDER_ttw2, 1, 0)
     Return
     End
 };
@@ -44,7 +44,7 @@ EvtScript EVS_EnterMap = {
             ExecWait(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
         CaseEq(trd_05_ENTRY_2)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
         CaseEq(trd_05_ENTRY_3)
             Set(LVar2, MODEL_doa7)
@@ -85,11 +85,11 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_KOOPA_BROS_FORTRESS)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Call(MakeNpcs, true, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     IfEq(GF_TRD05_BombedWall, false)
         Call(SetGroupVisibility, MODEL_ana2, MODEL_GROUP_HIDDEN)
-        BindTrigger(Ref(EVS_BombWall), TRIGGER_POINT_BOMB, Ref(BombPos_Wall), 1, 0)
+        BindTrigger(EVS_BombWall, TRIGGER_POINT_BOMB, BombPos_Wall, 1, 0)
     Else
         Call(SetGroupVisibility, MODEL_ana3, MODEL_GROUP_HIDDEN)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_tte, COLLIDER_FLAGS_UPPER_MASK)

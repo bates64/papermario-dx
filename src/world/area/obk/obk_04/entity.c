@@ -31,21 +31,21 @@ EvtScript EVS_OpenGiantChest = {
 };
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Ref(Entity_GiantChest), 180, 0, -175, -10, ITEM_NONE, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_GiantChest, 180, 0, -175, -10, ITEM_NONE, MAKE_ENTITY_END)
     Call(AssignChestFlag, GF_OBK04_GiantChest)
-    Call(AssignScript, Ref(EVS_OpenGiantChest))
+    Call(AssignScript, EVS_OpenGiantChest)
     Call(MakeItemEntity, ITEM_MENU_BOOTS2, NPC_DISPOSE_LOCATION, ITEM_SPAWN_MODE_DECORATION, 0)
     Call(InitializeKeepAwayItemAlpha)
     Set(MV_KeepAwayItem, LVar0)
     IfEq(GF_OBK04_BoardedFloor, false)
-        Call(MakeEntity, Ref(Entity_BoardedFloor), 0, 0, 0, 0, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(EVS_OnSmash_Floor))
+        Call(MakeEntity, Entity_BoardedFloor, 0, 0, 0, 0, MAKE_ENTITY_END)
+        Call(AssignScript, EVS_OnSmash_Floor)
     EndIf
-    Call(MakeEntity, Ref(Entity_WoodenCrate), -60, 0, -190, 0, ITEM_MAPLE_SYRUP, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_WoodenCrate, -60, 0, -190, 0, ITEM_MAPLE_SYRUP, MAKE_ENTITY_END)
     Call(AssignCrateFlag, GF_OBK04_Crate_MapleSyrup)
-    Call(MakeEntity, Ref(Entity_WoodenCrate), -60, 30, -190, 0, -1, MAKE_ENTITY_END)
-    Call(MakeEntity, Ref(Entity_WoodenCrate), -20, 0, -190, 0, -1, MAKE_ENTITY_END)
-    Call(MakeEntity, Ref(Entity_HiddenPanel), -175, 0, -75, 0, MODEL_o318, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_WoodenCrate, -60, 30, -190, 0, -1, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_WoodenCrate, -20, 0, -190, 0, -1, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_HiddenPanel, -175, 0, -75, 0, MODEL_o318, MAKE_ENTITY_END)
     Call(AssignPanelFlag, GF_OBK04_HiddenPanel)
     Return
     End

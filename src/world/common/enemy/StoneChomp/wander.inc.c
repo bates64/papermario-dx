@@ -149,7 +149,7 @@ EvtScript EVS_NpcAI_StoneChomp_Wander = {
             Wait(1)
         EndLoop
     EndChildThread
-    Call(StoneChompAI_Main, Ref(AISettings_StoneChomp_Wander))
+    Call(StoneChompAI_Main, AISettings_StoneChomp_Wander)
     Return
     End
 };

@@ -20,7 +20,7 @@ API_CALLABLE(SetupLandingCamAdjust) {
 EvtScript EVS_ExitWalk_isk_08_0 = EVT_EXIT_WALK(40, isk_09_ENTRY_0, "isk_08", isk_08_ENTRY_0);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_isk_08_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitWalk_isk_08_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     Return
     End
 };
@@ -34,7 +34,7 @@ EvtScript EVS_Main = {
     Exec(EVS_SetupSwitches)
     Exec(EVS_SetupMusic)
     ExecWait(EVS_SetupStairs)
-    Set(LVar0, Ref(EVS_BindExitTriggers))
+    Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     Return
     End

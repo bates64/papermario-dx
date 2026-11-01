@@ -4,8 +4,8 @@ EvtScript EVS_ExitWalk_omo_01_0 = EVT_EXIT_WALK(60, omo_13_ENTRY_0, "omo_01", om
 EvtScript EVS_ExitWalk_omo_03_0 = EVT_EXIT_WALK(60, omo_13_ENTRY_1, "omo_03", omo_03_ENTRY_0);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_omo_01_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_omo_03_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deili2, 1, 0)
+    BindTrigger(EVS_ExitWalk_omo_01_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
+    BindTrigger(EVS_ExitWalk_omo_03_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deili2, 1, 0)
     Return
     End
 };
@@ -17,11 +17,11 @@ EvtScript EVS_Main = {
     IfEq(GF_OMO13_Defeated_AntiGuy, true)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_he, COLLIDER_FLAGS_UPPER_MASK)
     EndIf
-    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Call(MakeNpcs, true, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     ExecWait(EVS_SetupGizmos)
     ExecWait(EVS_SetupMusic)
-    Set(LVar0, Ref(EVS_BindExitTriggers))
+    Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     Wait(1)
     Return

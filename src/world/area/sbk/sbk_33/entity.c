@@ -17,17 +17,17 @@ TweesterPath* TweesterPaths[] = {
 EvtScript EVS_GotoMap_sbk_24_4 = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    Call(GotoMap, Ref("sbk_24"), sbk_24_ENTRY_4)
+    Call(GotoMap, "sbk_24", sbk_24_ENTRY_4)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Ref(Entity_HiddenPanel), 0, 0, 225, 0, MODEL_stage, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_HiddenPanel, 0, 0, 225, 0, MODEL_stage, MAKE_ENTITY_END)
     Call(AssignPanelFlag, GF_SBK33_HiddenPanel)
-    Call(MakeEntity, Ref(Entity_Tweester), 327, 0, 8, 0, Ref(TweesterPaths), MAKE_ENTITY_END)
-    Call(AssignScript, Ref(EVS_GotoMap_sbk_24_4))
+    Call(MakeEntity, Entity_Tweester, 327, 0, 8, 0, TweesterPaths, MAKE_ENTITY_END)
+    Call(AssignScript, EVS_GotoMap_sbk_24_4)
     Return
     End
 };

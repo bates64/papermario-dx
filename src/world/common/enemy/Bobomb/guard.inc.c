@@ -15,7 +15,7 @@ GuardAISettings AISettings_Bobomb_Guard = {
 };
 
 EvtScript EVS_NpcAI_Bobomb_Guard = {
-    Call(GuardAI_Main, Ref(AISettings_Bobomb_Guard))
+    Call(GuardAI_Main, AISettings_Bobomb_Guard)
     Return
     End
 };

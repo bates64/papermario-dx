@@ -6,9 +6,9 @@
 EvtScript EVS_OpenChest_PUpDDown = EVT_OPEN_CHEST(ITEM_P_UP_D_DOWN, GF_PRA28_Chest_PUpDDown);
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Ref(Entity_Chest), 200, 20, 94, 0, 0, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_Chest, 200, 20, 94, 0, 0, MAKE_ENTITY_END)
     Call(AssignChestFlag, GF_PRA28_Chest_PUpDDown)
-    Call(AssignScript, Ref(EVS_OpenChest_PUpDDown))
+    Call(AssignScript, EVS_OpenChest_PUpDDown)
     Return
     End
 };

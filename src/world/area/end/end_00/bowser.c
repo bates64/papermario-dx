@@ -19,7 +19,7 @@ EvtScript EVS_JrTroopa_SpinningDodge = {
 
 EvtScript EVS_ParadePhase_Bowser = {
     Wait(10 * DT)
-    Call(SetNpcJumpscale, NPC_JrTroopa, Float(0.5))
+    Call(SetNpcJumpscale, NPC_JrTroopa, 0.5)
     Call(NpcJump1, NPC_JrTroopa, 2010, 0, 0, 20 * DT)
     Call(SetNpcAnimation, NPC_JrTroopa, ANIM_MageJrTroopa_Run)
     Call(NpcMoveTo, NPC_JrTroopa, 1930, 0, 20 * DT)
@@ -61,10 +61,10 @@ EvtScript EVS_ParadePhase_Bowser = {
     Call(SetNpcAnimation, NPC_JrTroopa, ANIM_MageJrTroopa_SwingStaff)
     PlayEffect(EFFECT_SHAPE_SPELL, 0, 2160, 0, 0, 1940, 60, 0, 20)
     Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlySlowSly)
-    PlayEffect(EFFECT_GATHER_ENERGY_PINK, 0, 1940, 60, 0, Float(0.5), 10)
+    PlayEffect(EFFECT_GATHER_ENERGY_PINK, 0, 1940, 60, 0, 0.5, 10)
     Wait(10 * DT)
     Call(SetNpcPos, NPC_Kammy, 0, -500, 0)
-    PlayEffect(EFFECT_GATHER_ENERGY_PINK, 0, 2100, 60, 0, Float(0.5), 10)
+    PlayEffect(EFFECT_GATHER_ENERGY_PINK, 0, 2100, 60, 0, 0.5, 10)
     Wait(10 * DT)
     Call(SetNpcPos, NPC_Kammy, 2100, 60, 0)
     Wait(30 * DT)
@@ -128,7 +128,7 @@ EvtScript EVS_ParadePhase_Bowser = {
         PlayEffect(EFFECT_SHAPE_SPELL, 0, 2480, 0, 20, 2390, 40, 0, 10)
     EndThread
     Wait(60 * DT)
-    PlayEffect(EFFECT_RING_BLAST, 0, 2390, 40, 5, Float(5.0), 30)
+    PlayEffect(EFFECT_RING_BLAST, 0, 2390, 40, 5, 5.0, 30)
     Thread
         Call(SetNpcAnimation, NPC_HammerBros1, ANIM_ParadeKoopas_Bowser_HammerBrosPanic)
         Call(NpcMoveTo, NPC_HammerBros1, 2180, 0, 30 * DT)
@@ -176,7 +176,7 @@ EvtScript EVS_ParadePhase_Bowser = {
         Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_BurnSlump)
         Call(SetNpcYaw, NPC_Kammy, 90)
         Call(SetNpcPos, NPC_Kammy, 2280, 0, 0)
-        Call(SetNpcJumpscale, NPC_Kammy, Float(0.5))
+        Call(SetNpcJumpscale, NPC_Kammy, 0.5)
         Call(NpcJump1, NPC_Kammy, 2380, 0, 0, 20 * DT)
         Call(NpcJump1, NPC_Kammy, 2430, 0, 0, 10 * DT)
     EndThread
@@ -184,7 +184,7 @@ EvtScript EVS_ParadePhase_Bowser = {
         Call(SetNpcAnimation, NPC_JrTroopa, ANIM_MageJrTroopa_BurnStill)
         Call(SetNpcYaw, NPC_JrTroopa, 90)
         Call(SetNpcPos, NPC_JrTroopa, 2320, 0, 0)
-        Call(SetNpcJumpscale, NPC_JrTroopa, Float(0.5))
+        Call(SetNpcJumpscale, NPC_JrTroopa, 0.5)
         Call(NpcJump1, NPC_JrTroopa, 2420, 0, 0, 20 * DT)
         Call(NpcJump1, NPC_JrTroopa, 2470, 0, 0, 10 * DT)
     EndThread
@@ -193,9 +193,9 @@ EvtScript EVS_ParadePhase_Bowser = {
     SetF(LVar1, 2470)
     ChildThread
         Loop(0)
-            AddF(LVar0, Float(0.8702 / DT))
+            AddF(LVar0, 0.8702 / DT)
             Call(SetNpcPos, NPC_Kammy, LVar0, 0, 0)
-            AddF(LVar1, Float(0.8702 / DT))
+            AddF(LVar1, 0.8702 / DT)
             Call(SetNpcPos, NPC_JrTroopa, LVar1, 0, 0)
             Wait(1)
         EndLoop

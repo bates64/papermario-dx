@@ -33,7 +33,7 @@ EvtScript EVS_NpcInteract_Dryite_04 = {
     Call(GetRunToPos)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Dryite_Green_Run)
-    Call(SetNpcSpeed, NPC_SELF, Float(3.5))
+    Call(SetNpcSpeed, NPC_SELF, 3.5)
     Call(NpcMoveTo, NPC_SELF, LVar0, LVar1, 0)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Dryite_Green_Idle)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
@@ -54,7 +54,7 @@ EvtScript EVS_NpcInit_Dryite_04 = {
             Return
         EndCaseGroup
     EndSwitch
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Dryite_04))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Dryite_04)
     Return
     End
 };

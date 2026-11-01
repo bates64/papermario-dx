@@ -15,9 +15,9 @@ EvtScript EVS_ExtiDoor_Chapter2 = {
     Exec(ExitSingleDoor)
     Wait(17)
     IfEq(AF_KKJ_PeachSawGrandHall, false)
-        Call(GotoMap, Ref("kkj_11"), kkj_11_ENTRY_7)
+        Call(GotoMap, "kkj_11", kkj_11_ENTRY_7)
     Else
-        Call(GotoMap, Ref("kkj_11"), kkj_11_ENTRY_3)
+        Call(GotoMap, "kkj_11", kkj_11_ENTRY_3)
     EndIf
     Wait(100)
     Return
@@ -25,7 +25,7 @@ EvtScript EVS_ExtiDoor_Chapter2 = {
 };
 
 EvtScript EVS_SetupChapter2 = {
-    BindTrigger(Ref(EVS_ExtiDoor_Chapter2), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
+    BindTrigger(EVS_ExtiDoor_Chapter2, TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
     Return
     End
 };

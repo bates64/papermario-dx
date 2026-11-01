@@ -3,7 +3,7 @@
 EvtScript EVS_ExitWalk_iwa_00_0 = EVT_EXIT_WALK(60, iwa_10_ENTRY_1, "iwa_00", iwa_00_ENTRY_0);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_iwa_00_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
+    BindTrigger(EVS_ExitWalk_iwa_00_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
     Return
     End
 };
@@ -17,7 +17,7 @@ EvtScript EVS_EnterMap = {
     EndIf
     Call(GetEntryID, LVar0)
     IfEq(LVar0, iwa_10_ENTRY_1)
-        Set(LVar0, Ref(EVS_BindExitTriggers))
+        Set(LVar0, EVS_BindExitTriggers)
         Exec(EnterWalk)
     Else
         Exec(EVS_ArriveFromToadTown)
@@ -45,7 +45,7 @@ EvtScript EVS_Main = {
     Call(SetModelTexVariant, MODEL_o110, LVar0)
 #endif
     Set(GF_MAP_MtRugged, true)
-    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Call(MakeNpcs, true, DefaultNPCs)
     Call(ClearDefeatedEnemies)
     ExecWait(EVS_MakeEntities)
     ExecWait(EVS_InitializeTrainScene)

@@ -2,7 +2,7 @@
 #include "entity.h"
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Ref(Entity_HiddenPanel), 0, 0, 0, 0, MODEL_ji_3, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_HiddenPanel, 0, 0, 0, 0, MODEL_ji_3, MAKE_ENTITY_END)
     Call(AssignPanelFlag, GF_KMR00_HiddenPanel)
     Return
     End

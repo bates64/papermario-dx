@@ -88,7 +88,7 @@ EvtScript EVS_SetDoorRot_KoloradoHouse = {
 };
 
 EvtScript EVS_SetWallRot_KoloradoHouse = {
-    MulF(LVar0, Float(-0.5))
+    MulF(LVar0, -0.5)
     Call(RotateModel, MODEL_o151, LVar0, 1, 0, 0)
     Call(RotateModel, MODEL_o152, LVar0, 1, 0, 0)
     Call(RotateModel, MODEL_o153, LVar0, 1, 0, 0)
@@ -115,11 +115,11 @@ EvtScript EVS_SetDoorRot_KoloradoOffice = {
 EvtScript EVS_SetWallRot_KoloradoOffice = {
     Set(LVar1, LVar0)
     Sub(LVar1, 90)
-    MulF(LVar0, Float(1.0))
+    MulF(LVar0, 1.0)
     Call(RotateModel, MODEL_o156, LVar0, 0, 0, 1)
     Call(RotateModel, MODEL_o154, LVar0, 0, 0, 1)
     Call(RotateModel, MODEL_o155, LVar0, 0, 0, 1)
-    MulF(LVar1, Float(0.5))
+    MulF(LVar1, 0.5)
     Call(RotateModel, MODEL_o151, LVar1, 1, 0, 0)
     Call(RotateModel, MODEL_o152, LVar1, 1, 0, 0)
     Call(RotateModel, MODEL_o153, LVar1, 1, 0, 0)
@@ -145,7 +145,7 @@ EvtScript EVS_SetWallsRot_KooperHouse = {
     Set(LVar1, LVar0)
     Sub(LVar1, 90)
     DivF(LVar1, -90)
-    MulF(LVar2, Float(0.5))
+    MulF(LVar2, 0.5)
     Call(RotateModel, MODEL_o171, LVar2, 0, 0, 1)
     Call(RotateModel, MODEL_o181, LVar2, 0, 0, 1)
     Call(RotateModel, MODEL_o182, LVar2, 0, 0, 1)
@@ -190,7 +190,7 @@ EvtScript EVS_SetDoorRot_KootHouse = {
 };
 
 EvtScript EVS_SetWallRot_KootHouse = {
-    MulF(LVar0, Float(0.5))
+    MulF(LVar0, 0.5)
     Call(RotateModel, MODEL_o225, LVar0, -1, 0, 0)
     Call(RotateModel, MODEL_o224, LVar0, -1, 0, 0)
     Call(RotateModel, MODEL_o223, LVar0, -1, 0, 0)
@@ -292,19 +292,19 @@ EvtScript EVS_SetupRooms = {
         // kolorado house
         Call(CreateMapRoom,
             PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT),
-            Ref(EVS_SetDoorRot_KoloradoHouse),
-            Ref(EVS_SetWallRot_KoloradoHouse),
-            Ref(EVS_DropDoor_KoloradoHouse),
-            Ref(EVS_RoomListener_KoloradoHouse),
+            EVS_SetDoorRot_KoloradoHouse,
+            EVS_SetWallRot_KoloradoHouse,
+            EVS_DropDoor_KoloradoHouse,
+            EVS_RoomListener_KoloradoHouse,
             COLLIDER_o310,
             COLLIDER_o313,
             MODEL_sakuji,
-            Ref(InteriorNPCs_AfterKentC))
+            InteriorNPCs_AfterKentC)
         // kolorado office
         Call(CreateMapRoom,
             PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT),
-            Ref(EVS_SetDoorRot_KoloradoOffice),
-            Ref(EVS_SetWallRot_KoloradoOffice),
+            EVS_SetDoorRot_KoloradoOffice,
+            EVS_SetWallRot_KoloradoOffice,
             nullptr,
             nullptr,
             COLLIDER_o314,
@@ -316,19 +316,19 @@ EvtScript EVS_SetupRooms = {
             // kolorado house
             Call(CreateMapRoom,
                 PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT),
-                Ref(EVS_SetDoorRot_KoloradoHouse),
-                Ref(EVS_SetWallRot_KoloradoHouse),
-                Ref(EVS_DropDoor_KoloradoHouse),
-                Ref(EVS_RoomListener_KoloradoHouse),
+                EVS_SetDoorRot_KoloradoHouse,
+                EVS_SetWallRot_KoloradoHouse,
+                EVS_DropDoor_KoloradoHouse,
+                EVS_RoomListener_KoloradoHouse,
                 COLLIDER_o310,
                 COLLIDER_o313,
                 MODEL_sakuji,
-                Ref(InteriorNPCs_AfterKentC))
+                InteriorNPCs_AfterKentC)
             // kolorado office
             Call(CreateMapRoom,
                 PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT),
-                Ref(EVS_SetDoorRot_KoloradoOffice),
-                Ref(EVS_SetWallRot_KoloradoOffice),
+                EVS_SetDoorRot_KoloradoOffice,
+                EVS_SetWallRot_KoloradoOffice,
                 nullptr,
                 nullptr,
                 COLLIDER_o314,
@@ -339,19 +339,19 @@ EvtScript EVS_SetupRooms = {
             // kolorado house
             Call(CreateMapRoom,
                 PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT),
-                Ref(EVS_SetDoorRot_KoloradoHouse),
-                Ref(EVS_SetWallRot_KoloradoHouse),
-                Ref(EVS_DropDoor_KoloradoHouse),
-                Ref(EVS_RoomListener_KoloradoHouse),
+                EVS_SetDoorRot_KoloradoHouse,
+                EVS_SetWallRot_KoloradoHouse,
+                EVS_DropDoor_KoloradoHouse,
+                EVS_RoomListener_KoloradoHouse,
                 COLLIDER_o310,
                 COLLIDER_o313,
                 MODEL_sakuji,
-                Ref(InteriorNPCs_BeforeKentC))
+                InteriorNPCs_BeforeKentC)
             // kolorado office
             Call(CreateMapRoom,
                 PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT),
-                Ref(EVS_SetDoorRot_KoloradoOffice),
-                Ref(EVS_SetWallRot_KoloradoOffice),
+                EVS_SetDoorRot_KoloradoOffice,
+                EVS_SetWallRot_KoloradoOffice,
                 nullptr,
                 nullptr,
                 COLLIDER_o314,
@@ -364,60 +364,60 @@ EvtScript EVS_SetupRooms = {
         // kooper front door
         Call(CreateMapRoom,
             PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT | ROOM_FLAG_CUSTOM_ANIM_WALL_ROT),
-            Ref(EVS_SetDoorRot_KooperFrontDoor),
-            Ref(EVS_SetWallRot_KooperHouse),
+            EVS_SetDoorRot_KooperFrontDoor,
+            EVS_SetWallRot_KooperHouse,
             nullptr,
-            Ref(EVS_RoomListener_KooperHouse),
+            EVS_RoomListener_KooperHouse,
             COLLIDER_o284,
             COLLIDER_o287,
             MODEL_kameki,
-            Ref(InteriorNPCs_KooperHouse_BeforeJoin))
+            InteriorNPCs_KooperHouse_BeforeJoin)
         // kooper back door
         Call(CreateMapRoom,
             PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_LEFT_HINGE_OPENS_OUT | ROOM_FLAG_CUSTOM_ANIM_WALL_ROT),
-            Ref(EVS_SetDoorRot_KooperBackDoor),
-            Ref(EVS_SetWallRot_KooperHouse),
+            EVS_SetDoorRot_KooperBackDoor,
+            EVS_SetWallRot_KooperHouse,
             nullptr,
-            Ref(EVS_RoomListener_KooperHouse),
+            EVS_RoomListener_KooperHouse,
             COLLIDER_o302,
             COLLIDER_o299,
             MODEL_kameki,
-            Ref(InteriorNPCs_KooperHouse_BeforeJoin))
+            InteriorNPCs_KooperHouse_BeforeJoin)
     Else
         // kooper front door
         Call(CreateMapRoom,
             PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT | ROOM_FLAG_CUSTOM_ANIM_WALL_ROT),
-            Ref(EVS_SetDoorRot_KooperFrontDoor),
-            Ref(EVS_SetWallRot_KooperHouse),
+            EVS_SetDoorRot_KooperFrontDoor,
+            EVS_SetWallRot_KooperHouse,
             nullptr,
-            Ref(EVS_RoomListener_KooperHouse),
+            EVS_RoomListener_KooperHouse,
             COLLIDER_o284,
             COLLIDER_o287,
             MODEL_kameki,
-            Ref(InteriorNPCs_KooperHouse_AfterJoin))
+            InteriorNPCs_KooperHouse_AfterJoin)
         // kooper back door
         Call(CreateMapRoom,
             PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_LEFT_HINGE_OPENS_OUT | ROOM_FLAG_CUSTOM_ANIM_WALL_ROT),
-            Ref(EVS_SetDoorRot_KooperBackDoor),
-            Ref(EVS_SetWallRot_KooperHouse),
+            EVS_SetDoorRot_KooperBackDoor,
+            EVS_SetWallRot_KooperHouse,
             nullptr,
-            Ref(EVS_RoomListener_KooperHouse),
+            EVS_RoomListener_KooperHouse,
             COLLIDER_o302,
             COLLIDER_o299,
             MODEL_kameki,
-            Ref(InteriorNPCs_KooperHouse_AfterJoin))
+            InteriorNPCs_KooperHouse_AfterJoin)
     EndIf
     // koot house
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT),
-        Ref(EVS_SetDoorRot_KootHouse),
-        Ref(EVS_SetWallRot_KootHouse),
-        Ref(EVS_DropDoor_KootHouse),
-        Ref(EVS_RoomListener_KootHouse),
+        EVS_SetDoorRot_KootHouse,
+        EVS_SetWallRot_KootHouse,
+        EVS_DropDoor_KootHouse,
+        EVS_RoomListener_KootHouse,
         COLLIDER_o226,
         COLLIDER_o283,
         MODEL_mura,
-        Ref(InteriorNPCs_KootHouse))
+        InteriorNPCs_KootHouse)
     Set(LVar0, ROOM_UPDATE_EXIT_END)
     Exec(EVS_RoomListener_KoloradoHouse)
     Exec(EVS_RoomListener_KooperHouse)

@@ -82,7 +82,7 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_MT_LAVALAVA)
     Call(SetSpriteShading, SHADING_KZN_23)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Call(MakeNpcs, true, DefaultNPCs)
     Exec(EVS_SetupMusic)
     Exec(EVS_RaiseLava)
     Exec(EVS_StartTexPanners)

@@ -9,7 +9,7 @@ EvtScript EVS_ExitWalk_nok_13_1 = {
     Call(ClearAmbientSounds, 250)
     Call(UseExitHeading, 60, nok_01_ENTRY_0)
     Exec(ExitWalk)
-    Call(GotoMap, Ref("nok_13"), nok_13_ENTRY_1)
+    Call(GotoMap, "nok_13", nok_13_ENTRY_1)
     Wait(100)
     Return
     End
@@ -21,15 +21,15 @@ EvtScript EVS_ExitWalk_nok_02_0 = {
     Call(ClearAmbientSounds, 250)
     Call(UseExitHeading, 60, nok_01_ENTRY_1)
     Exec(ExitWalk)
-    Call(GotoMap, Ref("nok_02"), nok_02_ENTRY_0)
+    Call(GotoMap, "nok_02", nok_02_ENTRY_0)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_nok_13_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deilisw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_nok_02_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitWalk_nok_13_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deilisw, 1, 0)
+    BindTrigger(EVS_ExitWalk_nok_02_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     Return
     End
 };
@@ -53,7 +53,7 @@ EvtScript EVS_EnterMap = {
         EndIf
     EndIf
     IfEq(LFlag0, false)
-        Set(LVar0, Ref(EVS_BindExitTriggers))
+        Set(LVar0, EVS_BindExitTriggers)
         Exec(EnterWalk)
     EndIf
     Return
@@ -103,9 +103,9 @@ EvtScript EVS_Main = {
         Set(GF_NOK01_RecoveredTreeShell, true)
     EndIf
     IfLt(GB_StoryProgress, STORY_CH1_KOOPER_JOINED_PARTY)
-        Call(MakeNpcs, false, Ref(CrisisNPCs))
+        Call(MakeNpcs, false, CrisisNPCs)
     Else
-        Call(MakeNpcs, false, Ref(NormalNPCs))
+        Call(MakeNpcs, false, NormalNPCs)
     EndIf
     Call(ClearDefeatedEnemies)
     Exec(EVS_SetupShop)

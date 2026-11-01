@@ -25,7 +25,7 @@ EvtScript EVS_OnBlast_Wall = {
 
 EvtScript EVS_SetupBombableWall = {
     IfEq(GF_OBK06_BombedWall, false)
-        BindTrigger(Ref(EVS_OnBlast_Wall), TRIGGER_POINT_BOMB, Ref(BombPos_Wall), 1, 0)
+        BindTrigger(EVS_OnBlast_Wall, TRIGGER_POINT_BOMB, BombPos_Wall, 1, 0)
         Call(EnableModel, MODEL_bomu_ato, false)
     Else
         Call(EnableModel, MODEL_bom_mae, false)

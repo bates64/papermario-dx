@@ -20,23 +20,23 @@ EvtScript EVS_NpcIdle_Blooper = {
     EndThread
     Call(UseSettingsFrom, CAM_DEFAULT, -25, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, -25, LVar1, LVar2)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(1.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 1.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Wait(20)
     Thread
         Wait(10)
         Call(SetPanTarget, CAM_DEFAULT, 140, LVar1, LVar2)
-        Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+        Call(WaitForCam, CAM_DEFAULT, 1.0)
     EndThread
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_BLOOPER_MOVE, SOUND_SPACE_DEFAULT)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_LARGE_ACTOR_JUMP, SOUND_SPACE_DEFAULT)
     Call(SetNpcPos, NPC_SELF, -100, -300, -120)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Blooper_LeanLeft)
-    Call(SetNpcJumpscale, NPC_SELF, Float(1.0))
+    Call(SetNpcJumpscale, NPC_SELF, 1.0)
     Call(NpcJump0, NPC_SELF, 175, 0, 0, 40)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Blooper_Jump)
-    Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(1.0))
+    Call(ShakeCam, CAM_DEFAULT, 0, 5, 1.0)
     Wait(15)
     Call(StartBossBattle, SONG_SPECIAL_BATTLE)
     Return
@@ -48,7 +48,7 @@ EvtScript EVS_NpcDefeat_Blooper = {
     Thread
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-        Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+        Call(WaitForCam, CAM_DEFAULT, 1.0)
     EndThread
     Thread
         Call(SetNpcAnimation, NPC_SELF, ANIM_Blooper_Hurt)
@@ -65,7 +65,7 @@ EvtScript EVS_NpcDefeat_Blooper = {
     EndThread
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_BLOOPER_FALL, SOUND_SPACE_DEFAULT)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_LARGE_ACTOR_JUMP, SOUND_SPACE_DEFAULT)
-    Call(SetNpcJumpscale, NPC_SELF, Float(1.0))
+    Call(SetNpcJumpscale, NPC_SELF, 1.0)
     Call(NpcJump0, NPC_SELF, -100, -300, -120, 40)
     Wait(1)
     IfEq(GF_TIK_DefeatedOneBlooper, false)
@@ -84,17 +84,17 @@ EvtScript EVS_NpcDefeat_Blooper = {
 
 EvtScript EVS_NpcInit_Blooper = {
     IfEq(GF_TIK02_Defeated_Blooper, false)
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Blooper))
-        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Blooper))
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Blooper)
+        Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_Blooper)
         IfEq(GF_TIK_DefeatedOneBlooper, false)
-            Call(SetNpcScale, NPC_SELF, Float(0.75), Float(0.75), Float(0.75))
+            Call(SetNpcScale, NPC_SELF, 0.75, 0.75, 0.75)
             Call(GetBlooperBattleID, 0)
         Else
             IfEq(GF_TIK_DefeatedTwoBloopers, false)
-                Call(SetNpcScale, NPC_SELF, Float(1.25), Float(1.25), Float(1.25))
+                Call(SetNpcScale, NPC_SELF, 1.25, 1.25, 1.25)
                 Call(GetBlooperBattleID, 1)
             Else
-                Call(SetNpcScale, NPC_SELF, Float(2.0), Float(2.0), Float(2.0))
+                Call(SetNpcScale, NPC_SELF, 2.0, 2.0, 2.0)
                 Call(GetBlooperBattleID, 2)
             EndIf
         EndIf

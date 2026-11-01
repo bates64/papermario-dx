@@ -23,10 +23,10 @@
 // expects SUPER_BLOCK_GAMEFLAG and SUPER_BLOCK_MAPVAR to be valid
 // expected args are: x, y, z, angle
 #define EVT_MAKE_SUPER_BLOCK(args...) \
-    Call(MakeEntity, Ref(Entity_SuperBlock), args, MAKE_ENTITY_END)\
+    Call(MakeEntity, Entity_SuperBlock, args, MAKE_ENTITY_END)\
     Set(SUPER_BLOCK_MAPVAR, LVar0)\
     Call(AssignBlockFlag, SUPER_BLOCK_GAMEFLAG)\
-    Call(AssignScript, Ref(SuperBlock_OnHit))
+    Call(AssignScript, SuperBlock_OnHit)
 
 // ----------------------------------------------------------------
 // Implementation

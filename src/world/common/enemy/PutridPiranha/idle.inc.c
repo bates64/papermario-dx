@@ -22,7 +22,7 @@ EvtScript EVS_NpcAI_PutridPiranha = {
     Call(SetSelfVar, AI_VAR_PIRANHA_BEGIN_ATTACK_TIME, 18)
     Call(SetSelfVar, AI_VAR_PIRANHA_END_ATTACK_TIME, 30)
     Call(SetSelfVar, AI_VAR_PIRANHA_COOLDOWN_TIME, 15)
-    Call(PiranhaPlantAI_Main, Ref(AISettings_PutridPiranha))
+    Call(PiranhaPlantAI_Main, AISettings_PutridPiranha)
     Return
     End
 };

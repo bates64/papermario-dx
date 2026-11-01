@@ -87,7 +87,7 @@ EvtScript EVS_SetDoorRot_Storeroom = {
 
 EvtScript EVS_SetWallRot_Storeroom = {
     Set(LVar1, LVar0)
-    MulF(LVar1, Float(2.781))
+    MulF(LVar1, 2.781)
     Call(TranslateModel, MODEL_skk1, 0, 0, LVar1)
     Call(TranslateModel, MODEL_skk2, 0, 0, LVar1)
     Call(TranslateModel, MODEL_skk3, 0, 0, LVar1)
@@ -185,10 +185,10 @@ s32 InsideNPCs_Warehouse[] = {
 EvtScript EVS_MakeHiddenRoom = {
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
-        Ref(EVS_SetDoorRot_HiddenRoom),
-        Ref(EVS_SetWallRot_HiddenRoom),
+        EVS_SetDoorRot_HiddenRoom,
+        EVS_SetWallRot_HiddenRoom,
         nullptr,
-        Ref(EVS_RoomListener_HiddenRoom),
+        EVS_RoomListener_HiddenRoom,
         COLLIDER_deilit_hk,
         COLLIDER_deilit_hku,
         MODEL_o13,
@@ -200,10 +200,10 @@ EvtScript EVS_MakeHiddenRoom = {
 EvtScript EVS_MakeStoreroom = {
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_2, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
-        Ref(EVS_SetDoorRot_Storeroom),
-        Ref(EVS_SetWallRot_Storeroom),
-        Ref(EVS_DropDoor_Storeroom),
-        Ref(EVS_RoomListener_Storeroom),
+        EVS_SetDoorRot_Storeroom,
+        EVS_SetWallRot_Storeroom,
+        EVS_DropDoor_Storeroom,
+        EVS_RoomListener_Storeroom,
         COLLIDER_deilit_sku,
         COLLIDER_deilit_sk,
         MODEL_o13,
@@ -216,36 +216,36 @@ EvtScript EVS_SetupRooms = {
     // harry's shop on the right
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_1, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
-        Ref(EVS_SetDoorRot_Shop),
-        Ref(EVS_SetWallRot_Shop),
+        EVS_SetDoorRot_Shop,
+        EVS_SetWallRot_Shop,
         nullptr,
-        Ref(EVS_RoomListener_Shop),
+        EVS_RoomListener_Shop,
         COLLIDER_deilit_m,
         COLLIDER_deilit_mu,
         MODEL_mise,
-        Ref(InsideNPCs_Shop))
+        InsideNPCs_Shop)
     // nice house in the middle
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
-        Ref(EVS_SetDoorRot_NiceHouse),
-        Ref(EVS_SetWallRot_NiceHouse),
-        Ref(EVS_DropDoor_NiceHouse),
-        Ref(EVS_RoomListener_NiceHouse),
+        EVS_SetDoorRot_NiceHouse,
+        EVS_SetWallRot_NiceHouse,
+        EVS_DropDoor_NiceHouse,
+        EVS_RoomListener_NiceHouse,
         COLLIDER_deilit_r,
         COLLIDER_deilit_ru,
         MODEL_rinjin,
-        Ref(InsideNPCs_NiceHouse))
+        InsideNPCs_NiceHouse)
     // warehouse on the left
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
-        Ref(EVS_SetDoorRot_Warehouse),
-        Ref(EVS_SetWallRot_Warehouse),
+        EVS_SetDoorRot_Warehouse,
+        EVS_SetWallRot_Warehouse,
         nullptr,
-        Ref(EVS_RoomListener_Warehouse),
+        EVS_RoomListener_Warehouse,
         COLLIDER_deilit_h,
         COLLIDER_deilit_hu,
         MODEL_heiho_house,
-        Ref(InsideNPCs_Warehouse))
+        InsideNPCs_Warehouse)
     IfGe(GB_StoryProgress, STORY_CH4_RETURNED_STOREROOM_KEY)
         ExecWait(EVS_MakeStoreroom)
     EndIf

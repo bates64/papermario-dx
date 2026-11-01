@@ -8,23 +8,23 @@ EvtScript EVS_SetDoorRot_RussHouse = {
 
 EvtScript EVS_SetWallRot_RussHouse = {
     Set(LVar1, LVar0)
-    MulF(LVar1, Float(-2.0))
+    MulF(LVar1, -2.0)
     Call(RotateModel, MODEL_o201, LVar1, 0, 1, 0)
     Call(RotateModel, MODEL_o467, LVar1, 0, 1, 0)
     Call(RotateModel, MODEL_o466, LVar1, 0, 1, 0)
     Set(LVar1, LVar0)
-    MulF(LVar1, Float(-1.11))
+    MulF(LVar1, -1.11)
     Call(RotateModel, MODEL_o194, LVar1, 0, 1, 0)
     Call(RotateModel, MODEL_o463, LVar1, 0, 1, 0)
     Call(RotateModel, MODEL_o469, LVar1, 0, 1, 0)
     Call(RotateModel, MODEL_o335, LVar1, 0, 1, 0)
     Set(LVar1, LVar0)
-    MulF(LVar1, Float(-0.328125))
+    MulF(LVar1, -0.328125)
     Call(RotateModel, MODEL_o198, LVar1, 0, 1, 0)
     Call(RotateModel, MODEL_o460, LVar1, 0, 1, 0)
     Call(RotateModel, MODEL_o461, LVar1, 0, 1, 0)
     Set(LVar1, LVar0)
-    MulF(LVar1, Float(2.218))
+    MulF(LVar1, 2.218)
     Call(RotateModel, MODEL_o213, LVar1, 0, 1, 0)
     Call(RotateModel, MODEL_o215, LVar1, 0, 1, 0)
     Return
@@ -94,7 +94,7 @@ EvtScript EVS_SetDoorRot_Dojo = {
 
 EvtScript EVS_SetWallRot_Dojo = {
     Set(LVar1, LVar0)
-    MulF(LVar1, Float(2.0))
+    MulF(LVar1, 2.0)
     Call(RotateModel, MODEL_o159, LVar1, 0, 1, 0)
     Call(RotateModel, MODEL_o169, LVar1, 0, 1, 0)
     Call(RotateModel, MODEL_o164, LVar1, 0, 1, 0)
@@ -135,7 +135,7 @@ EvtScript EVS_SetWallRot_Waterfront = {
     Call(RotateModel, MODEL_o453, LVar1, 1, 0, 0)
     Call(RotateModel, MODEL_o454, LVar1, 1, 0, 0)
     Set(LVar1, LVar0)
-    MulF(LVar1, Float(-0.671875))
+    MulF(LVar1, -0.671875)
     Call(RotateModel, MODEL_o242, LVar1, 1, 0, 0)
     Call(RotateModel, MODEL_o239, LVar1, 1, 0, 0)
     Call(RotateModel, MODEL_o243, LVar1, 1, 0, 0)
@@ -192,44 +192,44 @@ EvtScript EVS_SetupRooms = {
     // RussT's house
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT),
-        Ref(EVS_SetDoorRot_RussHouse),
-        Ref(EVS_SetWallRot_RussHouse),
-        Ref(EVS_DropDoor_RussHouse),
-        Ref(EVS_RoomListener_RussHouse),
+        EVS_SetDoorRot_RussHouse,
+        EVS_SetWallRot_RussHouse,
+        EVS_DropDoor_RussHouse,
+        EVS_RoomListener_RussHouse,
         COLLIDER_deilit3,
         COLLIDER_deilit3u,
         MODEL_intel_house,
-        Ref(InteriorNPCs_RussHouse))
+        InteriorNPCs_RussHouse)
     // harry's shop
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_1, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
-        Ref(EVS_SetDoorRot_Shop),
-        Ref(EVS_SetWallRot_Shop),
+        EVS_SetDoorRot_Shop,
+        EVS_SetWallRot_Shop,
         nullptr,
-        Ref(EVS_RoomListener_Shop),
-        COLLIDER_deilit5, COLLIDER_deilit5u, MODEL_omise, Ref(InteriorNPCs_Shop))
+        EVS_RoomListener_Shop,
+        COLLIDER_deilit5, COLLIDER_deilit5u, MODEL_omise, InteriorNPCs_Shop)
     // the dojo
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
-        Ref(EVS_SetDoorRot_Dojo),
-        Ref(EVS_SetWallRot_Dojo),
-        Ref(EVS_DropDoor_Dojo),
-        Ref(EVS_RoomListener_Dojo),
+        EVS_SetDoorRot_Dojo,
+        EVS_SetWallRot_Dojo,
+        EVS_DropDoor_Dojo,
+        EVS_RoomListener_Dojo,
         COLLIDER_deilit6,
         COLLIDER_deilit6u,
         MODEL_minka_1,
-        Ref(InteriorNPCs_Dojo))
+        InteriorNPCs_Dojo)
     // the waterfront house
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
-        Ref(EVS_SetDoorRot_Waterfront),
-        Ref(EVS_SetWallRot_Waterfront),
+        EVS_SetDoorRot_Waterfront,
+        EVS_SetWallRot_Waterfront,
         nullptr,
-        Ref(EVS_RoomListener_Waterfront),
+        EVS_RoomListener_Waterfront,
         COLLIDER_deilit4,
         COLLIDER_deilit4u,
         MODEL_minka2,
-        Ref(InteriorNPCs_WaterfrontHouse))
+        InteriorNPCs_WaterfrontHouse)
     // initial visibility
     Set(LVar0, VIS_GROUP_3)
     Exec(EVS_RoomListener_RussHouse)

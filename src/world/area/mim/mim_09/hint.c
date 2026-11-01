@@ -63,7 +63,7 @@ EvtScript EVS_InspectBush = {
         Call(MakeLerp, 10, 100, 30, EASING_LINEAR)
         Label(0)
         Call(UpdateLerp)
-        MulF(LVar0, Float(0.01))
+        MulF(LVar0, 0.01)
         Call(ScaleModel, MODEL_o464, LVar0, LVar0, LVar0)
         Call(ScaleModel, MODEL_o465, LVar0, LVar0, LVar0)
         Call(ScaleModel, MODEL_o466, LVar0, LVar0, LVar0)
@@ -89,7 +89,7 @@ EvtScript EVS_SetupExitHint = {
     Call(SetTexPanner, MODEL_o465, TEX_PANNER_0)
     Call(SetTexPanner, MODEL_o467, TEX_PANNER_0)
     Call(SetTexPanner, MODEL_o469, TEX_PANNER_0)
-    BindTrigger(Ref(EVS_InspectBush), TRIGGER_WALL_PRESS_A, COLLIDER_atari_kusa, 1, 0)
+    BindTrigger(EVS_InspectBush, TRIGGER_WALL_PRESS_A, COLLIDER_atari_kusa, 1, 0)
     Return
     End
 };

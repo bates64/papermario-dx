@@ -5,9 +5,9 @@ EvtScript EVS_ExitWalk_kpa_1X_Upper = {
     Call(UseExitHeading, 60, kpa_12_ENTRY_0)
     Exec(ExitWalk)
     IfEq(GF_KPA16_ShutOffLava, false)
-        Call(GotoMap, Ref("kpa_11"), kpa_11_ENTRY_1)
+        Call(GotoMap, "kpa_11", kpa_11_ENTRY_1)
     Else
-        Call(GotoMap, Ref("kpa_10"), kpa_10_ENTRY_1)
+        Call(GotoMap, "kpa_10", kpa_10_ENTRY_1)
     EndIf
     Wait(100)
     Return
@@ -19,9 +19,9 @@ EvtScript EVS_ExitWalk_kpa_1X_Lower = {
     Call(UseExitHeading, 60, kpa_12_ENTRY_2)
     Exec(ExitWalk)
     IfEq(GF_KPA16_ShutOffLava, false)
-        Call(GotoMap, Ref("kpa_11"), kpa_11_ENTRY_4)
+        Call(GotoMap, "kpa_11", kpa_11_ENTRY_4)
     Else
-        Call(GotoMap, Ref("kpa_10"), kpa_10_ENTRY_4)
+        Call(GotoMap, "kpa_10", kpa_10_ENTRY_4)
     EndIf
     Wait(100)
     Return
@@ -31,9 +31,9 @@ EvtScript EVS_ExitWalk_kpa_1X_Lower = {
 EvtScript EVS_ExitWalk_kpa_13_0 = EVT_EXIT_WALK(60, kpa_12_ENTRY_1, "kpa_13", kpa_13_ENTRY_0);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_kpa_1X_Upper), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_kpa_1X_Lower), TRIGGER_FLOOR_ABOVE, COLLIDER_deilisw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_kpa_13_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitWalk_kpa_1X_Upper, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitWalk_kpa_1X_Lower, TRIGGER_FLOOR_ABOVE, COLLIDER_deilisw, 1, 0)
+    BindTrigger(EVS_ExitWalk_kpa_13_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     Return
     End
 };
@@ -82,7 +82,7 @@ EvtScript EVS_Main = {
     IfEq(GF_KPA16_ShutOffLava, false)
         Exec(EVS_SetupPlatforms)
     EndIf
-    Set(LVar0, Ref(EVS_BindExitTriggers))
+    Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     IfEq(GF_KPA16_ShutOffLava, false)
         Thread
@@ -102,7 +102,7 @@ EvtScript EVS_Main = {
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o420, SURFACE_TYPE_LAVA)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_deilisw, SURFACE_TYPE_LAVA)
             Thread
-                Call(ResetFromLava, Ref(SafeFloorColliders))
+                Call(ResetFromLava, SafeFloorColliders)
             EndThread
         EndThread
     EndIf

@@ -21,7 +21,7 @@ MobileAISettings AISettings_ParaTroopa_Wander = {
 EvtScript EVS_NpcAI_ParaTroopa_Wander = {
     Call(SetSelfVar, AI_VAR_FLYING_FLAGS, 0)
     Call(SetSelfVar, AI_VAR_FLYING_BOB_AMPLITUDE, AI_PACK_FLT(6.0f))
-    Call(ParatroopaAI_Main, Ref(AISettings_ParaTroopa_Wander))
+    Call(ParatroopaAI_Main, AISettings_ParaTroopa_Wander)
     Return
     End
 };

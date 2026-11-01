@@ -36,7 +36,7 @@ EvtScript EVS_NpcInteract_Oaklie = {
 };
 
 EvtScript EVS_NpcInit_Oaklie = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Oaklie))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Oaklie)
     Return
     End
 };

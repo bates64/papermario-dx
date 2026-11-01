@@ -9,7 +9,7 @@ GuardAISettings AISettings_Kammy_Guard = {
 };
 
 EvtScript EVS_NpcAI_Kammy_Guard = {
-    Call(GuardAI_Main, Ref(AISettings_Kammy_Guard))
+    Call(GuardAI_Main, AISettings_Kammy_Guard)
     Return
     End
 };

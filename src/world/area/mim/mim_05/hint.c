@@ -119,10 +119,10 @@ EvtScript EVS_SetupExitHint = {
     Set(ArrayVar(2), 0)
     Set(ArrayVar(4), 0)
     Set(ArrayVar(5), 0)
-    BindTrigger(Ref(EVS_InspectMushrooms_South), TRIGGER_WALL_PRESS_A, COLLIDER_o402, 1, 0)
-    BindTrigger(Ref(EVS_InspectMushrooms_North), TRIGGER_WALL_PRESS_A, COLLIDER_o403, 1, 0)
-    BindTrigger(Ref(EVS_InspectMushrooms_West),  TRIGGER_WALL_PRESS_A, COLLIDER_o405, 1, 0)
-    BindTrigger(Ref(EVS_InspectMushrooms_East),  TRIGGER_WALL_PRESS_A, COLLIDER_o404, 1, 0)
+    BindTrigger(EVS_InspectMushrooms_South, TRIGGER_WALL_PRESS_A, COLLIDER_o402, 1, 0)
+    BindTrigger(EVS_InspectMushrooms_North, TRIGGER_WALL_PRESS_A, COLLIDER_o403, 1, 0)
+    BindTrigger(EVS_InspectMushrooms_West,  TRIGGER_WALL_PRESS_A, COLLIDER_o405, 1, 0)
+    BindTrigger(EVS_InspectMushrooms_East,  TRIGGER_WALL_PRESS_A, COLLIDER_o404, 1, 0)
     Return
     End
 };

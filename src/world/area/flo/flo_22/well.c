@@ -65,7 +65,7 @@ EvtScript EVS_OnInteract_Well = {
                 Call(SetNpcFlagBits, NPC_Dummy, NPC_FLAG_INVISIBLE, true)
                 Call(SetNpcFlagBits, NPC_Dummy, NPC_FLAG_HAS_SHADOW, false)
                 Call(SetNpcPos, NPC_Dummy, 35, 0, 0)
-                Call(SetNpcJumpscale, NPC_Dummy, Float(1.0))
+                Call(SetNpcJumpscale, NPC_Dummy, 1.0)
                 Thread
                     Call(NpcJump0, NPC_Dummy, -53, 0, 0, 25)
                     Call(NpcJump0, NPC_Dummy, -73, 0, 0, 15)
@@ -88,7 +88,7 @@ EvtScript EVS_OnInteract_Well = {
             Call(ShowMessageAtWorldPos, MSG_CH6_00DC, 35, 35, 0)
             Call(RandInt, 1, LVar1)
             IfEq(LVar1, 0)
-                Call(SetNpcJumpscale, NPC_Bzzap, Float(0.0))
+                Call(SetNpcJumpscale, NPC_Bzzap, 0.0)
                 Call(NpcFacePlayer, NPC_Bzzap, 0)
                 Wait(1)
                 Call(SetNpcPos, NPC_Bzzap, 30, 0, 0)
@@ -105,7 +105,7 @@ EvtScript EVS_OnInteract_Well = {
                 Call(SetNpcAnimation, NPC_Dayzee, ANIM_Dayzee_Skip1)
                 Call(GetPlayerPos, LVar0, LVar1, LVar2)
                 Add(LVar1, 20)
-                Call(SetNpcJumpscale, NPC_Dayzee, Float(2.0))
+                Call(SetNpcJumpscale, NPC_Dayzee, 2.0)
                 Call(NpcJump0, NPC_Dayzee, LVar0, LVar1, LVar2, 20)
                 Set(MV_Dayzee_State, 1)
             EndIf
@@ -116,7 +116,7 @@ EvtScript EVS_OnInteract_Well = {
 };
 
 EvtScript EVS_SetupWell = {
-    BindPadlock(Ref(EVS_OnInteract_Well), TRIGGER_WALL_PRESS_A, COLLIDER_o5, Ref(BerryList), 0, 1)
+    BindPadlock(EVS_OnInteract_Well, TRIGGER_WALL_PRESS_A, COLLIDER_o5, BerryList, 0, 1)
     IfEq(GF_FLO22_ThrewBlueBerryDownWell, true)
         Call(MakeItemEntity, ITEM_FLOWER_SAVER_B, -83, 0, 0, ITEM_SPAWN_MODE_KEY, GF_FLO22_Item_FlowerSaverB)
     EndIf

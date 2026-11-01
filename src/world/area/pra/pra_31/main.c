@@ -12,11 +12,11 @@ EvtScript EVS_ExitDoors_pra_34_1 = {
     Call(DisablePlayerInput, true)
     Set(LVar0, pra_31_ENTRY_0)
     Set(LVar1, COLLIDER_deilittsw)
-    Set(LVar2, Ref(NearLeftDoorModelsL))
-    Set(LVar3, Ref(NearLeftDoorModelsR))
+    Set(LVar2, NearLeftDoorModelsL)
+    Set(LVar3, NearLeftDoorModelsR)
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, Ref("pra_34"), pra_34_ENTRY_1)
+    Call(GotoMap, "pra_34", pra_34_ENTRY_1)
     Wait(100)
     Return
     End
@@ -27,11 +27,11 @@ EvtScript EVS_ExitDoors_pra_40_0 = {
     Call(DisablePlayerInput, true)
     Set(LVar0, pra_31_ENTRY_1)
     Set(LVar1, COLLIDER_deilitte)
-    Set(LVar2, Ref(RightDoorModelsL))
-    Set(LVar3, Ref(RightDoorModelsR))
+    Set(LVar2, RightDoorModelsL)
+    Set(LVar3, RightDoorModelsR)
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, Ref("pra_40"), pra_40_ENTRY_0)
+    Call(GotoMap, "pra_40", pra_40_ENTRY_0)
     Wait(100)
     Return
     End
@@ -42,20 +42,20 @@ EvtScript EVS_ExitDoors_pra_34_2 = {
     Call(DisablePlayerInput, true)
     Set(LVar0, pra_31_ENTRY_2)
     Set(LVar1, COLLIDER_deilittnw)
-    Set(LVar2, Ref(FarLeftDoorModelsL))
-    Set(LVar3, Ref(FarLeftDoorModelsR))
+    Set(LVar2, FarLeftDoorModelsL)
+    Set(LVar3, FarLeftDoorModelsR)
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, Ref("pra_34"), pra_34_ENTRY_2)
+    Call(GotoMap, "pra_34", pra_34_ENTRY_2)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitDoors_pra_34_1), TRIGGER_WALL_PRESS_A, COLLIDER_deilittsw, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoors_pra_40_0), TRIGGER_WALL_PRESS_A, COLLIDER_deilitte, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoors_pra_34_2), TRIGGER_WALL_PRESS_A, COLLIDER_deilittnw, 1, 0)
+    BindTrigger(EVS_ExitDoors_pra_34_1, TRIGGER_WALL_PRESS_A, COLLIDER_deilittsw, 1, 0)
+    BindTrigger(EVS_ExitDoors_pra_40_0, TRIGGER_WALL_PRESS_A, COLLIDER_deilitte, 1, 0)
+    BindTrigger(EVS_ExitDoors_pra_34_2, TRIGGER_WALL_PRESS_A, COLLIDER_deilittnw, 1, 0)
     Return
     End
 };
@@ -64,14 +64,14 @@ EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(pra_31_ENTRY_0)
-            Set(LVar2, Ref(NearLeftDoorModelsL))
-            Set(LVar3, Ref(NearLeftDoorModelsR))
+            Set(LVar2, NearLeftDoorModelsL)
+            Set(LVar3, NearLeftDoorModelsR)
         CaseEq(pra_31_ENTRY_1)
-            Set(LVar2, Ref(RightDoorModelsL))
-            Set(LVar3, Ref(RightDoorModelsR))
+            Set(LVar2, RightDoorModelsL)
+            Set(LVar3, RightDoorModelsR)
         CaseEq(pra_31_ENTRY_2)
-            Set(LVar2, Ref(FarLeftDoorModelsL))
-            Set(LVar3, Ref(FarLeftDoorModelsR))
+            Set(LVar2, FarLeftDoorModelsL)
+            Set(LVar3, FarLeftDoorModelsR)
     EndSwitch
     ExecWait(BaseEnterDoor)
     Exec(EVS_BindExitTriggers)
@@ -83,7 +83,7 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_CRYSTAL_PALACE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(24, 24, 40)
-    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Call(MakeNpcs, true, DefaultNPCs)
     ExecWait(EVS_SetupPuzzle)
     Exec(EVS_SetupMusic)
     Exec(EVS_EnterMap)

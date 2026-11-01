@@ -38,7 +38,7 @@ EvtScript EVS_Scene_KoloradoFallsDown = {
     Call(DisablePlayerInput, true)
     Call(SetNpcFlagBits, NPC_Kolorado, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
-    Call(AdjustCam, CAM_DEFAULT, Float(3.0), 0, 400, Float(15.0), Float(-7.0))
+    Call(AdjustCam, CAM_DEFAULT, 3.0, 0, 400, 15.0, -7.0)
     Call(SetSelfVar, 1, 1)
     Thread
         Wait(10 * DT)
@@ -56,7 +56,7 @@ EvtScript EVS_Scene_KoloradoFallsDown = {
         Call(DisablePartnerAI, false)
         Wait(30 * DT)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
-        Call(SetNpcSpeed, NPC_PARTNER, Float(2.0))
+        Call(SetNpcSpeed, NPC_PARTNER, 2.0)
         Add(LVar0, 20)
         Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
         Call(NpcMoveTo, NPC_PARTNER, LVar0, LVar2, 0)
@@ -66,7 +66,7 @@ EvtScript EVS_Scene_KoloradoFallsDown = {
     Call(SetNpcPos, NPC_SELF, -500, 870, -15)
     Wait(1)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Panic)
-    Call(SetNpcSpeed, NPC_SELF, Float(4.0 / DT))
+    Call(SetNpcSpeed, NPC_SELF, 4.0 / DT)
     Call(NpcMoveTo, NPC_SELF, -425, -15, 0)
     Call(InterpNpcYaw, NPC_SELF, 270, 3)
     Wait(5)
@@ -77,7 +77,7 @@ EvtScript EVS_Scene_KoloradoFallsDown = {
     Wait(25 * DT)
     Call(SetSelfVar, 0, 2)
     Thread
-        Call(SetNpcJumpscale, NPC_SELF, Float(2.5))
+        Call(SetNpcJumpscale, NPC_SELF, 2.5)
         Label(1)
         Call(PlaySoundAtNpc, NPC_SELF, SOUND_NPC_JUMP, SOUND_SPACE_DEFAULT)
         Call(NpcJump0, NPC_SELF, -410, 870, -15, 10 * DT)
@@ -99,11 +99,11 @@ EvtScript EVS_Scene_KoloradoFallsDown = {
         EndIf
     Call(UseSettingsFrom, CAM_DEFAULT, -310, 870, -15)
     Call(SetPanTarget, CAM_DEFAULT, -310, 870, -15)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(2.0 / DT))
+    Call(SetCamSpeed, CAM_DEFAULT, 2.0 / DT)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(SetNpcSpeed, NPC_SELF, Float(4.0 / DT))
+    Call(SetNpcSpeed, NPC_SELF, 4.0 / DT)
     Call(NpcMoveTo, NPC_SELF, -390, -15, 0)
-    Call(SetNpcJumpscale, NPC_SELF, Float(1.5))
+    Call(SetNpcJumpscale, NPC_SELF, 1.5)
     Set(LVar3, -350)
     Set(LVar4, 870)
     Set(LVar5, -15)
@@ -137,18 +137,18 @@ EvtScript EVS_Scene_KoloradoFallsDown = {
     EndLoop
     Loop(20)
         Call(SetNpcPos, NPC_SELF, LVar3, LVar4, LVar5)
-        SubF(LVar3, Float(0.6))
-        AddF(LVar4, Float(1.5))
+        SubF(LVar3, 0.6)
+        AddF(LVar4, 1.5)
         Wait(1)
     EndLoop
     Loop(10)
         Call(SetNpcPos, NPC_SELF, LVar3, LVar4, LVar5)
-        SubF(LVar3, Float(1.0))
+        SubF(LVar3, 1.0)
         Sub(LVar4, 2)
         Wait(1)
     EndLoop
     Call(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Fallen)
-    Call(SetNpcJumpscale, NPC_SELF, Float(3.0))
+    Call(SetNpcJumpscale, NPC_SELF, 3.0)
     Call(NpcJump0, NPC_SELF, LVar3, 700, LVar5, 5)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_PLAYER_LONG_FALL, SOUND_SPACE_DEFAULT)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, true)
@@ -161,7 +161,7 @@ EvtScript EVS_Scene_KoloradoFallsDown = {
         Call(SetPlayerAnimation, ANIM_Mario1_VacantStare)
         Wait(10 * DT)
         Call(SetPlayerAnimation, ANIM_Mario1_Run)
-        Call(SetPlayerSpeed, Float(4.0 / DT))
+        Call(SetPlayerSpeed, 4.0 / DT)
         Call(PlayerMoveTo, -360, 0, 0)
         Call(SetPlayerAnimation, ANIM_Mario1_SpinFall)
         Label(5)
@@ -174,10 +174,10 @@ EvtScript EVS_Scene_KoloradoFallsDown = {
     EndThread
     Call(ShowMessageAtScreenPos, MSG_CH5_00F5, 160, 40)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_TRIP, SOUND_SPACE_DEFAULT)
-    Call(ShakeCam, CAM_DEFAULT, 0, 10, Float(7.0))
+    Call(ShakeCam, CAM_DEFAULT, 0, 10, 7.0)
     Wait(10 * DT)
     Call(SetSelfVar, 0, 0)
-    Call(ResetCam, CAM_DEFAULT, Float(2.0 / DT))
+    Call(ResetCam, CAM_DEFAULT, 2.0 / DT)
     Set(GB_StoryProgress, STORY_CH5_KOLORADO_FELL_IN_PIT)
     Call(DisablePlayerInput, false)
     Return
@@ -186,7 +186,7 @@ EvtScript EVS_Scene_KoloradoFallsDown = {
 
 EvtScript EVS_Kolorado_Interact = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Fallen, ANIM_Kolorado_Fallen, 0, MSG_CH5_00F6)
-    Set(LVar0, Ref(LetterDelivery_Kolorado))
+    Set(LVar0, LetterDelivery_Kolorado)
     ExecWait(EVS_TryLetterDelivery)
     Return
     End
@@ -195,13 +195,13 @@ EvtScript EVS_Kolorado_Interact = {
 EvtScript EVS_Kolorado_Init = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_KOLORADO_FELL_IN_PIT)
-            Call(BindNpcIdle, NPC_SELF, Ref(EVS_Scene_KoloradoFallsDown))
-            Call(BindNpcInteract, NPC_SELF, Ref(EVS_Kolorado_Interact))
+            Call(BindNpcIdle, NPC_SELF, EVS_Scene_KoloradoFallsDown)
+            Call(BindNpcInteract, NPC_SELF, EVS_Kolorado_Interact)
             Return
         CaseLt(STORY_CH5_KOLORADO_AT_DEAD_END)
             Call(SetNpcPos, NPC_SELF, -270, 375, -15)
             Call(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Fallen)
-            Call(BindNpcInteract, NPC_SELF, Ref(EVS_Kolorado_Interact))
+            Call(BindNpcInteract, NPC_SELF, EVS_Kolorado_Interact)
             Return
     EndSwitch
     Call(RemoveNpc, NPC_SELF)
@@ -221,7 +221,7 @@ EvtScript EVS_SyncZiplineDummyNPC = {
 
 EvtScript EVS_Dummy_Init = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, true)
-    Call(SetNpcScale, NPC_SELF, Float(0.3), 1, Float(0.3))
+    Call(SetNpcScale, NPC_SELF, 0.3, 1, 0.3)
     Return
     End
 };

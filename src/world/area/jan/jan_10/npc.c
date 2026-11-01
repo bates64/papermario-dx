@@ -20,7 +20,7 @@ EvtScript EVS_NpcIdle_JungleFuzzy = {
     Wait(20)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, false)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLYING, true)
-    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_JungleFuzzy_Wander))
+    Call(BindNpcAI, NPC_SELF, EVS_NpcAI_JungleFuzzy_Wander)
     Return
     End
 };
@@ -30,7 +30,7 @@ EvtScript EVS_NpcInit_JungleFuzzy = {
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, false)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLYING, true)
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_JungleFuzzy))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_JungleFuzzy)
     Return
     End
 };
@@ -49,7 +49,7 @@ EvtScript EVS_YoshiKid_CryForHelp = {
 };
 
 EvtScript EVS_NpcInteract_YoshiKid = {
-    Call(AdjustCam, CAM_DEFAULT, Float(4.0), 0, 350, Float(17.0), Float(-7.0))
+    Call(AdjustCam, CAM_DEFAULT, 4.0, 0, 350, 17.0, -7.0)
     Set(AF_JAN_SavedCurrentYoshiKid, true)
     Wait(15)
     Call(GetCurrentPartnerID, LVar0)
@@ -62,7 +62,7 @@ EvtScript EVS_NpcInteract_YoshiKid = {
     Thread
         Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
         Call(SetNpcAnimation, NPC_SELF, ANIM_YoshiKid_Blue_Run)
-        Call(SetNpcSpeed, NPC_SELF, Float(5.0))
+        Call(SetNpcSpeed, NPC_SELF, 5.0)
         Call(NpcMoveTo, NPC_SELF, -240, 10, 0)
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndThread
@@ -83,7 +83,7 @@ EvtScript EVS_NpcInteract_YoshiKid = {
     Else
         Wait(30)
     EndIf
-    Call(ResetCam, CAM_DEFAULT, Float(4.0))
+    Call(ResetCam, CAM_DEFAULT, 4.0)
     Call(RemoveNpc, NPC_SELF)
     Return
     End
@@ -96,7 +96,7 @@ EvtScript EVS_NpcInit_YoshiKid = {
             Call(SetNpcAnimation, NPC_SELF, ANIM_YoshiKid_Blue_Cry)
             Call(SetNpcYaw, NPC_SELF, 90)
             Call(SetNpcPos, NPC_SELF, -450, 0, 70)
-            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_YoshiKid))
+            Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_YoshiKid)
             Return
         EndIf
     EndIf

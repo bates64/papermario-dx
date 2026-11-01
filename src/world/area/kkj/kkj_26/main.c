@@ -6,7 +6,7 @@ EvtScript EVS_GotoMap_hos_00_1 = {
     Set(LVar0, GB_KKJ_LastPartner)
     Call(RestoreFromPeachState)
     Call(PlaySound, SOUND_SLIDE_WHISTLE_OUT)
-    Call(GotoMapSpecial, Ref("hos_00"), hos_00_ENTRY_1, TRANSITION_END_PEACH_INTERLUDE)
+    Call(GotoMapSpecial, "hos_00", hos_00_ENTRY_1, TRANSITION_END_PEACH_INTERLUDE)
     Wait(100)
     Return
     End
@@ -23,14 +23,14 @@ EvtScript EVS_ExitDoors_kkj_14_1 = {
     Set(LVar5, MODEL_o84)
     Exec(ExitSplitDoubleDoor)
     Wait(17)
-    Call(GotoMap, Ref("kkj_14"), kkj_14_ENTRY_1)
+    Call(GotoMap, "kkj_14", kkj_14_ENTRY_1)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitDoors_kkj_14_1), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
+    BindTrigger(EVS_ExitDoors_kkj_14_1, TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
     Return
     End
 };

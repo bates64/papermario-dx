@@ -12,7 +12,7 @@ EvtScript EVS_NpcInteract_Conductor = {
 };
 
 EvtScript EVS_NpcInit_Conductor = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Conductor))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Conductor)
     Return
     End
 };
@@ -46,7 +46,7 @@ EvtScript EVS_NpcInteract_TrainToad = {
 };
 
 EvtScript EVS_NpcInit_TrainToad = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_TrainToad))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_TrainToad)
     Return
     End
 };
@@ -59,7 +59,7 @@ EvtScript EVS_NpcAI_BoxedShyGuy = {
                 Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
                 IfEq(LVar1, 0)
                     Call(SetSelfVar, 0, 1)
-                    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_ShyGuy_Wander))
+                    Call(BindNpcAI, NPC_SELF, EVS_NpcAI_ShyGuy_Wander)
                 EndIf
             CaseEq(2)
                 Call(DisablePlayerInput, true)
@@ -81,7 +81,7 @@ EvtScript EVS_NpcDefeat_BoxedShyGuy = {
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
             Call(SetSelfVar, 0, 2)
-            Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_BoxedShyGuy))
+            Call(BindNpcAI, NPC_SELF, EVS_NpcAI_BoxedShyGuy)
             Call(DoNpcDefeat)
         CaseEq(OUTCOME_PLAYER_LOST)
         CaseEq(OUTCOME_PLAYER_FLED)
@@ -91,8 +91,8 @@ EvtScript EVS_NpcDefeat_BoxedShyGuy = {
 };
 
 EvtScript EVS_NpcInit_BoxedShyGuy = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcAI_BoxedShyGuy))
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_BoxedShyGuy))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcAI_BoxedShyGuy)
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_BoxedShyGuy)
     Return
     End
 };

@@ -53,45 +53,45 @@ void dx_unhashed_debug_printf(const char* fmt, ...);
 #define debug_print_always(text) dx_unhashed_debug_printf(text)
 #define debug_printf_always(fmt, args...) dx_unhashed_debug_printf(fmt,##args)
 
-#define DebugPrint(text) Call(_dxDebugIntPrintf, Ref(__FILE__), __LINE__, Ref(text), 0)
+#define DebugPrint(text) Call(_dxDebugIntPrintf, __FILE__, __LINE__, text, 0)
 #define DebugPrintf(args...) VFUNC(DebugPrintf, args)
 #define DebugFloatPrintf(args...) VFUNC(DebugFloatPrintf, args)
 
 API_CALLABLE(_dxDebugIntPrintf);
 #define DebugPrintf1(text) \
-    Call(_dxDebugIntPrintf, Ref(__FILE__), __LINE__, Ref(text), 0, 0, 0, 0, 0, 0, 0)
+    Call(_dxDebugIntPrintf, __FILE__, __LINE__, text, 0, 0, 0, 0, 0, 0, 0)
 #define DebugPrintf2(text, a) \
-    Call(_dxDebugIntPrintf, Ref(__FILE__), __LINE__, Ref(text), a, 0, 0, 0, 0, 0, 0)
+    Call(_dxDebugIntPrintf, __FILE__, __LINE__, text, a, 0, 0, 0, 0, 0, 0)
 #define DebugPrintf3(text, a, b) \
-    Call(_dxDebugIntPrintf, Ref(__FILE__), __LINE__, Ref(text), a, b, 0, 0, 0, 0, 0)
+    Call(_dxDebugIntPrintf, __FILE__, __LINE__, text, a, b, 0, 0, 0, 0, 0)
 #define DebugPrintf4(text, a, b, c) \
-    Call(_dxDebugIntPrintf, Ref(__FILE__), __LINE__, Ref(text), a, b, c, 0, 0, 0, 0)
+    Call(_dxDebugIntPrintf, __FILE__, __LINE__, text, a, b, c, 0, 0, 0, 0)
 #define DebugPrintf5(text, a, b, c, d) \
-    Call(_dxDebugIntPrintf, Ref(__FILE__), __LINE__, Ref(text), a, b, c, d, 0, 0, 0)
+    Call(_dxDebugIntPrintf, __FILE__, __LINE__, text, a, b, c, d, 0, 0, 0)
 #define DebugPrintf6(text, a, b, c, d, e) \
-    Call(_dxDebugIntPrintf, Ref(__FILE__), __LINE__, Ref(text), a, b, c, d, e, 0, 0)
+    Call(_dxDebugIntPrintf, __FILE__, __LINE__, text, a, b, c, d, e, 0, 0)
 #define DebugPrintf7(text, a, b, c, d, e, f) \
-    Call(_dxDebugIntPrintf, Ref(__FILE__), __LINE__, Ref(text), a, b, c, d, e, f, 0)
+    Call(_dxDebugIntPrintf, __FILE__, __LINE__, text, a, b, c, d, e, f, 0)
 #define DebugPrintf8(text, a, b, c, d, e, f, g) \
-    Call(_dxDebugIntPrintf, Ref(__FILE__), __LINE__, Ref(text), a, b, c, d, e, f, g)
+    Call(_dxDebugIntPrintf, __FILE__, __LINE__, text, a, b, c, d, e, f, g)
 
 API_CALLABLE(_dxDebugFloatPrintf);
 #define DebugFloatPrintf1(text) \
-    Call(_dxDebugFloatPrintf, Ref(__FILE__), __LINE__, Ref(text), 0, 0, 0, 0, 0, 0, 0)
+    Call(_dxDebugFloatPrintf, __FILE__, __LINE__, text, 0, 0, 0, 0, 0, 0, 0)
 #define DebugFloatPrintf2(text, a) \
-    Call(_dxDebugFloatPrintf, Ref(__FILE__), __LINE__, Ref(text), a, 0, 0, 0, 0, 0, 0)
+    Call(_dxDebugFloatPrintf, __FILE__, __LINE__, text, a, 0, 0, 0, 0, 0, 0)
 #define DebugFloatPrintf3(text, a, b) \
-    Call(_dxDebugFloatPrintf, Ref(__FILE__), __LINE__, Ref(text), a, b, 0, 0, 0, 0, 0)
+    Call(_dxDebugFloatPrintf, __FILE__, __LINE__, text, a, b, 0, 0, 0, 0, 0)
 #define DebugFloatPrintf4(text, a, b, c) \
-    Call(_dxDebugFloatPrintf, Ref(__FILE__), __LINE__, Ref(text), a, b, c, 0, 0, 0, 0)
+    Call(_dxDebugFloatPrintf, __FILE__, __LINE__, text, a, b, c, 0, 0, 0, 0)
 #define DebugFloatPrintf5(text, a, b, c, d) \
-    Call(_dxDebugFloatPrintf, Ref(__FILE__), __LINE__, Ref(text), a, b, c, d, 0, 0, 0)
+    Call(_dxDebugFloatPrintf, __FILE__, __LINE__, text, a, b, c, d, 0, 0, 0)
 #define DebugFloatPrintf6(text, a, b, c, d, e) \
-    Call(_dxDebugFloatPrintf, Ref(__FILE__), __LINE__, Ref(text), a, b, c, d, e, 0, 0)
+    Call(_dxDebugFloatPrintf, __FILE__, __LINE__, text, a, b, c, d, e, 0, 0)
 #define DebugFloatPrintf7(text, a, b, c, d, e, f) \
-    Call(_dxDebugFloatPrintf, Ref(__FILE__), __LINE__, Ref(text), a, b, c, d, e, f, 0)
+    Call(_dxDebugFloatPrintf, __FILE__, __LINE__, text, a, b, c, d, e, f, 0)
 #define DebugFloatPrintf8(text, a, b, c, d, e, f, g) \
-    Call(_dxDebugFloatPrintf, Ref(__FILE__), __LINE__, Ref(text), a, b, c, d, e, f, g)
+    Call(_dxDebugFloatPrintf, __FILE__, __LINE__, text, a, b, c, d, e, f, g)
 
 #ifdef _LANGUAGE_C_PLUS_PLUS
 } // extern "C"

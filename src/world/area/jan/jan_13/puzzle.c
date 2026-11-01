@@ -122,10 +122,10 @@ EvtScript EVS_ManageSmallGeyser = {
 
 EvtScript SetLargeGeyserScale = {
     Call(GetRatioFromPercent)
-    IfLt(LVar3, Float(1.0))
+    IfLt(LVar3, 1.0)
         SetF(LVar4, LVar3)
     Else
-        SetF(LVar4, Float(1.0))
+        SetF(LVar4, 1.0)
     EndIf
     Call(ScaleModel, LVarA, LVar4, LVar2, LVar3)
     Return
@@ -254,7 +254,7 @@ EvtScript EVS_ManageGeyserSounds = {
         Set(MF_GeyserSoundPlaying, true)
         Set(LVar0, MV_PuzzleProgress)
         Add(LVar0, 1)
-        UseBuf(Ref(GeyserSoundPositions))
+        UseBuf(GeyserSoundPositions)
         Loop(LVar0)
             BufRead3(LVar1, LVar2, LVar3)
         EndLoop
@@ -266,7 +266,7 @@ EvtScript EVS_ManageGeyserSounds = {
 
 EvtScript EVS_BoulderTremble = {
     Call(PlaySoundAtCollider, COLLIDER_o33, SOUND_JAN_BOULDER_TREMBLE, 0)
-    Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(1.5))
+    Call(ShakeCam, CAM_DEFAULT, 0, 5, 1.5)
     Return
     End
 };
@@ -345,9 +345,9 @@ EvtScript EVS_ManagePuzzle = {
             Wait(30)
             Loop(2)
                 Exec(EVS_BoulderTremble)
-                Call(RotateModel, MODEL_o33, 3, 0, Float(0.2), 1)
+                Call(RotateModel, MODEL_o33, 3, 0, 0.2, 1)
                 Wait(8)
-                Call(RotateModel, MODEL_o33, -3, 0, Float(0.2), 1)
+                Call(RotateModel, MODEL_o33, -3, 0, 0.2, 1)
                 Wait(8)
             EndLoop
             Thread
@@ -368,21 +368,21 @@ EvtScript EVS_ManagePuzzle = {
                 Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
                 Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
                 Call(SetCamDistance, CAM_DEFAULT, 400)
-                Call(SetCamSpeed, CAM_DEFAULT, Float(3.0))
+                Call(SetCamSpeed, CAM_DEFAULT, 3.0)
                 Call(PanToTarget, CAM_DEFAULT, 0, true)
             EndThread
             Loop(3)
                 Exec(EVS_BoulderTremble)
-                Call(RotateModel, MODEL_o33, 5, 0, Float(0.2), 1)
+                Call(RotateModel, MODEL_o33, 5, 0, 0.2, 1)
                 Wait(5)
-                Call(RotateModel, MODEL_o33, -5, 0, Float(0.2), 1)
+                Call(RotateModel, MODEL_o33, -5, 0, 0.2, 1)
                 Wait(5)
             EndLoop
             Loop(7)
                 Exec(EVS_BoulderTremble)
-                Call(RotateModel, MODEL_o33, 7, 0, Float(0.2), 1)
+                Call(RotateModel, MODEL_o33, 7, 0, 0.2, 1)
                 Wait(3)
-                Call(RotateModel, MODEL_o33, -7, 0, Float(0.2), 1)
+                Call(RotateModel, MODEL_o33, -7, 0, 0.2, 1)
                 Wait(3)
             EndLoop
             Loop(8)
@@ -396,21 +396,21 @@ EvtScript EVS_ManagePuzzle = {
                         PlayEffect(EFFECT_LANDING_DUST, 1, 78, 0, -77, 0)
                 EndSwitch
                 Exec(EVS_BoulderTremble)
-                Call(RotateModel, MODEL_o33, 10, 0, Float(0.2), 1)
+                Call(RotateModel, MODEL_o33, 10, 0, 0.2, 1)
                 Wait(3)
-                Call(RotateModel, MODEL_o33, -10, 0, Float(0.2), 1)
+                Call(RotateModel, MODEL_o33, -10, 0, 0.2, 1)
                 Wait(3)
             EndLoop
             Thread
-                Call(ShakeCam, CAM_DEFAULT, 0, 15, Float(0.4))
+                Call(ShakeCam, CAM_DEFAULT, 0, 15, 0.4)
             EndThread
             Call(PlaySoundAt, SOUND_LOOP_JAN_LARGE_GEYSER, SOUND_SPACE_DEFAULT, 37, 0, -138)
             Set(AB_JAN13_LargeGeyserState, LARGE_GEYSER_RISING)
             Thread
                 Loop(200)
-                    Call(RotateModel, MODEL_o33, 10, 0, Float(0.2), 1)
+                    Call(RotateModel, MODEL_o33, 10, 0, 0.2, 1)
                     Wait(3)
-                    Call(RotateModel, MODEL_o33, -10, 0, Float(0.2), 1)
+                    Call(RotateModel, MODEL_o33, -10, 0, 0.2, 1)
                     Wait(3)
                 EndLoop
             EndThread
@@ -439,14 +439,14 @@ EvtScript EVS_ManagePuzzle = {
                 Add(LVar2, 10)
                 Add(LVar2, -10)
                 Call(TranslateModel, MODEL_o33, -200, LVar0, -500)
-                Call(RotateModel, MODEL_o33, LVar2, -1, Float(0.1), Float(0.1))
+                Call(RotateModel, MODEL_o33, LVar2, -1, 0.1, 0.1)
                 Wait(1)
             EndLoop
             Call(EnableModel, MODEL_o33, false)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o33, COLLIDER_FLAGS_UPPER_MASK)
             Set(GF_JAN13_SolvedBlockPuzzle, true)
             Set(LFlag0, true)
-            Call(ResetCam, CAM_DEFAULT, Float(5.0))
+            Call(ResetCam, CAM_DEFAULT, 5.0)
             Call(DisablePlayerInput, false)
         Else
             Call(GetPushBlock, 0, 17, 0, LVar0)
@@ -619,7 +619,7 @@ EvtScript EVS_SetupPuzzle = {
     Call(SetModelCustomGfx, MODEL_o75, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
     Call(SetModelCustomGfx, MODEL_o76, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
     Call(SetModelCustomGfx, MODEL_o71, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_0, Ref(setup_gfx_geyser), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_0, setup_gfx_geyser, nullptr)
     Call(SetTexPanner, MODEL_o72, TEX_PANNER_1)
     Call(SetTexPanner, MODEL_o73, TEX_PANNER_1)
     Call(SetTexPanner, MODEL_o74, TEX_PANNER_1)

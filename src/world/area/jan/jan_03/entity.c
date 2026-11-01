@@ -3,7 +3,7 @@
 #include "sprite/player.h"
 
 EvtScript EVS_GotoMap_tik_08_4 = {
-    Call(GotoMap, Ref("tik_08"), tik_08_ENTRY_4)
+    Call(GotoMap, "tik_08", tik_08_ENTRY_4)
     Wait(100)
     Return
     End
@@ -37,12 +37,12 @@ EvtScript EVS_UseSpring = {
     Call(SetPlayerActionState, ACTION_STATE_LAUNCH)
     Wait(1)
     ExecGetTID(EVS_TetherCamToPlayer, LVarA)
-    Call(SetPlayerJumpscale, Float(0.1))
+    Call(SetPlayerJumpscale, 0.1)
     Call(PlayerJump, -556, 300, -195, 15)
     Call(DisablePlayerPhysics, false)
     Call(FacePlayerTowardPoint, -630, -50, 0)
     Call(SetPlayerAnimation, ANIM_Mario1_Fall)
-    Call(SetPlayerJumpscale, Float(1.0))
+    Call(SetPlayerJumpscale, 1.0)
     Call(PlayerJump2, -601, 376, -105, 30)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     KillThread(LVarA)
@@ -60,10 +60,10 @@ EvtScript EVS_MakeEntities = {
             EndIf
         EndIf
     EndIf
-    Call(MakeEntity, Ref(Entity_BlueWarpPipe), -540, 0, 195, 30, jan_03_ENTRY_3, Ref(EVS_GotoMap_tik_08_4), EVT_INDEX_OF_GAME_FLAG(GF_JAN03_WarpPipe), MAKE_ENTITY_END)
-    Call(MakeEntity, Ref(Entity_SavePoint), 100, 60, -25, 0, MAKE_ENTITY_END)
-    Call(MakeEntity, Ref(Entity_ScriptSpring), -556, 0, -195, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(EVS_UseSpring))
+    Call(MakeEntity, Entity_BlueWarpPipe, -540, 0, 195, 30, jan_03_ENTRY_3, EVS_GotoMap_tik_08_4, EVT_INDEX_OF_GAME_FLAG(GF_JAN03_WarpPipe), MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_SavePoint, 100, 60, -25, 0, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_ScriptSpring, -556, 0, -195, 0, MAKE_ENTITY_END)
+    Call(AssignScript, EVS_UseSpring)
     Return
     End
 };

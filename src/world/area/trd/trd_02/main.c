@@ -17,7 +17,7 @@ EvtScript EVS_ExitDoors_trd_03_2 =
 EvtScript EVS_ExitWalk_trd_03_4 = EVT_EXIT_WALK(40, trd_02_ENTRY_4, "trd_03", trd_03_ENTRY_4);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_trd_03_4), TRIGGER_FLOOR_ABOVE, COLLIDER_deilia, 1, 0)
+    BindTrigger(EVS_ExitWalk_trd_03_4, TRIGGER_FLOOR_ABOVE, COLLIDER_deilia, 1, 0)
     Return
     End
 };
@@ -48,7 +48,7 @@ EvtScript EVS_EnterMap = {
             ExecWait(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
         CaseEq(trd_02_ENTRY_4)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
     EndSwitch
     ResumeGroup(EVT_GROUP_FLAG_INTERACT)
@@ -65,10 +65,10 @@ EvtScript EVS_Scene_LowerStairs = {
     Call(SetGroupVisibility, MODEL_move_saku, MODEL_GROUP_HIDDEN)
     Call(PlaySound, SOUND_LOOP_TRD_02_LOWER_STAIRS)
     Thread
-        Call(ShakeCam, CAM_DEFAULT, 0, 10, Float(0.7))
-        Call(ShakeCam, CAM_DEFAULT, 0, 320, Float(1.0))
-        Call(ShakeCam, CAM_DEFAULT, 0, 10, Float(0.7))
-        Call(ShakeCam, CAM_DEFAULT, 0, 10, Float(0.4))
+        Call(ShakeCam, CAM_DEFAULT, 0, 10, 0.7)
+        Call(ShakeCam, CAM_DEFAULT, 0, 320, 1.0)
+        Call(ShakeCam, CAM_DEFAULT, 0, 10, 0.7)
+        Call(ShakeCam, CAM_DEFAULT, 0, 10, 0.4)
     EndThread
     Wait(20)
     Thread
@@ -152,19 +152,19 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_KOOPA_BROS_FORTRESS)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Call(MakeNpcs, true, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
-    BindTrigger(Ref(EVS_ExitDoors_trd_01_1), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoors_trd_03_0), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
+    BindTrigger(EVS_ExitDoors_trd_01_1, TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
+    BindTrigger(EVS_ExitDoors_trd_03_0, TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
     IfEq(GF_TRD02_UnlockedDoor, false)
-        BindPadlock(Ref(EVS_UnlockFortressDoor), TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), Ref(KeyList), 0, 1)
+        BindPadlock(EVS_UnlockFortressDoor, TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), KeyList, 0, 1)
     Else
-        BindTrigger(Ref(EVS_ExitDoors_trd_01_2), TRIGGER_WALL_PRESS_A, COLLIDER_ttw2, 1, 0)
+        BindTrigger(EVS_ExitDoors_trd_01_2, TRIGGER_WALL_PRESS_A, COLLIDER_ttw2, 1, 0)
     EndIf
-    BindTrigger(Ref(EVS_ExitDoors_trd_03_2), TRIGGER_WALL_PRESS_A, COLLIDER_tte2, 1, 0)
+    BindTrigger(EVS_ExitDoors_trd_03_2, TRIGGER_WALL_PRESS_A, COLLIDER_tte2, 1, 0)
     IfEq(GF_TRD02_BombedWall, false)
         Call(EnableModel, MODEL_anaaki, false)
-        BindTrigger(Ref(EVS_BlastBombableWall), TRIGGER_POINT_BOMB, Ref(BombPos_Wall), 1, 0)
+        BindTrigger(EVS_BlastBombableWall, TRIGGER_POINT_BOMB, BombPos_Wall, 1, 0)
     Else
         Call(SetGroupVisibility, MODEL_g14, MODEL_GROUP_HIDDEN)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_tta, COLLIDER_FLAGS_UPPER_MASK)
@@ -181,7 +181,7 @@ EvtScript EVS_Main = {
         Call(UpdateColliderTransform, COLLIDER_o55)
         Call(UpdateColliderTransform, COLLIDER_o54)
         Call(UpdateColliderTransform, COLLIDER_o65)
-        BindTrigger(Ref(EVS_Scene_LowerStairs), TRIGGER_AREA_FLAG_SET, AF_TRD02_LowerStairs, 1, 0)
+        BindTrigger(EVS_Scene_LowerStairs, TRIGGER_AREA_FLAG_SET, AF_TRD02_LowerStairs, 1, 0)
     Else
         Call(UpdateColliderTransform, COLLIDER_o55)
         Call(UpdateColliderTransform, COLLIDER_o54)

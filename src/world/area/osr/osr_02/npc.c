@@ -101,7 +101,7 @@ EvtScript EVS_Twink_FlyAway = {
     EndThread
     Thread
         Call(PlaySoundAtNpc, NPC_Twink, SOUND_TWINK_DEPART, SOUND_SPACE_DEFAULT)
-        Call(LoadPath, 120, Ref(FlightPath_TwinkDepart), ARRAY_COUNT(FlightPath_TwinkDepart), EASING_QUADRATIC_IN)
+        Call(LoadPath, 120, FlightPath_TwinkDepart, ARRAY_COUNT(FlightPath_TwinkDepart), EASING_QUADRATIC_IN)
         Loop(0)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_Twink, LVar1, LVar2, LVar3)
@@ -113,7 +113,7 @@ EvtScript EVS_Twink_FlyAway = {
         Call(SetNpcPos, NPC_Twink, LVar1, NPC_DISPOSE_POS_Y, LVar3)
     EndThread
     Thread
-        Call(AdjustCam, CAM_DEFAULT, Float(0.5), 0, 550, Float(17.0), Float(-10.0))
+        Call(AdjustCam, CAM_DEFAULT, 0.5, 0, 550, 17.0, -10.0)
     EndThread
     Return
     End
@@ -132,15 +132,15 @@ EvtScript EVS_Scene_ReturnStarRod = {
     Call(GetNpcPos, NPC_Eldstar, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-7.0))
-    Call(SetCamDistance, CAM_DEFAULT, Float(700.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamPitch, CAM_DEFAULT, 17.0, -7.0)
+    Call(SetCamDistance, CAM_DEFAULT, 700.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(1)
-    Call(SetCamDistance, CAM_DEFAULT, Float(350.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(2.0))
+    Call(SetCamDistance, CAM_DEFAULT, 350.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 2.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Wait(20)
     Call(SetPlayerAnimation, ANIM_MarioW1_TakeItem)
     Call(SetNpcPos, NPC_StarRod, 30, 25, 30)
@@ -149,7 +149,7 @@ EvtScript EVS_Scene_ReturnStarRod = {
     Call(GetNpcPos, NPC_Eldstar, LVar0, LVar1, LVar2)
     Set(LVar1, 80)
     Set(LVar2, 35)
-    Call(SetNpcJumpscale, NPC_StarRod, Float(0.5))
+    Call(SetNpcJumpscale, NPC_StarRod, 0.5)
     Call(NpcJump1, NPC_StarRod, LVar0, LVar1, LVar2, 20)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Call(PlaySound, SOUND_RECEIVE_STAR_POWER)
@@ -171,7 +171,7 @@ EvtScript EVS_Scene_ReturnStarRod = {
     Wait(10)
     Thread
         Wait(5)
-        Call(SetNpcJumpscale, NPC_Eldstar, Float(0.0))
+        Call(SetNpcJumpscale, NPC_Eldstar, 0.0)
         Call(NpcJump0, NPC_Eldstar, 120, 80, 0, 40)
         Call(InterpNpcYaw, NPC_Eldstar, 270, 0)
     EndThread
@@ -181,90 +181,90 @@ EvtScript EVS_Scene_ReturnStarRod = {
     Set(LVar2, 0)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(1.0))
-    Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-5.5))
+    Call(SetCamSpeed, CAM_DEFAULT, 1.0)
+    Call(SetCamDistance, CAM_DEFAULT, 300.0)
+    Call(SetCamPitch, CAM_DEFAULT, 17.0, -5.5)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Wait(10)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(1.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 1.0)
     Call(GetNpcPos, NPC_Mamar, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-5.5))
+    Call(SetCamDistance, CAM_DEFAULT, 300.0)
+    Call(SetCamPitch, CAM_DEFAULT, 17.0, -5.5)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(SpeakToPlayer, NPC_Mamar, ANIM_WorldMamar_TalkHappy, ANIM_WorldMamar_Idle, 0, MSG_Outro_0001)
     Call(GetNpcPos, NPC_Skolar, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-5.5))
+    Call(SetCamDistance, CAM_DEFAULT, 300.0)
+    Call(SetCamPitch, CAM_DEFAULT, 17.0, -5.5)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(SpeakToPlayer, NPC_Skolar, ANIM_WorldSkolar_TalkAngry, ANIM_WorldSkolar_Idle, 0, MSG_Outro_0002)
     Call(GetNpcPos, NPC_Muskular, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-5.5))
+    Call(SetCamDistance, CAM_DEFAULT, 300.0)
+    Call(SetCamPitch, CAM_DEFAULT, 17.0, -5.5)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(SpeakToPlayer, NPC_Muskular, ANIM_WorldMuskular_Talk, ANIM_WorldMuskular_Idle, 0, MSG_Outro_0003)
     Call(GetNpcPos, NPC_Misstar, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-5.5))
+    Call(SetCamDistance, CAM_DEFAULT, 300.0)
+    Call(SetCamPitch, CAM_DEFAULT, 17.0, -5.5)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(SpeakToPlayer, NPC_Misstar, ANIM_WorldMisstar_Talk, ANIM_WorldMisstar_Idle, 0, MSG_Outro_0004)
     Call(GetNpcPos, NPC_Klevar, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-5.5))
+    Call(SetCamDistance, CAM_DEFAULT, 300.0)
+    Call(SetCamPitch, CAM_DEFAULT, 17.0, -5.5)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(SpeakToPlayer, NPC_Klevar, ANIM_WorldKlevar_Talk, ANIM_WorldKlevar_Idle, 0, MSG_Outro_0005)
     Call(GetNpcPos, NPC_Kalmar, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-5.5))
+    Call(SetCamDistance, CAM_DEFAULT, 300.0)
+    Call(SetCamPitch, CAM_DEFAULT, 17.0, -5.5)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(SpeakToPlayer, NPC_Kalmar, ANIM_WorldKalmar_Talk, ANIM_WorldKalmar_Idle, 0, MSG_Outro_0006)
     Call(GetNpcPos, NPC_Eldstar, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-5.5))
+    Call(SetCamDistance, CAM_DEFAULT, 300.0)
+    Call(SetCamPitch, CAM_DEFAULT, 17.0, -5.5)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(SpeakToPlayer, NPC_Eldstar, ANIM_WorldEldstar_Wave, ANIM_WorldEldstar_Idle, 0, MSG_Outro_0007)
     Call(GetNpcPos, NPC_Twink, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-2.0))
-    Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
+    Call(SetCamPitch, CAM_DEFAULT, 17.0, -2.0)
+    Call(SetCamDistance, CAM_DEFAULT, 300.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Wait(5)
     Call(SpeakToPlayer, NPC_Twink, ANIM_Twink_Talk, ANIM_Twink_Idle, 5, MSG_Outro_0008)
     Call(GetNpcPos, NPC_Eldstar, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-6.0))
-    Call(SetCamDistance, CAM_DEFAULT, Float(275.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
+    Call(SetCamPitch, CAM_DEFAULT, 17.0, -6.0)
+    Call(SetCamDistance, CAM_DEFAULT, 275.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(SpeakToPlayer, NPC_Eldstar, ANIM_WorldEldstar_Wave, ANIM_WorldEldstar_Idle, 0, MSG_Outro_0009)
     Wait(20)
-    Call(AdjustCam, CAM_DEFAULT, Float(90.0), 70, 400, Float(17.0), Float(-11.0))
+    Call(AdjustCam, CAM_DEFAULT, 90.0, 70, 400, 17.0, -11.0)
     Call(SetPlayerAnimation, ANIM_Mario1_LookUp)
     Thread
         Set(LVar4, NPC_Eldstar)
@@ -308,7 +308,7 @@ EvtScript EVS_Scene_ReturnStarRod = {
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Wait(20)
     Call(SetMusic, 0, SONG_TWINK_THEME, BGM_VARIATION_1, VOL_LEVEL_FULL)
-    Call(LoadPath, 30, Ref(FlightPath_TwinkStepForward), ARRAY_COUNT(FlightPath_TwinkStepForward), EASING_LINEAR)
+    Call(LoadPath, 30, FlightPath_TwinkStepForward, ARRAY_COUNT(FlightPath_TwinkStepForward), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_Twink, LVar1, LVar2, LVar3)
@@ -323,11 +323,11 @@ EvtScript EVS_Scene_ReturnStarRod = {
     Call(GetNpcPos, NPC_Twink, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-4.0))
-    Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(2.0))
+    Call(SetCamPitch, CAM_DEFAULT, 17.0, -4.0)
+    Call(SetCamDistance, CAM_DEFAULT, 300.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 2.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(SpeakToPlayer, NPC_Twink, ANIM_Twink_Talk, ANIM_Twink_Idle, 0, MSG_Outro_000A)
     Wait(10)
     Call(SetNpcAnimation, NPC_Peach, ANIM_Peach2_RaiseArms)
@@ -355,7 +355,7 @@ EvtScript EVS_Scene_ReturnStarRod = {
     Call(InterpPlayerYaw, 90, 0)
     Call(SetPlayerAnimation, ANIM_Mario1_LookUp)
     Wait(20)
-    Call(GotoMap, Ref("hos_10"), hos_10_ENTRY_2)
+    Call(GotoMap, "hos_10", hos_10_ENTRY_2)
     Wait(100)
     Return
     End
@@ -408,7 +408,7 @@ EvtScript EVS_NpcAux_Eldstar = {
 EvtScript EVS_NpcInit_Eldstar = {
     Call(SetNpcPos, NPC_Eldstar, 60, 20, 30)
     Call(NpcFacePlayer, NPC_SELF, 0)
-    Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_Eldstar))
+    Call(BindNpcAux, NPC_SELF, EVS_NpcAux_Eldstar)
     Return
     End
 };
@@ -416,7 +416,7 @@ EvtScript EVS_NpcInit_Eldstar = {
 EvtScript EVS_NpcInit_Mamar = {
     Call(SetNpcPos, NPC_SELF, 66, 80, -27)
     Call(NpcFacePlayer, NPC_SELF, 0)
-    Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_Eldstar))
+    Call(BindNpcAux, NPC_SELF, EVS_NpcAux_Eldstar)
     Return
     End
 };
@@ -424,7 +424,7 @@ EvtScript EVS_NpcInit_Mamar = {
 EvtScript EVS_NpcInit_Skolar = {
     Call(SetNpcPos, NPC_SELF, 53, 80, -95)
     Call(NpcFacePlayer, NPC_SELF, 0)
-    Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_Eldstar))
+    Call(BindNpcAux, NPC_SELF, EVS_NpcAux_Eldstar)
     Return
     End
 };
@@ -432,7 +432,7 @@ EvtScript EVS_NpcInit_Skolar = {
 EvtScript EVS_NpcInit_Muskular = {
     Call(SetNpcPos, NPC_SELF, 91, 80, -132)
     Call(NpcFacePlayer, NPC_SELF, 0)
-    Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_Eldstar))
+    Call(BindNpcAux, NPC_SELF, EVS_NpcAux_Eldstar)
     Return
     End
 };
@@ -440,7 +440,7 @@ EvtScript EVS_NpcInit_Muskular = {
 EvtScript EVS_NpcInit_Misstar = {
     Call(SetNpcPos, NPC_SELF, 151, 80, -132)
     Call(NpcFacePlayer, NPC_SELF, 0)
-    Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_Eldstar))
+    Call(BindNpcAux, NPC_SELF, EVS_NpcAux_Eldstar)
     Return
     End
 };
@@ -448,7 +448,7 @@ EvtScript EVS_NpcInit_Misstar = {
 EvtScript EVS_NpcInit_Klevar = {
     Call(SetNpcPos, NPC_SELF, 189, 80, -95)
     Call(NpcFacePlayer, NPC_SELF, 0)
-    Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_Eldstar))
+    Call(BindNpcAux, NPC_SELF, EVS_NpcAux_Eldstar)
     Return
     End
 };
@@ -456,7 +456,7 @@ EvtScript EVS_NpcInit_Klevar = {
 EvtScript EVS_NpcInit_Kalmar = {
     Call(SetNpcPos, NPC_SELF, 176, 80, -27)
     Call(NpcFacePlayer, NPC_SELF, 0)
-    Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_Eldstar))
+    Call(BindNpcAux, NPC_SELF, EVS_NpcAux_Eldstar)
     Return
     End
 };

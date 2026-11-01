@@ -33,7 +33,7 @@ EvtScript EVS_ExitWalk_sam_01_0 = EVT_EXIT_WALK(60, sam_02_ENTRY_0, "sam_01", sa
 EvtScript EVS_ExitWalk_sam_11_0 = EVT_EXIT_WALK(60, sam_02_ENTRY_1, "sam_11", sam_11_ENTRY_0);
 
 EvtScript EVS_GotoMap_tik_17_1 = {
-    Call(GotoMap, Ref("tik_17"), tik_17_ENTRY_1)
+    Call(GotoMap, "tik_17", tik_17_ENTRY_1)
     Wait(100)
     Return
     End
@@ -42,13 +42,13 @@ EvtScript EVS_GotoMap_tik_17_1 = {
 EvtScript EVS_ExitPipe_tik_17_1 = EVT_EXIT_PIPE_VERTICAL(sam_02_ENTRY_2, COLLIDER_ttd, EVS_GotoMap_tik_17_1);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_sam_01_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_sam_11_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitWalk_sam_01_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitWalk_sam_11_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     IfLt(GB_StoryProgress, STORY_CH7_MAYOR_MURDER_MYSTERY)
-        BindTrigger(Ref(EVS_ExitPipe_tik_17_1), TRIGGER_FLOOR_TOUCH, COLLIDER_ttd, 1, 0)
+        BindTrigger(EVS_ExitPipe_tik_17_1, TRIGGER_FLOOR_TOUCH, COLLIDER_ttd, 1, 0)
     EndIf
     IfGe(GB_StoryProgress, STORY_CH7_MAYOR_MURDER_SOLVED)
-        BindTrigger(Ref(EVS_ExitPipe_tik_17_1), TRIGGER_FLOOR_TOUCH, COLLIDER_ttd, 1, 0)
+        BindTrigger(EVS_ExitPipe_tik_17_1, TRIGGER_FLOOR_TOUCH, COLLIDER_ttd, 1, 0)
     EndIf
     Return
     End
@@ -73,7 +73,7 @@ EvtScript EVS_EnterMap = {
         CaseEq(sam_02_ENTRY_3)
             Call(DisablePlayerInput, true)
             Call(DisablePlayerPhysics, true)
-            Call(SetPlayerJumpscale, Float(1.0))
+            Call(SetPlayerJumpscale, 1.0)
             Call(SetPlayerPos, 650, 0, 50)
             Wait(1)
             Thread
@@ -82,7 +82,7 @@ EvtScript EVS_EnterMap = {
                 Call(PlayerJump1, 450, 0, 50, 30)
                 Call(PlaySoundAtPlayer, SOUND_TRIP, SOUND_SPACE_DEFAULT)
                 Call(PlayerJump1, 440, 0, 50, 5)
-                Call(ShakeCam, CAM_DEFAULT, 0, 3, Float(1.0))
+                Call(ShakeCam, CAM_DEFAULT, 0, 3, 1.0)
                 Wait(30)
                 Call(SetPlayerAnimation, ANIM_Mario1_DustOff)
                 Wait(7)
@@ -97,7 +97,7 @@ EvtScript EVS_EnterMap = {
                 Call(DisablePlayerPhysics, false)
             EndThread
         CaseDefault
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
             Wait(1)
     EndSwitch
@@ -127,11 +127,11 @@ EvtScript EVS_Main = {
     Set(GF_MAP_ShiverCity, true)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_MAYOR_MURDER_MYSTERY)
-            Call(MakeNpcs, false, Ref(DefaultNPCs))
+            Call(MakeNpcs, false, DefaultNPCs)
         CaseLt(STORY_CH7_MAYOR_MURDER_SOLVED)
-            Call(MakeNpcs, false, Ref(MysteryNPCs))
+            Call(MakeNpcs, false, MysteryNPCs)
         CaseGe(STORY_CH7_MAYOR_MURDER_SOLVED)
-            Call(MakeNpcs, false, Ref(DefaultNPCs))
+            Call(MakeNpcs, false, DefaultNPCs)
     EndSwitch
     ExecWait(EVS_MakeEntities)
     ExecWait(EVS_SetupMusic)
@@ -139,12 +139,12 @@ EvtScript EVS_Main = {
     Exec(EVS_TexPan_Fire)
     ExecWait(EVS_SetupRooms)
     ExecWait(EVS_SetupShop)
-    Set(LVar0, Ref(ShakeTree_Tree1))
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_WALL_HAMMER, COLLIDER_ki, 1, 0)
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(BombPos_Tree1), 1, 0)
-    Set(LVar0, Ref(ShakeTree_Tree2))
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_WALL_HAMMER, COLLIDER_o505, 1, 0)
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(BombPos_Tree2), 1, 0)
+    Set(LVar0, ShakeTree_Tree1)
+    BindTrigger(EVS_ShakeTree, TRIGGER_WALL_HAMMER, COLLIDER_ki, 1, 0)
+    BindTrigger(EVS_ShakeTree, TRIGGER_POINT_BOMB, BombPos_Tree1, 1, 0)
+    Set(LVar0, ShakeTree_Tree2)
+    BindTrigger(EVS_ShakeTree, TRIGGER_WALL_HAMMER, COLLIDER_o505, 1, 0)
+    BindTrigger(EVS_ShakeTree, TRIGGER_POINT_BOMB, BombPos_Tree2, 1, 0)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_kabe, SURFACE_TYPE_SNOW)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_tumori, SURFACE_TYPE_SNOW)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o506, SURFACE_TYPE_SNOW)

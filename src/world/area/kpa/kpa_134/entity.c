@@ -54,28 +54,28 @@ EvtScript EVS_UnlockPrompt_Door = {
     Wait(5)
     Call(CloseChoicePopup)
     Unbind
-    BindTrigger(Ref(EVS_ExitDoors_kpa_130_0), TRIGGER_WALL_PRESS_A, COLLIDER_nno, 1, 0)
+    BindTrigger(EVS_ExitDoors_kpa_130_0, TRIGGER_WALL_PRESS_A, COLLIDER_nno, 1, 0)
     Return
     End
 };
 
 EvtScript EVS_MakeEntities = {
     IfEq(GF_KPA134_UnlockedDoor, false)
-        Call(MakeEntity, Ref(Entity_Padlock), 743, 10, 115, 270, MAKE_ENTITY_END)
+        Call(MakeEntity, Entity_Padlock, 743, 10, 115, 270, MAKE_ENTITY_END)
         Set(MV_EntityID_Padlock, LVar0)
-        BindPadlock(Ref(EVS_UnlockPrompt_Door), TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), Ref(KeyList_BowsersCastle), 0, 1)
+        BindPadlock(EVS_UnlockPrompt_Door, TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), KeyList_BowsersCastle, 0, 1)
     Else
-        BindTrigger(Ref(EVS_ExitDoors_kpa_130_0), TRIGGER_WALL_PRESS_A, COLLIDER_nno, 1, 0)
+        BindTrigger(EVS_ExitDoors_kpa_130_0, TRIGGER_WALL_PRESS_A, COLLIDER_nno, 1, 0)
     EndIf
     IfEq(GF_KPA134_BlueSwitch, false)
-        Call(MakeEntity, Ref(Entity_BlueSwitch), -224, 355, -25, 0, MAKE_ENTITY_END)
+        Call(MakeEntity, Entity_BlueSwitch, -224, 355, -25, 0, MAKE_ENTITY_END)
         Call(AssignSwitchFlag, EVT_INDEX_OF_AREA_FLAG(AF_KPA134_HitWaterSwitch))
         Set(MV_SwitchEntityID, LVar0)
     EndIf
-    Call(MakeEntity, Ref(Entity_BrickBlock), -224, 330, -25, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(EVS_BreakBlock_Brick))
-    Call(MakeEntity, Ref(Entity_SimpleSpring), 475, 0, -20, 90, 60, MAKE_ENTITY_END)
-    Call(MakeEntity, Ref(Entity_HiddenYellowBlock), 195, 300, -75, 0, ITEM_MAPLE_SYRUP, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_BrickBlock, -224, 330, -25, 0, MAKE_ENTITY_END)
+    Call(AssignScript, EVS_BreakBlock_Brick)
+    Call(MakeEntity, Entity_SimpleSpring, 475, 0, -20, 90, 60, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_HiddenYellowBlock, 195, 300, -75, 0, ITEM_MAPLE_SYRUP, MAKE_ENTITY_END)
     Call(AssignBlockFlag, GF_KPA134_HiddenItem_MapleSyrup)
     Return
     End

@@ -63,7 +63,7 @@ EvtScript EVS_Main = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_yougan, SURFACE_TYPE_LAVA)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_yougan1, SURFACE_TYPE_LAVA)
     Thread
-        Call(ResetFromLava, Ref(SafeFloorColliders))
+        Call(ResetFromLava, SafeFloorColliders)
     EndThread
     Exec(EVS_StartTexPanners)
     Exec(EVS_SetupLavaPuzzle)

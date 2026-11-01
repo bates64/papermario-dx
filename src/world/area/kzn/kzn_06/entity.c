@@ -9,15 +9,15 @@ EvtScript EVS_OnBreakBlock = {
 };
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Ref(Entity_HiddenYellowBlock), 325, 205, -30, 0, ITEM_LIFE_SHROOM, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_HiddenYellowBlock, 325, 205, -30, 0, ITEM_LIFE_SHROOM, MAKE_ENTITY_END)
     Call(AssignBlockFlag, GF_KZN06_HiddenItem_LifeShroom)
     IfEq(GF_KZN06_Hammer3Block, false)
-        Call(MakeEntity, Ref(Entity_Hammer3BlockWideZ), 385, 5, 180, 0, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(EVS_OnBreakBlock))
+        Call(MakeEntity, Entity_Hammer3BlockWideZ, 385, 5, 180, 0, MAKE_ENTITY_END)
+        Call(AssignScript, EVS_OnBreakBlock)
     EndIf
     IfLt(GB_StoryProgress, STORY_CH5_LAVA_STREAM_BLOCKED)
         Call(CreatePushBlockGrid, 0, 12, 1, -330, 145, -90, 0)
-        Call(SetPushBlockFallEffect, 0, Ref(PushBlockFallCallback_Gravity))
+        Call(SetPushBlockFallEffect, 0, PushBlockFallCallback_Gravity)
         Call(SetPushBlock, 0, 4, 0, PUSH_GRID_BLOCK)
         Call(SetPushBlock, 0, 6, 0, PUSH_GRID_BLOCK)
         Call(SetPushBlock, 0, 8, 0, PUSH_GRID_BLOCK)

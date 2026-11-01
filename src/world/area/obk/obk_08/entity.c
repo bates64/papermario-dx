@@ -168,7 +168,7 @@ EvtScript EVS_MakeEntities = {
         Call(EnableItemTransparency)
         Set(MV_KeepAwayItem, LVar0)
     EndIf
-    Call(MakeEntity, Ref(Entity_HiddenPanel), 0, 0, 0, 0, MODEL_yuka_jyu, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_HiddenPanel, 0, 0, 0, 0, MODEL_yuka_jyu, MAKE_ENTITY_END)
     Call(AssignPanelFlag, GF_OBK08_HiddenPanel)
     Return
     End

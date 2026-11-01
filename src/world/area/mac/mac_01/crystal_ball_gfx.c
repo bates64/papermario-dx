@@ -130,10 +130,10 @@ void gfx_build_inside_crystal_ball(void) {
 
 EvtScript EVS_SetupCrystalBallGfx = {
     Wait(1)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_2, Ref(gfx_build_crystal_ball_pre), Ref(gfx_build_crystal_ball_post))
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_2, gfx_build_crystal_ball_pre, gfx_build_crystal_ball_post)
     Call(SetModelCustomGfx, MODEL_mirrorball, CUSTOM_GFX_2, -1)
     Call(EnableModel, MODEL_mirrorball, false)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_3, Ref(gfx_build_inside_crystal_ball), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_3, gfx_build_inside_crystal_ball, nullptr)
     Call(SetModelCustomGfx, MODEL_tama, CUSTOM_GFX_3, -1)
     Call(SetModelFlags, MODEL_tama, MODEL_FLAG_BILLBOARD, true)
     Call(SetModelFlags, MODEL_ohosi, MODEL_FLAG_BILLBOARD, true)

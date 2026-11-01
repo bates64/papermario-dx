@@ -43,7 +43,7 @@ EvtScript EVS_NpcInteract_HarryT = {
 };
 
 EvtScript EVS_NpcInit_HarryT = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_HarryT))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_HarryT)
     IfGe(GB_StoryProgress, STORY_CH3_STAR_SPIRIT_DEPARTED)
         IfLt(GB_StoryProgress, STORY_CH4_RETURNED_STOREROOM_KEY)
             Call(SetNpcAnimation, NPC_HarryT, ANIM_HarryT_Idle)

@@ -39,7 +39,7 @@ EvtScript EVS_Cam_FocusOnStairs = {
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Sub(LVar1, 15)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(3.0 / DT))
+    Call(SetCamSpeed, CAM_DEFAULT, 3.0 / DT)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Return
     End
@@ -49,9 +49,9 @@ EvtScript EVS_Cam_ResetFocus = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Return
     End
@@ -63,7 +63,7 @@ EvtScript EVS_Cam_ResetFocus = {
     Set(LVar1, y) \
     Set(LVar2, z) \
     ExecWait(EVS_Cam_FocusOnStairs) \
-    Call(ShakeCam, CAM_DEFAULT, 0, 30, Float(3.0)) \
+    Call(ShakeCam, CAM_DEFAULT, 0, 30, 3.0) \
     Set(LVar0, x) \
     Set(LVar1, y) \
     Set(LVar2, z) \

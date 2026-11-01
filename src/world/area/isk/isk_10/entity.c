@@ -26,18 +26,18 @@ EvtScript EVS_UseSpring = {
     Call(SetPlayerActionState, ACTION_STATE_JUMP)
     Wait(1)
     IfEq(MV_LastFloorLevel, 0)
-        Call(SetPlayerJumpscale, Float(1.4))
+        Call(SetPlayerJumpscale, 1.4)
         Call(PlayerJump, -577, -780, -75, 15)
     Else
-        Call(SetCamSpeed, CAM_DEFAULT, Float(2.8))
+        Call(SetCamSpeed, CAM_DEFAULT, 2.8)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
         Call(SetCamPosC, CAM_DEFAULT, 0, -520)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
-        Call(SetPlayerJumpscale, Float(1.4))
+        Call(SetPlayerJumpscale, 1.4)
         Call(PlayerJump, -561, -520, 23, 30)
         Call(PanToTarget, CAM_DEFAULT, 0, false)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(2.8))
+        Call(SetCamSpeed, CAM_DEFAULT, 2.8)
     EndIf
     Call(SetPlayerActionState, ACTION_STATE_IDLE)
     Call(DisablePlayerPhysics, false)
@@ -51,10 +51,10 @@ EvtScript EVS_MakeEntities = {
     Thread
         Call(MonitorPlayerLastFloor)
     EndThread
-    Call(MakeEntity, Ref(Entity_ScriptSpring), -516, -780, -71, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(EVS_UseSpring))
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, -510, -453, 43, Float(0.3), LVar0)
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, -510, -713, 43, Float(0.3), LVar0)
+    Call(MakeEntity, Entity_ScriptSpring, -516, -780, -71, 0, MAKE_ENTITY_END)
+    Call(AssignScript, EVS_UseSpring)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, -510, -453, 43, 0.3, LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, -510, -713, 43, 0.3, LVar0)
     Return
     End
 };

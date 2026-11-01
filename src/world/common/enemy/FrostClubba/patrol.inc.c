@@ -21,7 +21,7 @@ EvtScript EVS_NpcAI_FrostClubba_Patrol = {
     Call(SetSelfVar, AI_VAR_MELEE_PRE_TIME, 3)
     Call(SetSelfVar, AI_VAR_MELEE_SWING_TIME, 7)
     Call(SetSelfVar, AI_VAR_MELEE_POST_TIME, 6)
-    Call(ClubbaPatrolAI_Main, Ref(AISettings_FrostClubba_Patrol))
+    Call(ClubbaPatrolAI_Main, AISettings_FrostClubba_Patrol)
     Return
     End
 };

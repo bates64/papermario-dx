@@ -38,7 +38,7 @@ EvtScript EVS_UnlockDoor = {
 EvtScript EVS_SetupLock = {
     IfEq(GF_ISK02_UnlockedDoor, false)
         Call(MakeTransformGroup, MODEL_g304)
-        BindPadlock(Ref(EVS_UnlockDoor), TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), Ref(KeyList), 0, 1)
+        BindPadlock(EVS_UnlockDoor, TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), KeyList, 0, 1)
     Else
         Call(EnableGroup, MODEL_g304, false)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilittne, COLLIDER_FLAGS_SURFACE_TYPE_MASK | COLLIDER_FLAG_SAFE_FLOOR | COLLIDER_FLAG_IGNORE_SHELL | COLLIDER_FLAG_IGNORE_PLAYER | COLLIDER_FLAG_DOCK_WALL | 0x7FF47E00)

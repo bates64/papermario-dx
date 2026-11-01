@@ -11,7 +11,7 @@ EvtScript EVS_SpawnStarCard = {
     IfEq(LVar0, 0)
         Call(DisablePlayerInput, true)
         Call(UseSettingsFrom, CAM_DEFAULT, 145, 65, 0)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(0.6))
+        Call(SetCamSpeed, CAM_DEFAULT, 0.6)
         Call(SetPanTarget, CAM_DEFAULT, 145, 30, 0)
         EVT_SPIRIT_ADJUST_CAM(10000)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
@@ -46,9 +46,9 @@ EvtScript EVS_SpawnStarCard = {
         Call(AwaitSpiritCardProgress, SPIRIT_CARD_NOTIFY_DONE_FALLING)
         Call(GetPlayerPos, LVar2, LVar3, LVar4)
         Call(UseSettingsFrom, CAM_DEFAULT, LVar2, LVar3, LVar4)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(1.0))
+        Call(SetCamSpeed, CAM_DEFAULT, 1.0)
         Call(SetPanTarget, CAM_DEFAULT, LVar2, LVar3, LVar4)
-        Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+        Call(WaitForCam, CAM_DEFAULT, 1.0)
         Call(PanToTarget, CAM_DEFAULT, 0, false)
         Call(DisablePlayerInput, false)
     Else
@@ -62,7 +62,7 @@ EvtScript EVS_SpawnStarCard = {
     Call(PlaySoundAtPlayer, SOUND_RESCUE_STAR_SPIRIT, SOUND_SPACE_DEFAULT)
     Call(DisablePlayerInput, true)
     Set(GB_StoryProgress, STORY_CH3_STAR_SPIRIT_RESCUED)
-    Call(GotoMapSpecial, Ref("kmr_23"), kmr_23_ENTRY_2, TRANSITION_GET_STAR_CARD)
+    Call(GotoMapSpecial, "kmr_23", kmr_23_ENTRY_2, TRANSITION_GET_STAR_CARD)
     Wait(100)
     Return
     End
@@ -73,7 +73,7 @@ EvtScript EVS_RespawnStarCard = {
     IfEq(LVar0, 0)
         Call(DisablePlayerInput, true)
         Call(UseSettingsFrom, CAM_DEFAULT, 145, 65, 0)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(0.6))
+        Call(SetCamSpeed, CAM_DEFAULT, 0.6)
         Call(SetPanTarget, CAM_DEFAULT, 145, 30, 0)
         EVT_SPIRIT_ADJUST_CAM(10000)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
@@ -108,9 +108,9 @@ EvtScript EVS_RespawnStarCard = {
         Call(AwaitSpiritCardProgress, SPIRIT_CARD_NOTIFY_DONE_FALLING)
         Call(GetPlayerPos, LVar2, LVar3, LVar4)
         Call(UseSettingsFrom, CAM_DEFAULT, LVar2, LVar3, LVar4)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(1.0))
+        Call(SetCamSpeed, CAM_DEFAULT, 1.0)
         Call(SetPanTarget, CAM_DEFAULT, LVar2, LVar3, LVar4)
-        Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+        Call(WaitForCam, CAM_DEFAULT, 1.0)
         Call(PanToTarget, CAM_DEFAULT, 0, false)
         Call(DisablePlayerInput, false)
     Else
@@ -124,7 +124,7 @@ EvtScript EVS_RespawnStarCard = {
     Call(PlaySoundAtPlayer, SOUND_RESCUE_STAR_SPIRIT, SOUND_SPACE_DEFAULT)
     Call(DisablePlayerInput, true)
     Set(GB_StoryProgress, STORY_CH3_STAR_SPIRIT_RESCUED)
-    Call(GotoMapSpecial, Ref("kmr_23"), kmr_23_ENTRY_2, TRANSITION_GET_STAR_CARD)
+    Call(GotoMapSpecial, "kmr_23", kmr_23_ENTRY_2, TRANSITION_GET_STAR_CARD)
     Wait(100)
     Return
     End
@@ -141,9 +141,9 @@ EvtScript EVS_Scene_TubbaReunion = {
     Call(DisablePartnerAI, false)
     Call(SetPlayerPos, -28, 0, -333)
     Call(SetNpcPos, NPC_PARTNER, -28, 0, -333)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_ORIENTATION, false)
-    Call(SetCamPitch, CAM_DEFAULT, Float(25.0), Float(-4.0))
+    Call(SetCamPitch, CAM_DEFAULT, 25.0, -4.0)
     Call(SetCamDistance, CAM_DEFAULT, 1100)
     Call(SetCamPosA, CAM_DEFAULT, 500, 0)
     Call(SetCamPosB, CAM_DEFAULT, 0, -500)
@@ -152,7 +152,7 @@ EvtScript EVS_Scene_TubbaReunion = {
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(RotateModel, MODEL_o39, 80, 0, -1, 0)
     Call(PlaySoundAtNpc, NPC_TubbasHeart, SOUND_TUBBA_HEART_JUMP, SOUND_SPACE_DEFAULT)
-    Call(SetNpcJumpscale, NPC_TubbasHeart, Float(2.5))
+    Call(SetNpcJumpscale, NPC_TubbasHeart, 2.5)
     Call(NpcJump0, NPC_TubbasHeart, 0, 20, -120, 8 * DT)
     Wait(1)
     Call(PlaySoundAtNpc, NPC_TubbasHeart, SOUND_TUBBA_HEART_JUMP, SOUND_SPACE_DEFAULT)
@@ -204,8 +204,8 @@ EvtScript EVS_Scene_TubbaReunion = {
     Wait(1)
     Thread
         Wait(4 * DT)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-        Call(SetCamPitch, CAM_DEFAULT, Float(2.0), Float(-9.0))
+        Call(SetCamSpeed, CAM_DEFAULT, 90.0)
+        Call(SetCamPitch, CAM_DEFAULT, 2.0, -9.0)
         Call(SetCamDistance, CAM_DEFAULT, 700)
         Call(SetCamPosA, CAM_DEFAULT, 500, 0)
         Call(SetCamPosB, CAM_DEFAULT, 0, -500)
@@ -239,8 +239,8 @@ EvtScript EVS_Scene_TubbaReunion = {
     Thread
         Wait(30 * DT)
         Call(UseSettingsFrom, CAM_DEFAULT, 236, 0, -46)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(4.0))
-        Call(SetCamPitch, CAM_DEFAULT, Float(8.0), Float(-9.0))
+        Call(SetCamSpeed, CAM_DEFAULT, 4.0)
+        Call(SetCamPitch, CAM_DEFAULT, 8.0, -9.0)
         Call(SetCamDistance, CAM_DEFAULT, 450)
         Call(SetPanTarget, CAM_DEFAULT, 250, 0, -46)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
@@ -274,12 +274,12 @@ EvtScript EVS_Scene_TubbaReunion = {
 };
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_arn_03_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_mim_12_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitWalk_arn_03_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitWalk_mim_12_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
     IfLt(GB_StoryProgress, STORY_CH3_UNLOCKED_WINDY_MILL)
-        BindPadlock(Ref(EVS_UnlockDoor), TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), Ref(KeyList), 0, 1)
+        BindPadlock(EVS_UnlockDoor, TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), KeyList, 0, 1)
     Else
-        BindTrigger(Ref(EVS_ExitDoor_arn_08_0), TRIGGER_WALL_PRESS_A, COLLIDER_tt3, 1, 0)
+        BindTrigger(EVS_ExitDoor_arn_08_0, TRIGGER_WALL_PRESS_A, COLLIDER_tt3, 1, 0)
     EndIf
     Return
     End
@@ -299,11 +299,11 @@ EvtScript EVS_EnterMap = {
                 Exec(EVS_BindExitTriggers)
             EndIf
         CaseEq(arn_07_ENTRY_1)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
             Wait(1)
         CaseEq(arn_07_ENTRY_2)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
             Wait(1)
         CaseEq(arn_07_ENTRY_3)
@@ -321,13 +321,13 @@ EvtScript EVS_Main = {
     Set(GF_MAP_GustyGulch, true)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_TUBBA_CHASED_MARIO_IN_FOYER)
-            Call(MakeNpcs, false, Ref(DefaultNPCs))
+            Call(MakeNpcs, false, DefaultNPCs)
         CaseLt(STORY_CH3_BEGAN_PEACH_MISSION)
-            Call(MakeNpcs, false, Ref(BossNPCs))
+            Call(MakeNpcs, false, BossNPCs)
         CaseEq(STORY_CH3_BEGAN_PEACH_MISSION)
-            Call(MakeNpcs, false, Ref(SpiritNPCs))
+            Call(MakeNpcs, false, SpiritNPCs)
         CaseDefault
-            Call(MakeNpcs, false, Ref(DefaultNPCs))
+            Call(MakeNpcs, false, DefaultNPCs)
     EndSwitch
     ExecWait(EVS_MakeEntities)
     IfEq(GB_StoryProgress, STORY_CH3_DEFEATED_TUBBA_BLUBBA)
@@ -341,7 +341,7 @@ EvtScript EVS_Main = {
     Exec(EVS_SetupWindmill)
     Exec(EVS_SetupMusic)
     Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(0.3))
+    Call(SetCamSpeed, CAM_DEFAULT, 0.3)
     Return
     End
 };

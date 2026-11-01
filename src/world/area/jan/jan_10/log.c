@@ -147,7 +147,7 @@ EvtScript EVS_Smash_BuriedLog = {
 
 EvtScript EVS_SetupLogs = {
     IfEq(GF_JAN10_CreateLogBridge, false)
-        BindTrigger(Ref(EVS_Smash_BuriedLog), TRIGGER_WALL_HAMMER, COLLIDER_o11, 1, 0)
+        BindTrigger(EVS_Smash_BuriedLog, TRIGGER_WALL_HAMMER, COLLIDER_o11, 1, 0)
     EndIf
     Exec(EVS_SetupLogObjects)
     Return

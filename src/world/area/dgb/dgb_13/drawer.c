@@ -75,7 +75,7 @@ EvtScript EVS_Interact_LowerDrawer = {
 
 EvtScript EVS_SetupDrawers = {
     Call(ParentColliderToModel, COLLIDER_o265, MODEL_o419)
-    BindTrigger(Ref(EVS_Interact_LowerDrawer), TRIGGER_WALL_PRESS_A, COLLIDER_o265, 1, 0)
+    BindTrigger(EVS_Interact_LowerDrawer, TRIGGER_WALL_PRESS_A, COLLIDER_o265, 1, 0)
     Return
     End
 };

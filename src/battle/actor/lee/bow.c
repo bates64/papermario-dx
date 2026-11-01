@@ -101,10 +101,10 @@ static ActorBlueprint blueprint = {
 };
 
 static EvtScript EVS_Init = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
-    Call(BindHandlePhase, ACTOR_SELF, Ref(EVS_HandlePhase))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
+    Call(BindHandlePhase, ACTOR_SELF, EVS_HandlePhase)
     Call(SetActorVar, ACTOR_SELF, AVAR_FormDuration, 1)
     Return
     End
@@ -286,10 +286,10 @@ static EvtScript EVS_TakeTurn = {
         CaseOrEq(HIT_RESULT_LUCKY)
             Set(LVarA, LVar0)
             Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
-            Call(SetPartScale, ACTOR_SELF, PRT_MAIN, Float(1.4), Float(1.4), Float(1.0))
+            Call(SetPartScale, ACTOR_SELF, PRT_MAIN, 1.4, 1.4, 1.0)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBow_SlapOnce)
             Wait(2)
-            Call(SetPartScale, ACTOR_SELF, PRT_MAIN, Float(1.0), Float(1.0), Float(1.0))
+            Call(SetPartScale, ACTOR_SELF, PRT_MAIN, 1.0, 1.0, 1.0)
             Set(LVar0, 0)
             Loop(20)
                 Add(LVar0, -45)
@@ -348,7 +348,7 @@ static EvtScript EVS_TakeTurn = {
     Loop(LVar7)
         Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BOW_SMACK)
         Add(LVarA, 1)
-        Call(SetPartScale, ACTOR_SELF, PRT_MAIN, Float(1.4), Float(1.4), Float(1.0))
+        Call(SetPartScale, ACTOR_SELF, PRT_MAIN, 1.4, 1.4, 1.0)
         IfEq(LFlag0, false)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBow_SlapOnce)
             Set(LFlag0, true)
@@ -367,12 +367,12 @@ static EvtScript EVS_TakeTurn = {
             EndIf
         EndIf
         Wait(2)
-        Call(SetPartScale, ACTOR_SELF, PRT_MAIN, Float(1.0), Float(1.0), Float(1.0))
+        Call(SetPartScale, ACTOR_SELF, PRT_MAIN, 1.0, 1.0, 1.0)
         Thread
-            Call(ShakeCam, CAM_BATTLE, 0, 2, Float(0.5))
-            Call(ShakeCam, CAM_BATTLE, 0, 2, Float(1.5))
-            Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.5))
-            Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.2))
+            Call(ShakeCam, CAM_BATTLE, 0, 2, 0.5)
+            Call(ShakeCam, CAM_BATTLE, 0, 2, 1.5)
+            Call(ShakeCam, CAM_BATTLE, 0, 1, 0.5)
+            Call(ShakeCam, CAM_BATTLE, 0, 1, 0.2)
         EndThread
         Call(GetActorVar, ACTOR_SELF, AVAR_Copy_PartnerLevel, LVar9)
         Switch(LVar9)

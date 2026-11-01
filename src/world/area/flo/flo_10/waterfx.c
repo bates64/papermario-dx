@@ -272,7 +272,7 @@ void build_gfx_water_reflection(void) {
 
 EvtScript EVS_SetupWaterEffect = {
     // assumed method to get these working, doesn't seem to work though?
-    //Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(build_gfx_water_reflection), nullptr)
+    //Call(SetCustomGfxBuilders, CUSTOM_GFX_1, build_gfx_water_reflection, nullptr)
     //Call(SetModelCustomGfx, MODEL_o40, CUSTOM_GFX_1, ENV_TINT_UNCHANGED)
     Return
     End

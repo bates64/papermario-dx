@@ -36,7 +36,7 @@ EvtScript EVS_UseSpringA = {
     Wait(1)
     Call(EnableCameraFollowPlayerY)
     ExecGetTID(EVS_TetherCameraToPlayer, LVarA)
-    Call(SetPlayerJumpscale, Float(0.7))
+    Call(SetPlayerJumpscale, 0.7)
     Call(PlayerJump, 335, 290, 360, 40)
     Call(SetPlayerFlagBits, PS_FLAG_FLYING, true)
     Call(SetPlayerActionState, ACTION_STATE_FALLING)
@@ -55,7 +55,7 @@ EvtScript EVS_UseSpringB = {
     Wait(1)
     Call(EnableCameraFollowPlayerY)
     ExecGetTID(EVS_TetherCameraToPlayer, LVarA)
-    Call(SetPlayerJumpscale, Float(0.7))
+    Call(SetPlayerJumpscale, 0.7)
     Call(PlayerJump, 350, 470, 210, 40)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
     Call(DisablePlayerPhysics, false)
@@ -76,10 +76,10 @@ EvtScript EVS_UseSpringC = {
     Call(EnableCameraFollowPlayerY)
     ExecGetTID(EVS_TetherCameraToPlayer, LVarA)
     IfEq(MV_PlayerCliffState, 0)
-        Call(SetPlayerJumpscale, Float(1.4))
+        Call(SetPlayerJumpscale, 1.4)
         Call(PlayerJump, -470, 670, 71, 18)
     Else
-        Call(SetPlayerJumpscale, Float(0.7))
+        Call(SetPlayerJumpscale, 0.7)
         Call(PlayerJump, -384, 870, -22, 40)
     EndIf
     Call(SetPlayerActionState, ACTION_STATE_LAND)
@@ -98,22 +98,22 @@ EvtScript EVS_OnBreakBlock = {
 };
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Ref(Entity_SavePoint), 365, 530, 135, 0, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_SavePoint, 365, 530, 135, 0, MAKE_ENTITY_END)
     Call(MakeItemEntity, ITEM_FIRE_SHIELD, 75, 290, 235, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_KZN03_Item_FireShield)
-    Call(MakeEntity, Ref(Entity_BrickBlock), 215, 745, -105, 0, MAKE_ENTITY_END)
-    Call(MakeEntity, Ref(Entity_BrickBlock), 85, 770, -105, 0, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_BrickBlock, 215, 745, -105, 0, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_BrickBlock, 85, 770, -105, 0, MAKE_ENTITY_END)
     Call(MakeItemEntity, ITEM_POW_BLOCK, 85, 795, -105, ITEM_SPAWN_MODE_FALL_NEVER_VANISH, GF_KZN03_Item_POWBlock)
-    Call(MakeEntity, Ref(Entity_YellowBlock), 35, 730, -105, 0, ITEM_COIN, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_YellowBlock, 35, 730, -105, 0, ITEM_COIN, MAKE_ENTITY_END)
     Call(AssignBlockFlag, GF_KZN03_ItemBlock_CoinA)
-    Call(MakeEntity, Ref(Entity_YellowBlock), -15, 730, -105, 0, ITEM_COIN, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_YellowBlock, -15, 730, -105, 0, ITEM_COIN, MAKE_ENTITY_END)
     Call(AssignBlockFlag, GF_KZN03_ItemBlock_CoinB)
-    Call(MakeEntity, Ref(Entity_YellowBlock), -65, 730, -105, 0, ITEM_COIN, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_YellowBlock, -65, 730, -105, 0, ITEM_COIN, MAKE_ENTITY_END)
     Call(AssignBlockFlag, GF_KZN03_ItemBlock_CoinC)
-    Call(MakeEntity, Ref(Entity_YellowBlock), -115, 730, -105, 0, ITEM_COIN, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_YellowBlock, -115, 730, -105, 0, ITEM_COIN, MAKE_ENTITY_END)
     Call(AssignBlockFlag, GF_KZN03_ItemBlock_CoinD)
     IfLt(GB_StoryProgress, STORY_CH5_SMASHED_ULTRA_BLOCK)
-        Call(MakeEntity, Ref(Entity_Hammer3Block), 490, 470, 210, 0, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(EVS_OnBreakBlock))
+        Call(MakeEntity, Entity_Hammer3Block, 490, 470, 210, 0, MAKE_ENTITY_END)
+        Call(AssignScript, EVS_OnBreakBlock)
         Thread
             Loop(0)
                 IfGe(GB_StoryProgress, STORY_CH5_SMASHED_ULTRA_BLOCK)
@@ -126,15 +126,15 @@ EvtScript EVS_MakeEntities = {
     Else
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_on_off, COLLIDER_FLAGS_UPPER_MASK)
     EndIf
-    Call(MakeEntity, Ref(Entity_ScriptSpring), 160, 30, 350, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(EVS_UseSpringA))
-    Call(MakeEntity, Ref(Entity_ScriptSpring), 335, 265, 360, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(EVS_UseSpringB))
+    Call(MakeEntity, Entity_ScriptSpring, 160, 30, 350, 0, MAKE_ENTITY_END)
+    Call(AssignScript, EVS_UseSpringA)
+    Call(MakeEntity, Entity_ScriptSpring, 335, 265, 360, 0, MAKE_ENTITY_END)
+    Call(AssignScript, EVS_UseSpringB)
     Thread
         Call(IsPlayerOnFirstCliff)
     EndThread
-    Call(MakeEntity, Ref(Entity_ScriptSpring), -410, 645, 120, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(EVS_UseSpringC))
+    Call(MakeEntity, Entity_ScriptSpring, -410, 645, 120, 0, MAKE_ENTITY_END)
+    Call(AssignScript, EVS_UseSpringC)
     Return
     End
 };

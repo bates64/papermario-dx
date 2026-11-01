@@ -79,9 +79,9 @@ EvtScript EVS_SetWallRot_ToadHouse = {
 EvtScript EVS_SetupCamSpeed = {
     Switch(LVar0)
         CaseEq(0)
-            Call(SetCamSpeed, CAM_DEFAULT, Float(3.0))
+            Call(SetCamSpeed, CAM_DEFAULT, 3.0)
         CaseEq(3)
-            Call(SetCamSpeed, CAM_DEFAULT, Float(1.334))
+            Call(SetCamSpeed, CAM_DEFAULT, 1.334)
     EndSwitch
     Return
     End
@@ -91,10 +91,10 @@ EvtScript EVS_RoomListener_ToadHouse = {
     Switch(LVar0)
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
             Call(SetGroupVisibility, MODEL_ie4_naka, MODEL_GROUP_VISIBLE)
-            Call(SetCamSpeed, CAM_DEFAULT, Float(3.0))
+            Call(SetCamSpeed, CAM_DEFAULT, 3.0)
         CaseEq(ROOM_UPDATE_EXIT_END)
             Call(SetGroupVisibility, MODEL_ie4_naka, MODEL_GROUP_HIDDEN)
-            Call(SetCamSpeed, CAM_DEFAULT, Float(1.334))
+            Call(SetCamSpeed, CAM_DEFAULT, 1.334)
     EndSwitch
     Return
     End
@@ -111,18 +111,18 @@ EvtScript EVS_RoomListener_Hideout = {
             Call(SetCamPosB, CAM_DEFAULT, 0, -290)
             Call(SetCamPosC, CAM_DEFAULT, 0, 0)
             Call(SetPanTarget, CAM_DEFAULT, -395, 140, -150)
-            Call(SetCamSpeed, CAM_DEFAULT, Float(4.0))
+            Call(SetCamSpeed, CAM_DEFAULT, 4.0)
             Call(PanToTarget, CAM_DEFAULT, 0, true)
         CaseEq(ROOM_UPDATE_EXIT_BEGIN)
             Call(SetPanTarget, CAM_DEFAULT, -365, 140, -145)
             Call(SetCamPitch, CAM_DEFAULT, 20, -7)
             Call(SetCamDistance, CAM_DEFAULT, 400)
-            Call(SetCamSpeed, CAM_DEFAULT, Float(4.0))
-            Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+            Call(SetCamSpeed, CAM_DEFAULT, 4.0)
+            Call(WaitForCam, CAM_DEFAULT, 1.0)
         CaseEq(ROOM_UPDATE_EXIT_END)
             Call(SetGroupVisibility, MODEL_ie5_naka, MODEL_GROUP_HIDDEN)
             Call(PanToTarget, CAM_DEFAULT, 0, false)
-            Call(SetCamSpeed, CAM_DEFAULT, Float(1.334))
+            Call(SetCamSpeed, CAM_DEFAULT, 1.334)
     EndSwitch
     Return
     End
@@ -216,28 +216,28 @@ EvtScript EVS_SetupRooms = {
     EndIf
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_STRAIGHT_THROUGH),
-        Ref(EVS_SetDoorRot_Hideout),
-        Ref(EVS_SetWallRot_Hideout),
-        Ref(EVS_DropDoor_Hideout),
-        Ref(EVS_RoomListener_Hideout),
+        EVS_SetDoorRot_Hideout,
+        EVS_SetWallRot_Hideout,
+        EVS_DropDoor_Hideout,
+        EVS_RoomListener_Hideout,
         COLLIDER_o1252,
         COLLIDER_o1253,
         MODEL_k_i5,
-        Ref(InsideNPCs_Hideout))
+        InsideNPCs_Hideout)
     IfGe(GB_StoryProgress, STORY_CH2_BOUGHT_SECRET_ITEMS)
-        BindTrigger(Ref(EVS_OpenSecretDoor_FromOutside), TRIGGER_WALL_PRESS_A, COLLIDER_o1287, 1, 0)
-        BindTrigger(Ref(EVS_OpenSecretDoor_FromInside), TRIGGER_WALL_PRESS_A, COLLIDER_o1289, 1, 0)
+        BindTrigger(EVS_OpenSecretDoor_FromOutside, TRIGGER_WALL_PRESS_A, COLLIDER_o1287, 1, 0)
+        BindTrigger(EVS_OpenSecretDoor_FromInside, TRIGGER_WALL_PRESS_A, COLLIDER_o1289, 1, 0)
     EndIf
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_1, ROOM_LARGE_DOOR_RIGHT_HINGE_OPENS_OUT),
-        Ref(EVS_SetDoorRot_ToadHouse),
-        Ref(EVS_SetWallRot_ToadHouse),
+        EVS_SetDoorRot_ToadHouse,
+        EVS_SetWallRot_ToadHouse,
         nullptr,
-        Ref(EVS_RoomListener_ToadHouse),
+        EVS_RoomListener_ToadHouse,
         COLLIDER_o1204,
         COLLIDER_o1261,
         MODEL_k_i4,
-        Ref(InsideNPCs_ToadHouse))
+        InsideNPCs_ToadHouse)
     Set(LVar0, ROOM_UPDATE_EXIT_END)
     Exec(EVS_RoomListener_Hideout)
     Exec(EVS_SetupCamSpeed)

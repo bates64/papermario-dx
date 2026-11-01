@@ -74,7 +74,7 @@ EvtScript EVS_ProvideDemoInputs = {
         Return
     EndIf
     Set(GF_DemoSceneDone, true)
-    Call(GotoMapSpecial, Ref("arn_08"), arn_08_ENTRY_2, TRANSITION_END_DEMO_SCENE_BLACK)
+    Call(GotoMapSpecial, "arn_08", arn_08_ENTRY_2, TRANSITION_END_DEMO_SCENE_BLACK)
     Wait(100)
     Return
     End
@@ -93,7 +93,7 @@ EvtScript EVS_MonitorDemoState = {
         Return
     EndIf
     Set(GF_DemoSceneDone, true)
-    Call(GotoMapSpecial, Ref("arn_08"), arn_08_ENTRY_2, TRANSITION_END_DEMO_SCENE_WHITE)
+    Call(GotoMapSpecial, "arn_08", arn_08_ENTRY_2, TRANSITION_END_DEMO_SCENE_WHITE)
     Wait(35)
     Return
     End
@@ -157,7 +157,7 @@ API_CALLABLE(SetupDemoScene) {
 }
 
 EvtScript EVS_PlayDemoScene = {
-    Call(SetCamProperties, CAM_DEFAULT, Float(90.0), 0, 0, 0, Float(470.0), Float(17.0), Float(-7.0))
+    Call(SetCamProperties, CAM_DEFAULT, 90.0, 0, 0, 0, 470.0, 17.0, -7.0)
     Call(SetupDemoScene)
     Set(GF_DemoSceneDone, false)
     Exec(EVS_MonitorDemoState)

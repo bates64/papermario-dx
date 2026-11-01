@@ -37,7 +37,7 @@ EvtScript EVS_EnterMap = {
         CaseEq(osr_03_ENTRY_6)
             Exec(EVS_Scene_UnusedTossOut)
         CaseDefault
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
     EndSwitch
     Return
@@ -51,7 +51,7 @@ EvtScript EVS_Main = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(osr_03_ENTRY_4)
-            Call(MakeNpcs, false, Ref(DefaultNPCs))
+            Call(MakeNpcs, false, DefaultNPCs)
         CaseDefault
     EndSwitch
     Switch(GB_StoryProgress)

@@ -8,7 +8,7 @@ EvtScript EVS_ExitWalk_jan_06_3 = EVT_EXIT_WALK(60, jan_09_ENTRY_1, "jan_06", ja
 
 EvtScript EVS_GotoMap_jan_11_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(GotoMap, Ref("jan_11"), jan_11_ENTRY_0)
+    Call(GotoMap, "jan_11", jan_11_ENTRY_0)
     Wait(100)
     Return
     End
@@ -25,13 +25,13 @@ EvtScript EVS_TouchFloor_Pipe = {
 };
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_jan_10_0), TRIGGER_FLOOR_ABOVE, COLLIDER_o245, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_jan_08_2), TRIGGER_FLOOR_ABOVE, COLLIDER_deilis, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_jan_06_3), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitWalk_jan_10_0, TRIGGER_FLOOR_ABOVE, COLLIDER_o245, 1, 0)
+    BindTrigger(EVS_ExitWalk_jan_08_2, TRIGGER_FLOOR_ABOVE, COLLIDER_deilis, 1, 0)
+    BindTrigger(EVS_ExitWalk_jan_06_3, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     Set(LVar0, jan_09_ENTRY_3)
     Set(LVar1, COLLIDER_o208)
-    Set(LVar2, Ref(EVS_GotoMap_jan_11_0))
-    BindTrigger(Ref(EVS_TouchFloor_Pipe), TRIGGER_FLOOR_TOUCH, LVar1, 1, 0)
+    Set(LVar2, EVS_GotoMap_jan_11_0)
+    BindTrigger(EVS_TouchFloor_Pipe, TRIGGER_FLOOR_TOUCH, LVar1, 1, 0)
     Return
     End
 };
@@ -41,7 +41,7 @@ EvtScript EVS_Main = {
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(SetZoneEnabled, ZONE_o79, false)
-    Call(MakeNpcs, false, Ref(DefaultNPCs))
+    Call(MakeNpcs, false, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     Exec(EVS_SetupBushes)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o97, SURFACE_TYPE_DOCK_WALL)
@@ -55,10 +55,10 @@ EvtScript EVS_Main = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilite, COLLIDER_FLAGS_UPPER_MASK)
     Call(GetEntryID, LVar0)
     IfNe(LVar0, jan_09_ENTRY_3)
-        Set(LVar0, Ref(EVS_BindExitTriggers))
+        Set(LVar0, EVS_BindExitTriggers)
         Exec(EnterWalk)
     Else
-        Set(LVarA, Ref(EVS_BindExitTriggers))
+        Set(LVarA, EVS_BindExitTriggers)
         Exec(EVS_Pipe_EnterVertical)
         Wait(1)
     EndIf

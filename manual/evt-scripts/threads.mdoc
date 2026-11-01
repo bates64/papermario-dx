@@ -55,7 +55,7 @@ An argument is passed exactly as written, so a variable is passed as the variabl
 ```c
 EvtScript EVS_Jump = {
     ExpectArgs(2)
-    Call(SetNpcJumpscale, ArgVar0, Float(1.0))
+    Call(SetNpcJumpscale, ArgVar0, 1.0)
     Call(NpcJump0, ArgVar0, ArgVar1, 0, 0, 20)
     Return
     End

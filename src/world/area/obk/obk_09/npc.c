@@ -85,7 +85,7 @@ EvtScript EVS_NpcInteract_Bootler = {
 };
 
 EvtScript EVS_NpcInit_Bootler = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bootler))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Bootler)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_BOW_JOINED_PARTY)
         CaseGe(STORY_CH3_BOW_JOINED_PARTY)
@@ -105,7 +105,7 @@ EvtScript EVS_NpcAux_Skolar = {
 };
 
 EvtScript EVS_NpcInit_Skolar = {
-    Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_Skolar))
+    Call(BindNpcAux, NPC_SELF, EVS_NpcAux_Skolar)
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldSkolar_IdleSad)
     Call(SetNpcPos, NPC_SELF, 0, NPC_DISPOSE_POS_Y, -100)
     Call(EnableNpcShadow, NPC_SELF, false)

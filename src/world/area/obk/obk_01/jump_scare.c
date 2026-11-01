@@ -9,7 +9,7 @@ EvtScript EVS_Scene_JumpScareBoo = {
     Thread
         Wait(5 * DT)
         Sub(LVar3, 10)
-        PlayEffect(EFFECT_RADIAL_SHIMMER, 0, LVar3, LVar4, LVar5, Float(2.8), 50)
+        PlayEffect(EFFECT_RADIAL_SHIMMER, 0, LVar3, LVar4, LVar5, 2.8, 50)
     EndThread
     Call(PlaySoundAtNpc, NPC_JumpScareBoo, SOUND_JUMP_SCARE, SOUND_SPACE_DEFAULT)
     Sub(LVar4, 12)
@@ -17,7 +17,7 @@ EvtScript EVS_Scene_JumpScareBoo = {
     Loop(0)
         Call(UpdateLerp)
         SetF(LVar2, LVar0)
-        DivF(LVar2, Float(100.0))
+        DivF(LVar2, 100.0)
         Call(SetNpcScale, NPC_JumpScareBoo, LVar2, LVar2, LVar2)
         MulF(LVar2, 12)
         SetF(LVar6, LVar4)
@@ -29,7 +29,7 @@ EvtScript EVS_Scene_JumpScareBoo = {
         EndIf
     EndLoop
     Wait(15)
-    SetF(LVar0, Float(240.0))
+    SetF(LVar0, 240.0)
     Loop(20 * DT)
         SubF(LVar0, Float(240.0 / (s32)(20 * DT)))
         Call(SetNpcImgFXParams, NPC_JumpScareBoo, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)

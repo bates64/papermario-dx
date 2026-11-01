@@ -53,7 +53,7 @@ EvtScript EVS_BowserTauntMario = {
         Call(SetNpcAnimation, NPC_Bowser_Body, ANIM_WorldBowser_ClownCarIdle)
     EndThread
     Call(AwaitPlayerApproach, 0, -60, 250)
-    Call(LoadPath, 30, Ref(FlyAwayPath), ARRAY_COUNT(FlyAwayPath), EASING_LINEAR)
+    Call(LoadPath, 30, FlyAwayPath, ARRAY_COUNT(FlyAwayPath), EASING_LINEAR)
     Label(0)
     Call(GetNextPathPos)
     Call(SetNpcPos, NPC_Bowser_Body, LVar1, LVar2, LVar3)
@@ -79,7 +79,7 @@ s32 HoverYOffsets[] = {
 
 EvtScript EVS_NpcIdle_Bowser_Body = {
     Label(0)
-    UseBuf(Ref(HoverYOffsets))
+    UseBuf(HoverYOffsets)
     Loop(10)
         BufRead1(LVar1)
         Call(GetNpcPos, NPC_Bowser_Body, LVar2, LVar3, LVar4)
@@ -94,7 +94,7 @@ EvtScript EVS_NpcIdle_Bowser_Body = {
 
 EvtScript EVS_NpcIdle_Bowser_Propeller = {
     Label(0)
-    UseBuf(Ref(HoverYOffsets))
+    UseBuf(HoverYOffsets)
     Loop(10)
         BufRead1(LVar1)
         Call(GetNpcPos, NPC_Bowser_Prop, LVar2, LVar3, LVar4)
@@ -109,7 +109,7 @@ EvtScript EVS_NpcIdle_Bowser_Propeller = {
 
 EvtScript EVS_NpcIdle_Peach = {
     Label(0)
-    UseBuf(Ref(HoverYOffsets))
+    UseBuf(HoverYOffsets)
     Loop(10)
         BufRead1(LVar1)
         Call(GetNpcPos, NPC_Peach, LVar2, LVar3, LVar4)
@@ -129,7 +129,7 @@ EvtScript EVS_NpcInit_Bowser_Body = {
             Return
         EndIf
     EndIf
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Bowser_Body))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Bowser_Body)
     Call(SetNpcYaw, NPC_SELF, 90)
     Call(SetNpcPos, NPC_SELF, 250, 10, -250)
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldBowser_ClownCarIdle)
@@ -144,7 +144,7 @@ EvtScript EVS_NpcInit_Bowser_Propeller = {
             Return
         EndIf
     EndIf
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Bowser_Propeller))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Bowser_Propeller)
     Call(SetNpcYaw, NPC_SELF, 90)
     Call(SetNpcPos, NPC_SELF, 250, 10, -250)
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldBowser_ClownCarPropeller)
@@ -160,7 +160,7 @@ EvtScript EVS_NpcInit_Peach = {
             Return
         EndIf
     EndIf
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Peach))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Peach)
     Call(SetNpcYaw, NPC_SELF, 90)
     Call(SetNpcPos, NPC_Peach, 278, 50, -253)
     Call(SetNpcAnimation, NPC_Peach, ANIM_Peach2_TiedIdle)

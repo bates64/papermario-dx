@@ -88,9 +88,9 @@ static ActorBlueprint blueprint = {
 };
 
 static EvtScript EVS_Init = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
     Return
     End
 };
@@ -102,10 +102,10 @@ static EvtScript EVS_Idle = {
 
 static EvtScript EVS_PlayDetonateFX = {
     Thread
-        Call(ShakeCam, CAM_BATTLE, 0, 2, Float(0.75))
-        Call(ShakeCam, CAM_BATTLE, 0, 5, Float(3.0))
-        Call(ShakeCam, CAM_BATTLE, 0, 10, Float(4.5))
-        Call(ShakeCam, CAM_BATTLE, 0, 5, Float(3.0))
+        Call(ShakeCam, CAM_BATTLE, 0, 2, 0.75)
+        Call(ShakeCam, CAM_BATTLE, 0, 5, 3.0)
+        Call(ShakeCam, CAM_BATTLE, 0, 10, 4.5)
+        Call(ShakeCam, CAM_BATTLE, 0, 5, 3.0)
     EndThread
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Add(LVar2, 2)
@@ -292,7 +292,7 @@ static EvtScript EVS_TakeTurn = {
             Call(YieldTurn)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBombette_Run)
             Call(SetGoalToHome, ACTOR_SELF)
-            Call(SetActorSpeed, ACTOR_SELF, Float(5.0))
+            Call(SetActorSpeed, ACTOR_SELF, 5.0)
             Call(RunToGoal, ACTOR_SELF, 0, false)
             Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
             Call(UseIdleAnimation, ACTOR_SELF, true)
@@ -329,7 +329,7 @@ static EvtScript EVS_TakeTurn = {
             Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Add(LVar0, 40)
             Set(LVar1, 0)
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(1.4))
+            Call(SetActorJumpGravity, ACTOR_SELF, 1.4)
             Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(JumpToGoal, ACTOR_SELF, 20, false, true, false)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBombette_Backfire1)
@@ -357,7 +357,7 @@ static EvtScript EVS_TakeTurn = {
             Call(YieldTurn)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBombette_Run)
             Call(SetGoalToHome, ACTOR_SELF)
-            Call(SetActorSpeed, ACTOR_SELF, Float(5.0))
+            Call(SetActorSpeed, ACTOR_SELF, 5.0)
             Call(RunToGoal, ACTOR_SELF, 0, false)
         EndCaseGroup
     EndSwitch

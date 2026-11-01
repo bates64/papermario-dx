@@ -202,7 +202,7 @@ EvtScript EVS_JrTroopa_Death = {
     Call(SetAnimation, ACTOR_SELF, LVarA, ANIM_JrTroopa_Collapse)
     Wait(12)
     Call(SetAnimation, ACTOR_SELF, LVarA, ANIM_JrTroopa_Defeated)
-    Call(SetIdleAnimations, ACTOR_SELF, LVarA, Ref(DefeatedAnims))
+    Call(SetIdleAnimations, ACTOR_SELF, LVarA, DefeatedAnims)
     Wait(60)
     Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_NO_DMG_APPLY, true)
     Return
@@ -218,17 +218,17 @@ EvtScript EVS_ReenterEgg = {
     PlayEffect(EFFECT_WALKING_DUST, 0, LVar0, LVar1, LVar2, -4, 0)
     PlayEffect(EFFECT_WALKING_DUST, 0, LVar0, LVar1, LVar2, 4, 0)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_JrTroopa_EnterEgg)
-    Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(EggAnims))
+    Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, EggAnims)
     Wait(10)
     Return
     End
 };
 
 EvtScript EVS_Init = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
-    Call(BindHandlePhase, ACTOR_SELF, Ref(EVS_HandlePhase))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
+    Call(BindHandlePhase, ACTOR_SELF, EVS_HandlePhase)
     Call(SetActorVar, ACTOR_SELF, AVAR_ShowedNewPower, false)
     Call(SetActorVar, ACTOR_SELF, AVAR_HitReact_State, AVAL_HitReact_None)
     Return
@@ -401,10 +401,10 @@ EvtScript EVS_TakeTurn = {
     Call(MoveBattleCamOver, 20)
     Call(SetBattleCamTargetingModes, BTL_CAM_YADJ_TARGET, BTL_CAM_XADJ_AVG, false)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_JrTroopa_Run)
-    Call(SetActorSpeed, ACTOR_SELF, Float(8.0))
+    Call(SetActorSpeed, ACTOR_SELF, 8.0)
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(AddGoalPos, ACTOR_SELF, 50, 0, 0)
-    Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
+    Call(SetActorSpeed, ACTOR_SELF, 6.0)
     Call(RunToGoal, ACTOR_SELF, 0, false)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_JrTroopa_Idle)
     Call(SetActorDispOffset, ACTOR_SELF, 0, -1, 0)
@@ -418,7 +418,7 @@ EvtScript EVS_TakeTurn = {
         CaseOrEq(HIT_RESULT_LUCKY)
         CaseOrEq(HIT_RESULT_MISS)
             Call(SetGoalToTarget, ACTOR_SELF)
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(2.0))
+            Call(SetActorJumpGravity, ACTOR_SELF, 2.0)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_JrTroopa_Midair)
             Thread
                 Wait(8)
@@ -436,7 +436,7 @@ EvtScript EVS_TakeTurn = {
             Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Sub(LVar0, 20)
             Set(LVar1, 0)
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(1.8))
+            Call(SetActorJumpGravity, ACTOR_SELF, 1.8)
             Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(JumpToGoal, ACTOR_SELF, 10, false, true, false)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_JrTroopa_Idle)
@@ -446,7 +446,7 @@ EvtScript EVS_TakeTurn = {
             Call(SetActorYaw, ACTOR_SELF, 180)
             Call(AddActorDecoration, ACTOR_SELF, PRT_MAIN, 0, ACTOR_DECORATION_SWEAT)
             Call(SetGoalToHome, ACTOR_SELF)
-            Call(SetActorSpeed, ACTOR_SELF, Float(8.0))
+            Call(SetActorSpeed, ACTOR_SELF, 8.0)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_JrTroopa_ChargeArmsUp)
             Call(RunToGoal, ACTOR_SELF, 0, false)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_JrTroopa_Idle)
@@ -458,7 +458,7 @@ EvtScript EVS_TakeTurn = {
         EndCaseGroup
     EndSwitch
     Call(SetGoalToTarget, ACTOR_SELF)
-    Call(SetActorJumpGravity, ACTOR_SELF, Float(2.0))
+    Call(SetActorJumpGravity, ACTOR_SELF, 2.0)
     Thread
         Wait(3)
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_JrTroopa_Midair)
@@ -475,7 +475,7 @@ EvtScript EVS_TakeTurn = {
             Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Add(LVar0, 40)
             Set(LVar1, 0)
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(1.8))
+            Call(SetActorJumpGravity, ACTOR_SELF, 1.8)
             Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(JumpToGoal, ACTOR_SELF, 10, false, true, false)
             Add(LVar0, 30)
@@ -487,7 +487,7 @@ EvtScript EVS_TakeTurn = {
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_JrTroopa_Idle)
             Wait(10)
             Call(SetGoalToHome, ACTOR_SELF)
-            Call(SetActorSpeed, ACTOR_SELF, Float(8.0))
+            Call(SetActorSpeed, ACTOR_SELF, 8.0)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_JrTroopa_Run)
             Call(RunToGoal, ACTOR_SELF, 0, false)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_JrTroopa_Idle)

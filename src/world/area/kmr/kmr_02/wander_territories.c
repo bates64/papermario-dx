@@ -72,7 +72,7 @@ MobileAISettings AISettings_SwitchedWander = {
 };
 
 EvtScript EVS_NpcIdle_SwitchedWander = {
-    Call(BasicAI_Main, Ref(AISettings_SwitchedWander))
+    Call(BasicAI_Main, AISettings_SwitchedWander)
     Return
     End
 };

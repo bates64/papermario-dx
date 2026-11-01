@@ -21,7 +21,7 @@ API_CALLABLE(UpgradeStarPowerCh3) {
 EvtScript EVS_TubbaWalking = {
     Loop(0)
         Call(PlaySoundAtNpc, NPC_Tubba, SOUND_HEAVY_NPC_STEP_C, SOUND_SPACE_DEFAULT)
-        Call(ShakeCam, CAM_DEFAULT, 0, 3, Float(0.8))
+        Call(ShakeCam, CAM_DEFAULT, 0, 3, 0.8)
     EndLoop
     Return
     End
@@ -30,7 +30,7 @@ EvtScript EVS_TubbaWalking = {
 EvtScript EVS_Scene_TubbaRelents = {
     Call(DisablePlayerInput, true)
     Call(UseSettingsFrom, CAM_DEFAULT, 236, 0, -46)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(SetPanTarget, CAM_DEFAULT, 250, 0, -46)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
@@ -43,11 +43,11 @@ EvtScript EVS_Scene_TubbaRelents = {
     Wait(10 * DT)
     Call(SpeakToPlayer, NPC_SELF, ANIM_WorldTubba_TalkSad, ANIM_WorldTubba_IdleSad, 5, MSG_CH3_00CB)
     Call(SetCamDistance, CAM_DEFAULT, 300)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(2.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(5.0), Float(-16.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 2.0)
+    Call(SetCamPitch, CAM_DEFAULT, 5.0, -16.0)
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Return
     End
 };
@@ -87,7 +87,7 @@ EvtScript EVS_Scene_BossDefeated = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_Burp)
     Wait(45 * DT)
     Call(UseSettingsFrom, CAM_DEFAULT, 236, 0, -46)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     Sub(LVar0, 50)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -98,7 +98,7 @@ EvtScript EVS_Scene_BossDefeated = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_WorldTubba_TalkSad, ANIM_WorldTubba_IdleSad, 0, MSG_CH3_00CC)
     Thread
         Wait(5 * DT)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+        Call(SetCamSpeed, CAM_DEFAULT, 90.0)
         Loop(40 * DT)
             Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
             Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -127,7 +127,7 @@ EvtScript EVS_Scene_BossDefeated = {
         Call(DisablePartnerAI, false)
         Call(SetNpcPos, NPC_PARTNER, 257, 25, 0)
     EndIf
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(SetCamDistance, CAM_DEFAULT, 300)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Add(LVar0, 30)
@@ -163,7 +163,7 @@ EvtScript EVS_Scene_BossDefeated = {
     Wait(10 * DT)
     Call(GetNpcPos, LVar5, LVar0, LVar1, LVar2)
     Add(LVar1, -20)
-    Call(SetCamProperties, CAM_DEFAULT, Float(2.0), LVar0, LVar1, LVar2, Float(300.0), Float(15.0), Float(-7.0))
+    Call(SetCamProperties, CAM_DEFAULT, 2.0, LVar0, LVar1, LVar2, 300.0, 15.0, -7.0)
     Call(PlayerFaceNpc, LVar5, false)
     Wait(10 * DT)
     Call(SpeakToPlayer, LVar5, ANIM_WorldBow_Talk, ANIM_WorldBow_Idle, 0, MSG_CH3_00CE)
@@ -175,9 +175,9 @@ EvtScript EVS_Scene_BossDefeated = {
     EndIf
     Call(SpeakToPlayer, LVar5, ANIM_WorldBow_Talk, ANIM_WorldBow_Idle, 0, MSG_CH3_00D1)
     Call(UseSettingsFrom, CAM_DEFAULT, 175, 0, 0)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(4.0 / DT))
+    Call(SetCamSpeed, CAM_DEFAULT, 4.0 / DT)
     Call(SetPanTarget, CAM_DEFAULT, 175, 0, 0)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(SetNpcPos, NPC_Bootler, 93, 160, -6)
     Call(InterpNpcYaw, NPC_Bootler, 90, 0)
     Thread
@@ -265,7 +265,7 @@ EvtScript EVS_NpcIdle_Boo = {
         Wait(1)
     EndLoop
     Thread
-        SetF(LVar0, Float(0.5))
+        SetF(LVar0, 0.5)
         Call(MakeLerp, 50, 80, 15 * DT, EASING_LINEAR)
         Loop(0)
             Call(UpdateLerp)
@@ -295,7 +295,7 @@ EvtScript EVS_NpcIdle_Boo = {
     Call(SetNpcPos, NPC_SELF, 293, 59, 21)
     Wait(1)
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
-    Call(SetNpcJumpscale, NPC_SELF, Float(-0.3))
+    Call(SetNpcJumpscale, NPC_SELF, -0.3)
     Call(RandInt, 100, LVar3)
     Sub(LVar0, LVar3)
     Add(LVar1, 100)
@@ -332,8 +332,8 @@ EvtScript EVS_NpcInit_TubbasHeart = {
 
 EvtScript EVS_NpcInit_Tubba = {
     Call(SetSelfVar, 0, 0)
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Tubba))
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Tubba))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Tubba)
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_Tubba)
     IfNe(GB_StoryProgress, STORY_CH3_HEART_ESCAPED_WINDY_MILL)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -343,7 +343,7 @@ EvtScript EVS_NpcInit_Tubba = {
 
 EvtScript EVS_NpcInit_Boo = {
     Call(SetSelfVar, 0, 0)
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Boo))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Boo)
     IfNe(GB_StoryProgress, STORY_CH3_HEART_ESCAPED_WINDY_MILL)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -427,20 +427,20 @@ EvtScript EVS_Scene_SkolarRescued = {
     Add(LVar0, -25)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamDistance, CAM_DEFAULT, Float(475.0))
+    Call(SetCamDistance, CAM_DEFAULT, 475.0)
     Call(SetCamPitch, CAM_DEFAULT, 18, -8)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(1)
     Call(WaitForPlayerInputEnabled)
     Call(DisablePlayerInput, true)
     Wait(40 * DT)
     Call(SpeakToPlayer, NPC_Skolar, ANIM_WorldSkolar_TalkAngry, ANIM_WorldSkolar_Idle, 512, MSG_CH3_00D3)
-    Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
+    Call(SetCamDistance, CAM_DEFAULT, 300.0)
     Call(SetCamPitch, CAM_DEFAULT, 18, -9)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(4.0 / DT))
+    Call(SetCamSpeed, CAM_DEFAULT, 4.0 / DT)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(MakeLerp, 0, 360, 10 * DT, EASING_LINEAR)
     Loop(0)
         Call(UpdateLerp)
@@ -480,19 +480,19 @@ EvtScript EVS_Scene_SkolarRescued = {
     Wait(10 * DT)
     Call(GetNpcPos, NPC_Skolar, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamDistance, CAM_DEFAULT, Float(250.0))
+    Call(SetCamDistance, CAM_DEFAULT, 250.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Wait(10 * DT)
     Call(SpeakToPlayer, NPC_Skolar, ANIM_WorldSkolar_TalkAngry, ANIM_WorldSkolar_Idle, 512, MSG_CH3_00D4)
     Wait(10 * DT)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Add(LVar0, -25)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(4.0 / DT))
+    Call(SetCamDistance, CAM_DEFAULT, 300.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 4.0 / DT)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Wait(10 * DT)
     Call(SpeakToPlayer, NPC_Skolar, ANIM_WorldSkolar_TalkAngry, ANIM_WorldSkolar_Idle, 512, MSG_CH3_00D5)
     Call(SetNpcFlagBits, NPC_Skolar, NPC_FLAG_IGNORE_CAMERA_FOR_YAW, true)
@@ -552,7 +552,7 @@ EvtScript EVS_Scene_SkolarRescued = {
 EvtScript EVS_NpcInit_Skolar = {
     Call(GetEntryID, LVar0)
     IfEq(LVar0, arn_07_ENTRY_3)
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Skolar))
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Skolar)
         Exec(EVS_Scene_SkolarRescued)
     Else
         Call(RemoveNpc, NPC_SELF)

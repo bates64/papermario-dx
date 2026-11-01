@@ -28,8 +28,8 @@ EvtScript EVS_NpcInit_Twink = {
     Call(GetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
     Call(SetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     Call(SetNpcCollisionSize, NPC_SELF, 20, 20)
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Twink))
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Twink))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Twink)
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Twink)
     Return
     End
 };

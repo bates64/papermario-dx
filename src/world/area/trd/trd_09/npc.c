@@ -85,16 +85,16 @@ EvtScript EVS_NpcAI_KoopaBros_Red = {
     Call(FadeOutMusic, 0, 2000 * DT)
     Call(UseSettingsFrom, CAM_DEFAULT, 1300, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, 1490, 0, 0)
-    Call(SetCamPosB, CAM_DEFAULT, 1466, Float(41.6))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(1.5 / DT))
+    Call(SetCamPosB, CAM_DEFAULT, 1466, 41.6)
+    Call(SetCamSpeed, CAM_DEFAULT, 1.5 / DT)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Wait(20 * DT)
-    Call(SetCamPosB, CAM_DEFAULT, 1466, Float(41.6))
+    Call(SetCamPosB, CAM_DEFAULT, 1466, 41.6)
     Call(SetPanTarget, CAM_DEFAULT, 1490, 60, 0)
     Call(SetCamDistance, CAM_DEFAULT, 300)
     Call(SetCamPitch, CAM_DEFAULT, 25, -9)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(5.0 / DT))
+    Call(SetCamSpeed, CAM_DEFAULT, 5.0 / DT)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(20 * DT)
     Call(PlaySound, SOUND_METAL_DOOR_OPEN)
@@ -113,15 +113,15 @@ EvtScript EVS_NpcAI_KoopaBros_Red = {
     Call(SetNpcVar, NPC_KoopaBros_Black, 0, 1)
     Wait(60 * DT)
     Call(SetNpcAnimation, NPC_SELF, ANIM_KoopaBros_Red_Run)
-    Call(SetNpcSpeed, NPC_SELF, Float(3.0 / DT))
-    Call(SetNpcJumpscale, NPC_SELF, Float(0.8))
+    Call(SetNpcSpeed, NPC_SELF, 3.0 / DT)
+    Call(SetNpcJumpscale, NPC_SELF, 0.8)
     Call(NpcMoveTo, NPC_SELF, 1490, 0, 0)
     Wait(10 * DT)
     Call(SpeakToPlayer, NPC_SELF, ANIM_KoopaBros_Red_PointForward, ANIM_KoopaBros_Red_PointForward, 0, MSG_CH1_00F2)
     Call(UseSettingsFrom, CAM_DEFAULT, 1300, 0, 0)
-    Call(SetCamPosB, CAM_DEFAULT, 1466, Float(41.6))
+    Call(SetCamPosB, CAM_DEFAULT, 1466, 41.6)
     Call(SetPanTarget, CAM_DEFAULT, 1250, 0, 0)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(1.0 / DT))
+    Call(SetCamSpeed, CAM_DEFAULT, 1.0 / DT)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(SetNpcAnimation, NPC_SELF, ANIM_KoopaBros_Red_Land)
     Call(NpcJump0, NPC_SELF, 1440, 30, 0, 20 * DT)
@@ -139,9 +139,9 @@ EvtScript EVS_NpcAI_KoopaBros_Red = {
     Wait(60 * DT)
     Call(UseSettingsFrom, CAM_DEFAULT, 1300, 0, 0)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(1.5 / DT))
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(1.0 / DT))
+    Call(SetCamSpeed, CAM_DEFAULT, 1.5 / DT)
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 1.0 / DT)
     Set(GB_StoryProgress, STORY_CH1_KOOPA_BROS_FIRING_BLASTERS)
     Call(DisablePlayerInput, false)
     Call(RotateModel, MODEL_o60, 0, 0, -1, 0)
@@ -184,8 +184,8 @@ EvtScript EVS_NpcAI_KoopaBros_Black = {
             Goto(10)
         EndIf
     Call(SetNpcAnimation, NPC_SELF, ANIM_KoopaBros_Black_Run)
-    Call(SetNpcSpeed, NPC_SELF, Float(3.0 / DT))
-    Call(SetNpcJumpscale, NPC_SELF, Float(0.8))
+    Call(SetNpcSpeed, NPC_SELF, 3.0 / DT)
+    Call(SetNpcJumpscale, NPC_SELF, 0.8)
     Call(NpcMoveTo, NPC_SELF, 1520, 20, 0)
     Call(SetNpcAnimation, NPC_SELF, ANIM_KoopaBros_Black_Land)
     Call(NpcJump0, NPC_SELF, 1470, 30, 30, 20 * DT)
@@ -215,8 +215,8 @@ EvtScript EVS_NpcAI_KoopaBros_Yellow = {
             Goto(10)
         EndIf
     Call(SetNpcAnimation, NPC_SELF, ANIM_KoopaBros_Yellow_Run)
-    Call(SetNpcSpeed, NPC_SELF, Float(3.0 / DT))
-    Call(SetNpcJumpscale, NPC_SELF, Float(0.8))
+    Call(SetNpcSpeed, NPC_SELF, 3.0 / DT)
+    Call(SetNpcJumpscale, NPC_SELF, 0.8)
     Call(NpcMoveTo, NPC_SELF, 1505, 5, 0)
     Call(SetNpcAnimation, NPC_SELF, ANIM_KoopaBros_Yellow_Land)
     Call(NpcJump0, NPC_SELF, 1455, 30, 5, 20 * DT)
@@ -246,8 +246,8 @@ EvtScript EVS_NpcAI_KoopaBros_Green = {
             Goto(10)
         EndIf
     Call(SetNpcAnimation, NPC_SELF, ANIM_KoopaBros_Green_Run)
-    Call(SetNpcSpeed, NPC_SELF, Float(3.0 / DT))
-    Call(SetNpcJumpscale, NPC_SELF, Float(0.8))
+    Call(SetNpcSpeed, NPC_SELF, 3.0 / DT)
+    Call(SetNpcJumpscale, NPC_SELF, 0.8)
     Call(NpcMoveTo, NPC_SELF, 1490, -10, 0)
     Call(SetNpcAnimation, NPC_SELF, ANIM_KoopaBros_Green_Land)
     Call(NpcJump0, NPC_SELF, 1440, 30, -20, 20 * DT)
@@ -321,7 +321,7 @@ EvtScript EVS_NpcAI_BulletBill = {
         Call(EnemyEnableFirstStrike, true)
         Call(GetNpcPos, LVar0, LVar1, LVar2, LVar3)
         Call(GetNpcYaw, LVar0, LVar4)
-        Call(AddVectorPolar, LVar1, LVar3, Float(14.0), LVar4)
+        Call(AddVectorPolar, LVar1, LVar3, 14.0, LVar4)
         Add(LVar2, 11)
         Call(SetNpcPos, NPC_SELF, LVar1, LVar2, LVar3)
         Call(InterpNpcYaw, NPC_SELF, LVar4, 0)
@@ -333,7 +333,7 @@ EvtScript EVS_NpcAI_BulletBill = {
         Set(LVarC, LVar3)
         Add(LVarC, 3)
         PlayEffect(EFFECT_WALKING_DUST, 2, LVarA, LVarB, LVarC, 0, 0)
-        Call(SetNpcSpeed, NPC_SELF, Float(6.0))
+        Call(SetNpcSpeed, NPC_SELF, 6.0)
         Switch(LVar0)
             CaseEq(NPC_BillBlaster_01)
                 Call(NpcMoveTo, NPC_SELF, -437, LVar3, 0)
@@ -347,9 +347,9 @@ EvtScript EVS_NpcAI_BulletBill = {
         Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
         Add(LVar1, 5)
         Add(LVar2, 1)
-        PlayEffect(EFFECT_SMOKE_BURST, 0, LVar0, LVar1, LVar2, Float(0.05), 20)
+        PlayEffect(EFFECT_SMOKE_BURST, 0, LVar0, LVar1, LVar2, 0.05, 20)
         Add(LVar2, 1)
-        PlayEffect(EFFECT_RING_BLAST, 0, LVar0, LVar1, LVar2, Float(1.2), 25)
+        PlayEffect(EFFECT_RING_BLAST, 0, LVar0, LVar1, LVar2, 1.2, 25)
         Wait(3)
         Goto(1)
     Return
@@ -365,7 +365,7 @@ EvtScript EVS_NpcDefeat_BulletBill = {
                 Wait(20)
                 Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, true)
                 Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
-                Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_BulletBill))
+                Call(BindNpcAI, NPC_SELF, EVS_NpcAI_BulletBill)
             EndThread
             Call(DoNpcDefeat)
         CaseEq(OUTCOME_PLAYER_FLED)
@@ -446,7 +446,7 @@ EvtScript EVS_NpcDefeat_BillBlaster = {
 
 EvtScript EVS_NpcInit_BillBlaster = {
     IfEq(GF_TRD09_Defeated_BillBlasters, false)
-        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_BillBlaster))
+        Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_BillBlaster)
     Else
         Call(RemoveEncounter, NPC_SELF)
     EndIf
@@ -589,14 +589,14 @@ NpcGroupList DefaultNPCs = {
 
 EvtScript EVS_NpcIdle_BulletBill_Demo = {
     Call(GetNpcPos, NPC_SELF, LVar1, LVar2, LVar3)
-    Call(SetNpcSpeed, NPC_SELF, Float(6.0))
+    Call(SetNpcSpeed, NPC_SELF, 6.0)
     Call(NpcMoveTo, NPC_SELF, -460, LVar3, 0)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_BulletBill_Demo = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_BulletBill_Demo))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_BulletBill_Demo)
     Call(EnemyEnableFirstStrike, true)
     Return
     End

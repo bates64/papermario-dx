@@ -43,10 +43,10 @@ EvtScript EVS_NpcInteract_Kooper = {
         Call(UseSettingsFrom, CAM_DEFAULT, LVarA, LVarB, LVarC)
         Call(SetPanTarget, CAM_DEFAULT, 0, 0, -180)
         Call(SetCamDistance, CAM_DEFAULT, 375)
-        Call(SetCamPitch, CAM_DEFAULT, 17, Float(-5.5))
+        Call(SetCamPitch, CAM_DEFAULT, 17, -5.5)
 
 #if VERSION_PAL
-        Call(SetCamSpeed, CAM_DEFAULT, Float(4 / DT))
+        Call(SetCamSpeed, CAM_DEFAULT, 4 / DT)
 #else
         Call(SetCamSpeed, CAM_DEFAULT, 4)
 #endif
@@ -113,9 +113,9 @@ EvtScript EVS_NpcInteract_Kooper = {
         Call(SetNpcAnimation, NPC_Kooper, ANIM_KooperWithoutShell_Idle)
         Call(EndSpeech, NPC_Kooper, ANIM_KooperWithoutShell_Talk, ANIM_KooperWithoutShell_Idle, 0)
 #if VERSION_PAL
-        Call(AdjustCam, CAM_DEFAULT, Float(6 / DT), 30, Float(225.0), Float(17.0), Float(-8.5))
+        Call(AdjustCam, CAM_DEFAULT, 6 / DT, 30, 225.0, 17.0, -8.5)
 #else
-        Call(AdjustCam, CAM_DEFAULT, 6, 30, Float(225.0), Float(17.0), Float(-8.5))
+        Call(AdjustCam, CAM_DEFAULT, 6, 30, 225.0, 17.0, -8.5)
 #endif
         Wait(5 * DT)
         Call(SpeakToPlayer, NPC_Kooper, ANIM_KooperWithoutShell_Talk, ANIM_KooperWithoutShell_Idle, 0, MSG_CH1_00B6)
@@ -125,9 +125,9 @@ EvtScript EVS_NpcInteract_Kooper = {
         Call(SetNpcAnimation, NPC_Kooper, ANIM_KooperWithoutShell_Idle)
         Call(EndSpeech, NPC_Kooper, ANIM_KooperWithoutShell_Talk, ANIM_KooperWithoutShell_Idle, 0)
 #if VERSION_PAL
-        Call(AdjustCam, CAM_DEFAULT, Float(4 / DT), -30, Float(225.0), Float(17.0), Float(-8.5))
+        Call(AdjustCam, CAM_DEFAULT, 4 / DT, -30, 225.0, 17.0, -8.5)
 #else
-        Call(AdjustCam, CAM_DEFAULT, 4, -30, Float(225.0), Float(17.0), Float(-8.5))
+        Call(AdjustCam, CAM_DEFAULT, 4, -30, 225.0, 17.0, -8.5)
 #endif
         Wait(10 * DT)
         Thread
@@ -137,15 +137,15 @@ EvtScript EVS_NpcInteract_Kooper = {
         Call(DisablePartnerAI, false)
         Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldGoombario_Talk, ANIM_WorldGoombario_Idle, 0, MSG_CH1_00B7)
         Call(EnablePartnerAI)
-        Call(AdjustCam, CAM_DEFAULT, Float(90.0), 0, Float(375.0), Float(17.0), Float(-5.5))
+        Call(AdjustCam, CAM_DEFAULT, 90.0, 0, 375.0, 17.0, -5.5)
         Wait(10 * DT)
         Call(PlayerFaceNpc, NPC_Kooper, false)
         Wait(10 * DT)
         Call(SpeakToPlayer, NPC_Kooper, ANIM_KooperWithoutShell_Talk, ANIM_KooperWithoutShell_Idle, 0, MSG_CH1_00B8)
-        Call(BindNpcInteract, NPC_Kooper, Ref(EVS_NpcInteract_Kooper))
+        Call(BindNpcInteract, NPC_Kooper, EVS_NpcInteract_Kooper)
         Thread
 #if VERSION_PAL
-            Call(ResetCam, CAM_DEFAULT, Float(3.0 / DT))
+            Call(ResetCam, CAM_DEFAULT, 3.0 / DT)
 #else
             Call(ResetCam, CAM_DEFAULT, 3)
 #endif
@@ -264,12 +264,12 @@ EvtScript EVS_NpcIdle_MiscFuzzy1 = {
         Wait(8)
         Goto(100)
     EndIf
-    UseBuf(Ref(FuzzyJumpPath1))
+    UseBuf(FuzzyJumpPath1)
     Set(LVar1, 200)
     BufRead2(LVar0, LVar2)
     Call(SetNpcPos, NPC_MiscFuzzy1, LVar0, LVar1, LVar2)
     Label(0)
-        UseBuf(Ref(FuzzyJumpPath1))
+        UseBuf(FuzzyJumpPath1)
         Loop(18)
             Set(LVar1, 0)
             BufRead2(LVar0, LVar2)
@@ -321,7 +321,7 @@ EvtScript EVS_MiscFuzzyFlee = {
 };
 
 EvtScript EVS_NpcHit_MiscFuzzy1 = {
-    Call(BindNpcAI, NPC_SELF, Ref(EVS_MiscFuzzyFlee))
+    Call(BindNpcAI, NPC_SELF, EVS_MiscFuzzyFlee)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER, true)
     Return
     End
@@ -344,14 +344,14 @@ EvtScript EVS_NpcIdle_MiscFuzzy2 = {
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_FUZZY_HOP_C, SOUND_SPACE_DEFAULT)
     Call(NpcJump0, NPC_SELF, 384, 0, 160, 7)
     Label(0)
-        UseBuf(Ref(FuzzyJumpPath2))
+        UseBuf(FuzzyJumpPath2)
         Loop(18)
             Set(LVar1, 0)
             BufRead2(LVar0, LVar2)
             Call(RandInt, 9, LVar3)
             Add(LVar3, 13)
-            MulF(LVar0, Float(0.9))
-            MulF(LVar2, Float(0.9))
+            MulF(LVar0, 0.9)
+            MulF(LVar2, 0.9)
             Call(PlaySoundAtNpc, NPC_SELF, SOUND_FUZZY_HOP_C, SOUND_SPACE_DEFAULT)
             Call(NpcJump0, NPC_SELF, LVar0, LVar1, LVar2, LVar3)
         EndLoop
@@ -361,29 +361,29 @@ EvtScript EVS_NpcIdle_MiscFuzzy2 = {
 };
 
 EvtScript EVS_NpcHit_MiscFuzzy2 = {
-    Call(BindNpcAI, NPC_SELF, Ref(EVS_MiscFuzzyFlee))
+    Call(BindNpcAI, NPC_SELF, EVS_MiscFuzzyFlee)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER, true)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_MiscFuzzy1 = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_MiscFuzzy1))
-    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_MiscFuzzy1))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_MiscFuzzy1)
+    Call(BindNpcHit, NPC_SELF, EVS_NpcHit_MiscFuzzy1)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_MiscFuzzy2 = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_MiscFuzzy2))
-    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_MiscFuzzy2))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_MiscFuzzy2)
+    Call(BindNpcHit, NPC_SELF, EVS_NpcHit_MiscFuzzy2)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Fuzzy_Later = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_MiscFuzzy2))
-    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_MiscFuzzy2))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_MiscFuzzy2)
+    Call(BindNpcHit, NPC_SELF, EVS_NpcHit_MiscFuzzy2)
     Return
     End
 };
@@ -393,7 +393,7 @@ EvtScript EVS_BreakBlock_DropShell = {
         Return
     EndIf
     Set(GF_NOK02_RecoveredShellB, true)
-    Call(BindNpcAI, NPC_Koopa_02, Ref(EVS_DoNothing))
+    Call(BindNpcAI, NPC_Koopa_02, EVS_DoNothing)
     Call(DisablePlayerInput, true)
     Call(NpcJump0, NPC_KoopaShell_02, 227, 0, 247, 20)
     Call(PlaySoundAtNpc, NPC_KoopaShell_02, SOUND_ITEM_BOUNCE, SOUND_SPACE_DEFAULT)
@@ -579,7 +579,7 @@ EvtScript EVS_NpcInteract_KoloradoWife = {
 };
 
 EvtScript EVS_NpcInit_KoloradoWife = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_KoloradoWife))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_KoloradoWife)
     IfGe(GB_StoryProgress, STORY_CH7_STAR_SPIRIT_DEPARTED)
         Call(SetNpcPos, NPC_SELF, -338, 0, -85)
         Return
@@ -593,7 +593,7 @@ EvtScript EVS_NpcInit_KoloradoWife = {
 };
 
 EvtScript EVS_NpcInit_KoopaKoot = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_KoopaKoot))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_KoopaKoot)
     Exec(EVS_SetupKootFavors)
     Return
     End

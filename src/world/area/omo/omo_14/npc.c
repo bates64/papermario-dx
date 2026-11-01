@@ -95,7 +95,7 @@ Vec2i CrowdChaseGoalPositions[] = {
 };
 
 EvtScript EVS_NpcIdle_ShyGuy_Loner = {
-    SetF(LVarA, Float(3.5 / DT))
+    SetF(LVarA, 3.5 / DT)
     Call(SetNpcSpeed, NPC_SELF, LVarA)
     Label(0)
     Call(GetSelfVar, 0, LVar0)
@@ -110,17 +110,17 @@ EvtScript EVS_NpcIdle_ShyGuy_Loner = {
                         Call(SetNpcSpeed, NPC_SELF, LVarA)
                         Call(SurroundPlayer)
                         IfGt(LVarE, 30)
-                            Call(SetNpcJumpscale, NPC_SELF, Float(1.0))
+                            Call(SetNpcJumpscale, NPC_SELF, 1.0)
                             Call(GetPlayerPos, LVar0, LVar1, LVar2)
                             IfEq(LVar1, 0)
                                 Call(PlaySound, SOUND_MASTER_SMACK)
                                 Call(NpcJump0, NPC_SELF, LVar0, LVar1, LVar2, 10 * DT)
                                 Thread
-                                    Call(ShakeCam, CAM_DEFAULT, 1, 4, Float(1.0))
+                                    Call(ShakeCam, CAM_DEFAULT, 1, 4, 1.0)
                                 EndThread
                                 Wait(3 * DT)
                                 Call(SetPlayerAnimation, ANIM_Mario1_PanicRun)
-                                Call(SetPlayerJumpscale, Float(1.0))
+                                Call(SetPlayerJumpscale, 1.0)
                                 Call(PlaySound, SOUND_MASTER_PUNCH)
                                 Call(PlayerJump1, LVar0, LVar1, LVar2, 15 * DT)
                                 Call(SetPlayerAnimation, ANIM_Mario1_Idle)
@@ -131,29 +131,29 @@ EvtScript EVS_NpcIdle_ShyGuy_Loner = {
                             Set(LVarE, 0)
                         EndIf
                     CaseEq(PARTNER_WATT)
-                        UseBuf(Ref(CrowdChaseGoalPositions))
+                        UseBuf(CrowdChaseGoalPositions)
                         BufRead2(LVar3, LVar4)
                         Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
                         IfLt(LVar0, 180)
                             Call(GetSelfVar, 1, LVar9)
                             IfNe(LVar9, 6)
                                 Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
-                                Call(SetNpcJumpscale, NPC_SELF, Float(1.0))
+                                Call(SetNpcJumpscale, NPC_SELF, 1.0)
                                 Call(NpcJump0, NPC_SELF, LVar0, 0, LVar2, 15 * DT)
                             EndIf
-                            UseBuf(Ref(CrowdChaseGoalPositions))
+                            UseBuf(CrowdChaseGoalPositions)
                             BufRead2(LVar1, LVar2)
-                            Call(SetNpcSpeed, NPC_SELF, Float(4.0 / DT))
+                            Call(SetNpcSpeed, NPC_SELF, 4.0 / DT)
                             Call(SimpleMoveNPC, LVar3, LVar4)
                         Else
                             Call(GetPlayerPos, LVar0, LVar1, LVar2)
                             IfLt(LVar0, 150)
-                                Call(SetNpcJumpscale, NPC_SELF, Float(1.0))
+                                Call(SetNpcJumpscale, NPC_SELF, 1.0)
                                 Call(NpcJump0, NPC_SELF, LVar3, 0, LVar4, 15 * DT)
                                 Wait(30 * DT)
                             Else
                                 Call(DisablePlayerInput, true)
-                                Call(SetNpcJumpscale, NPC_SELF, Float(1.0))
+                                Call(SetNpcJumpscale, NPC_SELF, 1.0)
                                 Call(NpcJump0, NPC_SELF, LVar3, 0, LVar4, 15 * DT)
                                 Wait(30 * DT)
                                 Call(DisablePlayerInput, false)
@@ -184,9 +184,9 @@ EvtScript EVS_NpcIdle_ShyGuy_Loner = {
                 Call(DisablePlayerInput, true)
                 Call(SpeakToPlayer, NPC_SELF, -1, -1, 5, MSG_CH4_005D)
                 Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
-                Call(SetNpcJumpscale, NPC_SELF, Float(1.0))
+                Call(SetNpcJumpscale, NPC_SELF, 1.0)
                 Call(NpcJump0, NPC_SELF, LVar0, 0, LVar2, 15 * DT)
-                Call(SetNpcSpeed, NPC_SELF, Float(4.0 / DT))
+                Call(SetNpcSpeed, NPC_SELF, 4.0 / DT)
                 Call(NpcMoveTo, NPC_SELF, 230, 0, 0)
                 Call(SetNpcSpeed, NPC_SELF, LVarA)
                 Set(LVar0, 1)
@@ -198,7 +198,7 @@ EvtScript EVS_NpcIdle_ShyGuy_Loner = {
                 Call(StopSound, SOUND_LOOP_SHY_GUY_CROWD_1)
                 Call(SpeakToPlayer, NPC_SELF, -1, -1, 5, MSG_CH4_005E)
                 Thread
-                    Call(ShakeCam, CAM_DEFAULT, 0, 10, Float(1.0))
+                    Call(ShakeCam, CAM_DEFAULT, 0, 10, 1.0)
                 EndThread
                 Call(PlaySoundAtCollider, COLLIDER_tt1, SOUND_TROMP_CRASH, SOUND_SPACE_DEFAULT)
                 PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, 37, 37, 1, 10, 30)
@@ -215,7 +215,7 @@ EvtScript EVS_NpcIdle_ShyGuy_Loner = {
                 Wait(40 * DT)
                 Call(InterpNpcYaw, NPC_SELF, 270, 0)
                 Wait(20 * DT)
-                Call(SetNpcSpeed, NPC_SELF, Float(4.0))
+                Call(SetNpcSpeed, NPC_SELF, 4.0)
                 Call(NpcMoveTo, NPC_SELF, 300, 0, 0)
                 Set(GB_StoryProgress, STORY_CH4_OPENED_GENERAL_GUY_ROOM)
                 Wait(30 * DT)
@@ -232,7 +232,7 @@ EvtScript EVS_NpcIdle_ShyGuy_Loner = {
 EvtScript EVS_NpcIdle_ShyGuy_Crowd = {
     Call(RandInt, 15, LVarA)
     Add(LVarA, 20)
-    DivF(LVarA, Float(10.0 * DT))
+    DivF(LVarA, 10.0 * DT)
     Call(SetNpcSpeed, NPC_SELF, LVarA)
     Label(0)
     Call(GetSelfVar, 0, LVar0)
@@ -247,7 +247,7 @@ EvtScript EVS_NpcIdle_ShyGuy_Crowd = {
                         Call(SetNpcSpeed, NPC_SELF, LVarA)
                         Call(SurroundPlayer)
                         IfGt(LVarE, 30)
-                            Call(SetNpcJumpscale, NPC_SELF, Float(1.0))
+                            Call(SetNpcJumpscale, NPC_SELF, 1.0)
                             Call(GetPlayerPos, LVar0, LVar1, LVar2)
                             IfEq(LVar1, 0)
                                 Call(NpcJump0, NPC_SELF, LVar0, LVar1, LVar2, 10 * DT)
@@ -261,11 +261,11 @@ EvtScript EVS_NpcIdle_ShyGuy_Crowd = {
                         Call(GetSelfVar, 1, LVar9)
                         Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
                         IfNe(LVar9, 6)
-                            Call(SetNpcJumpscale, NPC_SELF, Float(1.0))
+                            Call(SetNpcJumpscale, NPC_SELF, 1.0)
                             Call(NpcJump0, NPC_SELF, LVar0, 0, LVar2, 15 * DT)
                         EndIf
                         Call(GetSelfNpcID, LVar5)
-                        UseBuf(Ref(CrowdChaseGoalPositions))
+                        UseBuf(CrowdChaseGoalPositions)
                         Loop(LVar5)
                             BufRead2(LVar3, LVar4)
                         EndLoop
@@ -275,7 +275,7 @@ EvtScript EVS_NpcIdle_ShyGuy_Crowd = {
                             Set(LVar4, 50)
                         EndIf
                         Set(LVarF, LVar0)
-                        Call(SetNpcSpeed, NPC_SELF, Float(7.0 / DT))
+                        Call(SetNpcSpeed, NPC_SELF, 7.0 / DT)
                         Call(SimpleMoveNPC, LVar3, LVar4)
                         Call(GetNpcVar, NPC_ShyGuy_01, 0, LVar0)
                         IfEq(LVar0, 1)
@@ -318,13 +318,13 @@ EvtScript EVS_NpcIdle_ShyGuy_Crowd = {
             Wait(LVar0)
             Call(InterpNpcYaw, NPC_SELF, 90, 0)
             Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
-            Call(SetNpcJumpscale, NPC_SELF, Float(1.0))
+            Call(SetNpcJumpscale, NPC_SELF, 1.0)
             Call(NpcJump0, NPC_SELF, 235, LVar1, LVar2, 20 * DT * DT)
             Wait(30 * DT)
             Call(SetSelfVar, 0, 3)
         CaseEq(3)
             Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION, true)
-            Call(SetNpcSpeed, NPC_SELF, Float(4.0 / DT))
+            Call(SetNpcSpeed, NPC_SELF, 4.0 / DT)
             Call(NpcMoveTo, NPC_SELF, 235, 0, 0)
             Call(NpcMoveTo, NPC_SELF, 300, 0, 0)
             Call(RemoveNpc, NPC_SELF)
@@ -337,7 +337,7 @@ EvtScript EVS_NpcIdle_ShyGuy_Crowd = {
 
 EvtScript EVS_NpcInit_ShyGuy_Loner = {
     IfLt(GB_StoryProgress, STORY_CH4_OPENED_GENERAL_GUY_ROOM)
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_ShyGuy_Loner))
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_ShyGuy_Loner)
         Call(SetNpcPos, NPC_SELF, 120, 0, 0)
         Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Walk)
     Else
@@ -361,11 +361,11 @@ Vec3i CrowdInitialPositions[] = {
 };
 
 EvtScript EVS_NpcInit_ShyGuy_Crowd = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_ShyGuy_Crowd))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_ShyGuy_Crowd)
     IfLt(GB_StoryProgress, STORY_CH4_OPENED_GENERAL_GUY_ROOM)
         Call(GetSelfNpcID, LVar0)
         Sub(LVar0, 0)
-        UseBuf(Ref(CrowdInitialPositions))
+        UseBuf(CrowdInitialPositions)
         Loop(LVar0)
             BufRead3(LVar1, LVar2, LVar3)
         EndLoop

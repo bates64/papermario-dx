@@ -28,7 +28,7 @@ Flying actors use different movement functions than ground actors:
 
 ```c
 // flying movement (in EVS_Idle or EVS_TakeTurn)
-Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
+Call(SetActorSpeed, ACTOR_SELF, 6.0)
 Call(FlyToGoal,
     ACTOR_SELF, 0, -4, EASING_LINEAR)
 ```

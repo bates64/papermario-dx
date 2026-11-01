@@ -10,7 +10,7 @@ MobileAISettings AISettings_Ninji_Wander = {
 };
 
 EvtScript EVS_NpcAI_Ninji_Wander = {
-    Call(BasicAI_Main, Ref(AISettings_Ninji_Wander))
+    Call(BasicAI_Main, AISettings_Ninji_Wander)
     Return
     End
 };

@@ -252,7 +252,7 @@ EvtScript EVS_Main = {
     Thread
         Call(UseSettingsFrom, CAM_DEFAULT, 0, 10, 0)
         Call(SetPanTarget, CAM_DEFAULT, 0, 0, 0)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(0.3))
+        Call(SetCamSpeed, CAM_DEFAULT, 0.3)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
         Wait(94)
         Call(SetPanTarget, CAM_DEFAULT, 0, 0, 1000)

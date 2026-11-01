@@ -69,10 +69,10 @@ EvtScript EVS_CloseDoor_Ch2 = {
 EvtScript EVS_FocusCam_Door_Ch2 = {
     Call(UseSettingsFrom, CAM_DEFAULT, -330, 0, -30)
     Call(SetPanTarget, CAM_DEFAULT, -330, 0, -30)
-    Call(SetCamDistance, CAM_DEFAULT, Float(325.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-11.0))
-    Call(SetCamPosA, CAM_DEFAULT, Float(-310.0), Float(32.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamDistance, CAM_DEFAULT, 325.0)
+    Call(SetCamPitch, CAM_DEFAULT, 17.0, -11.0)
+    Call(SetCamPosA, CAM_DEFAULT, -310.0, 32.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Return
     End
@@ -92,12 +92,12 @@ EvtScript EVS_Scene_Chapter2 = {
     Call(SetNpcVar, NPC_Bowser, 0, 1)
     Thread
         Call(SetNpcAnimation, NPC_Bowser, ANIM_WorldBowser_Walk)
-        Call(SetNpcSpeed, NPC_Bowser, Float(3.0 / DT))
+        Call(SetNpcSpeed, NPC_Bowser, 3.0 / DT)
         Call(NpcMoveTo, NPC_Bowser, -30, 30, 0)
         Call(SetNpcAnimation, NPC_Bowser, ANIM_WorldBowser_Idle)
         Call(SetNpcVar, NPC_Bowser, 0, 0)
     EndThread
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Loop(0)
         Call(GetNpcPos, NPC_Bowser, LVar0, LVar1, LVar2)
         Add(LVar0, 30)
@@ -129,7 +129,7 @@ EvtScript EVS_Scene_Chapter2 = {
     Call(SetMusic, 0, SONG_KAMMY_KOOPA_THEME, 0, VOL_LEVEL_FULL)
     Call(SetNpcPos, NPC_Kammy, -470, 0, -30)
     Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Run)
-    Call(SetNpcSpeed, NPC_Kammy, Float(5.0 / DT))
+    Call(SetNpcSpeed, NPC_Kammy, 5.0 / DT)
     Call(NpcMoveTo, NPC_Kammy, -340, -30, 0)
     Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Idle)
     Wait(10)
@@ -139,7 +139,7 @@ EvtScript EVS_Scene_Chapter2 = {
     Call(SetCamPosA, CAM_DEFAULT, -287, 32)
     Wait(5 * DT)
     Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Run)
-    Call(SetNpcSpeed, NPC_Kammy, Float(5.0 / DT))
+    Call(SetNpcSpeed, NPC_Kammy, 5.0 / DT)
     Call(NpcMoveTo, NPC_Kammy, -110, 30, 0)
     Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Idle)
     Call(SpeakToNpc, NPC_Kammy, ANIM_WorldKammy_Talk, ANIM_WorldKammy_Idle, 0, NPC_Bowser, MSG_Peach_0060)
@@ -161,14 +161,14 @@ EvtScript EVS_Scene_Chapter2 = {
     Call(SpeakToNpc, NPC_Bowser, ANIM_WorldBowser_Talk, ANIM_WorldBowser_Idle, 0, NPC_Kammy, MSG_Peach_0065)
     Thread
         Call(SetNpcAnimation, NPC_Bowser, ANIM_WorldBowser_Walk)
-        Call(SetNpcSpeed, NPC_Bowser, Float(3.0 / DT))
+        Call(SetNpcSpeed, NPC_Bowser, 3.0 / DT)
         Call(NpcMoveTo, NPC_Bowser, -470, -30, 0)
     EndThread
     Call(SetNpcVar, NPC_Kammy, 0, 1)
     Thread
         Wait(40 * DT)
         Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Walk)
-        Call(SetNpcSpeed, NPC_Kammy, Float(3.0 / DT))
+        Call(SetNpcSpeed, NPC_Kammy, 3.0 / DT)
         Call(NpcMoveTo, NPC_Kammy, -470, -30, 0)
         Call(SetNpcVar, NPC_Kammy, 0, 0)
     EndThread
@@ -195,7 +195,7 @@ EvtScript EVS_Scene_Chapter2 = {
     Exec(EVS_CloseDoor_Ch2)
     Wait(30 * DT)
     Call(SetMusic, 0, SONG_PRISONER_PEACH_THEME, 0, VOL_LEVEL_FULL)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(SetCamDistance, CAM_DEFAULT, 300)
     Call(SetPanTarget, CAM_DEFAULT, 20, 0, 30)
     Wait(3 * DT)
@@ -209,7 +209,7 @@ EvtScript EVS_Scene_Chapter2 = {
         EndLoop
         Call(InterpNpcYaw, NPC_PARTNER, 90, 0)
     EndThread
-    Call(LoadPath, 80 * DT, Ref(TwinkEmergePath), ARRAY_COUNT(TwinkEmergePath), EASING_LINEAR)
+    Call(LoadPath, 80 * DT, TwinkEmergePath, ARRAY_COUNT(TwinkEmergePath), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_PARTNER, LVar1, LVar2, LVar3)
@@ -231,7 +231,7 @@ EvtScript EVS_Scene_Chapter2 = {
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_Talk, ANIM_Twink_Idle, 0, MSG_Peach_0069)
     Call(SpeakToPlayer, NPC_PLAYER, ANIM_Peach3_InformalTalk, ANIM_Peach1_Idle, 5, MSG_Peach_006A)
     Exec(EVS_SetupMusic)
-    Call(ResetCam, CAM_DEFAULT, Float(4.0 / DT))
+    Call(ResetCam, CAM_DEFAULT, 4.0 / DT)
     Call(EnablePartnerAI)
     Call(DisablePlayerInput, false)
     Return

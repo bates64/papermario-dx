@@ -12,7 +12,7 @@ EvtScript EVS_SpinyTromp_ManageCamera = {
     Call(UseSettingsFrom, CAM_DEFAULT, LVar3, LVar4, LVar5)
     Call(SetPanTarget, CAM_DEFAULT, LVar3, LVar4, LVar5)
     Call(SetCamDistance, CAM_DEFAULT, 500)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(10.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 10.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Loop(0)
         IfEq(AF_KZN_Tromp2_ShakingDone, false)
@@ -40,7 +40,7 @@ EvtScript EVS_SpinyTromp_ManageCamera = {
 
 EvtScript EVS_SpinyTromp_ShakeCam = {
     Loop(0)
-        Call(ShakeCam, CAM_DEFAULT, 0, 30, Float(1.0))
+        Call(ShakeCam, CAM_DEFAULT, 0, 30, 1.0)
     EndLoop
     Return
     End
@@ -120,9 +120,9 @@ EvtScript EVS_SetupSpinyTromp = {
                 Call(EnableModel, MODEL_mae, false)
                 Call(EnableModel, MODEL_ato, true)
                 Thread
-                    Call(ShakeCam, CAM_DEFAULT, 0, 20, Float(3.0))
-                    Call(ShakeCam, CAM_DEFAULT, 0, 10, Float(1.7))
-                    Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(0.5))
+                    Call(ShakeCam, CAM_DEFAULT, 0, 20, 3.0)
+                    Call(ShakeCam, CAM_DEFAULT, 0, 10, 1.7)
+                    Call(ShakeCam, CAM_DEFAULT, 0, 5, 0.5)
                 EndThread
                 Set(AF_KZN_Tromp2_ShakingDone, true)
             EndIf
@@ -148,7 +148,7 @@ EvtScript EVS_SetupSpinyTromp = {
     Call(SetGroupVisibility, MODEL_goron, MODEL_GROUP_HIDDEN)
     Call(EnableModel, MODEL_me, false)
     KillThread(LVarA)
-    Call(ResetCam, CAM_DEFAULT, Float(90.0))
+    Call(ResetCam, CAM_DEFAULT, 90.0)
     Set(AF_KZN_Tromp2_StopPlayer, false)
     Set(AF_KZN_TrompRollingDone, true)
     Return

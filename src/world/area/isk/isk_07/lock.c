@@ -44,7 +44,7 @@ EvtScript EVS_UnlockPrompt_RuinsDoor = {
 EvtScript EVS_SetupLock = {
     IfEq(GF_ISK07_UnlockedDoor, false)
         Call(MakeTransformGroup, MODEL_g310)
-        BindPadlock(Ref(EVS_UnlockPrompt_RuinsDoor), TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), Ref(KeyList), 0, 1)
+        BindPadlock(EVS_UnlockPrompt_RuinsDoor, TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), KeyList, 0, 1)
     Else
         Call(EnableModel, MODEL_g310, false)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilittw, COLLIDER_FLAGS_UPPER_MASK)
@@ -69,7 +69,7 @@ EvtScript EVS_ShutEntryDoor = {
             Goto(10)
         EndIf
     Call(PlaySoundAtCollider, COLLIDER_deilitte, SOUND_ISK_DOOR_SLAM, SOUND_SPACE_DEFAULT)
-    Call(ShakeCam, CAM_DEFAULT, 0, 10, Float(0.3))
+    Call(ShakeCam, CAM_DEFAULT, 0, 10, 0.3)
     Return
     End
 };

@@ -12,7 +12,7 @@ EvtScript EVS_ExitWalk_flo_12_0 = EVT_EXIT_WALK(60, flo_11_ENTRY_1, "flo_12", fl
 #define EVT_GOTO_MAP(mapName, entry) \
 { \
     SetGroup(EVT_GROUP_EXIT_MAP) \
-    Call(GotoMap, Ref(mapName), entry) \
+    Call(GotoMap, mapName, entry) \
     Wait(100) \
     Return \
     End \
@@ -22,8 +22,8 @@ EvtScript EVS_ExitWalk_flo_12_0 = EVT_EXIT_WALK(60, flo_11_ENTRY_1, "flo_12", fl
 #define EVT_SETUP_PIPE(entry, collider, exitScript) \
     Set(LVar0, entry) \
     Set(LVar1, collider) \
-    Set(LVar2, Ref(exitScript)) \
-    BindTrigger(Ref(EVS_OnEnterPipe), TRIGGER_FLOOR_TOUCH, LVar1, 1, 0)
+    Set(LVar2, exitScript) \
+    BindTrigger(EVS_OnEnterPipe, TRIGGER_FLOOR_TOUCH, LVar1, 1, 0)
 
 EvtScript EVS_GotoMap_flo_11_5 = EVT_GOTO_MAP("flo_11", flo_11_ENTRY_5);
 EvtScript EVS_GotoMap_flo_11_6 = EVT_GOTO_MAP("flo_11", flo_11_ENTRY_6);
@@ -42,8 +42,8 @@ EvtScript EVS_OnEnterPipe = {
 };
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_flo_12_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_flo_23_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitWalk_flo_12_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitWalk_flo_23_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     EVT_SETUP_PIPE(flo_11_ENTRY_2, COLLIDER_o91, EVS_GotoMap_flo_11_5) // link 2 <--> 5
     EVT_SETUP_PIPE(flo_11_ENTRY_3, COLLIDER_o92, EVS_GotoMap_flo_11_6) // link 3 <--> 6
     EVT_SETUP_PIPE(flo_11_ENTRY_4, COLLIDER_o93, EVS_GotoMap_flo_11_7) // link 4 <--> 7
@@ -58,18 +58,18 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_FLOWER_FIELDS)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, false, Ref(DefaultNPCs))
+    Call(MakeNpcs, false, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitw, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilite, COLLIDER_FLAGS_UPPER_MASK)
     Call(GetEntryID, LVar0)
     IfLe(LVar0, flo_11_ENTRY_1)
-        Set(LVar0, Ref(EVS_BindExitTriggers))
+        Set(LVar0, EVS_BindExitTriggers)
         Exec(EnterWalk)
         Exec(EVS_Scene_LakituAmbush)
         Wait(1)
     Else
-        Set(LVarA, Ref(EVS_BindExitTriggers))
+        Set(LVarA, EVS_BindExitTriggers)
         Exec(EVS_Pipe_EnterVertical)
         Wait(1)
     EndIf

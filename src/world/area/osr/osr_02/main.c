@@ -21,11 +21,11 @@ EvtScript EVS_KeepPeachFromBowsersCastle = {
 
 EvtScript EVS_BindExitTriggers = {
     IfEq(GB_StoryProgress, STORY_CH6_BEGAN_PEACH_MISSION)
-        BindTrigger(Ref(EVS_KeepPeachFromBowsersCastle), TRIGGER_WALL_PRESS_A, COLLIDER_tt1, 1, 0)
+        BindTrigger(EVS_KeepPeachFromBowsersCastle, TRIGGER_WALL_PRESS_A, COLLIDER_tt1, 1, 0)
     Else
-        BindTrigger(Ref(EVS_ExitDoor_kpa_121_1), TRIGGER_WALL_PRESS_A, COLLIDER_tt1, 1, 0)
+        BindTrigger(EVS_ExitDoor_kpa_121_1, TRIGGER_WALL_PRESS_A, COLLIDER_tt1, 1, 0)
     EndIf
-    BindTrigger(Ref(EVS_ExitDoor_kkj_10_0), TRIGGER_WALL_PRESS_A, COLLIDER_tt2, 1, 0)
+    BindTrigger(EVS_ExitDoor_kkj_10_0, TRIGGER_WALL_PRESS_A, COLLIDER_tt2, 1, 0)
     Return
     End
 };
@@ -66,24 +66,24 @@ EvtScript EVS_Main = {
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     IfEq(GB_StoryProgress, STORY_CH6_BEGAN_PEACH_MISSION)
         Call(SetAvailableDisguise, PEACH_DISGUISE_CLUBBA)
-        Call(MakeNpcs, false, Ref(PeachNPCs))
+        Call(MakeNpcs, false, PeachNPCs)
     EndIf
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(osr_02_ENTRY_2)
-            Call(MakeNpcs, false, Ref(DefaultNPCs))
+            Call(MakeNpcs, false, DefaultNPCs)
     EndSwitch
     ExecWait(EVS_MakeEntities)
     IfEq(GF_KKJ25_Defeated_Bowser, false)
-        PlayEffect(EFFECT_FLAME, FX_FLAME_PINK, Float(-269.16895), Float(50.0), Float(100.22), 1, LVar0)
-        PlayEffect(EFFECT_FLAME, FX_FLAME_PINK, Float(-2.6025392), Float(50.0), Float(161.583), 1, LVar0)
-        PlayEffect(EFFECT_FLAME, FX_FLAME_PINK, Float(182.146), Float(50.0), Float(158.033), 1, LVar0)
-        PlayEffect(EFFECT_FLAME, FX_FLAME_PINK, Float(346.938), Float(50.0), Float(31.861), 1, LVar0)
-        PlayEffect(EFFECT_FLAME, FX_FLAME_PINK, Float(291.045), Float(86.206), Float(-191.08205), 1, LVar0)
-        PlayEffect(EFFECT_FLAME, FX_FLAME_PINK, Float(-105.39165), Float(70.0), Float(-203.115235), 1, LVar0)
-        PlayEffect(EFFECT_FLAME, FX_FLAME_PINK, Float(-52.5), Float(70.0), Float(-233.73735), 1, LVar0)
-        PlayEffect(EFFECT_FLAME, FX_FLAME_PINK, Float(52.5), Float(70.0), Float(-233.73735), 1, LVar0)
-        PlayEffect(EFFECT_FLAME, FX_FLAME_PINK, Float(108.229), Float(70.0), Float(-200.6), 1, LVar0)
+        PlayEffect(EFFECT_FLAME, FX_FLAME_PINK, -269.16895, 50.0, 100.22, 1, LVar0)
+        PlayEffect(EFFECT_FLAME, FX_FLAME_PINK, -2.6025392, 50.0, 161.583, 1, LVar0)
+        PlayEffect(EFFECT_FLAME, FX_FLAME_PINK, 182.146, 50.0, 158.033, 1, LVar0)
+        PlayEffect(EFFECT_FLAME, FX_FLAME_PINK, 346.938, 50.0, 31.861, 1, LVar0)
+        PlayEffect(EFFECT_FLAME, FX_FLAME_PINK, 291.045, 86.206, -191.08205, 1, LVar0)
+        PlayEffect(EFFECT_FLAME, FX_FLAME_PINK, -105.39165, 70.0, -203.115235, 1, LVar0)
+        PlayEffect(EFFECT_FLAME, FX_FLAME_PINK, -52.5, 70.0, -233.73735, 1, LVar0)
+        PlayEffect(EFFECT_FLAME, FX_FLAME_PINK, 52.5, 70.0, -233.73735, 1, LVar0)
+        PlayEffect(EFFECT_FLAME, FX_FLAME_PINK, 108.229, 70.0, -200.6, 1, LVar0)
     Else
         Call(EnableGroup, MODEL_g116, false)
     EndIf

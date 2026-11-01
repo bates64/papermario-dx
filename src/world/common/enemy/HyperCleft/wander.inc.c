@@ -19,7 +19,7 @@ MobileAISettings AISettings_HyperCleft_Wander = {
 
 EvtScript EVS_NpcAI_HyperCleft_Wander = {
     Call(SetSelfVar, AI_VAR_CLEFT_DASH_DELAY, 8)
-    Call(CleftAI_Main, Ref(AISettings_HyperCleft_Wander))
+    Call(CleftAI_Main, AISettings_HyperCleft_Wander)
     Return
     End
 };

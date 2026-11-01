@@ -142,11 +142,11 @@ EvtScript EVS_NpcInteract_Bubulb = {
         Wait(45)
         Call(SetNpcAnimation, NPC_SELF, ANIM_Bubulb_Purple_Idle)
         Call(SetNpcCollisionSize, NPC_SELF, 45, 26)
-        Call(AdjustCam, CAM_DEFAULT, Float(10.0), 0, 350, Float(15.0), Float(-6.5))
+        Call(AdjustCam, CAM_DEFAULT, 10.0, 0, 350, 15.0, -6.5)
         Call(SpeakToPlayer, NPC_SELF, ANIM_Bubulb_Purple_Talk, ANIM_Bubulb_Purple_Idle, 0, MSG_CH2_001F)
         EVT_GIVE_REWARD(ITEM_MAGICAL_SEED2)
         Call(SpeakToPlayer, NPC_SELF, ANIM_Bubulb_Purple_Talk, ANIM_Bubulb_Purple_Idle, 0, MSG_CH2_0020)
-        Call(ResetCam, CAM_DEFAULT, Float(10.0))
+        Call(ResetCam, CAM_DEFAULT, 10.0)
         Set(GF_IWA02_Gift_MagicalSeed2, true)
         Call(SetTattleMessage, NPC_Bubulb, MSG_NpcTattle_IWA_Bubulb_Revealed)
     Else
@@ -168,7 +168,7 @@ EvtScript EVS_NpcInteract_Bubulb = {
 };
 
 EvtScript EVS_NpcInit_Bubulb = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bubulb))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Bubulb)
     IfEq(GF_IWA02_Gift_MagicalSeed2, false)
         Call(SetNpcCollisionSize, NPC_SELF, 25, 25)
         Call(SetNpcAnimation, NPC_SELF, ANIM_Bubulb_Purple_BuriedIdle)

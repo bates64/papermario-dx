@@ -14,7 +14,7 @@ EvtScript EVS_NpcIdle_JungleFuzzy = {
         Goto(0)
     EndIf
     Wait(45)
-    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_Fuzzy_Wander))
+    Call(BindNpcAI, NPC_SELF, EVS_NpcAI_Fuzzy_Wander)
     Return
     End
 };
@@ -33,7 +33,7 @@ EvtScript EVS_NpcDefeat_Unused = {
 };
 
 EvtScript EVS_NpcInit_JungleFuzzy = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_JungleFuzzy))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_JungleFuzzy)
     Return
     End
 };

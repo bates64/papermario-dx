@@ -14,8 +14,8 @@ EvtScript EVS_FlowerSpawnRegion = {
     Sub(LVarD, LVar1) // sizeZ
     // spawnDelay = 11 + (100.0 / (sizeX / 100.0))
     SetF(LVar0, LVarC)
-    DivF(LVar0, Float(100.0))
-    SetF(LVarF, Float(100.0))
+    DivF(LVar0, 100.0)
+    SetF(LVarF, 100.0)
     DivF(LVarF, LVar0)
     Add(LVarF, 11)
     // initial spawn count = 1 + (200 / spawnDelay)

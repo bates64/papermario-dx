@@ -11,10 +11,10 @@ EvtScript EVS_OnShakeTree3 = {
     Wait(10)
     Call(UseSettingsFrom, CAM_DEFAULT, -128, 20, -555)
     Call(SetPanTarget, CAM_DEFAULT, -128, 20, -555)
-    Call(SetCamDistance, CAM_DEFAULT, Float(330.0))
+    Call(SetCamDistance, CAM_DEFAULT, 330.0)
     Call(SetCamSpeed, CAM_DEFAULT, 3)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Wait(5)
     Call(PlaySoundWithVolume, SOUND_GROW, 0)
     Call(EnableModel, MODEL_o241, true)
@@ -31,10 +31,10 @@ EvtScript EVS_OnShakeTree3 = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamDistance, CAM_DEFAULT, Float(400.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(4.0))
+    Call(SetCamDistance, CAM_DEFAULT, 400.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 4.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(DisablePlayerInput, false)
     Return
@@ -109,15 +109,15 @@ BombTrigger BombPos_Tree3 = {
 };
 
 EvtScript EVS_SetupFoliage = {
-    Set(LVar0, Ref(ShakeTree_Tree1))
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_WALL_HAMMER, COLLIDER_o212, 1, 0)
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(BombPos_Tree1), 1, 0)
-    Set(LVar0, Ref(ShakeTree_Tree2))
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_WALL_HAMMER, COLLIDER_o211, 1, 0)
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(BombPos_Tree2), 1, 0)
-    Set(LVar0, Ref(ShakeTree_Tree3))
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_WALL_HAMMER, COLLIDER_mgm_tree, 1, 0)
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(BombPos_Tree3), 1, 0)
+    Set(LVar0, ShakeTree_Tree1)
+    BindTrigger(EVS_ShakeTree, TRIGGER_WALL_HAMMER, COLLIDER_o212, 1, 0)
+    BindTrigger(EVS_ShakeTree, TRIGGER_POINT_BOMB, BombPos_Tree1, 1, 0)
+    Set(LVar0, ShakeTree_Tree2)
+    BindTrigger(EVS_ShakeTree, TRIGGER_WALL_HAMMER, COLLIDER_o211, 1, 0)
+    BindTrigger(EVS_ShakeTree, TRIGGER_POINT_BOMB, BombPos_Tree2, 1, 0)
+    Set(LVar0, ShakeTree_Tree3)
+    BindTrigger(EVS_ShakeTree, TRIGGER_WALL_HAMMER, COLLIDER_mgm_tree, 1, 0)
+    BindTrigger(EVS_ShakeTree, TRIGGER_POINT_BOMB, BombPos_Tree3, 1, 0)
     Return
     End
 };

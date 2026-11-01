@@ -16,7 +16,7 @@ EvtScript EVS_NpcInteract_StarKid_01 = {
 };
 
 EvtScript EVS_NpcInit_StarKid_01 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_StarKid_01))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_StarKid_01)
     Return
     End
 };
@@ -28,7 +28,7 @@ EvtScript EVS_NpcInteract_StarKid_02 = {
 };
 
 EvtScript EVS_NpcInit_StarKid_02 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_StarKid_02))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_StarKid_02)
     Return
     End
 };
@@ -40,7 +40,7 @@ EvtScript EVS_NpcInteract_StarKid_03 = {
 };
 
 EvtScript EVS_NpcInit_StarKid_03 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_StarKid_03))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_StarKid_03)
     Return
     End
 };
@@ -52,7 +52,7 @@ EvtScript EVS_NpcInteract_StarKid_04 = {
 };
 
 EvtScript EVS_NpcInit_StarKid_04 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_StarKid_04))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_StarKid_04)
     Return
     End
 };
@@ -64,7 +64,7 @@ EvtScript EVS_NpcInteract_StarKid_05 = {
 };
 
 EvtScript EVS_NpcInit_StarKid_05 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_StarKid_05))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_StarKid_05)
     Return
     End
 };
@@ -77,13 +77,13 @@ EvtScript EVS_ToadHouse_GetInBed = {
         Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
         Call(SetCamPitch, CAM_DEFAULT, 34, -8)
         Call(SetCamDistance, CAM_DEFAULT, 220)
-        Call(SetCamPosA, CAM_DEFAULT, Float(448.0), Float(180.0))
-        Call(SetCamPosB, CAM_DEFAULT, Float(410.0), Float(150.0))
+        Call(SetCamPosA, CAM_DEFAULT, 448.0, 180.0)
+        Call(SetCamPosB, CAM_DEFAULT, 410.0, 150.0)
         Call(SetCamPosC, CAM_DEFAULT, 0, 25)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+        Call(SetCamSpeed, CAM_DEFAULT, 90.0)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
     EndThread
-    Call(func_802D1270, 442, 140, Float(3.0))
+    Call(func_802D1270, 442, 140, 3.0)
     Call(InterpPlayerYaw, 191, 1)
     Wait(5)
     Call(InterpPlayerYaw, 204, 1)
@@ -125,7 +125,7 @@ EvtScript EVS_ToadHouse_SetDialogue = {
 };
 
 EvtScript EVS_NpcInit_ToadHouseKeeper = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ToadHouseKeeper))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_ToadHouseKeeper)
     Return
     End
 };
@@ -137,7 +137,7 @@ EvtScript EVS_NpcInteract_ShopOwner = {
 };
 
 EvtScript EVS_NpcInit_ShopOwner = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ShopOwner))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_ShopOwner)
     Return
     End
 };

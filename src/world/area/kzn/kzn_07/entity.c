@@ -33,15 +33,15 @@ EvtScript EVS_OnBreakBlock = {
 };
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Ref(Entity_GiantChest), 0, 45, -290, 0, ITEM_ULTRA_HAMMER, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_GiantChest, 0, 45, -290, 0, ITEM_ULTRA_HAMMER, MAKE_ENTITY_END)
     Call(AssignChestFlag, GF_KZN07_GiantChest)
     Exec(EVS_MonitorChestStatus)
     IfEq(GF_KZN07_Hammer3Block, false)
-        Call(MakeEntity, Ref(Entity_Hammer3BlockWideZ), 175, 35, -185, 0, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(EVS_OnBreakBlock))
+        Call(MakeEntity, Entity_Hammer3BlockWideZ, 175, 35, -185, 0, MAKE_ENTITY_END)
+        Call(AssignScript, EVS_OnBreakBlock)
     EndIf
     Call(CreatePushBlockGrid, 0, 15, 5, -62, 0, 35, 0)
-    Call(SetPushBlockFallEffect, 0, Ref(PushBlockFallCallback_Gravity))
+    Call(SetPushBlockFallEffect, 0, PushBlockFallCallback_Gravity)
     Call(SetPushBlock, 0, 8, 1, PUSH_GRID_BLOCK)
     Call(SetPushBlock, 0, 11, 4, PUSH_GRID_BLOCK)
     Return

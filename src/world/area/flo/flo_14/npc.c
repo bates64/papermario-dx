@@ -37,7 +37,7 @@ EvtScript EVS_NpcInteract_BubbleFlower = {
             Call(InterpPlayerYaw, 90, 0)
             Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
             Wait(5)
-            Call(AdjustCam, CAM_DEFAULT, Float(1.0), 0, 350, Float(17.0), Float(-6.0))
+            Call(AdjustCam, CAM_DEFAULT, 1.0, 0, 350, 17.0, -6.0)
             Exec(EVS_BlowBigBubble)
             Call(SpeakToPlayer, NPC_SELF, -1, -1, 0, MSG_CH6_0062)
             Thread
@@ -49,10 +49,10 @@ EvtScript EVS_NpcInteract_BubbleFlower = {
                 Wait(1)
                 Goto(10)
             EndIf
-            Call(ResetCam, CAM_DEFAULT, Float(4.0))
+            Call(ResetCam, CAM_DEFAULT, 4.0)
             Call(SpeakToPlayer, NPC_SELF, -1, -1, 5, MSG_CH6_0063)
             Set(GF_FLO14_GaveBerryToBubblePlant, true)
-            BindTrigger(Ref(EVS_RideBigBubble), TRIGGER_FLOOR_PRESS_A, COLLIDER_o154, 1, 0)
+            BindTrigger(EVS_RideBigBubble, TRIGGER_FLOOR_PRESS_A, COLLIDER_o154, 1, 0)
         EndIf
     EndIf
     Set(AF_FLO_PauseBlowingBubbles, false)
@@ -63,7 +63,7 @@ EvtScript EVS_NpcInteract_BubbleFlower = {
 EvtScript EVS_NpcInit_BubbleFlower = {
     Set(AF_FLO_BlowingBigBubble, false)
     Set(AF_FLO_BigBubbleReady, false)
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_BubbleFlower))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_BubbleFlower)
     Return
     End
 };

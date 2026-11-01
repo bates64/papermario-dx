@@ -307,7 +307,7 @@ EvtScript EVS_NpcIdle_Koopa_01_Crisis = {
     IfEq(GF_NOK02_RecoveredShellA, true)
         Call(SetNpcPos, NPC_FuzzyThief, NPC_DISPOSE_LOCATION)
         Call(SetNpcPos, NPC_KoopaShell_01, NPC_DISPOSE_LOCATION)
-        Call(SetNpcSpeed, NPC_Koopa_01, Float(3.0))
+        Call(SetNpcSpeed, NPC_Koopa_01, 3.0)
         Label(5)
             Call(GetNpcPointer, NPC_Koopa_01, LVarF)
             Call(ChooseLocationNotNearPlayer, LVarF)
@@ -376,7 +376,7 @@ EvtScript EVS_NpcIdle_Koopa_01_Crisis = {
         Call(PlayerFaceNpc, NPC_KoopaShell_01, false)
         Call(NpcFaceNpc, NPC_Koopa_01, NPC_KoopaShell_01, 0)
         Thread
-            Call(AdjustCam, CAM_DEFAULT, 4, 0, Float(300.0), Float(17.0), Float(-7.0))
+            Call(AdjustCam, CAM_DEFAULT, 4, 0, 300.0, 17.0, -7.0)
         EndThread
         Call(GetNpcPos, NPC_Koopa_01, LVar0, LVar1, LVar2)
         Call(SetNpcAnimation, NPC_Koopa_01, ANIM_KoopaWithoutShell_Happy)
@@ -421,7 +421,7 @@ EvtScript EVS_NpcIdle_Koopa_01_Crisis = {
         EndThread
         Wait(30)
         Call(DisablePlayerInput, false)
-        Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcIdle_Koopa_01_Crisis))
+        Call(BindNpcAI, NPC_SELF, EVS_NpcIdle_Koopa_01_Crisis)
         Return
     EndIf
     Return
@@ -443,8 +443,8 @@ EvtScript EVS_NpcHit_Fuzzy_Thief = {
 };
 
 EvtScript EVS_NpcInit_Koopa_01_Crisis = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Koopa_01_Crisis))
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Koopa_01_Crisis))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Koopa_01_Crisis)
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Koopa_01_Crisis)
     IfEq(GF_NOK02_RecoveredShellA, true)
         Return
     EndIf
@@ -455,7 +455,7 @@ EvtScript EVS_NpcInit_Koopa_01_Crisis = {
 };
 
 EvtScript EVS_NpcInit_Fuzzy_Thief = {
-    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_Fuzzy_Thief))
+    Call(BindNpcHit, NPC_SELF, EVS_NpcHit_Fuzzy_Thief)
     IfEq(GF_NOK02_RecoveredShellA, true)
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndIf
@@ -471,8 +471,8 @@ EvtScript EVS_NpcInit_KoopaShell_01_Crisis = {
 };
 
 EvtScript EVS_NpcInit_Koopa_02_Crisis = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Koopa_02_Crisis))
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Koopa_02_Crisis))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Koopa_02_Crisis)
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Koopa_02_Crisis)
     IfEq(GF_NOK02_RecoveredShellB, false)
         Call(SetNpcPos, NPC_KoopaShell_02, 150, 106, 250)
         Return
@@ -494,11 +494,11 @@ EvtScript EVS_NpcInit_Kooper = {
         CaseLt(STORY_CH1_PROMISED_TO_HELP_KOOPER)
             Call(SetNpcPos, NPC_Kooper, NPC_DISPOSE_LOCATION)
         CaseGe(STORY_CH1_KOOPER_JOINED_PARTY)
-            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Kooper))
+            Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Kooper)
             Call(SetNpcPos, NPC_Kooper, NPC_DISPOSE_LOCATION)
             Return
         CaseDefault
-            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Kooper))
+            Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Kooper)
     EndSwitch
     Call(SetNpcSprite, NPC_Kooper, ANIM_KooperWithoutShell_Idle)
     Return

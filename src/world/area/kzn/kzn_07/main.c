@@ -52,12 +52,12 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_MT_LAVALAVA)
     Call(SetSpriteShading, SHADING_KZN_07)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Call(MakeNpcs, true, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     Exec(EVS_SetupMusic)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_doro, SURFACE_TYPE_LAVA)
     Thread
-        Call(ResetFromLava, Ref(SafeFloorColliders))
+        Call(ResetFromLava, SafeFloorColliders)
     EndThread
     Exec(EVS_SetupTexPanners)
     Set(LVar0, EVS_BindExitTriggers)
@@ -68,7 +68,7 @@ EvtScript EVS_Main = {
         Call(ApplyLavaGlowLighting, LAVA_GLOW_MODE_0, nullptr)
     EndThread
     Thread
-        Call(ClearLavaGlowLighting, Ref(LavaModelIDs))
+        Call(ClearLavaGlowLighting, LavaModelIDs)
     EndThread
     Return
     End

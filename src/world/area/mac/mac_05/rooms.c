@@ -21,7 +21,7 @@ EvtScript EVS_SetWallRot_Club64 = {
     Call(RotateModel, MODEL_o134, LVar1, 1, 0, 0)
     Call(RotateModel, MODEL_o137, LVar1, 1, 0, 0)
     Set(LVar1, LVar0)
-    MulF(LVar1, Float(-1.0))
+    MulF(LVar1, -1.0)
     Call(RotateModel, MODEL_o82, LVar1, 1, 0, 0)
     Call(RotateModel, MODEL_o83, LVar1, 1, 0, 0)
     Call(RotateModel, MODEL_o84, LVar1, 1, 0, 0)
@@ -71,14 +71,14 @@ s32 InsideNPCs_Club64[] = {
 EvtScript EVS_SetupRooms = {
     Call(CreateMapRoom,
         2,
-        Ref(EVS_SetDoorRot_Club64),
-        Ref(EVS_SetWallRot_Club64),
-        Ref(EVS_DropDoor_Club64),
-        Ref(EVS_RoomListener_Club64),
+        EVS_SetDoorRot_Club64,
+        EVS_SetWallRot_Club64,
+        EVS_DropDoor_Club64,
+        EVS_RoomListener_Club64,
         COLLIDER_deilit1,
         COLLIDER_deilit1u,
         MODEL_harbour_club,
-        Ref(InsideNPCs_Club64))
+        InsideNPCs_Club64)
     Set(LVar0, 3)
     Exec(EVS_RoomListener_Club64)
     Return

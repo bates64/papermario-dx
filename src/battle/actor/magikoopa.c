@@ -269,7 +269,7 @@ EvtScript EVS_Idle = {
         Call(GetActorVar, ACTOR_SELF, AVAR_CloneActorID, LVar0)
         Call(ActorExists, LVar0, LVar1)
         IfEq(LVar1, 1)
-            Call(CosInterpMinMax, LVarF, LVar1, Float(254.0), Float(100.0), 20, 0, 0)
+            Call(CosInterpMinMax, LVarF, LVar1, 254.0, 100.0, 20, 0, 0)
             Add(LVarF, 1)
             Call(GetActorFlags, ACTOR_SELF, LVar2)
             IfFlag(LVar2, ACTOR_FLAG_FLYING)
@@ -334,7 +334,7 @@ EvtScript EVS_KnockDown = {
     Call(HideHealthBar, ACTOR_SELF)
     Call(GetStatusFlags, ACTOR_SELF, LVar0)
     IfFlag(LVar0, STATUS_FLAG_SHRINK)
-        Call(SetPartScale, ACTOR_SELF, PRT_BROOM, Float(0.4), Float(0.4), Float(0.4))
+        Call(SetPartScale, ACTOR_SELF, PRT_BROOM, 0.4, 0.4, 0.4)
     EndIf
     Call(SetPartFlagBits, ACTOR_SELF, PRT_GROUND, ACTOR_PART_FLAG_PRIMARY_TARGET, true)
     Call(SetPartFlagBits, ACTOR_SELF, PRT_GROUND, ACTOR_PART_FLAG_INVISIBLE | ACTOR_PART_FLAG_NO_TARGET, false)
@@ -348,12 +348,12 @@ EvtScript EVS_KnockDown = {
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_FALL_QUICK)
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Set(LVar1, 0)
-    Call(SetActorJumpGravity, ACTOR_SELF, Float(0.8))
+    Call(SetActorJumpGravity, ACTOR_SELF, 0.8)
     Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(JumpToGoal, ACTOR_SELF, 15, false, true, false)
     Call(StartRumbleWithParams, 150, 10)
     Thread
-        Call(ShakeCam, CAM_BATTLE, 0, 5, Float(0.7))
+        Call(ShakeCam, CAM_BATTLE, 0, 5, 0.7)
     EndThread
     Call(GetLastEvent, ACTOR_SELF, LVar3)
     IfEq(LVar3, EVENT_15)
@@ -361,7 +361,7 @@ EvtScript EVS_KnockDown = {
         Call(GetActorPos, ACTOR_SELF, LVar3, LVar4, LVar5)
         Add(LVar4, 10)
         Add(LVar5, 5)
-        PlayEffect(EFFECT_SMOKE_BURST, 0, LVar3, LVar4, LVar5, Float(1.0), 10)
+        PlayEffect(EFFECT_SMOKE_BURST, 0, LVar3, LVar4, LVar5, 1.0, 10)
     EndIf
     Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(JumpToGoal, ACTOR_SELF, 10, false, true, false)
@@ -376,16 +376,16 @@ EvtScript EVS_KnockDown = {
     Call(SetPartFlagBits, ACTOR_SELF, PRT_BROOM, ACTOR_PART_FLAG_INVISIBLE, true)
     Call(SetAnimation, ACTOR_SELF, PRT_GROUND, ANIM_Magikoopa_Idle)
     Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_FLYING, false)
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
     Call(SetActorType, ACTOR_SELF, ACTOR_TYPE_MAGIKOOPA)
-    Call(SetStatusTable, ACTOR_SELF, Ref(StatusTable))
+    Call(SetStatusTable, ACTOR_SELF, StatusTable)
     Call(SetAbsoluteStatusOffsets, -10, 20, 10, 32)
     Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_TYPE_CHANGED, true)
     Call(ResetAllActorSounds, ACTOR_SELF)
     Call(GetIndexFromPos, ACTOR_SELF, LVar0)
     Mod(LVar0, 4)
     Call(SetGoalToIndex, ACTOR_SELF, LVar0)
-    Call(SetActorSpeed, ACTOR_SELF, Float(4.0))
+    Call(SetActorSpeed, ACTOR_SELF, 4.0)
     Call(RunToGoal, ACTOR_SELF, 0, false)
     Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(ForceHomePos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -406,7 +406,7 @@ EvtScript EVS_Flee = {
         Wait(15)
         Call(UseBattleCamPreset, BTL_CAM_INTERRUPT)
     EndIf
-    Call(SetActorSpeed, ACTOR_SELF, Float(1.0))
+    Call(SetActorSpeed, ACTOR_SELF, 1.0)
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Add(LVar0, 20)
     Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -414,7 +414,7 @@ EvtScript EVS_Flee = {
     Wait(10)
     Call(SetActorYaw, ACTOR_SELF, 180)
     Call(EnableActorBlur, ACTOR_SELF, ACTOR_BLUR_ENABLE)
-    Call(SetActorSpeed, ACTOR_SELF, Float(10.0))
+    Call(SetActorSpeed, ACTOR_SELF, 10.0)
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Add(LVar0, 200)
     Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -437,10 +437,10 @@ EvtScript EVS_HandlePhase = {
 };
 
 EvtScript EVS_Init = {
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
-    Call(BindHandlePhase, ACTOR_SELF, Ref(EVS_HandlePhase))
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
+    Call(BindHandlePhase, ACTOR_SELF, EVS_HandlePhase)
     Call(GetBattleVar, BTL_VAR_Magikoopa_LastIndexBoosted, LVar0)
     IfEq(LVar0, 0)
         Call(SetBattleVar, BTL_VAR_Magikoopa_LastIndexBoosted, -1)
@@ -462,9 +462,9 @@ EvtScript EVS_Init = {
 };
 
 EvtScript EVS_Flying_Init = {
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_Flying_HandleEvent))
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_Flying_HandleEvent)
     Call(GetBattleVar, BTL_VAR_Magikoopa_LastIndexBoosted, LVar0)
     IfEq(LVar0, 0)
         Call(SetBattleVar, BTL_VAR_Magikoopa_LastIndexBoosted, -1)
@@ -610,7 +610,7 @@ EvtScript EVS_HandleEvent = {
         CaseEq(EVENT_SCARE_AWAY)
             ExecWait(EVS_RemoveClone)
             Call(SetAnimation, ACTOR_SELF, PRT_GROUND, ANIM_Magikoopa_Hurt)
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(1.5))
+            Call(SetActorJumpGravity, ACTOR_SELF, 1.5)
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(JumpToGoal, ACTOR_SELF, 15, false, true, false)
@@ -748,7 +748,7 @@ EvtScript EVS_Flying_HandleEvent = {
         CaseEq(EVENT_END_FIRST_STRIKE)
             Call(SetAnimation, ACTOR_SELF, PRT_FLYING, ANIM_FlyingMagikoopa_Idle)
             Call(SetGoalToHome, ACTOR_SELF)
-            Call(SetActorSpeed, ACTOR_SELF, Float(4.0))
+            Call(SetActorSpeed, ACTOR_SELF, 4.0)
             Call(FlyToGoal, ACTOR_SELF, 0, 1, EASING_LINEAR)
             Call(SetAnimation, ACTOR_SELF, PRT_FLYING, ANIM_FlyingMagikoopa_Idle)
             Call(HPBarToHome, ACTOR_SELF)
@@ -759,7 +759,7 @@ EvtScript EVS_Flying_HandleEvent = {
         CaseEq(EVENT_SCARE_AWAY)
             ExecWait(EVS_RemoveClone)
             Call(SetAnimation, ACTOR_SELF, PRT_FLYING, ANIM_FlyingMagikoopa_Hurt)
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(1.5))
+            Call(SetActorJumpGravity, ACTOR_SELF, 1.5)
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(JumpToGoal, ACTOR_SELF, 15, false, true, false)
@@ -830,12 +830,12 @@ EvtScript EVS_Move_HealOne = {
             Sub(LVar0, 6)
             Add(LVar1, 12)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 7, LVar0, LVar1, LVar2, Float(0.12), 30)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 7, LVar0, LVar1, LVar2, 0.12, 30)
         Else
             Sub(LVar0, 16)
             Add(LVar1, 31)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 7, LVar0, LVar1, LVar2, Float(0.3), 30)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 7, LVar0, LVar1, LVar2, 0.3, 30)
         EndIf
     Else
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -844,12 +844,12 @@ EvtScript EVS_Move_HealOne = {
             Sub(LVar0, 12)
             Add(LVar1, 14)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 7, LVar0, LVar1, LVar2, Float(0.12), 30)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 7, LVar0, LVar1, LVar2, 0.12, 30)
         Else
             Sub(LVar0, 30)
             Add(LVar1, 36)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 7, LVar0, LVar1, LVar2, Float(0.3), 30)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 7, LVar0, LVar1, LVar2, 0.3, 30)
         EndIf
     EndIf
     Wait(30)
@@ -910,12 +910,12 @@ EvtScript EVS_Move_HealAll = {
             Sub(LVar0, 6)
             Add(LVar1, 12)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 7, LVar0, LVar1, LVar2, Float(0.12), 30)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 7, LVar0, LVar1, LVar2, 0.12, 30)
         Else
             Sub(LVar0, 16)
             Add(LVar1, 31)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 7, LVar0, LVar1, LVar2, Float(0.3), 30)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 7, LVar0, LVar1, LVar2, 0.3, 30)
         EndIf
     Else
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -924,12 +924,12 @@ EvtScript EVS_Move_HealAll = {
             Sub(LVar0, 12)
             Add(LVar1, 14)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 7, LVar0, LVar1, LVar2, Float(0.12), 30)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 7, LVar0, LVar1, LVar2, 0.12, 30)
         Else
             Sub(LVar0, 30)
             Add(LVar1, 36)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 7, LVar0, LVar1, LVar2, Float(0.3), 30)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 7, LVar0, LVar1, LVar2, 0.3, 30)
         EndIf
     EndIf
     Wait(30)
@@ -1015,7 +1015,7 @@ EvtScript EVS_Attack_MagicBlast = {
             Call(GetActorPos, LVarA, LVar0, LVar1, LVar2)
             Sub(LVar0, 17)
             Add(LVar1, 33)
-            PlayEffect(EFFECT_GATHER_MAGIC, 0, LVar0, LVar1, LVar2, Float(0.5), 30)
+            PlayEffect(EFFECT_GATHER_MAGIC, 0, LVar0, LVar1, LVar2, 0.5, 30)
         EndIf
         Call(SetAnimation, ACTOR_SELF, PRT_GROUND, ANIM_Magikoopa_Shout)
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -1027,14 +1027,14 @@ EvtScript EVS_Attack_MagicBlast = {
             Sub(LVar0, 17)
             Add(LVar1, 33)
         EndIf
-        PlayEffect(EFFECT_GATHER_MAGIC, 0, LVar0, LVar1, LVar2, Float(0.5), 30)
+        PlayEffect(EFFECT_GATHER_MAGIC, 0, LVar0, LVar1, LVar2, 0.5, 30)
     Else
         IfEq(LFlag0, true)
             Call(SetAnimation, LVarA, 1, ANIM_FlyingMagikoopa_Shout)
             Call(GetActorPos, LVarA, LVar0, LVar1, LVar2)
             Sub(LVar0, 30)
             Add(LVar1, 36)
-            PlayEffect(EFFECT_GATHER_MAGIC, 0, LVar0, LVar1, LVar2, Float(0.5), 30)
+            PlayEffect(EFFECT_GATHER_MAGIC, 0, LVar0, LVar1, LVar2, 0.5, 30)
         EndIf
         Call(SetAnimation, ACTOR_SELF, PRT_FLYING, ANIM_FlyingMagikoopa_Shout)
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -1046,7 +1046,7 @@ EvtScript EVS_Attack_MagicBlast = {
             Sub(LVar0, 30)
             Add(LVar1, 36)
         EndIf
-        PlayEffect(EFFECT_GATHER_MAGIC, 0, LVar0, LVar1, LVar2, Float(0.5), 30)
+        PlayEffect(EFFECT_GATHER_MAGIC, 0, LVar0, LVar1, LVar2, 0.5, 30)
     EndIf
     Wait(30)
     Call(EnemyTestTarget, ACTOR_SELF, LVar9, 0, 0, 1, BS_FLAGS1_INCLUDE_POWER_UPS)
@@ -1261,14 +1261,14 @@ EvtScript EVS_Clone_HandleEvent = {
 };
 
 EvtScript EVS_Clone_Init = {
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_Clone_HandleEvent))
+    Call(BindHandleEvent, ACTOR_SELF, EVS_Clone_HandleEvent)
     Call(SetActorVar, ACTOR_SELF, AVAR_IsClone, true)
     Return
     End
 };
 
 EvtScript EVS_FlyingClone_Init = {
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_Clone_HandleEvent))
+    Call(BindHandleEvent, ACTOR_SELF, EVS_Clone_HandleEvent)
     Call(SetActorVar, ACTOR_SELF, AVAR_IsClone, true)
     Return
     End
@@ -1434,9 +1434,9 @@ EvtScript EVS_Move_MakeClone = {
         Set(LFlag0, true)
     EndIf
     IfEq(LFlag0, false)
-        Call(SummonEnemy, Ref(CloneFormation), false)
+        Call(SummonEnemy, CloneFormation, false)
     Else
-        Call(SummonEnemy, Ref(FlyingCloneFormation), false)
+        Call(SummonEnemy, FlyingCloneFormation, false)
     EndIf
     Call(SetActorVar, ACTOR_SELF, AVAR_CloneActorID, LVar0)
     Set(LVarA, LVar0)
@@ -1461,7 +1461,7 @@ EvtScript EVS_Move_MakeClone = {
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Add(LVar1, 23)
     EndIf
-    PlayEffect(EFFECT_ENERGY_IN_OUT, 1, LVar0, LVar1, LVar2, Float(1.0), 30)
+    PlayEffect(EFFECT_ENERGY_IN_OUT, 1, LVar0, LVar1, LVar2, 1.0, 30)
     Wait(10)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
     Call(EnableIdleScript, LVar9, IDLE_SCRIPT_ENABLE)
@@ -1478,12 +1478,12 @@ EvtScript EVS_Move_MakeClone = {
     Call(SetPartFlagBits, LVar9, 1, ACTOR_PART_FLAG_PRIMARY_TARGET, false)
     Call(RandInt, 1000, LVar0)
     IfLt(LVar0, 500)
-        Call(SetActorSpeed, ACTOR_SELF, Float(2.0))
+        Call(SetActorSpeed, ACTOR_SELF, 2.0)
         ExecWait(EVS_GetAvailableColumn)
         Call(SetGoalToIndex, ACTOR_SELF, LVar0)
         Call(FlyToGoal, ACTOR_SELF, 0, 0, EASING_LINEAR)
     Else
-        Call(SetActorSpeed, LVar9, Float(2.0))
+        Call(SetActorSpeed, LVar9, 2.0)
         ExecWait(EVS_GetAvailableColumn)
         Call(SetGoalToIndex, LVar9, LVar0)
         Call(FlyToGoal, LVar9, 0, 0, EASING_LINEAR)
@@ -1581,12 +1581,12 @@ EvtScript EVS_Move_TryBoostAttack = {
             Sub(LVar0, 6)
             Add(LVar1, 12)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, LVar1, LVar2, Float(0.12), 30)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, LVar1, LVar2, 0.12, 30)
         Else
             Sub(LVar0, 16)
             Add(LVar1, 31)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, LVar1, LVar2, Float(0.3), 30)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, LVar1, LVar2, 0.3, 30)
         EndIf
     Else
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -1595,12 +1595,12 @@ EvtScript EVS_Move_TryBoostAttack = {
             Sub(LVar0, 12)
             Add(LVar1, 14)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, LVar1, LVar2, Float(0.12), 30)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, LVar1, LVar2, 0.12, 30)
         Else
             Sub(LVar0, 30)
             Add(LVar1, 36)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, LVar1, LVar2, Float(0.3), 30)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, LVar1, LVar2, 0.3, 30)
         EndIf
     EndIf
     Wait(30)
@@ -1694,12 +1694,12 @@ EvtScript EVS_Move_TryBoostDefense = {
             Sub(LVar0, 6)
             Add(LVar1, 12)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, LVar1, LVar2, Float(0.12), 30)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, LVar1, LVar2, 0.12, 30)
         Else
             Sub(LVar0, 16)
             Add(LVar1, 31)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, LVar1, LVar2, Float(0.3), 30)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, LVar1, LVar2, 0.3, 30)
         EndIf
     Else
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -1708,12 +1708,12 @@ EvtScript EVS_Move_TryBoostDefense = {
             Sub(LVar0, 12)
             Add(LVar1, 14)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, LVar1, LVar2, Float(0.12), 30)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, LVar1, LVar2, 0.12, 30)
         Else
             Sub(LVar0, 30)
             Add(LVar1, 36)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, LVar1, LVar2, Float(0.3), 30)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, LVar1, LVar2, 0.3, 30)
         EndIf
     EndIf
     Wait(30)
@@ -1807,12 +1807,12 @@ EvtScript EVS_Move_TryElectrify = {
             Sub(LVar0, 6)
             Add(LVar1, 12)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_SNAKING_STATIC, 0, LVar0, LVar1, LVar2, Float(0.12), 30)
+            PlayEffect(EFFECT_SNAKING_STATIC, 0, LVar0, LVar1, LVar2, 0.12, 30)
         Else
             Sub(LVar0, 16)
             Add(LVar1, 31)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_SNAKING_STATIC, 0, LVar0, LVar1, LVar2, Float(0.3), 30)
+            PlayEffect(EFFECT_SNAKING_STATIC, 0, LVar0, LVar1, LVar2, 0.3, 30)
         EndIf
     Else
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -1821,12 +1821,12 @@ EvtScript EVS_Move_TryElectrify = {
             Sub(LVar0, 12)
             Add(LVar1, 14)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_SNAKING_STATIC, 0, LVar0, LVar1, LVar2, Float(0.12), 30)
+            PlayEffect(EFFECT_SNAKING_STATIC, 0, LVar0, LVar1, LVar2, 0.12, 30)
         Else
             Sub(LVar0, 30)
             Add(LVar1, 36)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_SNAKING_STATIC, 0, LVar0, LVar1, LVar2, Float(0.3), 30)
+            PlayEffect(EFFECT_SNAKING_STATIC, 0, LVar0, LVar1, LVar2, 0.3, 30)
         EndIf
     EndIf
     Wait(30)
@@ -1925,12 +1925,12 @@ EvtScript EVS_Move_TryTransparent = {
             Sub(LVar0, 6)
             Add(LVar1, 12)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 6, LVar0, LVar1, LVar2, Float(0.12), 30)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 6, LVar0, LVar1, LVar2, 0.12, 30)
         Else
             Sub(LVar0, 16)
             Add(LVar1, 31)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 6, LVar0, LVar1, LVar2, Float(0.3), 30)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 6, LVar0, LVar1, LVar2, 0.3, 30)
         EndIf
     Else
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -1939,12 +1939,12 @@ EvtScript EVS_Move_TryTransparent = {
             Sub(LVar0, 12)
             Add(LVar1, 14)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 6, LVar0, LVar1, LVar2, Float(0.12), 30)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 6, LVar0, LVar1, LVar2, 0.12, 30)
         Else
             Sub(LVar0, 30)
             Add(LVar1, 36)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 6, LVar0, LVar1, LVar2, Float(0.3), 30)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 6, LVar0, LVar1, LVar2, 0.3, 30)
         EndIf
     EndIf
     Wait(30)
@@ -2007,7 +2007,7 @@ EvtScript EVS_TakeTurn = {
         EndIf
         Call(GetActorHP, LVar0, LVar2)
         Call(GetEnemyMaxHP, LVar0, LVar3)
-        MulF(LVar2, Float(100.0))
+        MulF(LVar2, 100.0)
         DivF(LVar2, LVar3)
         IfEq(LFlag0, false) // collapsed dry bones check
             IfLe(LVar2, HEAL_THRESHOLD_1) // HP% check
@@ -2042,7 +2042,7 @@ EvtScript EVS_TakeTurn = {
         EndIf
         Call(GetActorHP, LVar0, LVar2)
         Call(GetEnemyMaxHP, LVar0, LVar3)
-        MulF(LVar2, Float(100.0))
+        MulF(LVar2, 100.0)
         DivF(LVar2, LVar3)
         IfEq(LFlag0, false) // collapsed dry bones check
             IfLe(LVar2, HEAL_THRESHOLD_2) // HP% check
@@ -2077,7 +2077,7 @@ EvtScript EVS_TakeTurn = {
         EndIf
         Call(GetActorHP, LVar0, LVar2)
         Call(GetEnemyMaxHP, LVar0, LVar3)
-        MulF(LVar2, Float(100.0))
+        MulF(LVar2, 100.0)
         DivF(LVar2, LVar3)
         IfEq(LFlag0, false) // collapsed dry bones check
             IfLe(LVar2, HEAL_THRESHOLD_3) // HP% check
@@ -2136,7 +2136,7 @@ EvtScript EVS_TakeTurn = {
             // choose actor with least HP%
             Call(GetActorVar, ACTOR_SELF, AVAR_HealOneCount, LVar0)
             IfLt(LVar0, MAX_HEAL_ONE)
-                SetF(LVar9, Float(100.0))
+                SetF(LVar9, 100.0)
                 Call(CreateHomeTargetList, TARGET_FLAG_2 | TARGET_FLAG_PRIMARY_ONLY)
                 Call(InitTargetIterator)
                 Label(LBL_LOOP_CHOOSE_BEST_HEAL)
@@ -2151,7 +2151,7 @@ EvtScript EVS_TakeTurn = {
                     EndIf
                     Call(GetActorHP, LVar0, LVar2)
                     Call(GetEnemyMaxHP, LVar0, LVar3)
-                    MulF(LVar2, Float(100.0))
+                    MulF(LVar2, 100.0)
                     DivF(LVar2, LVar3)
                     IfEq(LFlag0, false)
                         IfLe(LVar2, LVar9)

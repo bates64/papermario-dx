@@ -12,7 +12,7 @@ MobileAISettings AISettings_KoopaWithoutShell_Patrol = {
 };
 
 EvtScript EVS_NpcAI_KoopaWithoutShell_Patrol = {
-    Call(PatrolNoAttackAI_Main, Ref(AISettings_KoopaWithoutShell_Patrol))
+    Call(PatrolNoAttackAI_Main, AISettings_KoopaWithoutShell_Patrol)
     Return
     End
 };

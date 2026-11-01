@@ -141,9 +141,9 @@ OVL_DEF_ACTOR() = {
 };
 
 EvtScript EVS_Init = {
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
     Call(SetActorVar, ACTOR_SELF, AVAR_Toppled, 0)
     Call(SetActorVar, ACTOR_SELF, AVAR_ToppleTurns, 0)
     Return
@@ -256,8 +256,8 @@ EvtScript EVS_HandleEvent = {
             EndIf
             Call(SetActorVar, ACTOR_SELF, AVAR_Toppled, 1)
             Call(SetActorVar, ACTOR_SELF, AVAR_ToppleTurns, 1)
-            Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(ToppledDefense))
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(ToppledAnims))
+            Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, ToppledDefense)
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, ToppledAnims)
             Call(SetPartEventBits, ACTOR_SELF, PRT_MAIN, ACTOR_EVENT_FLAG_ALT_SPIKY, false)
             Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_FLIPPED, true)
             UseBuf(FlipPosOffsets)
@@ -396,8 +396,8 @@ EvtScript EVS_TakeTurn = {
             SetConst(LVar2, ANIM_Spiny_Idle)
             ExecWait(EVS_Enemy_FlipBackUp)
             Call(SetActorVar, ACTOR_SELF, AVAR_Toppled, 0)
-            Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(UprightDefense))
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(UprightAnims))
+            Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, UprightDefense)
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, UprightAnims)
             Call(SetPartEventBits, ACTOR_SELF, PRT_MAIN, ACTOR_EVENT_FLAG_ALT_SPIKY, true)
             Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_FLIPPED, false)
         EndIf
@@ -458,21 +458,21 @@ EvtScript EVS_TakeTurn = {
             EndThread
             Call(SetGoalToTarget, ACTOR_SELF)
             Call(AddGoalPos, ACTOR_SELF, -200, 0, 0)
-            Call(SetActorSpeed, ACTOR_SELF, Float(16.0))
+            Call(SetActorSpeed, ACTOR_SELF, 16.0)
             Call(RunToGoal, ACTOR_SELF, 0, false)
             Call(ResetAllActorSounds, ACTOR_SELF)
             Call(EnableActorBlur, ACTOR_SELF, ACTOR_BLUR_DISABLE)
             Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
             Call(YieldTurn)
             Call(AddActorDecoration, ACTOR_SELF, PRT_MAIN, 0, ACTOR_DECORATION_SWEAT)
-            Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
+            Call(SetActorSpeed, ACTOR_SELF, 6.0)
             ExecWait(EVS_ReturnHome)
             Call(RemoveActorDecoration, ACTOR_SELF, PRT_MAIN, 0)
             Return
         EndCaseGroup
     EndSwitch
     Call(SetGoalToTarget, ACTOR_SELF)
-    Call(SetActorSpeed, ACTOR_SELF, Float(16.0))
+    Call(SetActorSpeed, ACTOR_SELF, 16.0)
     Call(RunToGoal, ACTOR_SELF, 0, false)
     Call(ResetAllActorSounds, ACTOR_SELF)
     Wait(2)
@@ -485,7 +485,7 @@ EvtScript EVS_TakeTurn = {
             Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Add(LVar0, 20)
             Set(LVar1, 0)
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(1.0))
+            Call(SetActorJumpGravity, ACTOR_SELF, 1.0)
             Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(JumpToGoal, ACTOR_SELF, 20, false, true, false)
             Add(LVar0, 10)
@@ -496,7 +496,7 @@ EvtScript EVS_TakeTurn = {
             Call(JumpToGoal, ACTOR_SELF, 5, false, true, false)
             Call(EnableActorBlur, ACTOR_SELF, ACTOR_BLUR_DISABLE)
             Call(YieldTurn)
-            Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
+            Call(SetActorSpeed, ACTOR_SELF, 6.0)
             ExecWait(EVS_ReturnHome)
         EndCaseGroup
     EndSwitch

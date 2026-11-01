@@ -81,19 +81,19 @@ EvtScript EVS_NpcInteract_GossipTrio = {
 };
 
 EvtScript EVS_NpcInit_GossipTrio1 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_GossipTrio))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_GossipTrio)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_GossipTrio2 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_GossipTrio))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_GossipTrio)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_GossipTrio3 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_GossipTrio))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_GossipTrio)
     Return
     End
 };

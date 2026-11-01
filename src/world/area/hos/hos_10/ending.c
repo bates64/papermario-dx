@@ -193,11 +193,11 @@ EvtScript EVS_Scene_CastleDescending = {
     Call(EnableGroup, MODEL_kumo, false)
     Call(EnableModel, MODEL_nagare, false)
     Call(TranslateGroup, MODEL_castle, 0, -2500, 0)
-    Call(ScaleGroup, MODEL_castle, Float(0.4), Float(0.4), Float(0.4))
-    PlayEffect(EFFECT_ENDING_DECALS, 2, 0, 35, 70, Float(7.0), MV_BubbleFXPtr)
+    Call(ScaleGroup, MODEL_castle, 0.4, 0.4, 0.4)
+    PlayEffect(EFFECT_ENDING_DECALS, 2, 0, 35, 70, 7.0, MV_BubbleFXPtr)
     Call(SetHaloAlpha, MV_BubbleFXPtr, 128)
     ChildThread
-        PlayEffect(EFFECT_ENDING_DECALS, 2, 0, 0, 0, Float(10.0), MV_HaloFXPtr)
+        PlayEffect(EFFECT_ENDING_DECALS, 2, 0, 0, 0, 10.0, MV_HaloFXPtr)
         Loop(0)
             Call(GetPlayerPos, LVar0, LVar1, LVar2)
             Add(LVar1, 12)
@@ -209,31 +209,31 @@ EvtScript EVS_Scene_CastleDescending = {
     Call(SetCamLeadPlayer, CAM_DEFAULT, false)
     Call(UseSettingsFrom, CAM_DEFAULT, 0, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, 0, 0, 0)
-    Call(SetCamPitch, CAM_DEFAULT, Float(0.0), Float(0.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamPitch, CAM_DEFAULT, 0.0, 0.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Thread
         SetF(LVar0, -2250)
         Loop(1500)
             Call(TranslateModel, MODEL_o3, 0, LVar0, 0)
-            AddF(LVar0, Float(1.0))
+            AddF(LVar0, 1.0)
             Wait(1)
         EndLoop
     EndThread
     Thread
-        Call(SetPlayerJumpscale, Float(0.0))
+        Call(SetPlayerJumpscale, 0.0)
         Call(PlayerJump1, -130, 0, 1300, 250)
     EndThread
     Thread
-        Call(SetNpcJumpscale, NPC_PARTNER, Float(0.0))
+        Call(SetNpcJumpscale, NPC_PARTNER, 0.0)
         Call(NpcJump0, NPC_PARTNER, -150, 0, 1300, 250)
     EndThread
     Thread
-        Call(SetNpcJumpscale, NPC_Peach, Float(0.0))
+        Call(SetNpcJumpscale, NPC_Peach, 0.0)
         Call(NpcJump0, NPC_Peach, -100, 0, 1300, 250)
     EndThread
     Thread
-        Call(SetNpcJumpscale, NPC_Twink, Float(0.0))
+        Call(SetNpcJumpscale, NPC_Twink, 0.0)
         Call(NpcJump0, NPC_Twink, -130, 60, 1300, 250)
     EndThread
     Thread
@@ -259,7 +259,7 @@ EvtScript EVS_Scene_CastleDescending = {
     EndThread
     Wait(350)
     Thread
-        Call(LoadPath, 190, Ref(PlayerPath), ARRAY_COUNT(PlayerPath), EASING_LINEAR)
+        Call(LoadPath, 190, PlayerPath, ARRAY_COUNT(PlayerPath), EASING_LINEAR)
         Label(0)
             Call(GetNextPathPos)
             Call(SetPlayerPos, LVar1, LVar2, LVar3)
@@ -350,7 +350,7 @@ EvtScript EVS_Scene_CastleDescending = {
         EndLoop
     EndThread
     Wait(290)
-    Call(GotoMap, Ref("osr_02"), osr_02_ENTRY_2)
+    Call(GotoMap, "osr_02", osr_02_ENTRY_2)
     Wait(100)
     Return
     End
@@ -392,8 +392,8 @@ EvtScript EVS_Scene_SpiritsFlyingAway = {
     Call(EnableModel, MODEL_o2, false)
     Call(EnableModel, MODEL_nagare, false)
     Call(TranslateGroup, MODEL_castle, 0, -2500, 0)
-    Call(ScaleGroup, MODEL_castle, Float(0.4), Float(0.4), Float(0.4))
-    PlayEffect(EFFECT_ENDING_DECALS, 2, 0, 35, 70, Float(7.0), LVarA)
+    Call(ScaleGroup, MODEL_castle, 0.4, 0.4, 0.4)
+    PlayEffect(EFFECT_ENDING_DECALS, 2, 0, 35, 70, 7.0, LVarA)
     Call(SetHaloAlpha, LVarA, 128)
     Call(EnableTexPanning, MODEL_k2, true)
     Call(EnableTexPanning, MODEL_k7, true)
@@ -404,12 +404,12 @@ EvtScript EVS_Scene_SpiritsFlyingAway = {
     Call(SetCamLeadPlayer, CAM_DEFAULT, false)
     Call(SetPanTarget, CAM_DEFAULT, 0, 0, 0)
     Call(UseSettingsFrom, CAM_DEFAULT, 0, 0, 0)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Thread
         Set(LVar0, NPC_Eldstar)
         Exec(EVS_MakeNpcSparkleTrail)
-        Call(LoadPath, 75, Ref(EldstarPath), ARRAY_COUNT(EldstarPath), EASING_LINEAR)
+        Call(LoadPath, 75, EldstarPath, ARRAY_COUNT(EldstarPath), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_Eldstar, LVar1, LVar2, LVar3)
@@ -423,7 +423,7 @@ EvtScript EVS_Scene_SpiritsFlyingAway = {
         Wait(50)
         Set(LVar0, NPC_Misstar)
         Exec(EVS_MakeNpcSparkleTrail)
-        Call(LoadPath, 75, Ref(MisstarPath), ARRAY_COUNT(MisstarPath), EASING_LINEAR)
+        Call(LoadPath, 75, MisstarPath, ARRAY_COUNT(MisstarPath), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_Misstar, LVar1, LVar2, LVar3)
@@ -437,7 +437,7 @@ EvtScript EVS_Scene_SpiritsFlyingAway = {
         Wait(100)
         Set(LVar0, NPC_Skolar)
         Exec(EVS_MakeNpcSparkleTrail)
-        Call(LoadPath, 75, Ref(SkolarPath), ARRAY_COUNT(SkolarPath), EASING_LINEAR)
+        Call(LoadPath, 75, SkolarPath, ARRAY_COUNT(SkolarPath), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_Skolar, LVar1, LVar2, LVar3)
@@ -451,7 +451,7 @@ EvtScript EVS_Scene_SpiritsFlyingAway = {
         Wait(150)
         Set(LVar0, NPC_Mamar)
         Exec(EVS_MakeNpcSparkleTrail)
-        Call(LoadPath, 75, Ref(MamarPath), ARRAY_COUNT(MamarPath), EASING_LINEAR)
+        Call(LoadPath, 75, MamarPath, ARRAY_COUNT(MamarPath), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_Mamar, LVar1, LVar2, LVar3)
@@ -465,7 +465,7 @@ EvtScript EVS_Scene_SpiritsFlyingAway = {
         Wait(200)
         Set(LVar0, NPC_Kalmar)
         Exec(EVS_MakeNpcSparkleTrail)
-        Call(LoadPath, 75, Ref(KalmarPath), ARRAY_COUNT(KalmarPath), EASING_LINEAR)
+        Call(LoadPath, 75, KalmarPath, ARRAY_COUNT(KalmarPath), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_Kalmar, LVar1, LVar2, LVar3)
@@ -479,7 +479,7 @@ EvtScript EVS_Scene_SpiritsFlyingAway = {
         Wait(250)
         Set(LVar0, NPC_Muskular)
         Exec(EVS_MakeNpcSparkleTrail)
-        Call(LoadPath, 75, Ref(MuskularPath), ARRAY_COUNT(MuskularPath), EASING_LINEAR)
+        Call(LoadPath, 75, MuskularPath, ARRAY_COUNT(MuskularPath), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_Muskular, LVar1, LVar2, LVar3)
@@ -493,7 +493,7 @@ EvtScript EVS_Scene_SpiritsFlyingAway = {
         Wait(300)
         Set(LVar0, NPC_Klevar)
         Exec(EVS_MakeNpcSparkleTrail)
-        Call(LoadPath, 75, Ref(KlevarPath), ARRAY_COUNT(KlevarPath), EASING_LINEAR)
+        Call(LoadPath, 75, KlevarPath, ARRAY_COUNT(KlevarPath), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_Klevar, LVar1, LVar2, LVar3)
@@ -507,7 +507,7 @@ EvtScript EVS_Scene_SpiritsFlyingAway = {
         Wait(450)
         Set(LVar0, NPC_Twink)
         Exec(EVS_MakeNpcSparkleTrail)
-        Call(LoadPath, 75, Ref(TwinkPath), ARRAY_COUNT(TwinkPath), EASING_LINEAR)
+        Call(LoadPath, 75, TwinkPath, ARRAY_COUNT(TwinkPath), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_Twink, LVar1, LVar2, LVar3)
@@ -529,7 +529,7 @@ EvtScript EVS_Scene_SpiritsFlyingAway = {
         SetF(LVar0, -2250)
         Loop(1500)
             Call(TranslateModel, MODEL_o3, 0, LVar0, 0)
-            AddF(LVar0, Float(1.5))
+            AddF(LVar0, 1.5)
             Wait(1)
         EndLoop
     EndThread
@@ -537,7 +537,7 @@ EvtScript EVS_Scene_SpiritsFlyingAway = {
         SetF(LVar0, -2700)
         Loop(1200)
             Call(TranslateGroup, MODEL_kumo, 0, LVar0, 0)
-            AddF(LVar0, Float(2.5))
+            AddF(LVar0, 2.5)
             Wait(1)
         EndLoop
     EndThread
@@ -549,7 +549,7 @@ EvtScript EVS_Scene_SpiritsFlyingAway = {
     Call(FadeScreenToWhite)
     Wait(90)
     Call(ClearCurrentPartner)
-    Call(GotoMapSpecial, Ref("kmr_20"), kmr_20_ENTRY_2, TRANSITION_OUTRO_END_SCENE)
+    Call(GotoMapSpecial, "kmr_20", kmr_20_ENTRY_2, TRANSITION_OUTRO_END_SCENE)
     Wait(100)
     Return
     End

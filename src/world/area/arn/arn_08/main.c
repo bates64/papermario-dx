@@ -12,14 +12,14 @@ EvtScript EVS_ExitDoor_arn_07_0 = {
     Set(LVar3, DOOR_SWING_IN)
     Exec(ExitSplitSingleDoor)
     Wait(17)
-    Call(GotoMap, Ref("arn_07"), arn_07_ENTRY_0)
+    Call(GotoMap, "arn_07", arn_07_ENTRY_0)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitDoor_arn_07_0), TRIGGER_WALL_PRESS_A, COLLIDER_tts, 1, 0)
+    BindTrigger(EVS_ExitDoor_arn_07_0, TRIGGER_WALL_PRESS_A, COLLIDER_tts, 1, 0)
     Return
     End
 };
@@ -49,7 +49,7 @@ EvtScript EVS_EnterMap = {
                 Call(RotateModel, MODEL_doa, 80, 0, -1, 0)
                 Call(RotateModel, MODEL_o37, 80, 0, -1, 0)
                 Call(SetNpcAnimation, NPC_TubbasHeart, ANIM_TubbasHeart_Jump)
-                Call(SetNpcJumpscale, NPC_TubbasHeart, Float(2.5))
+                Call(SetNpcJumpscale, NPC_TubbasHeart, 2.5)
                 Call(PlaySoundAtNpc, NPC_TubbasHeart, SOUND_TUBBA_HEART_JUMP, SOUND_SPACE_DEFAULT)
                 Call(NpcJump0, NPC_TubbasHeart, -50, 0, 50, 10 * DT)
                 Call(SetNpcAnimation, NPC_TubbasHeart, ANIM_TubbasHeart_Land)
@@ -81,7 +81,7 @@ EvtScript EVS_EnterMap = {
                 Set(GB_StoryProgress, STORY_CH3_HEART_ESCAPED_WINDY_MILL)
             EndIf
             Call(DisablePlayerPhysics, false)
-            Call(SetPlayerJumpscale, Float(2.0))
+            Call(SetPlayerJumpscale, 2.0)
             Call(PlayerJump, -10, 0, 75, 18)
             Call(DisablePlayerInput, false)
             Exec(EVS_BindExitTriggers)
@@ -100,7 +100,7 @@ EvtScript EVS_Main = {
         Set(GF_ARN12_Defeated_Goomba, false)
         Set(GF_ARN13_Defeated_Goomba, false)
     EndIf
-    Call(MakeNpcs, false, Ref(DefaultNPCs))
+    Call(MakeNpcs, false, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     Exec(EVS_AnimateGears)
     Call(GetDemoState, LVar0)

@@ -29,7 +29,7 @@ EvtScript EVS_NpcInteract_Kolorado = {
     Call(GetNpcAnimation, NPC_SELF, LVar9)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Idle)
     IfEq(GF_SBK30_Met_Kolorado, false)
-        Call(AdjustCam, CAM_DEFAULT, Float(4.0), 0, Float(300.0), Float(15.0), Float(-7.5))
+        Call(AdjustCam, CAM_DEFAULT, 4.0, 0, 300.0, 15.0, -7.5)
         Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH2_0037)
         Call(ResetCam, CAM_DEFAULT, 4)
         Set(GF_SBK30_Met_Kolorado, true)
@@ -116,7 +116,7 @@ EvtScript EVS_NpcInteract_Kolorado = {
         EndIf
     EndIf
     Call(SetNpcAnimation, NPC_SELF, LVar9)
-    Set(LVar0, Ref(LetterDelivery_Kolorado))
+    Set(LVar0, LetterDelivery_Kolorado)
     ExecWait(EVS_TryLetterDelivery)
     Return
     End
@@ -139,7 +139,7 @@ EvtScript EVS_NpcIdle_Kolorado = {
 
 EvtScript EVS_NpcIdle_KoloradoPanic = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Panic)
-    Call(SetNpcSpeed, NPC_SELF, Float(4.0))
+    Call(SetNpcSpeed, NPC_SELF, 4.0)
     Call(NpcMoveTo, NPC_SELF, 145, -145, 0)
     Label(0)
     Call(RandInt, 30, LVar0)
@@ -159,11 +159,11 @@ EvtScript EVS_NpcInit_Kolorado = {
         CaseOrEq(sbk_30_ENTRY_4)
         CaseOrEq(sbk_30_ENTRY_5)
             Call(SetNpcPos, NPC_SELF, 210, 0, -210)
-            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_KoloradoPanic))
+            Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_KoloradoPanic)
         EndCaseGroup
         CaseDefault
-            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Kolorado))
-            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Kolorado))
+            Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Kolorado)
+            Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Kolorado)
     EndSwitch
     Return
     End
@@ -206,12 +206,12 @@ EvtScript EVS_NpcInteract_Archeologist_01 = {
 };
 
 EvtScript EVS_NpcInit_Archeologist_01 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Archeologist_01))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Archeologist_01)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseOrEq(sbk_30_ENTRY_4)
         CaseOrEq(sbk_30_ENTRY_5)
-            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Archeologist_01))
+            Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Archeologist_01)
         EndCaseGroup
     EndSwitch
     Return
@@ -241,12 +241,12 @@ EvtScript EVS_NpcInteract_Archeologist_02 = {
 };
 
 EvtScript EVS_NpcInit_Archeologist_02 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Archeologist_02))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Archeologist_02)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseOrEq(sbk_30_ENTRY_4)
         CaseOrEq(sbk_30_ENTRY_5)
-            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Archeologist_01))
+            Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Archeologist_01)
         EndCaseGroup
     EndSwitch
     Return

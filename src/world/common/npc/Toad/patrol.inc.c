@@ -12,7 +12,7 @@ MobileAISettings AISettings_Toad_Patrol = {
 };
 
 EvtScript EVS_NpcAI_Toad_Patrol = {
-    Call(PatrolNoAttackAI_Main, Ref(AISettings_Toad_Patrol))
+    Call(PatrolNoAttackAI_Main, AISettings_Toad_Patrol)
     Return
     End
 };

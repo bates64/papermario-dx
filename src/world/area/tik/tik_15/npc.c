@@ -108,7 +108,7 @@ EvtScript EVS_NpcInteract_RipCheato = {
 };
 
 EvtScript EVS_NpcInit_RipCheato = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_RipCheato))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_RipCheato)
     Set(AF_TIK15_RipCheatoRepeatVisit, false)
     Return
     End

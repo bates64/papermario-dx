@@ -31,10 +31,10 @@ EvtScript EVS_ExitWalk_isk_12_1 = EVT_EXIT_WALK(40, isk_11_ENTRY_2, "isk_12", is
 EvtScript EVS_ExitWalk_isk_19_0 = EVT_EXIT_WALK(40, isk_11_ENTRY_3, "isk_19", isk_19_ENTRY_0);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_isk_08_3), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_isk_12_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deiline, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_isk_12_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_isk_19_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilise, 1, 0)
+    BindTrigger(EVS_ExitWalk_isk_08_3, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitWalk_isk_12_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deiline, 1, 0)
+    BindTrigger(EVS_ExitWalk_isk_12_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitWalk_isk_19_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilise, 1, 0)
     Return
     End
 };
@@ -44,7 +44,7 @@ EvtScript EVS_Main = {
     Call(SetSpriteShading, SHADING_ISK_11)
     Call(SetupLandingCamAdjust)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(2.8))
+    Call(SetCamSpeed, CAM_DEFAULT, 2.8)
     ExecWait(EVS_MakeEntities)
     Exec(EVS_SetupMusic)
     ExecWait(EVS_SetupPuzzle)
@@ -78,7 +78,7 @@ EvtScript EVS_Main = {
         Call(TranslateModel, MODEL_o2202, 0, -105, 0)
         Call(TranslateModel, MODEL_o2203, 0, -105, 0)
     EndIf
-    Set(LVar0, Ref(EVS_BindExitTriggers))
+    Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     Return
     End

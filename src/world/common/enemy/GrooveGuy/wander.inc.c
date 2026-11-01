@@ -17,7 +17,7 @@ MobileAISettings AISettings_GrooveGuy_Wander = {
 };
 
 EvtScript EVS_NpcAI_GrooveGuy_Wander = {
-    Call(GrooveGuyAI_Main, Ref(AISettings_GrooveGuy_Wander))
+    Call(GrooveGuyAI_Main, AISettings_GrooveGuy_Wander)
     Return
     End
 };

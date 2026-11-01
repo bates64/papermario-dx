@@ -18,9 +18,9 @@ EvtScript EVS_SetupGoombaRoadGate = {
 };
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_kmr_05_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_kmr_00_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deili2, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_kmr_09_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deili3, 1, 0)
+    BindTrigger(EVS_ExitWalk_kmr_05_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
+    BindTrigger(EVS_ExitWalk_kmr_00_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deili2, 1, 0)
+    BindTrigger(EVS_ExitWalk_kmr_09_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deili3, 1, 0)
     Return
     End
 };
@@ -39,7 +39,7 @@ EvtScript EVS_EnterMap = {
     EndIf
     Switch(LVar0)
         CaseEq(kmr_02_ENTRY_2)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
             IfEq(GF_KMR02_ReturnedWithGoompa, false)
                 Call(DisablePlayerInput, true)
@@ -67,7 +67,7 @@ EvtScript EVS_EnterMap = {
                 Call(DisablePlayerPhysics, false)
                 Call(DisablePlayerInput, false)
             EndIf
-            Set(LVarA, Ref(EVS_BindExitTriggers))
+            Set(LVarA, EVS_BindExitTriggers)
             ExecWait(EVS_Pipe_EnterVertical)
         CaseEq(kmr_02_ENTRY_5)
             Exec(EVS_SetWallsDown_ToadHouse)
@@ -77,7 +77,7 @@ EvtScript EVS_EnterMap = {
             Exec(EnterPostPipe)
             Exec(EVS_BindExitTriggers)
         CaseDefault
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
     EndSwitch
     Return
@@ -129,17 +129,17 @@ EvtScript EVS_Main = {
     IfNe(LVar0, kmr_02_ENTRY_4)
         Goto(10)
     EndIf
-    Call(MakeNpcs, false, Ref(EpilogueNPCs))
+    Call(MakeNpcs, false, EpilogueNPCs)
     Exec(EVS_FadeOutMusic)
     Return
     Label(10)
     Switch(GB_StoryProgress)
         CaseEq(STORY_UNUSED_FFFFFF8C)
-            Call(MakeNpcs, false, Ref(NpcGroup1))
+            Call(MakeNpcs, false, NpcGroup1)
         CaseLt(STORY_UNUSED_FFFFFF8C)
-            Call(MakeNpcs, false, Ref(PrologueNPCs))
+            Call(MakeNpcs, false, PrologueNPCs)
         CaseDefault
-            Call(MakeNpcs, false, Ref(DefaultNPCs))
+            Call(MakeNpcs, false, DefaultNPCs)
     EndSwitch
     Label(20)
     Call(ClearDefeatedEnemies)
@@ -150,10 +150,10 @@ EvtScript EVS_Main = {
     ExecWait(EVS_SetupFoliage)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_FELL_OFF_CLIFF)
-            BindTrigger(Ref(EVS_ShowMessage_ItsLocked), TRIGGER_WALL_PRESS_A, COLLIDER_mm1, 1, 0)
+            BindTrigger(EVS_ShowMessage_ItsLocked, TRIGGER_WALL_PRESS_A, COLLIDER_mm1, 1, 0)
         CaseLt(STORY_CH0_TWINK_GAVE_LUCKY_STAR)
         CaseDefault
-            BindTrigger(Ref(EVS_OpenGoombaRoadGate), TRIGGER_WALL_PRESS_A, COLLIDER_tt2, 1, 0)
+            BindTrigger(EVS_OpenGoombaRoadGate, TRIGGER_WALL_PRESS_A, COLLIDER_tt2, 1, 0)
     EndSwitch
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_GATE_CRUSHED)

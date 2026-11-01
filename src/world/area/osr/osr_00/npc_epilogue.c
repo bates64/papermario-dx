@@ -15,7 +15,7 @@ EvtScript EVS_NpcInteract_LeaderYoshi = {
 };
 
 EvtScript EVS_NpcInit_LeaderYoshi = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_LeaderYoshi))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_LeaderYoshi)
     Return
     End
 };
@@ -27,7 +27,7 @@ EvtScript EVS_NpcInteract_Yoshi = {
 };
 
 EvtScript EVS_NpcInit_Yoshi = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Yoshi))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Yoshi)
     Return
     End
 };
@@ -39,7 +39,7 @@ EvtScript EVS_NpcInteract_YoshiKid = {
 };
 
 EvtScript EVS_NpcInit_YoshiKid = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_YoshiKid))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_YoshiKid)
     Return
     End
 };
@@ -51,7 +51,7 @@ EvtScript EVS_NpcInteract_MayorPenguin = {
 };
 
 EvtScript EVS_NpcInit_MayorPenguin = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_MayorPenguin))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_MayorPenguin)
     Return
     End
 };
@@ -63,7 +63,7 @@ EvtScript EVS_NpcInteract_MayorPenguinWife = {
 };
 
 EvtScript EVS_NpcInit_MayorPenguinWife = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_MayorPenguinWife))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_MayorPenguinWife)
     Return
     End
 };
@@ -75,7 +75,7 @@ EvtScript EVS_NpcInteract_Penguin_01 = {
 };
 
 EvtScript EVS_NpcInit_Penguin_01 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Penguin_01))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Penguin_01)
     Return
     End
 };
@@ -87,7 +87,7 @@ EvtScript EVS_NpcInteract_Penguin_02 = {
 };
 
 EvtScript EVS_NpcInit_Penguin_02 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Penguin_02))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Penguin_02)
     Return
     End
 };
@@ -99,7 +99,7 @@ EvtScript EVS_NpcInteract_Moustafa = {
 };
 
 EvtScript EVS_NpcInit_Moustafa = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Moustafa))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Moustafa)
     Return
     End
 };
@@ -111,7 +111,7 @@ EvtScript EVS_NpcInteract_Mouser = {
 };
 
 EvtScript EVS_NpcInit_Mouser = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Mouser))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Mouser)
     Return
     End
 };
@@ -123,7 +123,7 @@ EvtScript EVS_NpcInteract_Boo_01 = {
 };
 
 EvtScript EVS_NpcInit_Boo_01 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Boo_01))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Boo_01)
     Return
     End
 };
@@ -135,7 +135,7 @@ EvtScript EVS_NpcInteract_Boo_02 = {
 };
 
 EvtScript EVS_NpcInit_Boo_02 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Boo_02))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Boo_02)
     Return
     End
 };
@@ -147,7 +147,7 @@ EvtScript EVS_NpcInteract_Toad = {
 };
 
 EvtScript EVS_NpcInit_Toad = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad)
     Return
     End
 };
@@ -159,7 +159,7 @@ EvtScript EVS_NpcInteract_ToadGuard_01 = {
 };
 
 EvtScript EVS_NpcInit_ToadGuard_01 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ToadGuard_01))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_ToadGuard_01)
     Return
     End
 };
@@ -170,7 +170,7 @@ EvtScript EVS_Guard_StopPlayer = {
     Wait(5)
     Call(SpeakToPlayer, NPC_ToadGuard_02, ANIM_ToadGuard_Yellow_Talk, ANIM_ToadGuard_Yellow_Idle, 0, MSG_Outro_005C)
     Wait(10)
-    Call(SetPlayerSpeed, Float(4.0))
+    Call(SetPlayerSpeed, 4.0)
     Call(PlayerMoveTo, 610, 110, 0)
     Call(DisablePlayerInput, false)
     Return
@@ -184,8 +184,8 @@ EvtScript EVS_NpcInteract_ToadGuard_02 = {
 };
 
 EvtScript EVS_NpcInit_ToadGuard_02 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ToadGuard_02))
-    BindTrigger(Ref(EVS_Guard_StopPlayer), TRIGGER_FLOOR_TOUCH, COLLIDER_deilie, 1, 0)
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_ToadGuard_02)
+    BindTrigger(EVS_Guard_StopPlayer, TRIGGER_FLOOR_TOUCH, COLLIDER_deilie, 1, 0)
     Return
     End
 };

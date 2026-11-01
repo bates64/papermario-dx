@@ -102,7 +102,7 @@ API_CALLABLE(AddScrollToNpcPos) {
 EvtScript EVS_SetupInitialCamera = {
     Call(UseSettingsFrom, CAM_DEFAULT, PARADE_START, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, PARADE_START, 0, 0)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Return
     End
@@ -110,7 +110,7 @@ EvtScript EVS_SetupInitialCamera = {
 
 EvtScript EVS_UpdateScrollPos = {
     Call(SetPanTarget, CAM_DEFAULT, Float(PARADE_START), 0, 0)
-    SetF(LVar1, Float(0.0))
+    SetF(LVar1, 0.0)
     Loop(0)
         Call(UpdateCameraScroll)
         Call(TranslateGroup, MODEL_bg, LVar1, 0, 0)
@@ -983,7 +983,7 @@ EvtScript EVS_ManageNpcPool = {
     Call(CreateParadeNPC, NPC_Boo2)
     Call(CreateParadeNPC, NPC_Boo3)
     Call(CreateParadeNPC, NPC_TubbasBody)
-    Call(SetNpcShadowScale, NPC_TubbasBody, Float(4.0))
+    Call(SetNpcShadowScale, NPC_TubbasBody, 4.0)
     Call(SetNpcFlagBits, NPC_TubbasBody, NPC_FLAG_DIRTY_SHADOW, true)
     Loop(0)
         Wait(1)
@@ -1004,7 +1004,7 @@ EvtScript EVS_ManageNpcPool = {
     Call(CreateParadeNPC, NPC_RedGoombaBros)
     Call(CreateParadeNPC, NPC_BlueGoombaBros)
     Call(ParadeSpriteHeapFree, LVar0)
-    Call(SetNpcShadowScale, NPC_GoombaKing, Float(3.0))
+    Call(SetNpcShadowScale, NPC_GoombaKing, 3.0)
     Call(SetNpcFlagBits, NPC_GoombaKing, NPC_FLAG_DIRTY_SHADOW, true)
     Loop(0)
         Wait(1)
@@ -1065,9 +1065,9 @@ EvtScript EVS_ManageNpcPool = {
     Call(CreateParadeNPC, NPC_GourmetGuy)
     Call(CreateParadeNPC, NPC_RuffPuff1)
     Call(CreateParadeNPC, NPC_RuffPuff2)
-    Call(SetNpcShadowScale, 69, Float(6.0))
+    Call(SetNpcShadowScale, 69, 6.0)
     Call(SetNpcFlagBits, NPC_HuffNPuffBody, NPC_FLAG_DIRTY_SHADOW, true)
-    Call(SetNpcShadowScale, 74, Float(3.0))
+    Call(SetNpcShadowScale, 74, 3.0)
     Call(SetNpcFlagBits, NPC_GourmetGuy, NPC_FLAG_DIRTY_SHADOW, true)
     Loop(0)
         Wait(1)
@@ -1089,9 +1089,9 @@ EvtScript EVS_ManageNpcPool = {
     Call(CreateParadeNPC, NPC_CrystalBit2)
     Call(CreateParadeNPC, NPC_CrystalBit3)
     Call(ParadeSpriteHeapFree, LVar0)
-    Call(SetNpcShadowScale, NPC_TrueCrystalKing, Float(2.0))
+    Call(SetNpcShadowScale, NPC_TrueCrystalKing, 2.0)
     Call(SetNpcFlagBits, NPC_TrueCrystalKing, NPC_FLAG_DIRTY_SHADOW, true)
-    Call(SetNpcShadowScale, NPC_FakeCrystalKing, Float(2.0))
+    Call(SetNpcShadowScale, NPC_FakeCrystalKing, 2.0)
     Call(SetNpcFlagBits, NPC_FakeCrystalKing, NPC_FLAG_DIRTY_SHADOW, true)
     Loop(0)
         Wait(1)
@@ -1142,9 +1142,9 @@ EvtScript EVS_ManageNpcPool = {
     Call(CreateParadeNPC, NPC_Koopatrol2)
     Call(CreateParadeNPC, NPC_BurntBowser)
     Call(CreateParadeNPC, NPC_BurntBowserPropeller)
-    Call(SetNpcShadowScale, NPC_Bowser, Float(3.0))
+    Call(SetNpcShadowScale, NPC_Bowser, 3.0)
     Call(SetNpcFlagBits, NPC_Bowser, NPC_FLAG_DIRTY_SHADOW, true)
-    Call(SetNpcShadowScale, NPC_BurntBowser, Float(3.0))
+    Call(SetNpcShadowScale, NPC_BurntBowser, 3.0)
     Call(SetNpcFlagBits, NPC_BurntBowser, NPC_FLAG_DIRTY_SHADOW, true)
     Call(EnableNpcShadow, NPC_BowserPropeller, false)
     Call(EnableNpcShadow, NPC_BurntBowserPropeller, false)
@@ -1301,7 +1301,7 @@ EvtScript EVS_ManageParade = {
             BreakLoop
         EndIf
     EndLoop
-    Call(GotoMap, Ref("end_01"), end_01_ENTRY_0)
+    Call(GotoMap, "end_01", end_01_ENTRY_0)
     Call(FadeOutMusic, 0, 500)
     Wait(100)
     Return

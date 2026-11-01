@@ -92,7 +92,7 @@ EvtScript EVS_SetupLowerChain = {
         Thread
             Set(LVar0, 150)
             Set(LVar1, 30)
-            UseBuf(Ref(ChainAnimOffsets))
+            UseBuf(ChainAnimOffsets)
             Loop(ARRAY_COUNT(ChainAnimOffsets))
                 BufRead1(LVar2)
                 Add(LVar0, LVar2)
@@ -124,7 +124,7 @@ EvtScript EVS_SetupLowerChain = {
 EvtScript EVS_LowerWaterLevel0 = {
     Wait(20)
     Thread
-        Call(ShakeCam, CAM_DEFAULT, 0, 120, Float(1.0))
+        Call(ShakeCam, CAM_DEFAULT, 0, 120, 1.0)
     EndThread
     Thread
         Call(GrabCamera, CAM_DEFAULT, LVar4, LVar5, LVar6, LVar7)
@@ -169,7 +169,7 @@ EvtScript EVS_LowerWaterLevel0 = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deiliaw, COLLIDER_FLAGS_UPPER_MASK)
     Wait(10)
     Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 16, 4096)
-    Call(ResetCam, CAM_DEFAULT, Float(90.0))
+    Call(ResetCam, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(DisablePlayerPhysics, false)
     Call(DisablePlayerInput, false)
@@ -188,7 +188,7 @@ EvtScript EVS_LowerWaterLevel0 = {
 EvtScript EVS_RaiseWaterLevel1 = {
     Wait(20)
     Thread
-        Call(ShakeCam, CAM_DEFAULT, 0, 220, Float(1.0))
+        Call(ShakeCam, CAM_DEFAULT, 0, 220, 1.0)
     EndThread
     Thread
         Wait(60)
@@ -245,8 +245,8 @@ EvtScript EVS_RaiseWaterLevel1 = {
         DivF(LVar2, 100)
         Call(TranslateModel, MODEL_o389, -100, 120, 0)
         Call(TranslateModel, MODEL_o388, -100, 120, 0)
-        Call(ScaleModel, MODEL_o389, LVar2, Float(1.0), LVar2)
-        Call(ScaleModel, MODEL_o388, LVar2, Float(1.0), LVar2)
+        Call(ScaleModel, MODEL_o389, LVar2, 1.0, LVar2)
+        Call(ScaleModel, MODEL_o388, LVar2, 1.0, LVar2)
         Wait(1)
         IfEq(LVar1, 1)
             Goto(40)
@@ -258,7 +258,7 @@ EvtScript EVS_RaiseWaterLevel1 = {
     EndThread
     Wait(230)
     Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 16, 4096)
-    Call(ResetCam, CAM_DEFAULT, Float(90.0))
+    Call(ResetCam, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_hidari, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_migi, COLLIDER_FLAGS_UPPER_MASK)
@@ -324,7 +324,7 @@ EvtScript EVS_SetupUpperChain = {
         Thread
             Set(LVar0, 275)
             Set(LVar1, 0)
-            UseBuf(Ref(ChainAnimOffsets))
+            UseBuf(ChainAnimOffsets)
             Loop(20)
                 BufRead1(LVar2)
                 Add(LVar0, LVar2)
@@ -356,7 +356,7 @@ EvtScript EVS_SetupUpperChain = {
 EvtScript EVS_LowerWaterLevel1 = {
     Wait(20)
     Thread
-        Call(ShakeCam, CAM_DEFAULT, 0, 120, Float(1.0))
+        Call(ShakeCam, CAM_DEFAULT, 0, 120, 1.0)
     EndThread
     Call(EnableModel, MODEL_s_sui, false)
     Call(EnableModel, MODEL_o385, true)
@@ -396,7 +396,7 @@ EvtScript EVS_LowerWaterLevel1 = {
     Call(StopTrackingSoundPos, SOUND_LRAW_KPA_DRAIN_WATER)
     Wait(10)
     Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 16, 4096)
-    Call(ResetCam, CAM_DEFAULT, Float(90.0))
+    Call(ResetCam, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(DisablePlayerPhysics, false)
     Call(DisablePlayerInput, false)
@@ -415,7 +415,7 @@ EvtScript EVS_LowerWaterLevel1 = {
 EvtScript EVS_RaiseWaterLevel2 = {
     Wait(20)
     Thread
-        Call(ShakeCam, CAM_DEFAULT, 0, 220, Float(1.0))
+        Call(ShakeCam, CAM_DEFAULT, 0, 220, 1.0)
     EndThread
     Call(EnableModel, MODEL_s_sui, true)
     Call(EnableModel, MODEL_o385, false)
@@ -488,8 +488,8 @@ EvtScript EVS_RaiseWaterLevel2 = {
             DivF(LVar2, 100)
             Call(TranslateModel, MODEL_o389, 300, 220, 0)
             Call(TranslateModel, MODEL_o388, 300, 220, 0)
-            Call(ScaleModel, MODEL_o389, LVar2, Float(1.0), LVar2)
-            Call(ScaleModel, MODEL_o388, LVar2, Float(1.0), LVar2)
+            Call(ScaleModel, MODEL_o389, LVar2, 1.0, LVar2)
+            Call(ScaleModel, MODEL_o388, LVar2, 1.0, LVar2)
             Wait(1)
             IfEq(LVar1, 1)
                 Goto(40)
@@ -501,7 +501,7 @@ EvtScript EVS_RaiseWaterLevel2 = {
     EndThread
     Wait(230)
     Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 16, 4096)
-    Call(ResetCam, CAM_DEFAULT, Float(90.0))
+    Call(ResetCam, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(DisablePlayerPhysics, false)
     Call(DisablePlayerInput, false)

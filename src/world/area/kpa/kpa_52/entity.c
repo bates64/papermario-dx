@@ -24,18 +24,18 @@ EvtScript EVS_UnlockPrompt_Door = {
     Wait(5)
     Call(CloseChoicePopup)
     Unbind
-    BindTrigger(Ref(EVS_ExitDoors_kpa_40_0), TRIGGER_WALL_PRESS_A, COLLIDER_tte1, 1, 0)
+    BindTrigger(EVS_ExitDoors_kpa_40_0, TRIGGER_WALL_PRESS_A, COLLIDER_tte1, 1, 0)
     Return
     End
 };
 
 EvtScript EVS_MakeEntities = {
     IfEq(GF_KPA52_UnlockedDoor, false)
-        Call(MakeEntity, Ref(Entity_Padlock), 352, 10, -25, 270, MAKE_ENTITY_END)
+        Call(MakeEntity, Entity_Padlock, 352, 10, -25, 270, MAKE_ENTITY_END)
         Set(MV_EntityID_Padlock, LVar0)
-        BindPadlock(Ref(EVS_UnlockPrompt_Door), TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), Ref(KeyList_CastleDoor), 0, 1)
+        BindPadlock(EVS_UnlockPrompt_Door, TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), KeyList_CastleDoor, 0, 1)
     Else
-        BindTrigger(Ref(EVS_ExitDoors_kpa_40_0), TRIGGER_WALL_PRESS_A, COLLIDER_tte1, 1, 0)
+        BindTrigger(EVS_ExitDoors_kpa_40_0, TRIGGER_WALL_PRESS_A, COLLIDER_tte1, 1, 0)
     EndIf
     Return
     End

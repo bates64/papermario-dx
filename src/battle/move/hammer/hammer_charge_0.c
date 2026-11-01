@@ -84,17 +84,17 @@ EvtScript EVS_UseMove1_Impl = {
                 CaseEq(0)
                     Call(StartRumble, BTL_RUMBLE_PLAYER_MIN)
                     Thread
-                        Call(ShakeCam, CAM_BATTLE, 0, 10, Float(1.3))
+                        Call(ShakeCam, CAM_BATTLE, 0, 10, 1.3)
                     EndThread
                 CaseEq(1)
                     Call(StartRumble, BTL_RUMBLE_PLAYER_LIGHT)
                     Thread
-                        Call(ShakeCam, CAM_BATTLE, 0, 10, Float(1.6))
+                        Call(ShakeCam, CAM_BATTLE, 0, 10, 1.6)
                     EndThread
                 CaseEq(2)
                     Call(StartRumble, BTL_RUMBLE_PLAYER_HEAVY)
                     Thread
-                        Call(ShakeCam, CAM_BATTLE, 0, 10, Float(1.9))
+                        Call(ShakeCam, CAM_BATTLE, 0, 10, 1.9)
                     EndThread
             EndSwitch
         CaseDefault
@@ -103,17 +103,17 @@ EvtScript EVS_UseMove1_Impl = {
                 CaseEq(0)
                     Call(StartRumble, BTL_RUMBLE_PLAYER_MIN)
                     Thread
-                        Call(ShakeCam, CAM_BATTLE, 0, 2, Float(1.3))
+                        Call(ShakeCam, CAM_BATTLE, 0, 2, 1.3)
                     EndThread
                 CaseEq(1)
                     Call(StartRumble, BTL_RUMBLE_PLAYER_LIGHT)
                     Thread
-                        Call(ShakeCam, CAM_BATTLE, 0, 2, Float(1.6))
+                        Call(ShakeCam, CAM_BATTLE, 0, 2, 1.6)
                     EndThread
                 CaseEq(2)
                     Call(StartRumble, BTL_RUMBLE_PLAYER_HEAVY)
                     Thread
-                        Call(ShakeCam, CAM_BATTLE, 0, 2, Float(1.9))
+                        Call(ShakeCam, CAM_BATTLE, 0, 2, 1.9)
                     EndThread
             EndSwitch
     EndSwitch
@@ -194,9 +194,9 @@ EvtScript EVS_802A3948 = {
     EndThread
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB3_Hammer1_Charging)
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
-    Call(func_802A11CC_74F2FC, LVar0, LVar1, LVar2, Float(1.2))
+    Call(func_802A11CC_74F2FC, LVar0, LVar1, LVar2, 1.2)
     Wait(3)
-    Call(func_802A11CC_74F2FC, LVar0, LVar1, LVar2, Float(0.8))
+    Call(func_802A11CC_74F2FC, LVar0, LVar1, LVar2, 0.8)
     Wait(30)
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
     Call(MoveBattleCamOver, 5)
@@ -209,8 +209,8 @@ EvtScript EVS_802A3948 = {
         Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_CHARGE_UP)
         Wait(4)
         Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_LONG_PLAYER_JUMP)
-        Call(SetActorJumpGravity, ACTOR_PLAYER, Float(1.0))
-        Call(SetActorSpeed, ACTOR_PLAYER, Float(1.0))
+        Call(SetActorJumpGravity, ACTOR_PLAYER, 1.0)
+        Call(SetActorSpeed, ACTOR_PLAYER, 1.0)
         Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
         Call(SetJumpAnimations, ACTOR_PLAYER, 0, ANIM_MarioB3_Hammer1_Charged, ANIM_MarioB3_Hammer1_Charged, ANIM_MarioB3_Hammer1_Charged)
         Call(SetGoalPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
@@ -245,9 +245,9 @@ EvtScript EVS_802A3C90 = {
     EndThread
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB3_Hammer2_Charging)
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
-    Call(func_802A11CC_74F2FC, LVar0, LVar1, LVar2, Float(1.2))
+    Call(func_802A11CC_74F2FC, LVar0, LVar1, LVar2, 1.2)
     Wait(3)
-    Call(func_802A11CC_74F2FC, LVar0, LVar1, LVar2, Float(0.8))
+    Call(func_802A11CC_74F2FC, LVar0, LVar1, LVar2, 0.8)
     Wait(30)
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
     Call(MoveBattleCamOver, 5)
@@ -260,8 +260,8 @@ EvtScript EVS_802A3C90 = {
         Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_CHARGE_UP)
         Wait(4)
         Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_LONG_PLAYER_JUMP)
-        Call(SetActorJumpGravity, ACTOR_PLAYER, Float(1.0))
-        Call(SetActorSpeed, ACTOR_PLAYER, Float(1.0))
+        Call(SetActorJumpGravity, ACTOR_PLAYER, 1.0)
+        Call(SetActorSpeed, ACTOR_PLAYER, 1.0)
         Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
         Call(SetJumpAnimations, ACTOR_PLAYER, 0, ANIM_MarioB3_Hammer2_Charged, ANIM_MarioB3_Hammer2_Charged, ANIM_MarioB3_Hammer2_Charged)
         Call(SetGoalPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
@@ -296,9 +296,9 @@ EvtScript EVS_802A3FD8 = {
     EndThread
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB3_Hammer3_Charging)
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
-    Call(func_802A11CC_74F2FC, LVar0, LVar1, LVar2, Float(1.2))
+    Call(func_802A11CC_74F2FC, LVar0, LVar1, LVar2, 1.2)
     Wait(3)
-    Call(func_802A11CC_74F2FC, LVar0, LVar1, LVar2, Float(0.8))
+    Call(func_802A11CC_74F2FC, LVar0, LVar1, LVar2, 0.8)
     Wait(30)
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
     Call(MoveBattleCamOver, 5)
@@ -311,8 +311,8 @@ EvtScript EVS_802A3FD8 = {
         Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_CHARGE_UP)
         Wait(4)
         Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_LONG_PLAYER_JUMP)
-        Call(SetActorJumpGravity, ACTOR_PLAYER, Float(1.0))
-        Call(SetActorSpeed, ACTOR_PLAYER, Float(1.0))
+        Call(SetActorJumpGravity, ACTOR_PLAYER, 1.0)
+        Call(SetActorSpeed, ACTOR_PLAYER, 1.0)
         Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
         Call(SetJumpAnimations, ACTOR_PLAYER, 0, ANIM_MarioB3_Hammer3_Charged, ANIM_MarioB3_Hammer3_Charged, ANIM_MarioB3_Hammer3_Charged)
         Call(SetGoalPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)

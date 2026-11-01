@@ -28,14 +28,14 @@ EvtScript EVS_ToadHouse_GetInBed = {
         Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
         Call(SetCamPitch, CAM_DEFAULT, 34, -8)
         Call(SetCamDistance, CAM_DEFAULT, 220)
-        Call(SetCamPosA, CAM_DEFAULT, Float(-3.0), Float(-240.0))
-        Call(SetCamPosB, CAM_DEFAULT, Float(-150.0), Float(-56.0))
+        Call(SetCamPosA, CAM_DEFAULT, -3.0, -240.0)
+        Call(SetCamPosB, CAM_DEFAULT, -150.0, -56.0)
         Call(SetCamPosC, CAM_DEFAULT, 1, 10)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+        Call(SetCamSpeed, CAM_DEFAULT, 90.0)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
-        Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+        Call(WaitForCam, CAM_DEFAULT, 1.0)
     EndThread
-    Call(SetPlayerSpeed, Float(3.0))
+    Call(SetPlayerSpeed, 3.0)
     Call(PlayerMoveTo, -180, -100, 0)
     Call(InterpPlayerYaw, 191, 1)
     Call(SetPlayerPos, -160, 22, -123)
@@ -51,9 +51,9 @@ EvtScript EVS_ToadHouse_GetInBed = {
         Wait(63)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+        Call(SetCamSpeed, CAM_DEFAULT, 90.0)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
-        Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+        Call(WaitForCam, CAM_DEFAULT, 1.0)
     EndThread
     Return
     End
@@ -62,7 +62,7 @@ EvtScript EVS_ToadHouse_GetInBed = {
 EvtScript EVS_ToadHouse_ReturnFromRest = {
     Call(ToadHouse_CamSetFOV, 0, 25)
     Call(UseSettingsFrom, CAM_DEFAULT, MV_LastPlayerPosX, MV_LastPlayerPosY, MV_LastPlayerPosZ)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(SetPanTarget, CAM_DEFAULT, MV_LastPlayerPosX, MV_LastPlayerPosY, MV_LastPlayerPosZ)
     Call(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_CLEAR, 0, 0, 0, 0)
     Call(HidePlayerShadow, false)
@@ -121,7 +121,7 @@ EvtScript EVS_NpcInteract_Penguin = {
 };
 
 EvtScript EVS_NpcInit_Toad_01 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_01))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad_01)
     Call(SetNpcPos, NPC_SELF, -70, 0, -140)
     Call(InterpNpcYaw, NPC_SELF, 90, 0)
     Return
@@ -129,7 +129,7 @@ EvtScript EVS_NpcInit_Toad_01 = {
 };
 
 EvtScript EVS_NpcInit_Toad_02 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_02))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad_02)
     Call(SetNpcPos, NPC_SELF, 100, 0, -90)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Toad_Blue_Idle)
     Call(InterpNpcYaw, NPC_SELF, 90, 0)
@@ -138,7 +138,7 @@ EvtScript EVS_NpcInit_Toad_02 = {
 };
 
 EvtScript EVS_NpcInit_ToadGuard = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ToadGuard))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_ToadGuard)
     Call(SetNpcPos, NPC_SELF, 30, 0, -170)
     Call(SetNpcAnimation, NPC_SELF, ANIM_ToadGuard_Green_Idle)
     Call(InterpNpcYaw, NPC_SELF, 270, 0)
@@ -147,7 +147,7 @@ EvtScript EVS_NpcInit_ToadGuard = {
 };
 
 EvtScript EVS_NpcInit_Penguin = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Penguin))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Penguin)
     Call(SetNpcPos, NPC_SELF, 170, 0, -180)
     Call(InterpNpcYaw, NPC_SELF, 90, 0)
     Return
@@ -223,7 +223,7 @@ EvtScript EVS_NpcDefeat_Koopatrol = {
 
 EvtScript EVS_NpcInit_Koopatrol = {
     IfEq(GF_KPA95_Defeated_Guard, false)
-        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Koopatrol))
+        Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_Koopatrol)
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf

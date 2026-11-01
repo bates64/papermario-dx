@@ -10,7 +10,7 @@ EvtScript EVS_NpcIdle_Kammy = {
     Call(SetSelfVar, 0, 0)
     Call(GetNpcPos, NPC_SELF, LVar6, LVar3, LVar4)
     Loop(0)
-        UseBuf(Ref(HoverOffsets))
+        UseBuf(HoverOffsets)
         Loop(10)
             Call(GetNpcPos, NPC_SELF, LVar2, LVar3, LVar4)
             Call(GetSelfVar, 0, LVar5)
@@ -61,7 +61,7 @@ EvtScript EVS_NpcAux_Kammy = {
         SetF(LVar8, LVarB)
         IfNe(LVar3, 0)
             IfNe(LVar5, 0)
-                PlayEffect(EFFECT_PURPLE_RING, 0, LVar0, LVar1, LVar2, LVar3, LVar4, LVar5, Float(1.0))
+                PlayEffect(EFFECT_PURPLE_RING, 0, LVar0, LVar1, LVar2, LVar3, LVar4, LVar5, 1.0)
             EndIf
         EndIf
         Wait(3)
@@ -123,25 +123,25 @@ EvtScript EVS_Scene_KammySetAmbush = {
     EndIf
     Call(UseSettingsFrom, CAM_DEFAULT, 1100, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, 1100, 0, 0)
-    Call(SetCamDistance, CAM_DEFAULT, Float(500.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(15.0), Float(-7.5))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamDistance, CAM_DEFAULT, 500.0)
+    Call(SetCamPitch, CAM_DEFAULT, 15.0, -7.5)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Wait(60 * DT)
     ExecGetTID(EVS_PlayKammyFlightSounds, MV_FlightSoundsScriptID)
     Set(MF_KammyFlying, true)
     Thread
         Wait(100 * DT)
-        Call(SetCamDistance, CAM_DEFAULT, Float(350.0))
+        Call(SetCamDistance, CAM_DEFAULT, 350.0)
 #if VERSION_PAL
-        Call(SetCamSpeed, CAM_DEFAULT, Float(2 / DT))
+        Call(SetCamSpeed, CAM_DEFAULT, 2 / DT)
 #else
         Call(SetCamSpeed, CAM_DEFAULT, 2)
 #endif
         Call(PanToTarget, CAM_DEFAULT, 0, true)
     EndThread
-    Call(LoadPath, 150 * DT, Ref(FlightPath_Kammy1), ARRAY_COUNT(FlightPath_Kammy1), EASING_LINEAR)
+    Call(LoadPath, 150 * DT, FlightPath_Kammy1, ARRAY_COUNT(FlightPath_Kammy1), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_Kammy, LVar1, LVar2, LVar3)
@@ -176,7 +176,7 @@ EvtScript EVS_Scene_KammySetAmbush = {
         Wait(3)
         Call(SetNpcRotation, NPC_Kammy, 0, 0, 0)
     EndThread
-    Call(LoadPath, 10 * DT, Ref(FlightPath_Kammy2), ARRAY_COUNT(FlightPath_Kammy2), EASING_LINEAR)
+    Call(LoadPath, 10 * DT, FlightPath_Kammy2, ARRAY_COUNT(FlightPath_Kammy2), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_Kammy, LVar1, LVar2, LVar3)
@@ -194,7 +194,7 @@ EvtScript EVS_Scene_KammySetAmbush = {
     Add(LVar0, 25)
     Add(LVar1, 38)
     Call(PlaySoundAt, SOUND_KAMMY_SUMMON_MAGIC, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
-    PlayEffect(EFFECT_GATHER_ENERGY_PINK, 0, LVar0, LVar1, LVar2, Float(1.0), 100)
+    PlayEffect(EFFECT_GATHER_ENERGY_PINK, 0, LVar0, LVar1, LVar2, 1.0, 100)
     Wait(100 * DT)
     Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlyRodCast)
     Add(LVar0, 55)
@@ -226,12 +226,12 @@ EvtScript EVS_Scene_KammySetAmbush = {
     EndSwitch
     Call(SetNpcVar, NPC_Kammy, 0, 0)
     Wait(5 * DT)
-    Call(SetCamDistance, CAM_DEFAULT, Float(500.0))
+    Call(SetCamDistance, CAM_DEFAULT, 500.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     ExecGetTID(EVS_PlayKammyFlightSounds, MV_FlightSoundsScriptID)
     Set(MF_KammyFlying, true)
     Thread
-        Call(LoadPath, 130 * DT, Ref(FlightPath_Kammy3), ARRAY_COUNT(FlightPath_Kammy3), EASING_LINEAR)
+        Call(LoadPath, 130 * DT, FlightPath_Kammy3, ARRAY_COUNT(FlightPath_Kammy3), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_Kammy, LVar1, LVar2, LVar3)
@@ -247,7 +247,7 @@ EvtScript EVS_Scene_KammySetAmbush = {
         Call(ShowEmote, MV_AmbushID, EMOTE_QUESTION, 0, 20, EMOTER_NPC, 0, 0, 0, 0)
         Wait(5 * DT)
     EndIf
-    Call(GotoMap, Ref("omo_04"), omo_04_ENTRY_0)
+    Call(GotoMap, "omo_04", omo_04_ENTRY_0)
     Wait(100 * DT)
     Return
     End

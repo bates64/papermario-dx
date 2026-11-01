@@ -26,7 +26,7 @@ EvtScript EVS_PreBattle = {
     Set(LVar2, 0)
     Set(LVar3, -500)
     Exec(EVS_TexturePanMain)
-    Set(LVar0, Ref(DripVolumes))
+    Set(LVar0, DripVolumes)
     Set(LVar1, MODEL_o351)
     Exec(EVS_CreateDripVolumes)
     Return

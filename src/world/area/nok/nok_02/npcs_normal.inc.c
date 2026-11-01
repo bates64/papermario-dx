@@ -50,7 +50,7 @@ EvtScript EVS_NpcInteract_Koopa_01_Normal = {
 };
 
 EvtScript EVS_NpcInit_Koopa_01_Normal = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Koopa_01_Normal))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Koopa_01_Normal)
     Return
     End
 };
@@ -73,7 +73,7 @@ EvtScript EVS_NpcInteract_Koopa_02_Normal = {
 };
 
 EvtScript EVS_NpcInit_Koopa_02_Normal = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Koopa_02_Normal))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Koopa_02_Normal)
     Return
     End
 };
@@ -113,7 +113,7 @@ EvtScript EVS_NpcInteract_Koopa_03_Normal = {
 };
 
 EvtScript EVS_NpcInit_Koopa_03 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Koopa_03_Normal))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Koopa_03_Normal)
     Return
     End
 };
@@ -136,7 +136,7 @@ EvtScript EVS_NpcInteract_Koopa_04_Normal = {
 };
 
 EvtScript EVS_NpcInit_Koopa_04 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Koopa_04_Normal))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Koopa_04_Normal)
     Return
     End
 };
@@ -298,7 +298,7 @@ EvtScript EVS_NpcInteract_Bobomb_03 = {
 };
 
 EvtScript EVS_NpcInit_Bobomb_01 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bobomb_01))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Bobomb_01)
     IfLt(GB_StoryProgress, STORY_CH1_STAR_SPIRIT_DEPARTED)
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndIf
@@ -307,7 +307,7 @@ EvtScript EVS_NpcInit_Bobomb_01 = {
 };
 
 EvtScript EVS_NpcInit_Bobomb_02 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bobomb_02))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Bobomb_02)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH1_STAR_SPIRIT_DEPARTED)
             Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
@@ -323,7 +323,7 @@ EvtScript EVS_NpcInit_Bobomb_02 = {
 };
 
 EvtScript EVS_NpcInit_Bobomb_03 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bobomb_03))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Bobomb_03)
     IfLt(GB_StoryProgress, STORY_CH1_STAR_SPIRIT_DEPARTED)
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndIf
@@ -390,14 +390,14 @@ EvtScript EVS_NpcInteract_Kolorado = {
     Wait(15)
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH1_0096)
     ExecWait(EVS_ArtifactPrompt_Kolorado)
-    Set(LVar0, Ref(LetterDelivery_Kolorado))
+    Set(LVar0, LetterDelivery_Kolorado)
     ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Kolorado = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Kolorado))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Kolorado)
     IfGe(GB_StoryProgress, STORY_CH7_STAR_SPIRIT_DEPARTED)
         Return
     EndIf

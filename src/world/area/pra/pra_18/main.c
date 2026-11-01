@@ -21,15 +21,15 @@ EvtScript EVS_ExitDoors_pra_16_1 = {
     Set(LVar0, pra_18_ENTRY_0)
     Set(LVar1, COLLIDER_deilittsw)
     IfEq(GF_PRA_BrokeIllusion, false)
-        Set(LVar2, Ref(BothRightDoorModelsL))
-        Set(LVar3, Ref(BothRightDoorModelsR))
+        Set(LVar2, BothRightDoorModelsL)
+        Set(LVar3, BothRightDoorModelsR)
     Else
-        Set(LVar2, Ref(NearRightDoorModelsL))
-        Set(LVar3, Ref(NearRightDoorModelsR))
+        Set(LVar2, NearRightDoorModelsL)
+        Set(LVar3, NearRightDoorModelsR)
     EndIf
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, Ref("pra_16"), pra_16_ENTRY_1)
+    Call(GotoMap, "pra_16", pra_16_ENTRY_1)
     Wait(100)
     Return
     End
@@ -40,11 +40,11 @@ EvtScript EVS_ExitDoors_pra_33_1 = {
     Call(DisablePlayerInput, true)
     Set(LVar0, pra_18_ENTRY_1)
     Set(LVar1, COLLIDER_deilittne)
-    Set(LVar2, Ref(LeftDoorModelsL))
-    Set(LVar3, Ref(LeftDoorModelsR))
+    Set(LVar2, LeftDoorModelsL)
+    Set(LVar3, LeftDoorModelsR)
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, Ref("pra_33"), pra_33_ENTRY_1)
+    Call(GotoMap, "pra_33", pra_33_ENTRY_1)
     Wait(100)
     Return
     End
@@ -56,26 +56,26 @@ EvtScript EVS_ExitDoors_pra_16_2 = {
     Set(LVar0, pra_18_ENTRY_2)
     Set(LVar1, COLLIDER_deilittnw)
     IfEq(GF_PRA_BrokeIllusion, false)
-        Set(LVar2, Ref(BothRightDoorModelsL))
-        Set(LVar3, Ref(BothRightDoorModelsR))
+        Set(LVar2, BothRightDoorModelsL)
+        Set(LVar3, BothRightDoorModelsR)
     Else
-        Set(LVar2, Ref(FarRightDoorModelsL))
-        Set(LVar3, Ref(FarRightDoorModelsR))
+        Set(LVar2, FarRightDoorModelsL)
+        Set(LVar3, FarRightDoorModelsR)
     EndIf
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, Ref("pra_16"), pra_16_ENTRY_2)
+    Call(GotoMap, "pra_16", pra_16_ENTRY_2)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitDoors_pra_16_1), TRIGGER_WALL_PRESS_A, COLLIDER_deilittsw, 1, 0)
+    BindTrigger(EVS_ExitDoors_pra_16_1, TRIGGER_WALL_PRESS_A, COLLIDER_deilittsw, 1, 0)
     IfGe(GB_StoryProgress, STORY_CH7_DEFEATED_CLUBBAS)
-        BindTrigger(Ref(EVS_ExitDoors_pra_33_1), TRIGGER_WALL_PRESS_A, COLLIDER_deilittne, 1, 0)
+        BindTrigger(EVS_ExitDoors_pra_33_1, TRIGGER_WALL_PRESS_A, COLLIDER_deilittne, 1, 0)
     EndIf
-    BindTrigger(Ref(EVS_ExitDoors_pra_16_2), TRIGGER_WALL_PRESS_A, COLLIDER_deilittnw, 1, 0)
+    BindTrigger(EVS_ExitDoors_pra_16_2, TRIGGER_WALL_PRESS_A, COLLIDER_deilittnw, 1, 0)
     Return
     End
 };
@@ -85,22 +85,22 @@ EvtScript EVS_EnterMap = {
     Switch(LVar0)
         CaseEq(pra_18_ENTRY_0)
             IfEq(GF_PRA_BrokeIllusion, false)
-                Set(LVar2, Ref(BothRightDoorModelsL))
-                Set(LVar3, Ref(BothRightDoorModelsR))
+                Set(LVar2, BothRightDoorModelsL)
+                Set(LVar3, BothRightDoorModelsR)
             Else
-                Set(LVar2, Ref(NearRightDoorModelsL))
-                Set(LVar3, Ref(NearRightDoorModelsR))
+                Set(LVar2, NearRightDoorModelsL)
+                Set(LVar3, NearRightDoorModelsR)
             EndIf
         CaseEq(pra_18_ENTRY_1)
-            Set(LVar2, Ref(LeftDoorModelsL))
-            Set(LVar3, Ref(LeftDoorModelsR))
+            Set(LVar2, LeftDoorModelsL)
+            Set(LVar3, LeftDoorModelsR)
         CaseEq(pra_18_ENTRY_2)
             IfEq(GF_PRA_BrokeIllusion, false)
-                Set(LVar2, Ref(BothRightDoorModelsL))
-                Set(LVar3, Ref(BothRightDoorModelsR))
+                Set(LVar2, BothRightDoorModelsL)
+                Set(LVar3, BothRightDoorModelsR)
             Else
-                Set(LVar2, Ref(FarRightDoorModelsL))
-                Set(LVar3, Ref(FarRightDoorModelsR))
+                Set(LVar2, FarRightDoorModelsL)
+                Set(LVar3, FarRightDoorModelsR)
             EndIf
     EndSwitch
     ExecWait(BaseEnterDoor)
@@ -113,7 +113,7 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_CRYSTAL_PALACE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(24, 24, 40)
-    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Call(MakeNpcs, true, DefaultNPCs)
     Exec(EVS_SetupMusic)
     IfGe(GB_StoryProgress, STORY_CH7_DEFEATED_CLUBBAS)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o1174, COLLIDER_FLAGS_UPPER_MASK)

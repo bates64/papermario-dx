@@ -56,7 +56,7 @@ API_CALLABLE(AddPushVelocity) {
 }
 
 EvtScript EVS_KoloradoSinkingPlatform = {
-    SetF(LVar0, Float(0.0))
+    SetF(LVar0, 0.0)
     Label(0)
         Call(TranslateModel, MODEL_o29, 0, LVar0, 0)
         Call(TranslateModel, MODEL_o30, 0, LVar0, 0)
@@ -65,12 +65,12 @@ EvtScript EVS_KoloradoSinkingPlatform = {
         Call(UpdateColliderTransform, COLLIDER_o147)
         Call(UpdateColliderTransform, COLLIDER_o148)
         Wait(1)
-        SubF(LVar0, Float(0.7))
+        SubF(LVar0, 0.7)
         IfGe(LVar0, -22)
             Goto(0)
         EndIf
     Label(1)
-        AddF(LVar0, Float(1.1))
+        AddF(LVar0, 1.1)
         Call(TranslateModel, MODEL_o29, 0, LVar0, 0)
         Call(TranslateModel, MODEL_o30, 0, LVar0, 0)
         Call(TranslateModel, MODEL_o31, 0, LVar0, 0)
@@ -88,7 +88,7 @@ EvtScript EVS_KoloradoSinkingPlatform = {
 EvtScript EVS_UpdateSinkingPlatform = {
     SetGroup(EVT_GROUP_HOSTILE_NPC)
     Call(GetCurrentFloor, LVarA)
-    SetF(LVar0, Float(0.0))
+    SetF(LVar0, 0.0)
     Label(0)
     Call(TranslateModel, LVar1, 0, LVar0, 0)
     Call(TranslateModel, LVar2, 0, LVar0, 0)
@@ -96,7 +96,7 @@ EvtScript EVS_UpdateSinkingPlatform = {
     Call(UpdateColliderTransform, LVar4)
     Call(UpdateColliderTransform, LVar5)
     Call(UpdateColliderTransform, LVar6)
-    SubF(LVar0, Float(0.6))
+    SubF(LVar0, 0.6)
     IfLt(LVar0, -30)
         Set(LVar0, -30)
     EndIf
@@ -117,10 +117,10 @@ EvtScript EVS_UpdateSinkingPlatform = {
     IfLe(LVar0, -20)
         Call(IsPlayerWithin, LVar7, LVar8, LVar9, LVarD)
         IfEq(LVarD, 0)
-            AddF(LVar0, Float(1.1))
+            AddF(LVar0, 1.1)
         EndIf
     Else
-        AddF(LVar0, Float(1.1))
+        AddF(LVar0, 1.1)
     EndIf
     Call(TranslateModel, LVar1, 0, LVar0, 0)
     Call(TranslateModel, LVar2, 0, LVar0, 0)

@@ -26,7 +26,7 @@ MobileAISettings AISettings_Short = {
 };
 
 EvtScript EVS_NpcAI_Short = {
-    Call(BasicAI_Main, Ref(AISettings_Short))
+    Call(BasicAI_Main, AISettings_Short)
     Return
     End
 };
@@ -51,7 +51,7 @@ MobileAISettings AISettings_Koopa = {
 };
 
 EvtScript EVS_NpcAI_KoopaTroopa_Wander = {
-    Call(BasicAI_Main, Ref(AISettings_Koopa))
+    Call(BasicAI_Main, AISettings_Koopa)
     Return
     End
 };
@@ -76,7 +76,7 @@ MobileAISettings AISettings_ShyGuy_Wander = {
 };
 
 EvtScript EVS_NpcAI_ShyGuy_Wander = {
-    Call(BasicAI_Main, Ref(AISettings_ShyGuy_Wander))
+    Call(BasicAI_Main, AISettings_ShyGuy_Wander)
     Return
     End
 };
@@ -90,55 +90,55 @@ NpcSettings NpcSettings_ShyGuy_Wander = {
 
 EvtScript EVS_SetCam_MeetingDoor = {
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(3.0 / DT))
-    Call(SetCamPitch, CAM_DEFAULT, Float(11.0), Float(-10.0))
-    Call(SetCamDistance, CAM_DEFAULT, Float(450.0))
-    Call(SetCamPosA, CAM_DEFAULT, Float(88.0), Float(256.6))
-    Call(SetCamPosB, CAM_DEFAULT, Float(195.0), Float(142.0))
-    Call(SetCamPosC, CAM_DEFAULT, Float(0.0), Float(0.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 3.0 / DT)
+    Call(SetCamPitch, CAM_DEFAULT, 11.0, -10.0)
+    Call(SetCamDistance, CAM_DEFAULT, 450.0)
+    Call(SetCamPosA, CAM_DEFAULT, 88.0, 256.6)
+    Call(SetCamPosB, CAM_DEFAULT, 195.0, 142.0)
+    Call(SetCamPosC, CAM_DEFAULT, 0.0, 0.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Return
     End
 };
 
 EvtScript EVS_SetCam_AfterBattle = {
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(3.0 / DT))
-    Call(SetCamPitch, CAM_DEFAULT, Float(5.0), Float(-14.0))
-    Call(SetCamDistance, CAM_DEFAULT, Float(375.0))
-    Call(SetCamPosA, CAM_DEFAULT, Float(88.0), Float(256.6))
-    Call(SetCamPosB, CAM_DEFAULT, Float(195.0), Float(142.0))
-    Call(SetCamPosC, CAM_DEFAULT, Float(0.0), Float(0.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 3.0 / DT)
+    Call(SetCamPitch, CAM_DEFAULT, 5.0, -14.0)
+    Call(SetCamDistance, CAM_DEFAULT, 375.0)
+    Call(SetCamPosA, CAM_DEFAULT, 88.0, 256.6)
+    Call(SetCamPosB, CAM_DEFAULT, 195.0, 142.0)
+    Call(SetCamPosC, CAM_DEFAULT, 0.0, 0.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Return
     End
 };
 
 EvtScript EVS_SetCam_AfterResult = {
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(11.0), Float(-14.0))
-    Call(SetCamDistance, CAM_DEFAULT, Float(450.0))
-    Call(SetCamPosA, CAM_DEFAULT, Float(88.0), Float(256.6))
-    Call(SetCamPosB, CAM_DEFAULT, Float(195.0), Float(142.0))
-    Call(SetCamPosC, CAM_DEFAULT, Float(0.0), Float(0.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
+    Call(SetCamPitch, CAM_DEFAULT, 11.0, -14.0)
+    Call(SetCamDistance, CAM_DEFAULT, 450.0)
+    Call(SetCamPosA, CAM_DEFAULT, 88.0, 256.6)
+    Call(SetCamPosB, CAM_DEFAULT, 195.0, 142.0)
+    Call(SetCamPosC, CAM_DEFAULT, 0.0, 0.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Return
     End
 };
 
 EvtScript EVS_SetCam_AskQuestion = {
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(11.0), Float(-10.5))
-    Call(SetCamPosA, CAM_DEFAULT, Float(88.0), Float(256.6))
-    Call(SetCamPosB, CAM_DEFAULT, Float(195.0), Float(142.0))
-    Call(SetCamPosC, CAM_DEFAULT, Float(0.0), Float(0.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
+    Call(SetCamPitch, CAM_DEFAULT, 11.0, -10.5)
+    Call(SetCamPosA, CAM_DEFAULT, 88.0, 256.6)
+    Call(SetCamPosB, CAM_DEFAULT, 195.0, 142.0)
+    Call(SetCamPosC, CAM_DEFAULT, 0.0, 0.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Return
     End
 };
@@ -146,13 +146,13 @@ EvtScript EVS_SetCam_AskQuestion = {
 EvtScript EVS_SetCam_ViewRoom = {
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
     Call(SetCamSpeed, CAM_DEFAULT, LVar6)
-    Call(SetCamDistance, CAM_DEFAULT, Float(470.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(16.0), Float(-9.0))
-    Call(SetCamPosA, CAM_DEFAULT, Float(-2.5), Float(300.0))
-    Call(SetCamPosB, CAM_DEFAULT, Float(-2.5), Float(200.0))
-    Call(SetCamPosC, CAM_DEFAULT, Float(0.0), Float(0.0))
+    Call(SetCamDistance, CAM_DEFAULT, 470.0)
+    Call(SetCamPitch, CAM_DEFAULT, 16.0, -9.0)
+    Call(SetCamPosA, CAM_DEFAULT, -2.5, 300.0)
+    Call(SetCamPosB, CAM_DEFAULT, -2.5, 200.0)
+    Call(SetCamPosC, CAM_DEFAULT, 0.0, 0.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Return
     End
 };
@@ -160,13 +160,13 @@ EvtScript EVS_SetCam_ViewRoom = {
 EvtScript EVS_SetCam_BeforeBattle = {
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
     Call(SetCamSpeed, CAM_DEFAULT, LVar6)
-    Call(SetCamDistance, CAM_DEFAULT, Float(470.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(16.0), Float(-9.0))
-    Call(SetCamPosA, CAM_DEFAULT, Float(50.0), Float(300.0))
-    Call(SetCamPosB, CAM_DEFAULT, Float(50.0), Float(200.0))
-    Call(SetCamPosC, CAM_DEFAULT, Float(0.0), Float(0.0))
+    Call(SetCamDistance, CAM_DEFAULT, 470.0)
+    Call(SetCamPitch, CAM_DEFAULT, 16.0, -9.0)
+    Call(SetCamPosA, CAM_DEFAULT, 50.0, 300.0)
+    Call(SetCamPosB, CAM_DEFAULT, 50.0, 200.0)
+    Call(SetCamPosC, CAM_DEFAULT, 0.0, 0.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Return
     End
 };
@@ -313,7 +313,7 @@ EvtScript EVS_NpcIdle_Goomba = {
 EvtScript EVS_Release_Goomba = {
     Set(LVar3, ANIM_Goomba_Run)
     Set(LVar4, ANIM_Goomba_Idle)
-    Set(LVar5, Ref(EVS_NpcAI_Short))
+    Set(LVar5, EVS_NpcAI_Short)
     ExecWait(EVS_ReleaseFrom_RandomDoor)
     Return
     End
@@ -334,7 +334,7 @@ EvtScript EVS_NpcIdle_ShyGuy = {
 EvtScript EVS_Release_RedShyGuy = {
     Set(LVar3, ANIM_ShyGuy_Red_Dash)
     Set(LVar4, ANIM_ShyGuy_Red_Idle)
-    Set(LVar5, Ref(EVS_NpcAI_ShyGuy_Wander))
+    Set(LVar5, EVS_NpcAI_ShyGuy_Wander)
     ExecWait(EVS_ReleaseFrom_RandomDoor)
     Return
     End
@@ -350,7 +350,7 @@ EvtScript EVS_Withdraw_RedShyGuy = {
 EvtScript EVS_Release_RedShyGuy_Door_1 = {
     Set(LVar3, ANIM_ShyGuy_Red_Dash)
     Set(LVar4, ANIM_ShyGuy_Red_Idle)
-    Set(LVar5, Ref(EVS_NpcAI_ShyGuy_Wander))
+    Set(LVar5, EVS_NpcAI_ShyGuy_Wander)
     ExecWait(EVS_ReleaseFrom_Door_1)
     Return
     End
@@ -366,7 +366,7 @@ EvtScript EVS_Withdraw_RedShyGuy_Door_1 = {
 EvtScript EVS_Release_BlueShyGuy = {
     Set(LVar3, ANIM_ShyGuy_Blue_Dash)
     Set(LVar4, ANIM_ShyGuy_Blue_Idle)
-    Set(LVar5, Ref(EVS_NpcAI_ShyGuy_Wander))
+    Set(LVar5, EVS_NpcAI_ShyGuy_Wander)
     ExecWait(EVS_ReleaseFrom_RandomDoor)
     Return
     End
@@ -382,7 +382,7 @@ EvtScript EVS_Withdraw_BlueShyGuy = {
 EvtScript EVS_Release_BlueShyGuy_Door_2 = {
     Set(LVar3, ANIM_ShyGuy_Blue_Dash)
     Set(LVar4, ANIM_ShyGuy_Blue_Idle)
-    Set(LVar5, Ref(EVS_NpcAI_ShyGuy_Wander))
+    Set(LVar5, EVS_NpcAI_ShyGuy_Wander)
     ExecWait(EVS_ReleaseFrom_Door_2)
     Return
     End
@@ -398,7 +398,7 @@ EvtScript EVS_Withdraw_BlueShyGuy_Door_2 = {
 EvtScript EVS_Release_GreenShyGuy = {
     Set(LVar3, ANIM_ShyGuy_Green_Dash)
     Set(LVar4, ANIM_ShyGuy_Green_Idle)
-    Set(LVar5, Ref(EVS_NpcAI_ShyGuy_Wander))
+    Set(LVar5, EVS_NpcAI_ShyGuy_Wander)
     ExecWait(EVS_ReleaseFrom_RandomDoor)
     Return
     End
@@ -419,7 +419,7 @@ EvtScript EVS_NpcIdle_KoopaTroopa = {
 EvtScript EVS_Release_DarkTroopa = {
     Set(LVar3, ANIM_KoopaTroopa_Dark_Run)
     Set(LVar4, ANIM_KoopaTroopa_Dark_Idle)
-    Set(LVar5, Ref(EVS_NpcAI_KoopaTroopa_Wander))
+    Set(LVar5, EVS_NpcAI_KoopaTroopa_Wander)
     ExecWait(EVS_ReleaseFrom_RandomDoor)
     Return
     End
@@ -435,7 +435,7 @@ EvtScript EVS_Withdraw_DarkTroopa = {
 EvtScript EVS_Release_KoopaTroopa = {
     Set(LVar3, ANIM_KoopaTroopa_Run)
     Set(LVar4, ANIM_KoopaTroopa_Idle)
-    Set(LVar5, Ref(EVS_NpcAI_KoopaTroopa_Wander))
+    Set(LVar5, EVS_NpcAI_KoopaTroopa_Wander)
     ExecWait(EVS_ReleaseFrom_RandomDoor)
     Return
     End
@@ -456,7 +456,7 @@ EvtScript EVS_NpcIdle_Bobomb = {
 EvtScript EVS_Release_Bobomb = {
     Set(LVar3, ANIM_WorldBobomb_Green_Run)
     Set(LVar4, ANIM_WorldBobomb_Green_Idle)
-    Set(LVar5, Ref(EVS_NpcAI_Short))
+    Set(LVar5, EVS_NpcAI_Short)
     ExecWait(EVS_ReleaseFrom_RandomDoor)
     Return
     End
@@ -472,7 +472,7 @@ EvtScript EVS_Withdraw_Bobomb = {
 EvtScript EVS_Release_Bobomb_Door_0 = {
     Set(LVar3, ANIM_WorldBobomb_Green_Run)
     Set(LVar4, ANIM_WorldBobomb_Green_Idle)
-    Set(LVar5, Ref(EVS_NpcAI_Short))
+    Set(LVar5, EVS_NpcAI_Short)
     ExecWait(EVS_ReleaseFrom_Door_0)
     Return
     End
@@ -708,19 +708,19 @@ s32 QS_Withdraw_Wave_6[] = {
 EvtScript EVS_Release_Wave = {
     Switch(AB_KPA82_QuizRound)
         CaseEq(0)
-            UseBuf(Ref(QS_Release_Wave_0))
+            UseBuf(QS_Release_Wave_0)
         CaseEq(1)
-            UseBuf(Ref(QS_Release_Wave_1))
+            UseBuf(QS_Release_Wave_1)
         CaseEq(2)
-            UseBuf(Ref(QS_Release_Wave_2))
+            UseBuf(QS_Release_Wave_2)
         CaseEq(3)
-            UseBuf(Ref(QS_Release_Wave_3))
+            UseBuf(QS_Release_Wave_3)
         CaseEq(4)
-            UseBuf(Ref(QS_Release_Wave_4))
+            UseBuf(QS_Release_Wave_4)
         CaseEq(5)
-            UseBuf(Ref(QS_Release_Wave_5))
+            UseBuf(QS_Release_Wave_5)
         CaseEq(6)
-            UseBuf(Ref(QS_Release_Wave_6))
+            UseBuf(QS_Release_Wave_6)
     EndSwitch
     Loop(0)
         BufRead2(LVarA, LVarB)
@@ -740,19 +740,19 @@ EvtScript EVS_Release_Wave = {
 EvtScript EVS_Withdraw_Wave = {
     Switch(AB_KPA82_QuizRound)
         CaseEq(0)
-            UseBuf(Ref(QS_Withdraw_Wave_0))
+            UseBuf(QS_Withdraw_Wave_0)
         CaseEq(1)
-            UseBuf(Ref(QS_Withdraw_Wave_1))
+            UseBuf(QS_Withdraw_Wave_1)
         CaseEq(2)
-            UseBuf(Ref(QS_Withdraw_Wave_2))
+            UseBuf(QS_Withdraw_Wave_2)
         CaseEq(3)
-            UseBuf(Ref(QS_Withdraw_Wave_3))
+            UseBuf(QS_Withdraw_Wave_3)
         CaseEq(4)
-            UseBuf(Ref(QS_Withdraw_Wave_4))
+            UseBuf(QS_Withdraw_Wave_4)
         CaseEq(5)
-            UseBuf(Ref(QS_Withdraw_Wave_5))
+            UseBuf(QS_Withdraw_Wave_5)
         CaseEq(6)
-            UseBuf(Ref(QS_Withdraw_Wave_6))
+            UseBuf(QS_Withdraw_Wave_6)
     EndSwitch
     Loop(0)
         BufRead2(LVarA, LVarB)
@@ -878,7 +878,7 @@ EvtScript EVS_ScaleResultCard = {
     Loop(0)
         Call(UpdateLerp)
         SetF(LVar6, LVar0)
-        MulF(LVar6, Float(0.01))
+        MulF(LVar6, 0.01)
         Call(ScaleModel, LVarA, LVar6, LVar6, 1)
         Wait(1)
         IfEq(LVar1, 0)
@@ -925,7 +925,7 @@ EvtScript EVS_MoveCardToScoreboard = {
             Set(LVar1, 148)
             Set(LVar2, 3)
     EndSwitch
-    Call(SetNpcJumpscale, NPC_Dummy, Float(0.0))
+    Call(SetNpcJumpscale, NPC_Dummy, 0.0)
     Call(NpcJump1, NPC_Dummy, LVar0, LVar1, LVar2, 30 * DT)
     Call(SetNpcPos, NPC_Dummy, 184, 20, 150)
     KillThread(LVarB)
@@ -976,7 +976,7 @@ EvtScript EVS_GetWrongScoreboardModel = {
 };
 
 EvtScript EVS_ShowResultCard = {
-    Set(LVar6, Float(2.0 / DT))
+    Set(LVar6, 2.0 / DT)
     ExecWait(EVS_SetCam_ViewRoom)
     Wait(5)
     IfEq(MV_LastAnswerResult, ANSWER_CORRECT)
@@ -1044,7 +1044,7 @@ EvtScript EVS_NpcIdle_Door = {
         Call(ContinueSpeech, NPC_SELF, ANIM_ShyGuy_Black_Idle, ANIM_ShyGuy_Black_Idle, 0, MSG_CH8_0031)
     Else
         Call(ContinueSpeech, NPC_SELF, ANIM_ShyGuy_Black_Idle, ANIM_ShyGuy_Black_Idle, 0, MSG_CH8_0030)
-        Call(ResetCam, CAM_DEFAULT, Float(4.0))
+        Call(ResetCam, CAM_DEFAULT, 4.0)
         Call(PanToTarget, CAM_DEFAULT, 0, false)
         Set(GF_KPA82_PassedThroughDoor, false)
         Call(DisablePlayerInput, false)
@@ -1060,7 +1060,7 @@ EvtScript EVS_NpcIdle_Door = {
     Thread
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o166, COLLIDER_FLAGS_UPPER_MASK)
         Call(DisablePlayerPhysics, true)
-        Call(SetPlayerSpeed, Float(2.0))
+        Call(SetPlayerSpeed, 2.0)
         Call(PlayerMoveTo, 175, 236, 20)
         Call(InterpPlayerYaw, 270, 0)
         Call(DisablePlayerPhysics, false)
@@ -1068,7 +1068,7 @@ EvtScript EVS_NpcIdle_Door = {
     EndThread
     Thread
         Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_WALK)
-        Call(SetNpcSpeed, NPC_PARTNER, Float(2.5))
+        Call(SetNpcSpeed, NPC_PARTNER, 2.5)
         Call(InterpNpcYaw, NPC_PARTNER, 270, 0)
         Call(NpcMoveTo, NPC_PARTNER, 205, 236, 20)
         Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
@@ -1078,7 +1078,7 @@ EvtScript EVS_NpcIdle_Door = {
     Set(AB_KPA82_RightAnswers, 0)
     Set(AB_KPA82_WrongAnswers, 0)
     Label(10)
-        Set(LVar6, Float(2.0 / DT))
+        Set(LVar6, 2.0 / DT)
         ExecWait(EVS_SetCam_ViewRoom)
         Set(MF_Sync_MusicChange, true)
         Wait(2)
@@ -1130,7 +1130,7 @@ EvtScript EVS_NpcIdle_Door = {
         Goto(10)
     Label(20)
     Call(SpeakToPlayer, NPC_SELF, ANIM_ShyGuy_Black_Idle, ANIM_ShyGuy_Black_Idle, 0, MSG_CH8_0041)
-    Set(LVar6, Float(2.0 / DT))
+    Set(LVar6, 2.0 / DT)
     ExecWait(EVS_SetCam_ViewRoom)
     Call(SetNpcPos, NPC_AntiGuy_01, -100, 0, 0)
     Call(SetNpcPos, NPC_AntiGuy_02, 0, 0, 0)
@@ -1141,7 +1141,7 @@ EvtScript EVS_NpcIdle_Door = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_ShyGuy_Black_Idle, ANIM_ShyGuy_Black_Idle, 0, MSG_CH8_0042)
     Call(PlayerFaceNpc, NPC_AntiGuy_02, 5)
     Call(GetPlayerPos, LVar3, LVar4, LVar5)
-    Set(LVar6, Float(3.0 / DT))
+    Set(LVar6, 3.0 / DT)
     ExecWait(EVS_SetCam_BeforeBattle)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Thread
@@ -1166,7 +1166,7 @@ EvtScript EVS_NpcIdle_Door = {
     Thread
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o166, COLLIDER_FLAGS_UPPER_MASK)
         Call(DisablePlayerPhysics, true)
-        Call(SetPlayerSpeed, Float(3.0 / DT))
+        Call(SetPlayerSpeed, 3.0 / DT)
         Call(PlayerMoveTo, 120, 145, 0)
         Call(InterpPlayerYaw, 90, 0)
         Call(DisablePlayerPhysics, false)
@@ -1174,7 +1174,7 @@ EvtScript EVS_NpcIdle_Door = {
     EndThread
     Thread
         Call(DisablePartnerAI, false)
-        Call(SetNpcSpeed, NPC_PARTNER, Float(3.5 * DT))
+        Call(SetNpcSpeed, NPC_PARTNER, 3.5 * DT)
         Call(InterpNpcYaw, NPC_PARTNER, 90, 0)
         Call(NpcMoveTo, NPC_PARTNER, 80, 145, 0)
         Call(EnablePartnerAI)
@@ -1185,7 +1185,7 @@ EvtScript EVS_NpcIdle_Door = {
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Set(GB_KPA82_BowserDoorState, 1)
     Call(DisablePlayerInput, false)
-    BindTrigger(Ref(EVS_ExitDoors_kpa_61_0), TRIGGER_WALL_PRESS_A, COLLIDER_o166, 1, 0)
+    BindTrigger(EVS_ExitDoors_kpa_61_0, TRIGGER_WALL_PRESS_A, COLLIDER_o166, 1, 0)
     Return
     End
 };
@@ -1214,9 +1214,9 @@ EvtScript EVS_NpcDefeat_Door = {
 
 EvtScript EVS_NpcInit_Door = {
     IfEq(GB_KPA82_BowserDoorState, 0)
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Door))
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Door)
     EndIf
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Door))
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_Door)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
     Call(EnableNpcShadow, NPC_SELF, false)
     Call(SetNpcPos, NPC_SELF, 184, 20, 150)
@@ -1225,7 +1225,7 @@ EvtScript EVS_NpcInit_Door = {
 };
 
 EvtScript EVS_NpcInit_Goomba = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Goomba))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Goomba)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, false)
     Return
@@ -1233,7 +1233,7 @@ EvtScript EVS_NpcInit_Goomba = {
 };
 
 EvtScript EVS_NpcInit_ShyGuy = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_ShyGuy))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_ShyGuy)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, false)
     Return
@@ -1241,7 +1241,7 @@ EvtScript EVS_NpcInit_ShyGuy = {
 };
 
 EvtScript EVS_NpcInit_KoopaTroopa = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_KoopaTroopa))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_KoopaTroopa)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, false)
     Return
@@ -1249,7 +1249,7 @@ EvtScript EVS_NpcInit_KoopaTroopa = {
 };
 
 EvtScript EVS_NpcInit_Bobomb = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Bobomb))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Bobomb)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, false)
     Return

@@ -32,15 +32,15 @@ EvtScript EVS_NpcIdle_ShopOwner = {
             Call(SetPanTarget, CAM_DEFAULT, 32, 0, -67)
             Call(SetCamDistance, CAM_DEFAULT, -210)
             Call(SetCamPitch, CAM_DEFAULT, 20, -12)
-            Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+            Call(SetCamSpeed, CAM_DEFAULT, 90.0)
             Call(PanToTarget, CAM_DEFAULT, 0, true)
             Wait(20 * DT)
             Call(UseSettingsFrom, CAM_DEFAULT, LVarA, LVarB, LVarC)
             Call(SetCamDistance, CAM_DEFAULT, -350)
 #if VERSION_PAL
-            Call(SetCamSpeed, 0, Float(0.961))
+            Call(SetCamSpeed, 0, 0.961)
 #else
-            Call(SetCamSpeed, CAM_DEFAULT, Float(0.8))
+            Call(SetCamSpeed, CAM_DEFAULT, 0.8)
 #endif
             Call(PanToTarget, CAM_DEFAULT, 0, true)
             Call(SetNpcAnimation, NPC_SELF, ANIM_Mouser_Purple_Run)
@@ -65,9 +65,9 @@ EvtScript EVS_NpcIdle_ShopOwner = {
             Call(GetPlayerPos, LVar0, LVar1, LVar2)
             Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
             Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-            Call(SetCamSpeed, CAM_DEFAULT, Float(2.0 / DT))
+            Call(SetCamSpeed, CAM_DEFAULT, 2.0 / DT)
             Call(PanToTarget, CAM_DEFAULT, 0, true)
-            Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+            Call(WaitForCam, CAM_DEFAULT, 1.0)
             Call(PanToTarget, CAM_DEFAULT, 0, false)
             Call(DisablePlayerInput, false)
             Set(GB_StoryProgress, STORY_CH2_SHADY_MOUSE_LEFT_SHOP)
@@ -112,21 +112,21 @@ EvtScript EVS_NpcInteract_ShopOwner = {
     IfEq(AB_DRO_SHOP_PREV1, 4)
         IfEq(AB_DRO_SHOP_PREV2, 1)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Mouser_Purple_Talk, ANIM_Mouser_Purple_Idle, 0, MSG_CH2_0088)
-            Set(LVar0, Ref(LetterDelivery_ShopOwner))
+            Set(LVar0, LetterDelivery_ShopOwner)
             ExecWait(EVS_TryLetterDelivery)
             Return
         EndIf
     EndIf
     ExecWait(EVS_ShopOwnerDialog)
-    Set(LVar0, Ref(LetterDelivery_ShopOwner))
+    Set(LVar0, LetterDelivery_ShopOwner)
     ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_ShopOwner = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_ShopOwner))
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ShopOwner))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_ShopOwner)
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_ShopOwner)
     Return
     End
 };

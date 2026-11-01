@@ -39,11 +39,11 @@ API_CALLABLE(IsPartnerLakilester) {
 
 EvtScript EVS_SinkingPlatform_Update = {
     SetGroup(EVT_GROUP_HOSTILE_NPC)
-    SetF(LVar0, Float(0.0))
+    SetF(LVar0, 0.0)
     Label(0)
         Call(TranslateGroup, LVar1, 0, LVar0, 0)
         Call(UpdateColliderTransform, LVar3)
-        SubF(LVar0, Float(0.5))
+        SubF(LVar0, 0.5)
         IfLt(LVar0, -40)
             Set(LVar0, -40)
         EndIf
@@ -56,7 +56,7 @@ EvtScript EVS_SinkingPlatform_Update = {
             EndIf
         EndIf
     Label(1)
-        AddF(LVar0, Float(1.0))
+        AddF(LVar0, 1.0)
         Call(TranslateGroup, LVar1, 0, LVar0, 0)
         Call(UpdateColliderTransform, LVar3)
         Wait(1)
@@ -218,10 +218,10 @@ EvtScript EVS_SetupPlatforms = {
     Call(ParentColliderToModel, COLLIDER_o407, MODEL_o449)
     Call(ParentColliderToModel, COLLIDER_o409, MODEL_o451)
     Call(ParentColliderToModel, COLLIDER_o411, MODEL_o453)
-    BindTrigger(Ref(EVS_Touch_SinkingPlatform1), TRIGGER_FLOOR_TOUCH, COLLIDER_o405, 1, 0)
-    BindTrigger(Ref(EVS_Touch_SinkingPlatform2), TRIGGER_FLOOR_TOUCH, COLLIDER_o407, 1, 0)
-    BindTrigger(Ref(EVS_Touch_SinkingPlatform3), TRIGGER_FLOOR_TOUCH, COLLIDER_o409, 1, 0)
-    BindTrigger(Ref(EVS_Touch_SinkingPlatform4), TRIGGER_FLOOR_TOUCH, COLLIDER_o411, 1, 0)
+    BindTrigger(EVS_Touch_SinkingPlatform1, TRIGGER_FLOOR_TOUCH, COLLIDER_o405, 1, 0)
+    BindTrigger(EVS_Touch_SinkingPlatform2, TRIGGER_FLOOR_TOUCH, COLLIDER_o407, 1, 0)
+    BindTrigger(EVS_Touch_SinkingPlatform3, TRIGGER_FLOOR_TOUCH, COLLIDER_o409, 1, 0)
+    BindTrigger(EVS_Touch_SinkingPlatform4, TRIGGER_FLOOR_TOUCH, COLLIDER_o411, 1, 0)
     Exec(EVS_SetupSinkingPlatforms)
     Exec(EVS_SetupMovingPlatform)
     Return

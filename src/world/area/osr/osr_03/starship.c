@@ -48,8 +48,8 @@ EvtScript EVS_Scene_Starship = {
     Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 80, 16, 4096)
     Call(UseSettingsFrom, CAM_DEFAULT, 0, -1, 0)
     Call(SetPanTarget, CAM_DEFAULT, 0, -1, 0)
-    Call(SetCamPitch, CAM_DEFAULT, Float(-13.0), Float(18.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamPitch, CAM_DEFAULT, -13.0, 18.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Thread
         Call(PlaySound, SOUND_STARSHIP_NEAR_FLYBY)
@@ -79,7 +79,7 @@ EvtScript EVS_Scene_Starship = {
         EndLoop
     EndChildThread
     Thread
-        Call(LoadPath, 120, Ref(FlightPath), ARRAY_COUNT(FlightPath), EASING_LINEAR)
+        Call(LoadPath, 120, FlightPath, ARRAY_COUNT(FlightPath), EASING_LINEAR)
         Label(90)
         Call(GetNextPathPos)
         Set(MV_Starship_PosX, LVar1)
@@ -91,7 +91,7 @@ EvtScript EVS_Scene_Starship = {
         EndIf
     EndThread
     Wait(100)
-    Call(GotoMap, Ref("kpa_60"), kpa_60_ENTRY_4)
+    Call(GotoMap, "kpa_60", kpa_60_ENTRY_4)
     Wait(100)
     Return
     End

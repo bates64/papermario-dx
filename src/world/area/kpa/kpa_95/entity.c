@@ -22,7 +22,7 @@ EvtScript EVS_UnlockPrompt_PrisonCell = {
     Set(LVar1, 0)
     Wait(5)
     Call(CloseChoicePopup)
-    BindTrigger(Ref(EVS_OpenCellDoor), TRIGGER_WALL_PRESS_A, COLLIDER_deilittn, 1, 0)
+    BindTrigger(EVS_OpenCellDoor, TRIGGER_WALL_PRESS_A, COLLIDER_deilittn, 1, 0)
     Unbind
     Return
     End
@@ -30,11 +30,11 @@ EvtScript EVS_UnlockPrompt_PrisonCell = {
 
 EvtScript EVS_MakeEntities = {
     IfEq(GF_KPA95_UnlockedDoor, false)
-        Call(MakeEntity, Ref(Entity_Padlock), -5, 10, 13, 0, MAKE_ENTITY_END)
+        Call(MakeEntity, Entity_Padlock, -5, 10, 13, 0, MAKE_ENTITY_END)
         Set(MV_EntityID_Padlock, LVar0)
-        BindPadlock(Ref(EVS_UnlockPrompt_PrisonCell), TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), Ref(KeyList_PrisonCell), 0, 1)
+        BindPadlock(EVS_UnlockPrompt_PrisonCell, TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), KeyList_PrisonCell, 0, 1)
     Else
-        BindTrigger(Ref(EVS_OpenCellDoor), TRIGGER_WALL_PRESS_A, COLLIDER_deilittn, 1, 0)
+        BindTrigger(EVS_OpenCellDoor, TRIGGER_WALL_PRESS_A, COLLIDER_deilittn, 1, 0)
     EndIf
     IfEq(GF_KPA95_Defeated_Guard, true)
         Call(MakeItemEntity, ITEM_PRISON_KEY, -70, 0, 55, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_KPA95_Item_PrisonKey1)

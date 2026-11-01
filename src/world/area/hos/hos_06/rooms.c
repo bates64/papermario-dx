@@ -14,25 +14,25 @@ EvtScript EVS_SetDoorRot_House = {
 
 EvtScript EVS_SetWallRot_House = {
     Set(LVar1, LVar0)
-    MulF(LVar1, Float(2.0))
+    MulF(LVar1, 2.0)
     Call(RotateGroup, MODEL_g12, LVar1, 0, 0, 1)
     Set(LVar1, LVar0)
-    MulF(LVar1, Float(2.0))
+    MulF(LVar1, 2.0)
     Call(RotateGroup, MODEL_g54, LVar1, 0, 1, 0)
     Set(LVar1, LVar0)
-    MulF(LVar1, Float(2.0))
+    MulF(LVar1, 2.0)
     Call(RotateGroup, MODEL_g55, LVar1, 0, 1, 0)
     Set(LVar1, LVar0)
-    MulF(LVar1, Float(2.0))
+    MulF(LVar1, 2.0)
     Call(RotateGroup, MODEL_g56, LVar1, 0, 1, 0)
     Set(LVar1, LVar0)
-    MulF(LVar1, Float(2.0))
+    MulF(LVar1, 2.0)
     Call(RotateGroup, MODEL_g57, LVar1, 0, 1, 0)
     Set(LVar1, LVar0)
-    MulF(LVar1, Float(2.0))
+    MulF(LVar1, 2.0)
     Call(RotateGroup, MODEL_g58, LVar1, 0, 1, 0)
     Set(LVar1, LVar0)
-    MulF(LVar1, Float(2.0))
+    MulF(LVar1, 2.0)
     Call(RotateGroup, MODEL_g86, LVar1, 0, 1, 0)
     Return
     End
@@ -96,14 +96,14 @@ EvtScript EVS_SetupRooms = {
     Call(SetGroupVisibility, MODEL_g81, MODEL_GROUP_HIDDEN)
     Call(SetGroupVisibility, MODEL_g31, MODEL_GROUP_HIDDEN)
     Call(SetGroupVisibility, MODEL_g51, MODEL_GROUP_HIDDEN)
-    BindPadlock(Ref(EVS_ManageUpstairsVisibility), TRIGGER_FLOOR_TOUCH, COLLIDER_o92, 0, 0, 1)
+    BindPadlock(EVS_ManageUpstairsVisibility, TRIGGER_FLOOR_TOUCH, COLLIDER_o92, 0, 0, 1)
     // front door
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT),
-        Ref(EVS_SetDoorRot_House),
-        Ref(EVS_SetWallRot_House),
-        Ref(EVS_DropDoor_House),
-        Ref(EVS_RoomListener_House),
+        EVS_SetDoorRot_House,
+        EVS_SetWallRot_House,
+        EVS_DropDoor_House,
+        EVS_RoomListener_House,
         COLLIDER_o158,
         COLLIDER_o159,
         MODEL_g2,
@@ -111,7 +111,7 @@ EvtScript EVS_SetupRooms = {
     // staircase
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT),
-        Ref(EVS_SetDoorRot_Downstairs),
+        EVS_SetDoorRot_Downstairs,
         nullptr,
         nullptr,
         nullptr,
@@ -122,7 +122,7 @@ EvtScript EVS_SetupRooms = {
     // loft
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_IN),
-        Ref(EVS_SetDoorRot_Upstairs),
+        EVS_SetDoorRot_Upstairs,
         nullptr,
         nullptr,
         nullptr,

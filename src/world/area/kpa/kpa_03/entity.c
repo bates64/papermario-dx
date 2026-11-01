@@ -33,12 +33,12 @@ EvtScript EVS_UseSpring = {
     IfEq(MV_PlayerHeightLevel, 0)
         Set(LVar3, -275)
         ExecGetTID(EVS_TetherCamToPlayer, LVarA)
-        Call(SetPlayerJumpscale, Float(0.7))
+        Call(SetPlayerJumpscale, 0.7)
         Call(PlayerJump, -507, -288, -159, 20)
     Else
         Set(LVar3, 0)
         ExecGetTID(EVS_TetherCamToPlayer, LVarA)
-        Call(SetPlayerJumpscale, Float(1.1))
+        Call(SetPlayerJumpscale, 1.1)
         Call(PlayerJump, -500, 0, -150, 40)
     EndIf
     KillThread(LVarA)
@@ -54,9 +54,9 @@ EvtScript EVS_MakeEntities = {
     Thread
         Call(MonitorPlayerAltitude)
     EndThread
-    Call(MakeEntity, Ref(Entity_ScriptSpring), -400, -300, -150, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(EVS_UseSpring))
-    Call(MakeEntity, Ref(Entity_YellowBlock), 620, -65, -200, 0, ITEM_SHOOTING_STAR, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_ScriptSpring, -400, -300, -150, 0, MAKE_ENTITY_END)
+    Call(AssignScript, EVS_UseSpring)
+    Call(MakeEntity, Entity_YellowBlock, 620, -65, -200, 0, ITEM_SHOOTING_STAR, MAKE_ENTITY_END)
     Call(AssignBlockFlag, GF_KPA03_ItemBlock_ShootingStar)
     Return
     End

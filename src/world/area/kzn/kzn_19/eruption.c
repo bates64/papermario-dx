@@ -8,27 +8,27 @@ EvtScript EVS_CrackFloor = {
     SetF(LVar0, 0)
     Thread
         Loop(60)
-            AddF(LVar0, Float(0.334))
+            AddF(LVar0, 0.334)
             Call(RotateModel, MODEL_o2, LVar0, 0, 0, -1)
             Wait(1)
         EndLoop
     EndThread
     Thread
         Loop(60)
-            AddF(LVar0, Float(0.5))
+            AddF(LVar0, 0.5)
             Call(RotateModel, MODEL_o3, LVar0, 0, 0, -1)
             Wait(1)
         EndLoop
     EndThread
     Thread
         Loop(60)
-            AddF(LVar0, Float(0.25))
+            AddF(LVar0, 0.25)
             Call(RotateModel, MODEL_o4, LVar0, 0, 0, -1)
             Wait(1)
         EndLoop
     EndThread
     Loop(120)
-        SubF(LVar0, Float(0.25))
+        SubF(LVar0, 0.25)
         Call(TranslateModel, MODEL_o6, 0, LVar0, 0)
         Wait(1)
     EndLoop
@@ -60,11 +60,11 @@ EvtScript EVS_UpdateEruption = {
             EndIf
         EndLoop
         // begin eruption effects
-        Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(2.0))
+        Call(ShakeCam, CAM_DEFAULT, 0, 5, 2.0)
         Call(SetPanTarget, CAM_DEFAULT, 170, 25, 0)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(0.5))
+        Call(SetCamSpeed, CAM_DEFAULT, 0.5)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
-        Call(ShakeCam, CAM_DEFAULT, 0, 25, Float(2.0))
+        Call(ShakeCam, CAM_DEFAULT, 0, 25, 2.0)
         Call(InterpPlayerYaw, 270, 0)
         Call(InterpNpcYaw, NPC_PARTNER, 270, 0)
         Call(SetPlayerAnimation, ANIM_Mario1_Flail)
@@ -72,7 +72,7 @@ EvtScript EVS_UpdateEruption = {
         Call(MakeLerp, 200, 50, 75, EASING_LINEAR)
         Loop(0)
             Call(UpdateLerp)
-            DivF(LVar0, Float(100.0))
+            DivF(LVar0, 100.0)
             Call(ShakeCam, CAM_DEFAULT, 0, 1, LVar0)
             Wait(1)
             IfEq(LVar1, 0)
@@ -85,7 +85,7 @@ EvtScript EVS_UpdateEruption = {
     EndIf
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_hoshi, COLLIDER_FLAGS_UPPER_MASK)
     Loop(0)
-        Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(0.5))
+        Call(ShakeCam, CAM_DEFAULT, 0, 5, 0.5)
     EndLoop
     Return
     End

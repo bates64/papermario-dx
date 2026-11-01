@@ -38,7 +38,7 @@ EvtScript EVS_Scene_FryingPanStolen = {
     EndLoop
     Call(DisablePlayerInput, true)
     Call(ShowMessageAtScreenPos, MSG_MAC_Bridge_0016, 160, 40)
-    Call(SetCamProperties, CAM_DEFAULT, Float(3.0), -140, 20, -140, 400, 15, -6)
+    Call(SetCamProperties, CAM_DEFAULT, 3.0, -140, 20, -140, 400, 15, -6)
     Call(SetNpcPos, NPC_ShyGuy, -200, 20, -260)
     Call(SetNpcAnimation, NPC_ShyGuy, ANIM_ShyGuy_Red_Dash)
     Wait(10)
@@ -74,7 +74,7 @@ EvtScript EVS_Scene_FryingPanStolen = {
     Call(SetNpcPos, NPC_ShyGuy, NPC_DISPOSE_LOCATION)
     Set(GB_StoryProgress, STORY_CH4_FRYING_PAN_STOLEN)
     Wait(10)
-    Call(ResetCam, CAM_DEFAULT, Float(3.0))
+    Call(ResetCam, CAM_DEFAULT, 3.0)
     Call(DisablePlayerInput, false)
     Return
     End

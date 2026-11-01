@@ -19,7 +19,7 @@ MobileAISettings AISettings_Fuzzy_Wander = {
 EvtScript EVS_NpcAI_Fuzzy_Wander = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION, true)
     Call(SetSelfVar, AI_VAR_HOPPER, HOPPER_FUZZY)
-    Call(HoppingAI_Main, Ref(AISettings_Fuzzy_Wander))
+    Call(HoppingAI_Main, AISettings_Fuzzy_Wander)
     Return
     End
 };

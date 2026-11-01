@@ -10,20 +10,20 @@ EvtScript EVS_ExitWalk_mim_01_1 = {
         IfEq(GF_StartedChapter3, false)
             Set(GF_StartedChapter3, true)
             Call(FadeOutMusic, 0, 1500)
-            Call(GotoMapSpecial, Ref("kmr_22"), kmr_22_ENTRY_3, TRANSITION_BEGIN_OR_END_CHAPTER)
+            Call(GotoMapSpecial, "kmr_22", kmr_22_ENTRY_3, TRANSITION_BEGIN_OR_END_CHAPTER)
             Wait(100)
             Return
         EndIf
     EndIf
-    Call(GotoMap, Ref("mim_01"), mim_01_ENTRY_1)
+    Call(GotoMap, "mim_01", mim_01_ENTRY_1)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_mac_02_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_mim_01_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitWalk_mac_02_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitWalk_mim_01_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     Return
     End
 };
@@ -35,7 +35,7 @@ EvtScript EVS_EnterMap = {
         Exec(EVS_BindExitTriggers)
         Return
     EndIf
-    Set(LVar0, Ref(EVS_BindExitTriggers))
+    Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     Return
     End
@@ -45,7 +45,7 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_TOAD_TOWN)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Call(MakeNpcs, true, DefaultNPCs)
     Exec(EVS_SetupBootlerTrigger)
     ExecWait(EVS_MakeEntities)
     Exec(EVS_SetupMusic)

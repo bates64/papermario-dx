@@ -200,7 +200,7 @@ EvtScript EVS_SearchBush = {
     BufRead4(LVar1, LVar2, LVar3, LVar4) // bush models, drops, vectors, callback
     BufRead1(LVar5) // bush type
     Thread
-        Call(ShakeFoliageModels, LVar1, SOUND_SEARCH_BUSH, Float(0.1), Float(1.0), LVarF)
+        Call(ShakeFoliageModels, LVar1, SOUND_SEARCH_BUSH, 0.1, 1.0, LVarF)
     EndThread
     Thread
         Call(SpawnFoliageDrops, LVar2)
@@ -214,7 +214,7 @@ EvtScript EVS_SearchBush = {
 };
 
 EvtScript EVS_ShakeTree = {
-    SetTimescale(Float(2.0))
+    SetTimescale(2.0)
     // get player Y to find bottom of tree
     Call(GetGameContext, LVarF)
     IfEq(LVarF, CONTEXT_BATTLE)
@@ -227,10 +227,10 @@ EvtScript EVS_ShakeTree = {
     BufRead4(LVar1, LVar2, LVar3, LVar4) // leaf models, trunk models, drops, vectors
     BufRead2(LVar5, LVar6) // callback, tree type
     Thread
-        Call(ShakeFoliageModels, LVar1, SOUND_SHAKE_TREE_LEAVES, Float(0.1), Float(0.2), LVarF)
+        Call(ShakeFoliageModels, LVar1, SOUND_SHAKE_TREE_LEAVES, 0.1, 0.2, LVarF)
     EndThread
     Thread
-        Call(ShakeFoliageModels, LVar2, SOUND_SMACK_TREE, Float(0.1), Float(0.2), LVarF)
+        Call(ShakeFoliageModels, LVar2, SOUND_SMACK_TREE, 0.1, 0.2, LVarF)
     EndThread
     Thread
         Call(SpawnFoliageDrops, LVar3)

@@ -103,33 +103,33 @@ EvtScript EVS_Scene_Merle_Greeting = {
         Call(AwaitPlayerTouchingFloor)
     EndIf
     Call(DisablePlayerInput, true)
-    Call(SetPlayerSpeed, Float(3.0 / DT))
+    Call(SetPlayerSpeed, 3.0 / DT)
     Call(PlayerMoveTo, -240, 300, 0)
     Call(PlayerFaceNpc, NPC_Merle, false)
     Call(SpeakToPlayer, NPC_Merle, ANIM_Merle_Talk, ANIM_Merle_Idle, 0, MSG_CH7_00E9)
     Call(GetNpcPos, NPC_Merle, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamDistance, CAM_DEFAULT, Float(250.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(15.0), Float(-7.5))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamDistance, CAM_DEFAULT, 250.0)
+    Call(SetCamPitch, CAM_DEFAULT, 15.0, -7.5)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(SpeakToPlayer, NPC_Merle, ANIM_Merle_Talk, ANIM_Merle_Idle, 0, MSG_CH7_00EA)
     Call(UseSettingsFrom, CAM_DEFAULT, -250, 0, 300)
     Call(SetPanTarget, CAM_DEFAULT, -250, 0, 300)
-    Call(SetCamDistance, CAM_DEFAULT, Float(500.0))
+    Call(SetCamDistance, CAM_DEFAULT, 500.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(SetNpcAnimation, NPC_Merle, ANIM_Merle_Walk)
-    Call(SetNpcSpeed, NPC_Merle, Float(3.0 / DT))
+    Call(SetNpcSpeed, NPC_Merle, 3.0 / DT)
     Call(NpcMoveTo, NPC_Merle, -110, 300, 0)
     Call(SetNpcAnimation, NPC_Merle, ANIM_Merle_Idle)
     Call(GetAngleToPlayer, NPC_Merle, LVar0)
     Call(InterpNpcYaw, NPC_Merle, LVar0, 0)
     Call(SpeakToPlayer, NPC_Merle, ANIM_Merle_Talk, ANIM_Merle_Idle, 0, MSG_CH7_00EB)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Set(AF_SAM06_MeetingWithMerle, true)
     Set(GB_StoryProgress, STORY_CH7_ARRIVED_AT_STARBORN_VALLEY)
     Call(DisablePlayerInput, false)
@@ -138,9 +138,9 @@ EvtScript EVS_Scene_Merle_Greeting = {
         Call(BindNpcInteract, NPC_Merle, 0)
         Call(SetNpcFlagBits, NPC_Merle, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
         Call(SetNpcAnimation, NPC_Merle, ANIM_Merle_Walk)
-        Call(SetNpcSpeed, NPC_Merle, Float(2.0 / DT))
+        Call(SetNpcSpeed, NPC_Merle, 2.0 / DT)
         Call(NpcMoveTo, NPC_Merle, -78, 287, 0)
-        Call(SetNpcJumpscale, NPC_Merle, Float(0.5))
+        Call(SetNpcJumpscale, NPC_Merle, 0.5)
         Call(NpcJump0, NPC_Merle, -25, 20, 253, 17)
         Call(SetNpcAnimation, NPC_Merle, ANIM_Merle_Idle)
         Wait(10 * DT)
@@ -268,10 +268,10 @@ EvtScript EVS_Scene_Merle_EnterHouse = {
     Call(SpeakToPlayer, NPC_Merle, ANIM_Merle_Talk, ANIM_Merle_Idle, 0, MSG_CH7_00ED)
     Thread
         Call(SetNpcAnimation, NPC_Merle, ANIM_Merle_Walk)
-        Call(SetNpcSpeed, NPC_Merle, Float(3.0 / DT))
+        Call(SetNpcSpeed, NPC_Merle, 3.0 / DT)
         Call(NpcMoveTo, NPC_Merle, 27, -120, 0)
     EndThread
-    Call(SetPlayerSpeed, Float(3.0 / DT))
+    Call(SetPlayerSpeed, 3.0 / DT)
     Call(PlayerMoveTo, 15, -90, 0)
     Call(SetGroupVisibility, MODEL_k_naiso, MODEL_GROUP_VISIBLE)
     Call(PlaySoundAtCollider, COLLIDER_k_d1, SOUND_BASIC_DOOR_OPEN, SOUND_SPACE_DEFAULT)
@@ -287,11 +287,11 @@ EvtScript EVS_Scene_Merle_EnterHouse = {
     Call(SetGroupVisibility, MODEL_k_naiso, MODEL_GROUP_VISIBLE)
     Thread
         Call(SetNpcAnimation, NPC_Merle, ANIM_Merle_Walk)
-        Call(SetNpcSpeed, NPC_Merle, Float(4.0 / DT))
+        Call(SetNpcSpeed, NPC_Merle, 4.0 / DT)
         Call(NpcMoveTo, NPC_Merle, 0, -330, 0)
         Call(SetNpcAnimation, NPC_Merle, ANIM_Merle_Idle)
     EndThread
-    Call(SetCamSpeed, CAM_DEFAULT, Float(1.8 / DT))
+    Call(SetCamSpeed, CAM_DEFAULT, 1.8 / DT)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_k_d1, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_k_d2, COLLIDER_FLAGS_UPPER_MASK)
     Call(PlayerMoveTo, 0, -200, 0)
@@ -321,7 +321,7 @@ EvtScript EVS_Scene_Merle_EnterHouse = {
     Call(PlayerMoveTo, 0, -240, 0)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_k_d1, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_k_d2, COLLIDER_FLAGS_UPPER_MASK)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(1.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 1.0)
     Wait(30 * DT)
     Call(GetAngleToPlayer, NPC_Merle, LVar0)
     Call(InterpNpcYaw, NPC_Merle, LVar0, 0)
@@ -329,29 +329,29 @@ EvtScript EVS_Scene_Merle_EnterHouse = {
     Call(GetNpcPos, NPC_Merle, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamDistance, CAM_DEFAULT, Float(250.0))
-    Call(SetCamPosA, CAM_DEFAULT, Float(200.7), Float(-321.0))
-    Call(SetCamPosB, CAM_DEFAULT, Float(0.7), Float(-321.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(21.0), Float(-14.5))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamDistance, CAM_DEFAULT, 250.0)
+    Call(SetCamPosA, CAM_DEFAULT, 200.7, -321.0)
+    Call(SetCamPosB, CAM_DEFAULT, 0.7, -321.0)
+    Call(SetCamPitch, CAM_DEFAULT, 21.0, -14.5)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Wait(5 * DT)
     Call(SpeakToPlayer, NPC_Merle, ANIM_Merle_Talk, ANIM_Merle_Idle, 0, MSG_CH7_00EF)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(SpeakToPlayer, NPC_Merle, ANIM_Merle_Talk, ANIM_Merle_Idle, 0, MSG_CH7_00F0)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamDistance, CAM_DEFAULT, Float(275.0))
-    Call(SetCamPosA, CAM_DEFAULT, Float(200.7), Float(-250.0))
-    Call(SetCamPosB, CAM_DEFAULT, Float(0.7), Float(-250.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(21.0), Float(-14.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(2.0 / DT))
+    Call(SetCamDistance, CAM_DEFAULT, 275.0)
+    Call(SetCamPosA, CAM_DEFAULT, 200.7, -250.0)
+    Call(SetCamPosB, CAM_DEFAULT, 0.7, -250.0)
+    Call(SetCamPitch, CAM_DEFAULT, 21.0, -14.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 2.0 / DT)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(SetNpcSpeed, NPC_Merle, Float(2.0 / DT))
+    Call(SetNpcSpeed, NPC_Merle, 2.0 / DT)
     Call(SetNpcAnimation, NPC_Merle, ANIM_Merle_Walk)
     ExecGetTID(EVS_Merle_CarryScarf, LVarA)
     Call(NpcMoveTo, NPC_Merle, 0, -275, 0)
@@ -361,31 +361,31 @@ EvtScript EVS_Scene_Merle_EnterHouse = {
     KillThread(LVarA)
     Call(SetItemPos, MV_ScarfItemID, NPC_DISPOSE_LOCATION)
     Call(SetNpcAnimation, NPC_Merle, ANIM_Merle_Idle)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     EVT_GIVE_REWARD(ITEM_SNOWMAN_SCARF)
     Call(SpeakToPlayer, NPC_Merle, ANIM_Merle_Talk, ANIM_Merle_Idle, 0, MSG_CH7_00F1)
     Wait(10 * DT)
-    Call(SetCamPosA, CAM_DEFAULT, Float(200.7), Float(-321.0))
-    Call(SetCamPosB, CAM_DEFAULT, Float(0.7), Float(-321.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(0.7))
+    Call(SetCamPosA, CAM_DEFAULT, 200.7, -321.0)
+    Call(SetCamPosB, CAM_DEFAULT, 0.7, -321.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 0.7)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(SetNpcSpeed, NPC_Merle, Float(2.0 / DT))
+    Call(SetNpcSpeed, NPC_Merle, 2.0 / DT)
     Call(SetNpcAnimation, NPC_Merle, ANIM_Merle_Walk)
     Call(NpcMoveTo, NPC_Merle, 0, -330, 0)
     Call(SetNpcAnimation, NPC_Merle, ANIM_Merle_Idle)
     Call(GetAngleToPlayer, NPC_Merle, LVar0)
     Call(InterpNpcYaw, NPC_Merle, LVar0, 0)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Wait(15 * DT)
     Call(SpeakToPlayer, NPC_Merle, ANIM_Merle_Talk, ANIM_Merle_Idle, 0, MSG_CH7_00F2)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(2.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 2.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
-    Call(BindNpcInteract, NPC_Merle, Ref(EVS_NpcInteract_Merle))
+    Call(BindNpcInteract, NPC_Merle, EVS_NpcInteract_Merle)
     Call(SetNpcFlagBits, NPC_Merle, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Call(DisablePlayerInput, false)
     Return
@@ -422,11 +422,11 @@ EvtScript EVS_NpcIdle_Merle = {
 EvtScript EVS_Scene_Merle_OneLastThing = {
     Thread
         Call(DisablePartnerAI, false)
-        Call(SetNpcSpeed, NPC_PARTNER, Float(3.0 / DT))
+        Call(SetNpcSpeed, NPC_PARTNER, 3.0 / DT)
         Call(NpcMoveTo, NPC_PARTNER, -28, -80, 0)
         Call(EnablePartnerAI)
     EndThread
-    Call(SetPlayerSpeed, Float(3.0 / DT))
+    Call(SetPlayerSpeed, 3.0 / DT)
     Call(PlayerMoveTo, 0, -100, 0)
     Call(SetGroupVisibility, MODEL_k_naiso, MODEL_GROUP_VISIBLE)
     Call(SetGroupVisibility, MODEL_km_sita, MODEL_GROUP_VISIBLE)
@@ -440,7 +440,7 @@ EvtScript EVS_Scene_Merle_OneLastThing = {
         IfEq(LVar1, 1)
             Goto(0)
         EndIf
-    Call(SetNpcSpeed, NPC_Merle, Float(3.0 / DT))
+    Call(SetNpcSpeed, NPC_Merle, 3.0 / DT)
     Call(SetNpcAnimation, NPC_Merle, ANIM_Merle_Walk)
     Call(NpcMoveTo, NPC_Merle, 40, -140, 0)
     Call(SetNpcAnimation, NPC_Merle, ANIM_Merle_Idle)
@@ -461,10 +461,10 @@ EvtScript EVS_Scene_Merle_OneLastThing = {
     Call(EnablePartnerAI)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(3.0 / DT))
+    Call(SetCamDistance, CAM_DEFAULT, 300.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 3.0 / DT)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(SpeakToPlayer, NPC_Merle, ANIM_Merle_Talk, ANIM_Merle_Idle, 0, MSG_CH7_00F3)
     Call(SetGroupVisibility, MODEL_k_naiso, MODEL_GROUP_VISIBLE)
     Call(PlaySoundAtCollider, COLLIDER_k_d1, SOUND_BASIC_DOOR_OPEN, SOUND_SPACE_DEFAULT)
@@ -476,7 +476,7 @@ EvtScript EVS_Scene_Merle_OneLastThing = {
         IfEq(LVar1, 1)
             Goto(2)
         EndIf
-    Call(SetNpcSpeed, NPC_Merle, Float(3.0 / DT))
+    Call(SetNpcSpeed, NPC_Merle, 3.0 / DT)
     Call(SetNpcAnimation, NPC_Merle, ANIM_Merle_Walk)
     Call(NpcMoveTo, NPC_Merle, 0, -180, 0)
     Thread
@@ -496,9 +496,9 @@ EvtScript EVS_Scene_Merle_OneLastThing = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(3.0 / DT))
+    Call(SetCamSpeed, CAM_DEFAULT, 3.0 / DT)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(DisablePlayerInput, false)
     Set(AF_SAM06_MeetingWithMerle, false)
@@ -536,7 +536,7 @@ EvtScript EVS_NpcInteract_ShiverToad_03 = {
         CaseGe(STORY_CH7_STAR_SPIRIT_RESCUED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_ShiverToad_Green_Talk, ANIM_ShiverToad_Green_Idle, 0, MSG_CH7_00FD)
     EndSwitch
-    Set(LVar0, Ref(LetterDelivery_FrostT))
+    Set(LVar0, LetterDelivery_FrostT)
     ExecWait(EVS_TryLetterDelivery)
     Return
     End
@@ -676,18 +676,18 @@ EvtScript EVS_ToadHouse_SetDialogue = {
 
 EvtScript EVS_ToadHouse_GetInBed = {
     Exec(EVS_PlayRestingSong)
-    Call(SetPlayerSpeed, Float(3.0))
+    Call(SetPlayerSpeed, 3.0)
     Call(PlayerMoveTo, -336, -48, 0)
     Thread
         Wait(15)
-        Call(ToadHouse_CamSetFOV, 0, Float(40.0))
+        Call(ToadHouse_CamSetFOV, 0, 40.0)
         Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
-        Call(SetCamPitch, CAM_DEFAULT, Float(50.0), Float(-16.0))
-        Call(SetCamDistance, CAM_DEFAULT, Float(111.0))
-        Call(SetCamPosA, CAM_DEFAULT, Float(-92.0), Float(94.0))
-        Call(SetCamPosB, CAM_DEFAULT, Float(-318.1), Float(-35.5))
-        Call(SetCamPosC, CAM_DEFAULT, Float(-641.0), Float(122.0))
-        Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+        Call(SetCamPitch, CAM_DEFAULT, 50.0, -16.0)
+        Call(SetCamDistance, CAM_DEFAULT, 111.0)
+        Call(SetCamPosA, CAM_DEFAULT, -92.0, 94.0)
+        Call(SetCamPosB, CAM_DEFAULT, -318.1, -35.5)
+        Call(SetCamPosC, CAM_DEFAULT, -641.0, 122.0)
+        Call(SetCamSpeed, CAM_DEFAULT, 90.0)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
     EndThread
     Call(PlayerMoveTo, -347, -114, 0)
@@ -718,15 +718,15 @@ EvtScript EVS_ToadHouse_ReturnFromRest = {
     Call(HidePlayerShadow, false)
     Call(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_CLEAR, 0, 0, 0, 0)
     Call(PlayerMoveTo, -347, -114, 0)
-    Call(SetPlayerSpeed, Float(3.0))
+    Call(SetPlayerSpeed, 3.0)
     Call(PlayerMoveTo, -309, -16, 0)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Merle = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Merle))
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Merle))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Merle)
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Merle)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_GOT_SNOWMAN_SCARF)
             Call(SetNpcPos, NPC_SELF, -200, 0, 300)
@@ -739,61 +739,61 @@ EvtScript EVS_NpcInit_Merle = {
 };
 
 EvtScript EVS_NpcInit_ShiverToad_01 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ShiverToad_01))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_ShiverToad_01)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_ShiverToad_02 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ShiverToad_02))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_ShiverToad_02)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_ShiverToad_03 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ShiverToad_03))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_ShiverToad_03)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Ninji_01 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Ninji_01))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Ninji_01)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Ninji_02 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Ninji_02))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Ninji_02)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Ninji_03 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Ninji_03))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Ninji_03)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Ninji_04 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Ninji_04))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Ninji_04)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_StarKid_01 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_StarKid_01))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_StarKid_01)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_StarKid_02 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_StarKid_02))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_StarKid_02)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_StarKid_03 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_StarKid_03))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_StarKid_03)
     IfEq(GF_SAM06_FoundSidewaysStarKid, false)
         Call(SetNpcRotation, NPC_SELF, 0, 90, 0)
     EndIf
@@ -802,25 +802,25 @@ EvtScript EVS_NpcInit_StarKid_03 = {
 };
 
 EvtScript EVS_NpcInit_StarKid_04 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_StarKid_04))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_StarKid_04)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_StarKid_05 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_StarKid_05))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_StarKid_05)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_StarKid_06 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_StarKid_06))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_StarKid_06)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_ShiverToad_04 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ToadHouseKeeper))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_ToadHouseKeeper)
     Return
     End
 };

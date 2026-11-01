@@ -160,7 +160,7 @@ EvtScript EVS_UseMove_Impl = {
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Run)
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Add(LVar0, 16)
-    Call(SetActorSpeed, ACTOR_PLAYER, Float(4.0))
+    Call(SetActorSpeed, ACTOR_PLAYER, 4.0)
     Call(SetGoalPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Call(PlayerRunToGoal, 0)
     Call(SetGoalToTarget, ACTOR_PLAYER)
@@ -271,18 +271,18 @@ EvtScript EVS_UseMove_Impl = {
     Call(GetMenuSelection, LVar0, LVar1, LVar2)
     Switch(LVar1)
         CaseEq(0)
-            Call(CreateVirtualEntity, LVarA, Ref(EMS_BasicHammer))
+            Call(CreateVirtualEntity, LVarA, EMS_BasicHammer)
         CaseEq(1)
-            Call(CreateVirtualEntity, LVarA, Ref(EMS_SuperHammer))
+            Call(CreateVirtualEntity, LVarA, EMS_SuperHammer)
         CaseEq(2)
-            Call(CreateVirtualEntity, LVarA, Ref(EMS_UltraHammer))
+            Call(CreateVirtualEntity, LVarA, EMS_UltraHammer)
     EndSwitch
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Add(LVar0, 20)
     Add(LVar1, 42)
     Add(LVar2, 5)
     Call(SetVirtualEntityPosition, LVarA, LVar0, LVar1, LVar2)
-    Call(SetVirtualEntityScale, LVarA, Float(0.6), Float(0.6), Float(0.6))
+    Call(SetVirtualEntityScale, LVarA, 0.6, 0.6, 0.6)
     Call(InitTargetIterator)
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -297,7 +297,7 @@ EvtScript EVS_UseMove_Impl = {
                     Wait(1)
                 EndLoop
             EndThread
-            Call(SetVirtualEntityJumpGravity, LVarA, Float(1.3))
+            Call(SetVirtualEntityJumpGravity, LVarA, 1.3)
             Add(LVar2, 5)
             Call(VirtualEntityJumpTo, LVarA, LVar0, LVar1, LVar2, 11)
         CaseDefault
@@ -309,7 +309,7 @@ EvtScript EVS_UseMove_Impl = {
                     Wait(1)
                 EndLoop
             EndThread
-            Call(SetVirtualEntityJumpGravity, LVarA, Float(0.7))
+            Call(SetVirtualEntityJumpGravity, LVarA, 0.7)
             Add(LVar2, 5)
             Call(VirtualEntityJumpTo, LVarA, LVar0, LVar1, LVar2, 20)
     EndSwitch
@@ -325,13 +325,13 @@ EvtScript EVS_UseMove_Impl = {
         Call(GetPlayerActionQuality, LVar3)
         Switch(LVar3)
             CaseGt(false)
-                Call(SetVirtualEntityJumpGravity, LVarA, Float(1.4))
+                Call(SetVirtualEntityJumpGravity, LVarA, 1.4)
                 Add(LVar0, 60)
                 Add(LVar1, 0)
                 Call(VirtualEntityJumpTo, LVarA, LVar0, LVar1, LVar2, 10)
                 Call(DeleteVirtualEntity, LVarA)
             CaseDefault
-                Call(SetVirtualEntityJumpGravity, LVarA, Float(0.8))
+                Call(SetVirtualEntityJumpGravity, LVarA, 0.8)
                 Add(LVar0, 40)
                 Add(LVar1, 0)
                 Call(VirtualEntityJumpTo, LVarA, LVar0, LVar1, LVar2, 15)
@@ -346,17 +346,17 @@ EvtScript EVS_UseMove_Impl = {
                 CaseEq(0)
                     Call(StartRumble, BTL_RUMBLE_PLAYER_MIN)
                     Thread
-                        Call(ShakeCam, CAM_BATTLE, 0, 10, Float(1.3))
+                        Call(ShakeCam, CAM_BATTLE, 0, 10, 1.3)
                     EndThread
                 CaseEq(1)
                     Call(StartRumble, BTL_RUMBLE_PLAYER_LIGHT)
                     Thread
-                        Call(ShakeCam, CAM_BATTLE, 0, 10, Float(1.6))
+                        Call(ShakeCam, CAM_BATTLE, 0, 10, 1.6)
                     EndThread
                 CaseEq(2)
                     Call(StartRumble, BTL_RUMBLE_PLAYER_HEAVY)
                     Thread
-                        Call(ShakeCam, CAM_BATTLE, 0, 10, Float(1.9))
+                        Call(ShakeCam, CAM_BATTLE, 0, 10, 1.9)
                     EndThread
             EndSwitch
         CaseDefault
@@ -365,17 +365,17 @@ EvtScript EVS_UseMove_Impl = {
                 CaseEq(0)
                     Call(StartRumble, BTL_RUMBLE_PLAYER_MIN)
                     Thread
-                        Call(ShakeCam, CAM_BATTLE, 0, 2, Float(1.3))
+                        Call(ShakeCam, CAM_BATTLE, 0, 2, 1.3)
                     EndThread
                 CaseEq(1)
                     Call(StartRumble, BTL_RUMBLE_PLAYER_LIGHT)
                     Thread
-                        Call(ShakeCam, CAM_BATTLE, 0, 2, Float(1.6))
+                        Call(ShakeCam, CAM_BATTLE, 0, 2, 1.6)
                     EndThread
                 CaseEq(2)
                     Call(StartRumble, BTL_RUMBLE_PLAYER_HEAVY)
                     Thread
-                        Call(ShakeCam, CAM_BATTLE, 0, 2, Float(1.9))
+                        Call(ShakeCam, CAM_BATTLE, 0, 2, 1.9)
                     EndThread
             EndSwitch
     EndSwitch

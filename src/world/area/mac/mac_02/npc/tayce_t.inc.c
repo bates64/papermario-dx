@@ -422,7 +422,7 @@ EvtScript EVS_NpcInteract_TayceT = {
 };
 
 EvtScript EVS_NpcInit_TayceT = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_TayceT))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_TayceT)
     Call(InterpNpcYaw, NPC_SELF, 45, 0)
     Call(SetNpcPos, NPC_SELF, -236, 20, -318)
     Call(SetNpcAnimation, NPC_SELF, ANIM_TayceT_Idle)

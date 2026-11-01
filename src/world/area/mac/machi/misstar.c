@@ -46,14 +46,14 @@ EvtScript EVS_NpcCreate_Misstar = {
 
 EvtScript EVS_NpcAux_Misstar = {
     Label(0)
-        SetF(LVar0, Float(40.0))
+        SetF(LVar0, 40.0)
         Loop(20)
-            AddF(LVar0, Float(4.0))
+            AddF(LVar0, 4.0)
             Call(SetNpcImgFXParams, NPC_SELF, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
             Wait(1)
         EndLoop
         Loop(20)
-            AddF(LVar0, Float(-4.0))
+            AddF(LVar0, -4.0)
             Call(SetNpcImgFXParams, NPC_SELF, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
             Wait(1)
         EndLoop

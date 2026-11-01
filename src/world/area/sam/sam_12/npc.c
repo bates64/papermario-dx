@@ -3,8 +3,8 @@
 #include "world/common/npc/Merlar/idle.inc.c"
 
 EvtScript EVS_NpcInit_Merlar = {
-    Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_Merlar_Idle))
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Merlar_Idle))
+    Call(BindNpcAux, NPC_SELF, EVS_NpcAux_Merlar_Idle)
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Merlar_Idle)
     Call(EnableNpcShadow, NPC_SELF, false)
     Return
     End

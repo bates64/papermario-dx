@@ -17,7 +17,7 @@ EvtScript EVS_ExitDoor_obk_02_0 = {
     Set(LVar3, DOOR_SWING_IN)
     Exec(ExitSingleDoor)
     Wait(17)
-    Call(GotoMap, Ref("obk_02"), obk_02_ENTRY_0)
+    Call(GotoMap, "obk_02", obk_02_ENTRY_0)
     Wait(100)
     Return
     End
@@ -37,7 +37,7 @@ EvtScript EVS_ExitDoor_obk_05_0 = {
     Set(LVar3, DOOR_SWING_IN)
     Exec(ExitSingleDoor)
     Wait(17)
-    Call(GotoMap, Ref("obk_05"), obk_05_ENTRY_0)
+    Call(GotoMap, "obk_05", obk_05_ENTRY_0)
     Wait(100)
     Return
     End
@@ -57,7 +57,7 @@ EvtScript EVS_ExitDoor_obk_07_0 = {
     Set(LVar3, DOOR_SWING_IN)
     Exec(ExitSingleDoor)
     Wait(17)
-    Call(GotoMap, Ref("obk_07"), obk_07_ENTRY_0)
+    Call(GotoMap, "obk_07", obk_07_ENTRY_0)
     Wait(100)
     Return
     End
@@ -77,7 +77,7 @@ EvtScript EVS_ExitDoor_obk_08_0 = {
     Set(LVar3, DOOR_SWING_IN)
     Exec(ExitSingleDoor)
     Wait(17)
-    Call(GotoMap, Ref("obk_08"), obk_08_ENTRY_0)
+    Call(GotoMap, "obk_08", obk_08_ENTRY_0)
     Wait(100)
     Return
     End
@@ -92,13 +92,13 @@ EvtScript EVS_ExitDoor_obk_09_1 = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
 );
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitDoors_mim_11_2), TRIGGER_WALL_PRESS_A, COLLIDER_tt1, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoor_obk_02_0), TRIGGER_WALL_PRESS_A, COLLIDER_tt2, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoor_obk_05_0), TRIGGER_WALL_PRESS_A, COLLIDER_tt3, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoor_obk_07_0), TRIGGER_WALL_PRESS_A, COLLIDER_tt4, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoor_obk_08_0), TRIGGER_WALL_PRESS_A, COLLIDER_tt5, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoor_obk_09_0), TRIGGER_WALL_PRESS_A, COLLIDER_tt6, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoor_obk_09_1), TRIGGER_WALL_PRESS_A, COLLIDER_tt6_1, 1, 0)
+    BindTrigger(EVS_ExitDoors_mim_11_2, TRIGGER_WALL_PRESS_A, COLLIDER_tt1, 1, 0)
+    BindTrigger(EVS_ExitDoor_obk_02_0, TRIGGER_WALL_PRESS_A, COLLIDER_tt2, 1, 0)
+    BindTrigger(EVS_ExitDoor_obk_05_0, TRIGGER_WALL_PRESS_A, COLLIDER_tt3, 1, 0)
+    BindTrigger(EVS_ExitDoor_obk_07_0, TRIGGER_WALL_PRESS_A, COLLIDER_tt4, 1, 0)
+    BindTrigger(EVS_ExitDoor_obk_08_0, TRIGGER_WALL_PRESS_A, COLLIDER_tt5, 1, 0)
+    BindTrigger(EVS_ExitDoor_obk_09_0, TRIGGER_WALL_PRESS_A, COLLIDER_tt6, 1, 0)
+    BindTrigger(EVS_ExitDoor_obk_09_1, TRIGGER_WALL_PRESS_A, COLLIDER_tt6_1, 1, 0)
     Return
     End
 };
@@ -159,7 +159,7 @@ EvtScript EVS_Main = {
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(GF_MAP_BoosMansion, true)
-    Call(MakeNpcs, false, Ref(DefaultNPCs))
+    Call(MakeNpcs, false, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     Exec(EVS_SetupChandelier)
     Exec(EVS_SetupPortrait)

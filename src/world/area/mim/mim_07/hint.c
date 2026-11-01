@@ -87,19 +87,19 @@ EvtScript EVS_OnInspectEvilRock = {
         ExecGetTID(EVS_ManageEvilRock, LVar9)
         Call(PlaySoundAt, SOUND_ROCK_LAUGHTER, SOUND_SPACE_DEFAULT, -34, 0, -300)
         Loop(18)
-            Call(TranslateModel, MODEL_o289, Float(1.0), 0, Float(1.0))
-            Call(TranslateModel, MODEL_o440, Float(1.0), 0, Float(1.0))
+            Call(TranslateModel, MODEL_o289, 1.0, 0, 1.0)
+            Call(TranslateModel, MODEL_o440, 1.0, 0, 1.0)
             Wait(2)
-            Call(TranslateModel, MODEL_o289, Float(-1.0), 0, Float(-1.0))
-            Call(TranslateModel, MODEL_o440, Float(-1.0), 0, Float(-1.0))
+            Call(TranslateModel, MODEL_o289, -1.0, 0, -1.0)
+            Call(TranslateModel, MODEL_o440, -1.0, 0, -1.0)
             Wait(2)
         EndLoop
         Loop(10)
-            Call(TranslateModel, MODEL_o289, Float(0.5), 0, Float(0.5))
-            Call(TranslateModel, MODEL_o440, Float(0.5), 0, Float(0.5))
+            Call(TranslateModel, MODEL_o289, 0.5, 0, 0.5)
+            Call(TranslateModel, MODEL_o440, 0.5, 0, 0.5)
             Wait(2)
-            Call(TranslateModel, MODEL_o289, Float(-0.5), 0, Float(-0.5))
-            Call(TranslateModel, MODEL_o440, Float(-0.5), 0, Float(-0.5))
+            Call(TranslateModel, MODEL_o289, -0.5, 0, -0.5)
+            Call(TranslateModel, MODEL_o440, -0.5, 0, -0.5)
             Wait(2)
         EndLoop
         KillThread(LVar9)
@@ -111,10 +111,10 @@ EvtScript EVS_OnInspectEvilRock = {
 };
 
 EvtScript EVS_SetupExitHint = {
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(gfx_build_evil_rock_face), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_1, gfx_build_evil_rock_face, nullptr)
     Call(SetModelCustomGfx, MODEL_o440, CUSTOM_GFX_1, -1)
     Call(SetModelFlags, MODEL_o440, MODEL_FLAG_USES_CUSTOM_GFX, true)
-    BindTrigger(Ref(EVS_OnInspectEvilRock), TRIGGER_WALL_PRESS_A, COLLIDER_o491, 1, 0)
+    BindTrigger(EVS_OnInspectEvilRock, TRIGGER_WALL_PRESS_A, COLLIDER_o491, 1, 0)
     Call(SetTexPanner, MODEL_o440, TEX_PANNER_0)
     Return
     End

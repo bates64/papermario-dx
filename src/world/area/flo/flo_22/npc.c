@@ -46,8 +46,8 @@ EvtScript EVS_NpcDefeat_Bzzap = {
 };
 
 EvtScript EVS_NpcInit_Bzzap = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Bzzap))
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Bzzap))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Bzzap)
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_Bzzap)
     Return
     End
 };
@@ -83,13 +83,13 @@ EvtScript EVS_NpcDefeat_Dayzee = {
         CaseEq(OUTCOME_ENEMY_FLED)
             Call(SetNpcAnimation, NPC_SELF, ANIM_Dayzee_Idle)
             Wait(10)
-            Call(SetNpcJumpscale, NPC_SELF, Float(2.0))
+            Call(SetNpcJumpscale, NPC_SELF, 2.0)
             Call(NpcJump0, NPC_SELF, 30, 0, 0, 15)
             Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
         CaseEq(OUTCOME_PLAYER_FLED)
             Call(SetNpcAnimation, NPC_SELF, ANIM_Dayzee_Idle)
             Wait(10)
-            Call(SetNpcJumpscale, NPC_SELF, Float(2.0))
+            Call(SetNpcJumpscale, NPC_SELF, 2.0)
             Call(NpcJump0, NPC_SELF, 30, 0, 0, 15)
             Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndSwitch
@@ -98,8 +98,8 @@ EvtScript EVS_NpcDefeat_Dayzee = {
 };
 
 EvtScript EVS_NpcInit_Dayzee = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Dayzee))
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Dayzee))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Dayzee)
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_Dayzee)
     Return
     End
 };

@@ -98,9 +98,9 @@ s32 DefaultAnims[] = {
 };
 
 EvtScript EVS_Init = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
     Return
     End
 };
@@ -242,7 +242,7 @@ EvtScript EVS_Attack_Sing = {
             Set(LFlag0, false)
         EndIf
         Wait(1)
-        Call(SetActorJumpGravity, ACTOR_SELF, Float(0.5))
+        Call(SetActorJumpGravity, ACTOR_SELF, 0.5)
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Sub(LVar0, 20)
         Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -258,7 +258,7 @@ EvtScript EVS_Attack_Sing = {
             Set(LFlag0, false)
         EndIf
         Wait(1)
-        Call(SetActorJumpGravity, ACTOR_SELF, Float(0.5))
+        Call(SetActorJumpGravity, ACTOR_SELF, 0.5)
         Call(SetGoalPos, ACTOR_SELF, -35, 0, 10)
         Call(JumpToGoal, ACTOR_SELF, 15, false, true, false)
     EndIf
@@ -335,7 +335,7 @@ EvtScript EVS_Move_Flee = {
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Dayzee_Run)
     Wait(10)
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-    Call(SetActorSpeed, ACTOR_SELF, Float(1.0))
+    Call(SetActorSpeed, ACTOR_SELF, 1.0)
     Sub(LVar0, 20)
     Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(RunToGoal, ACTOR_SELF, 0, false)
@@ -343,7 +343,7 @@ EvtScript EVS_Move_Flee = {
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
     Call(EnableActorBlur, ACTOR_SELF, ACTOR_BLUR_ENABLE)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Dayzee_Dash)
-    Call(SetActorSpeed, ACTOR_SELF, Float(12.0))
+    Call(SetActorSpeed, ACTOR_SELF, 12.0)
     Add(LVar0, 200)
     Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(RunToGoal, ACTOR_SELF, 0, false)

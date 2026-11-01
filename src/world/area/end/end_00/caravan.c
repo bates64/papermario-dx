@@ -4,7 +4,7 @@ EvtScript EVS_CaravanStopMarching = {
     Call(GetNpcPos, LVar0, LVar1, LVar2, LVar3)
     SetF(LVar1, LVar1)
     Loop(0)
-        AddF(LVar1, Float(0.8702 / DT))
+        AddF(LVar1, 0.8702 / DT)
         Call(SetNpcPos, LVar0, LVar1, LVar2, LVar3)
         Wait(1)
     EndLoop
@@ -17,7 +17,7 @@ EvtScript EVS_MoustafaStopMarching = {
     Call(GetNpcPos, NPC_Moustafa, LVar0, LVar1, LVar2)
     SetF(LVar0, LVar0)
     Loop(0)
-        AddF(LVar0, Float(0.8702 / DT))
+        AddF(LVar0, 0.8702 / DT)
         Call(SetNpcPos, NPC_Moustafa, LVar0, 0, 0)
         Wait(1)
     EndLoop
@@ -26,7 +26,7 @@ EvtScript EVS_MoustafaStopMarching = {
 };
 
 EvtScript EVS_ParadePhase_Caravan = {
-    Call(SetNpcScale, NPC_Rhuff, Float(0.75), Float(0.75), Float(0.75))
+    Call(SetNpcScale, NPC_Rhuff, 0.75, 0.75, 0.75)
     Thread
         Call(NpcMoveTo, NPC_Rowf, -1447, -2, 200 * DT)
         Set(LVar0, NPC_Rowf)
@@ -155,7 +155,7 @@ EvtScript EVS_ParadePhase_Caravan = {
         Call(InterpNpcYaw, NPC_Tutankoopa1, 270, 7)
         Wait(15 * DT)
         Call(SetNpcAnimation, NPC_Tutankoopa1, ANIM_Tutankoopa_Lift)
-        Call(SetNpcJumpscale, NPC_Tutankoopa1, Float(1.0))
+        Call(SetNpcJumpscale, NPC_Tutankoopa1, 1.0)
         Call(NpcJump0, NPC_Tutankoopa1, -1140, 0, 30, 15 * DT)
         Call(NpcJump0, NPC_Tutankoopa1, -1170, 0, 30, 15 * DT)
         Call(NpcJump0, NPC_Tutankoopa1, -1200, 0, 30, 15 * DT)
@@ -219,7 +219,7 @@ EvtScript EVS_ParadePhase_BuzzarNest = {
     EndThread
     Thread
         Loop(6)
-            Call(LoadPath, 80 * DT, Ref(BuzzarFlightPath), ARRAY_COUNT(BuzzarFlightPath), EASING_LINEAR)
+            Call(LoadPath, 80 * DT, BuzzarFlightPath, ARRAY_COUNT(BuzzarFlightPath), EASING_LINEAR)
             Loop(0)
                 Call(GetNextPathPos)
                 Call(SetNpcPos, NPC_Buzzar, LVar1, LVar2, LVar3)

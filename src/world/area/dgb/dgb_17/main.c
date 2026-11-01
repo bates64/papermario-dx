@@ -9,8 +9,8 @@ EvtScript EVS_ExitDoors_dgb_01_5 = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
 );
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitDoors_dgb_15_1), TRIGGER_WALL_PRESS_A, COLLIDER_deilittw, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoors_dgb_01_5), TRIGGER_WALL_PRESS_A, COLLIDER_deilitte, 1, 0)
+    BindTrigger(EVS_ExitDoors_dgb_15_1, TRIGGER_WALL_PRESS_A, COLLIDER_deilittw, 1, 0)
+    BindTrigger(EVS_ExitDoors_dgb_01_5, TRIGGER_WALL_PRESS_A, COLLIDER_deilitte, 1, 0)
     Return
     End
 };

@@ -66,7 +66,7 @@ EvtScript EVS_Scene_RotatingWall = {
     EndThread
     Wait(80 * DT)
     Set(GF_KKJ14_SkipSecretPassage, true)
-    Call(GotoMap, Ref("kkj_15"), kkj_15_ENTRY_1)
+    Call(GotoMap, "kkj_15", kkj_15_ENTRY_1)
     Wait(100 * DT)
     Return
     End
@@ -85,7 +85,7 @@ EvtScript EVS_UseRotatingWall = {
     Wait(10 * DT)
     Call(SetPlayerAnimation, ANIM_Peach3_AfterPressButton)
     Wait(10 * DT)
-    Call(ShakeCam, CAM_DEFAULT, 0, 10, Float(1.0))
+    Call(ShakeCam, CAM_DEFAULT, 0, 10, 1.0)
     ExecWait(EVS_Scene_RotatingWall)
     Call(DisablePlayerInput, false)
     Return
@@ -117,7 +117,7 @@ EvtScript EVS_UseRotatingWall_FirstTime = {
         Call(SetPlayerAnimation, ANIM_Peach2_LookAround)
         Call(SpeakToPlayer, NPC_PLAYER, ANIM_Peach2_Gasp, ANIM_Peach2_GaspStill, 5, MSG_Peach_0048)
     EndThread
-    Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(1.0))
+    Call(ShakeCam, CAM_DEFAULT, 0, 5, 1.0)
     ExecWait(EVS_Scene_RotatingWall)
     Call(DisablePlayerInput, false)
     Return
@@ -131,11 +131,11 @@ EvtScript EVS_SetupRotatingWall = {
     Call(SetModelCustomGfx, MODEL_o182, CUSTOM_GFX_1, ENV_TINT_UNCHANGED)
     Call(SetModelCustomGfx, MODEL_o184, CUSTOM_GFX_1, ENV_TINT_UNCHANGED)
     Call(SetModelCustomGfx, MODEL_o186, CUSTOM_GFX_1, ENV_TINT_UNCHANGED)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(setup_gfx_spill_light), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_1, setup_gfx_spill_light, nullptr)
     IfEq(GB_StoryProgress, STORY_CH1_BEGAN_PEACH_MISSION)
-        BindTrigger(Ref(EVS_UseRotatingWall_FirstTime), TRIGGER_WALL_PRESS_A, COLLIDER_o193, 1, 0)
+        BindTrigger(EVS_UseRotatingWall_FirstTime, TRIGGER_WALL_PRESS_A, COLLIDER_o193, 1, 0)
     Else
-        BindTrigger(Ref(EVS_UseRotatingWall), TRIGGER_WALL_PRESS_A, COLLIDER_o193, 1, 0)
+        BindTrigger(EVS_UseRotatingWall, TRIGGER_WALL_PRESS_A, COLLIDER_o193, 1, 0)
     EndIf
     Return
     End

@@ -50,13 +50,13 @@ EvtScript EVS_Scene_BeginEpilogue = {
     Call(DisablePlayerInput, true)
     Call(UseSettingsFrom, CAM_DEFAULT, -100, 30, -370)
     Call(SetPanTarget, CAM_DEFAULT, -100, 30, -370)
-    Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamDistance, CAM_DEFAULT, 300.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Thread
         ExecWait(EVS_PlayerExitPipe_Epilogue)
         Wait(10)
-        Call(func_802D1270, -60, -320, Float(4.0))
+        Call(func_802D1270, -60, -320, 4.0)
     EndThread
     Thread
         Wait(70)
@@ -64,14 +64,14 @@ EvtScript EVS_Scene_BeginEpilogue = {
         Wait(10)
         Call(SetNpcFlagBits, NPC_Luigi_Epilogue, NPC_FLAG_GRAVITY, true)
         Call(SetNpcAnimation, NPC_Luigi_Epilogue, ANIM_Luigi_Run)
-        Call(SetNpcSpeed, NPC_Luigi_Epilogue, Float(4.0))
+        Call(SetNpcSpeed, NPC_Luigi_Epilogue, 4.0)
         Call(NpcMoveTo, NPC_Luigi_Epilogue, -100, -300, 0)
         Call(SetNpcAnimation, NPC_Luigi_Epilogue, ANIM_Luigi_Idle)
     EndThread
     Wait(70)
     Call(UseSettingsFrom, CAM_DEFAULT, -60, 0, -320)
     Call(SetPanTarget, CAM_DEFAULT, -60, 0, -320)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(2.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 2.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(80)
     Call(SpeakToPlayer, NPC_Luigi_Epilogue, ANIM_Luigi_Talk, ANIM_Luigi_Idle, 0, MSG_Outro_0023)

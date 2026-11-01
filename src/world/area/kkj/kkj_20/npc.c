@@ -71,9 +71,9 @@ EvtScript EVS_Inspect_Dresser_Peach = {
     EndIf
     Call(SetNpcVar, NPC_Toad, 0, 0)
     Call(DisablePlayerInput, true)
-    Call(SetCamProperties, CAM_DEFAULT, Float(4.0), -10, 0, 80, Float(300.0), Float(17.0), Float(-10.0))
+    Call(SetCamProperties, CAM_DEFAULT, 4.0, -10, 0, 80, 300.0, 17.0, -10.0)
     Thread
-        Call(SetPlayerSpeed, Float(2.0))
+        Call(SetPlayerSpeed, 2.0)
         Call(PlayerMoveTo, -50, 0, 0)
         Call(InterpPlayerYaw, 90, 5)
         Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
@@ -81,7 +81,7 @@ EvtScript EVS_Inspect_Dresser_Peach = {
     Wait(10)
     Exec(EVS_OpenDresserDoors)
     Wait(30)
-    Call(SetNpcJumpscale, NPC_Toad, Float(1.0))
+    Call(SetNpcJumpscale, NPC_Toad, 1.0)
     Call(NpcJump0, NPC_Toad, -10, 0, -40, 15)
     Call(SetNpcAnimation, NPC_Toad, ANIM_Toad_Red_Walk)
     Call(NpcMoveTo, NPC_Toad, 30, 0, 20)
@@ -98,7 +98,7 @@ EvtScript EVS_Inspect_Dresser_Peach = {
     Call(SetPlayerAnimation, ANIM_Peach1_Idle)
     Call(SpeakToPlayer, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_Peach_0184)
     Call(SetNpcAnimation, NPC_Toad, ANIM_Toad_Red_Walk)
-    Call(SetNpcSpeed, NPC_Toad, Float(3.0))
+    Call(SetNpcSpeed, NPC_Toad, 3.0)
     Call(NpcMoveTo, NPC_Toad, -10, -60, 0)
     Call(SetNpcAnimation, NPC_Toad, ANIM_Toad_Red_Idle)
     Wait(10)
@@ -106,7 +106,7 @@ EvtScript EVS_Inspect_Dresser_Peach = {
     Exec(EVS_CloseDresserDoors)
     Wait(30)
     Set(GF_KKJ20_PeachMet_ToadInHiding, true)
-    Call(ResetCam, CAM_DEFAULT, Float(4.0))
+    Call(ResetCam, CAM_DEFAULT, 4.0)
     Call(DisablePlayerInput, false)
     Return
     End
@@ -130,18 +130,18 @@ EvtScript EVS_ToadHouse_SetDialogue = {
 
 EvtScript EVS_ToadHouse_GetInBed = {
     Exec(EVS_PlayRestingSong)
-    Call(SetPlayerSpeed, Float(3.0))
+    Call(SetPlayerSpeed, 3.0)
     Call(PlayerMoveTo, 50, -40, 0)
     Thread
         Wait(20)
         Call(ToadHouse_CamSetFOV, 0, 40)
         Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
-        Call(SetCamDistance, CAM_DEFAULT, Float(200.0))
-        Call(SetCamPitch, CAM_DEFAULT, Float(70.0), Float(-30.0))
-        Call(SetCamPosA, CAM_DEFAULT, Float(-260.0), Float(270.0))
-        Call(SetCamPosB, CAM_DEFAULT, Float(30.0), Float(-85.0))
-        Call(SetCamPosC, CAM_DEFAULT, 0, Float(-50.0))
-        Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+        Call(SetCamDistance, CAM_DEFAULT, 200.0)
+        Call(SetCamPitch, CAM_DEFAULT, 70.0, -30.0)
+        Call(SetCamPosA, CAM_DEFAULT, -260.0, 270.0)
+        Call(SetCamPosB, CAM_DEFAULT, 30.0, -85.0)
+        Call(SetCamPosC, CAM_DEFAULT, 0, -50.0)
+        Call(SetCamSpeed, CAM_DEFAULT, 90.0)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
     EndThread
     Call(PlayerMoveTo, 95, -87, 0)
@@ -172,7 +172,7 @@ EvtScript EVS_ToadHouse_ReturnFromRest = {
     Call(HidePlayerShadow, false)
     Call(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_CLEAR, 0, 0, 0, 0)
     Call(SetPlayerPos, 85, 0, -85)
-    Call(SetPlayerSpeed, Float(3.0))
+    Call(SetPlayerSpeed, 3.0)
     Call(PlayerMoveTo, 60, -50, 0)
     Exec(EVS_PlayBowserSong)
     Return
@@ -251,7 +251,7 @@ EvtScript EVS_Inspect_Dresser_Mario = {
     Call(DisablePlayerInput, true)
     Exec(EVS_OpenDresserDoors)
     Wait(30)
-    Call(SetNpcJumpscale, NPC_Toad, Float(1.0))
+    Call(SetNpcJumpscale, NPC_Toad, 1.0)
     Call(NpcJump0, NPC_Toad, -10, 0, -40, 15)
     Call(PlayerFaceNpc, NPC_Toad, false)
     Call(NpcFaceNpc, NPC_PARTNER, NPC_Toad, 0)
@@ -264,10 +264,10 @@ EvtScript EVS_Inspect_Dresser_Mario = {
     Call(UseSettingsFrom, CAM_DEFAULT, -10, 0, 80)
     Call(SetPanTarget, CAM_DEFAULT, -10, 0, 80)
     Call(SetCamDistance, CAM_DEFAULT, 250)
-    Call(SetCamPitch, CAM_DEFAULT, Float(18.0), Float(-11.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(4.0))
+    Call(SetCamPitch, CAM_DEFAULT, 18.0, -11.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 4.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(func_802D1270, -50, 0, Float(2.5))
+    Call(func_802D1270, -50, 0, 2.5)
     Call(InterpPlayerYaw, 90, 5)
     Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
     Wait(10)
@@ -275,7 +275,7 @@ EvtScript EVS_Inspect_Dresser_Mario = {
     Call(GetNpcPos, NPC_Toad, LVar0, LVar1, LVar2)
     Call(NpcJump0, NPC_Toad, LVar0, LVar1, LVar2, 10)
     ExecWait(EVS_MeetToadHouseKeeper)
-    Call(ResetCam, CAM_DEFAULT, Float(90.0))
+    Call(ResetCam, CAM_DEFAULT, 90.0)
     Call(DisablePlayerInput, false)
     Unbind
     Return
@@ -286,7 +286,7 @@ EvtScript EVS_NpcIdle_Toad = {
     Call(WaitForPlayerInputEnabled)
     Call(DisablePlayerInput, true)
     Call(DisablePartnerAI, true)
-    Call(SetNpcJumpscale, NPC_PARTNER, Float(0.5))
+    Call(SetNpcJumpscale, NPC_PARTNER, 0.5)
     Call(NpcJump0, NPC_PARTNER, -86, 40, -25, 15)
     Wait(10)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_Talk, ANIM_Twink_Idle, 5, MSG_Peach_0181)
@@ -300,7 +300,7 @@ EvtScript EVS_NpcIdle_Toad = {
 
 EvtScript EVS_NpcInteract_Toad = {
     ExecWait(EVS_NpcInteract_ToadHouseKeeper)
-    Call(ResetCam, CAM_DEFAULT, Float(90.0))
+    Call(ResetCam, CAM_DEFAULT, 90.0)
     Return
     End
 };
@@ -315,21 +315,21 @@ EvtScript EVS_NpcInit_Toad = {
             IfEq(GF_KKJ20_PeachMet_ToadInHiding, false)
                 Call(SetSelfVar, 0, 1)
                 Exec(EVS_ShakeDresser)
-                Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Toad))
+                Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Toad)
             EndIf
-            BindTrigger(Ref(EVS_Inspect_Dresser_Peach), TRIGGER_WALL_PRESS_A, COLLIDER_o80, 1, 0)
+            BindTrigger(EVS_Inspect_Dresser_Peach, TRIGGER_WALL_PRESS_A, COLLIDER_o80, 1, 0)
         EndCaseGroup
         CaseDefault
             IfEq(GF_KKJ20_Met_ToadInHiding, false)
                 Call(SetNpcPos, NPC_SELF, -10, 30, -132)
                 Call(SetSelfVar, 0, 1)
                 Exec(EVS_ShakeDresser)
-                BindTrigger(Ref(EVS_Inspect_Dresser_Mario), TRIGGER_WALL_PRESS_A, COLLIDER_o80, 1, 0)
+                BindTrigger(EVS_Inspect_Dresser_Mario, TRIGGER_WALL_PRESS_A, COLLIDER_o80, 1, 0)
             Else
                 Call(SetNpcPos, NPC_SELF, 30, 0, 0)
             EndIf
             Call(SetNpcYaw, NPC_SELF, 270)
-            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad))
+            Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad)
     EndSwitch
     Return
     End

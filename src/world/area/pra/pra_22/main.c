@@ -39,19 +39,19 @@ EvtScript EVS_ExitDoors_pra_37_0 = {
     Call(DisablePlayerInput, true)
     Set(LVar0, pra_22_ENTRY_1)
     Set(LVar1, COLLIDER_deilittsse)
-    Set(LVar2, Ref(DoorModelsL))
-    Set(LVar3, Ref(DoorModelsR))
+    Set(LVar2, DoorModelsL)
+    Set(LVar3, DoorModelsR)
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, Ref("pra_37"), pra_37_ENTRY_0)
+    Call(GotoMap, "pra_37", pra_37_ENTRY_0)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitDoors_pra_20_4), TRIGGER_WALL_PRESS_A, COLLIDER_deilittssw, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoors_pra_37_0), TRIGGER_WALL_PRESS_A, COLLIDER_deilittsse, 1, 0)
+    BindTrigger(EVS_ExitDoors_pra_20_4, TRIGGER_WALL_PRESS_A, COLLIDER_deilittssw, 1, 0)
+    BindTrigger(EVS_ExitDoors_pra_37_0, TRIGGER_WALL_PRESS_A, COLLIDER_deilittsse, 1, 0)
     Return
     End
 };
@@ -70,8 +70,8 @@ EvtScript EVS_EnterMap = {
             Set(LVar3, DOOR_SWING_OUT)
             ExecWait(EnterSingleDoor)
         CaseEq(pra_22_ENTRY_1)
-            Set(LVar2, Ref(DoorModelsL))
-            Set(LVar3, Ref(DoorModelsR))
+            Set(LVar2, DoorModelsL)
+            Set(LVar3, DoorModelsR)
             ExecWait(BaseEnterDoor)
     EndSwitch
     Exec(EVS_BindExitTriggers)
@@ -102,7 +102,7 @@ EvtScript EVS_PushRightStatue_Impl = {
     EndIf
     Call(DisablePlayerInput, true)
     Thread
-        Call(ShakeCam, CAM_DEFAULT, 0, 100, Float(0.6))
+        Call(ShakeCam, CAM_DEFAULT, 0, 100, 0.6)
     EndThread
     Thread
         IfGe(LVar6, LVar7)
@@ -185,7 +185,7 @@ EvtScript EVS_PushStatue = {
         Set(GB_StoryProgress, STORY_CH7_FOUND_HIDDEN_ROOM_UNDER_STATUE)
         Set(GB_PRA_TwinStatueState, LVar8)
         Thread
-            Call(ShakeCam, CAM_DEFAULT, 0, 10, Float(1.0))
+            Call(ShakeCam, CAM_DEFAULT, 0, 10, 1.0)
         EndThread
         Unbind
     EndIf
@@ -200,7 +200,7 @@ EvtScript EVS_Main = {
     ExecWait(EVS_MakeEntities)
     Exec(EVS_SetupMusic)
     IfLt(GB_StoryProgress, STORY_CH7_FOUND_HIDDEN_ROOM_UNDER_STATUE)
-        BindTrigger(Ref(EVS_PushStatue), TRIGGER_WALL_PUSH, COLLIDER_o1064, 1, 0)
+        BindTrigger(EVS_PushStatue, TRIGGER_WALL_PUSH, COLLIDER_o1064, 1, 0)
         Set(LVar0, 0)
     Else
         Switch(GB_PRA_TwinStatueState)

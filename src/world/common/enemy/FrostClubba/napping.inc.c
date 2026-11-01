@@ -23,7 +23,7 @@ EvtScript EVS_NpcAI_FrostClubba_Napping = {
     Call(SetSelfVar, AI_VAR_MELEE_PRE_TIME, 10)
     Call(SetSelfVar, AI_VAR_MELEE_SWING_TIME, 14)
     Call(SetSelfVar, AI_VAR_MELEE_POST_TIME, 18)
-    Call(ClubbaNappingAI_Main, Ref(AISettings_FrostClubba_Napping))
+    Call(ClubbaNappingAI_Main, AISettings_FrostClubba_Napping)
     Return
     End
 };

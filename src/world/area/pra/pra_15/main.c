@@ -8,7 +8,7 @@ API_CALLABLE(DisableTotalFloorReflections) {
 EvtScript EVS_ExitWalk_pra_01_3 = EVT_EXIT_WALK(60, pra_15_ENTRY_0, "pra_01", pra_01_ENTRY_3);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_pra_01_3), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitWalk_pra_01_3, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     Return
     End
 };
@@ -17,7 +17,7 @@ EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(pra_15_ENTRY_0)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
     EndSwitch
     Return

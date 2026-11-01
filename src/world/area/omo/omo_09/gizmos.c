@@ -140,7 +140,7 @@ EvtScript EVS_SetupGizmos = {
     Exec(EVS_Gizmos_Wheels)
     Exec(EVS_Gizmos_Shutters)
     Exec(EVS_Gizmos_Clocks)
-    UseBuf(Ref(MovingBlockPlatforms))
+    UseBuf(MovingBlockPlatforms)
     Loop(ARRAY_COUNT(MovingBlockPlatforms))
         BufRead4(LVar6, LVar7, LVar8, LVar9)
         Exec(EVS_Gizmos_MovingBlocks)

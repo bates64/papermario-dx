@@ -20,19 +20,19 @@ EvtScript EVS_InitCredits = {
 };
 
 EvtScript EVS_ShowCredits_Jobs = {
-    Call(ShowCreditList, Ref(Credits_Jobs))
+    Call(ShowCreditList, Credits_Jobs)
     Return
     End
 };
 
 EvtScript EVS_ShowCredits_Names = {
-    Call(ShowCreditList, Ref(Credits_Names))
+    Call(ShowCreditList, Credits_Names)
     Return
     End
 };
 
 EvtScript EVS_ShowCredits_Title = {
-    Call(ShowCreditList, Ref(Credits_Title))
+    Call(ShowCreditList, Credits_Title)
     Return
     End
 };

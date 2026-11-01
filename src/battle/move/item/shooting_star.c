@@ -105,7 +105,7 @@ EvtScript EVS_UseItem = {
         Loop(5)
             Wait(15)
             Call(StartRumble, BTL_RUMBLE_PLAYER_LIGHT)
-            Call(ShakeCam, CAM_BATTLE, 0, 5, Float(1.0))
+            Call(ShakeCam, CAM_BATTLE, 0, 5, 1.0)
         EndLoop
     EndThread
     Wait(90)

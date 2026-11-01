@@ -88,8 +88,8 @@ EvtScript EVS_SetupShop = {
         CaseGe(STORY_CH7_MAYOR_MURDER_SOLVED)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o512, COLLIDER_FLAGS_UPPER_MASK)
     EndSwitch
-    Call(MakeShop, Ref(ItemPositions), Ref(Inventory), Ref(PriceList), ITEM_ENTITY_FLAG_TOSS_LOWER)
-    Call(MakeShopOwner, Ref(Owner))
+    Call(MakeShop, ItemPositions, Inventory, PriceList, ITEM_ENTITY_FLAG_TOSS_LOWER)
+    Call(MakeShopOwner, Owner)
     Return
     End
 };

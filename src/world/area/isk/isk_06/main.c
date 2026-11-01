@@ -33,8 +33,8 @@ EvtScript EVS_ExitWalk_isk_04_2 = EVT_EXIT_WALK(40, isk_06_ENTRY_0, "isk_04", is
 EvtScript EVS_ExitWalk_isk_04_3 = EVT_EXIT_WALK(40, isk_06_ENTRY_1, "isk_04", isk_04_ENTRY_3);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_isk_04_2), TRIGGER_FLOOR_ABOVE, COLLIDER_deiline, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_isk_04_3), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitWalk_isk_04_2, TRIGGER_FLOOR_ABOVE, COLLIDER_deiline, 1, 0)
+    BindTrigger(EVS_ExitWalk_isk_04_3, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     Return
     End
 };
@@ -65,7 +65,7 @@ EvtScript EVS_Main = {
             Call(SetMusic, 0, SONG_DRY_DRY_RUINS, 0, VOL_LEVEL_FULL)
     EndSwitch
 #endif
-    Set(LVar0, Ref(EVS_BindExitTriggers))
+    Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     Return
     End

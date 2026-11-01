@@ -19,7 +19,7 @@ MobileAISettings AISettings_Cleft_Wander = {
 
 EvtScript EVS_NpcAI_Cleft_Wander = {
     Call(SetSelfVar, AI_VAR_CLEFT_DASH_DELAY, 16)
-    Call(CleftAI_Main, Ref(AISettings_Cleft_Wander))
+    Call(CleftAI_Main, AISettings_Cleft_Wander)
     Return
     End
 };

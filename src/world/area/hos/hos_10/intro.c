@@ -39,7 +39,7 @@ EvtScript EVS_Scene_Unused_Impl = {
         SetF(LVar0, 0)
         Loop(310)
             Call(TranslateModel, MODEL_o3, 0, LVar0, 0)
-            AddF(LVar0, Float(-1.5))
+            AddF(LVar0, -1.5)
             Wait(1)
         EndLoop
     EndThread
@@ -126,7 +126,7 @@ EvtScript EVS_Scene_Rising_Impl = {
         SetF(LVar0, -1125)
         Loop(1450)
             Call(TranslateModel, MODEL_o3, 0, LVar0, 0)
-            AddF(LVar0, Float(-1.5))
+            AddF(LVar0, -1.5)
             Wait(1)
         EndLoop
     EndThread
@@ -134,7 +134,7 @@ EvtScript EVS_Scene_Rising_Impl = {
         SetF(LVar0, -500)
         Loop(1450)
             Call(TranslateGroup, MODEL_kumo, 0, LVar0, 0)
-            AddF(LVar0, Float(-2.5))
+            AddF(LVar0, -2.5)
             Wait(1)
         EndLoop
     EndThread
@@ -145,8 +145,8 @@ EvtScript EVS_Scene_Rising_Impl = {
         Loop(1000)
             Call(TranslateGroup, MODEL_starland, 0, LVar0, 0)
             Call(RotateGroup, MODEL_stl_1, LVar1, 0, -1, 0)
-            AddF(LVar0, Float(-3.59375))
-            AddF(LVar1, Float(1.0))
+            AddF(LVar0, -3.59375)
+            AddF(LVar1, 1.0)
             Wait(1)
         EndLoop
     EndThread
@@ -163,7 +163,7 @@ EvtScript EVS_Scene_UnusedWhiteScreen = {
     Call(SetPanTarget, CAM_DEFAULT, 0, 0, 0)
     Call(UseSettingsFrom, CAM_DEFAULT, 0, 0, 0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(EnableModel, MODEL_nagare, false)
     Exec(EVS_Scene_Unused_Impl)
     Return
@@ -177,7 +177,7 @@ EvtScript EVS_Scene_RisingAboveClouds = {
     Call(SetPanTarget, CAM_DEFAULT, 0, 0, 0)
     Call(UseSettingsFrom, CAM_DEFAULT, 0, 0, 0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Exec(EVS_Scene_Rising_Impl)
     Return
     End

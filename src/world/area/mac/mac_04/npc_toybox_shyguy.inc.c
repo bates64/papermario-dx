@@ -92,7 +92,7 @@ EvtScript EVS_SuspiciousGuy_RevealSecretRoom = {
     Wait(4 * DT)
     Call(SetNpcAnimation, NPC_ShyGuy_01, ANIM_ShyGuy_Pink_FallingKick)
     Exec(EVS_OpenSecretDoor)
-    Call(SetNpcJumpscale, NPC_ShyGuy_01, Float(0.5))
+    Call(SetNpcJumpscale, NPC_ShyGuy_01, 0.5)
     Call(NpcJump0, NPC_ShyGuy_01, -440, 20, -75, 20 * DT)
     Call(SetNpcAnimation, NPC_ShyGuy_01, ANIM_ShyGuy_Pink_Still)
     IfLt(GB_StoryProgress, STORY_CH4_FOUND_HIDDEN_DOOR)

@@ -4,8 +4,8 @@ EvtScript EVS_ExitWalk_hos_02_1 = EVT_EXIT_WALK(60, hos_03_ENTRY_0, "hos_02", ho
 EvtScript EVS_ExitWalk_hos_04_0 = EVT_EXIT_WALK(60, hos_03_ENTRY_1, "hos_04", hos_04_ENTRY_0);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_hos_02_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deilisw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_hos_04_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitWalk_hos_02_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deilisw, 1, 0)
+    BindTrigger(EVS_ExitWalk_hos_04_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     Return
     End
 };
@@ -56,7 +56,7 @@ EvtScript EVS_Main = {
         Set(GB_StoryProgress, STORY_CH8_REACHED_STAR_HAVEN)
     EndIf
     Set(GF_MAP_StarHaven, true)
-    Call(MakeNpcs, false, Ref(DefaultNPCs))
+    Call(MakeNpcs, false, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilite, COLLIDER_FLAGS_UPPER_MASK)
     Call(GetLoadType, LVar1)
@@ -64,7 +64,7 @@ EvtScript EVS_Main = {
         Exec(EnterSavePoint)
         Exec(EVS_BindExitTriggers)
     Else
-        Set(LVar0, Ref(EVS_BindExitTriggers))
+        Set(LVar0, EVS_BindExitTriggers)
         Exec(EnterWalk)
         Wait(1)
     EndIf

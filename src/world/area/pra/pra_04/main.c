@@ -9,9 +9,9 @@ EvtScript EVS_ExitDoors_pra_10_0 =
     EVT_EXIT_DOUBLE_DOOR(pra_04_ENTRY_2, "pra_10", pra_10_ENTRY_0, COLLIDER_deilittsse, MODEL_o986, MODEL_o987);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitDoor_pra_02_4), TRIGGER_WALL_PRESS_A, COLLIDER_deilittssw, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoors_pra_39_0), TRIGGER_WALL_PRESS_A, COLLIDER_deilittse, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoors_pra_10_0), TRIGGER_WALL_PRESS_A, COLLIDER_deilittsse, 1, 0)
+    BindTrigger(EVS_ExitDoor_pra_02_4, TRIGGER_WALL_PRESS_A, COLLIDER_deilittssw, 1, 0)
+    BindTrigger(EVS_ExitDoors_pra_39_0, TRIGGER_WALL_PRESS_A, COLLIDER_deilittse, 1, 0)
+    BindTrigger(EVS_ExitDoors_pra_10_0, TRIGGER_WALL_PRESS_A, COLLIDER_deilittsse, 1, 0)
     Return
     End
 };
@@ -41,7 +41,7 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_CRYSTAL_PALACE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(24, 24, 40)
-    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Call(MakeNpcs, true, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     Exec(EVS_SetupMusic)
     IfEq(GF_PRA04_BoardedFloor, true)

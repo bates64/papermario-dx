@@ -23,14 +23,14 @@ SlideParams SlideData2 = {
 };
 
 EvtScript EVS_UpdateSliding1 = {
-    Set(LVar0, Ref(SlideData1))
+    Set(LVar0, SlideData1)
     Call(SetPlayerSliding)
     Return
     End
 };
 
 EvtScript EVS_UpdateSliding2 = {
-    Set(LVar0, Ref(SlideData2))
+    Set(LVar0, SlideData2)
     Call(SetPlayerSliding)
     Return
     End
@@ -111,16 +111,16 @@ EvtScript EVS_UseSlide2 = {
 };
 
 EvtScript EVS_BindSlideTriggers1 = {
-    BindTrigger(Ref(EVS_UseSlide1), TRIGGER_WALL_PRESS_A, COLLIDER_st1, 1, 0)
-    BindTrigger(Ref(EVS_UpdateSliding1), TRIGGER_FLOOR_TOUCH, COLLIDER_suberi1, 1, 0)
+    BindTrigger(EVS_UseSlide1, TRIGGER_WALL_PRESS_A, COLLIDER_st1, 1, 0)
+    BindTrigger(EVS_UpdateSliding1, TRIGGER_FLOOR_TOUCH, COLLIDER_suberi1, 1, 0)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_suberi1, SURFACE_TYPE_SLIDE)
     Return
     End
 };
 
 EvtScript EVS_BindSlideTriggers2 = {
-    BindTrigger(Ref(EVS_UseSlide2), TRIGGER_WALL_PRESS_A, COLLIDER_st2, 1, 0)
-    BindTrigger(Ref(EVS_UpdateSliding2), TRIGGER_FLOOR_TOUCH, COLLIDER_suberi01, 1, 0)
+    BindTrigger(EVS_UseSlide2, TRIGGER_WALL_PRESS_A, COLLIDER_st2, 1, 0)
+    BindTrigger(EVS_UpdateSliding2, TRIGGER_FLOOR_TOUCH, COLLIDER_suberi01, 1, 0)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_suberi01, SURFACE_TYPE_SLIDE)
     Return
     End

@@ -21,10 +21,10 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_TUBBAS_MANOR)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Call(MakeNpcs, true, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     Exec(EVS_SetupMusic)
-    BindTrigger(Ref(EVS_ExitDoors_dgb_01_6), TRIGGER_WALL_PRESS_A, COLLIDER_deilittw, 1, 0)
+    BindTrigger(EVS_ExitDoors_dgb_01_6, TRIGGER_WALL_PRESS_A, COLLIDER_deilittw, 1, 0)
     Exec(EVS_EnterMap)
     Return
     End

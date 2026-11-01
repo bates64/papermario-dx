@@ -21,7 +21,7 @@ EvtScript EVS_NpcAI_SpawnedSpiny = {
     Call(SetSelfVar, AI_VAR_TACKLE_MIN_CHASE_TIME, 18)
     Call(SetSelfVar, AI_VAR_TACKLE_POST_DELAY, 3)
     Call(SetSelfVar, AI_VAR_TACKLE_TYPE, TACKLER_SPINY)
-    Call(SpinyAI_Main, Ref(AISettings_SpawnedSpiny))
+    Call(SpinyAI_Main, AISettings_SpawnedSpiny)
     Return
     End
 };

@@ -50,10 +50,10 @@ EvtScript EVS_Main = {
     Call(SetSpriteShading, SHADING_KKJ_13)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     IfEq(GB_StoryProgress, STORY_INTRO)
-        Call(MakeNpcs, false, Ref(IntroNPCs))
+        Call(MakeNpcs, false, IntroNPCs)
     EndIf
     IfGe(GB_StoryProgress, STORY_CH8_OPENED_PATH_TO_STAR_WAY)
-        Call(MakeNpcs, false, Ref(ChapterNPCs))
+        Call(MakeNpcs, false, ChapterNPCs)
     EndIf
     Call(GetEntryID, LVar0)
     IfEq(LVar0, kkj_13_ENTRY_2)
@@ -81,10 +81,10 @@ EvtScript EVS_Main = {
         Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetModelCustomGfx, MODEL_o685, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
-    Call(SetCustomGfx, CUSTOM_GFX_0, Ref(setup_gfx_candle_lights), nullptr)
+    Call(SetCustomGfx, CUSTOM_GFX_0, setup_gfx_candle_lights, nullptr)
     Exec(EVS_SetupMusic)
-    BindTrigger(Ref(EVS_ExitDoors_kkj_12_1), TRIGGER_WALL_PRESS_A, COLLIDER_deilit1, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoors_kkj_22_0), TRIGGER_WALL_PRESS_A, COLLIDER_deilit2, 1, 0)
+    BindTrigger(EVS_ExitDoors_kkj_12_1, TRIGGER_WALL_PRESS_A, COLLIDER_deilit1, 1, 0)
+    BindTrigger(EVS_ExitDoors_kkj_22_0, TRIGGER_WALL_PRESS_A, COLLIDER_deilit2, 1, 0)
     Exec(EVS_EnterMap)
     Wait(1)
     Return

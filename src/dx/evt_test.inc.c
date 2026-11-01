@@ -10,7 +10,7 @@ BSS s32 EvtTestLerpIterations;
 BSS s32 EvtTestRunnerID;
 
 s32 EvtTestWords[] = { 11, 22, 33, 44 };
-s32 EvtTestFloats[] = { Float(1.25), Float(2.5), Float(3.75) };
+s32 EvtTestFloats[] = { 1.25, 2.5, 3.75 };
 s32 EvtTestArray[4];
 
 b32 evt_test_float_matches(f32 actual, f32 expected) {
@@ -180,11 +180,11 @@ EvtScript EVS_EvtTestArithmetic = {
     Min(LVar9, 7, 3, 5)
     Max(LVarA, 2, 8, 6)
     Clamp(LVarB, 15, 0, 10)
-    SetF(LVarC, Float(1.5))
-    AddF(LVarC, Float(0.5))
-    SubF(LVarD, Float(5.0), Float(1.5))
-    MulF(LVarE, Float(2.0), Float(1.5))
-    DivF(LVarF, Float(7.5), Float(2.5))
+    SetF(LVarC, 1.5)
+    AddF(LVarC, 0.5)
+    SubF(LVarD, 5.0, 1.5)
+    MulF(LVarE, 2.0, 1.5)
+    DivF(LVarF, 7.5, 2.5)
     Call(EvtTest_VerifyArithmetic)
     End
 };
@@ -371,12 +371,12 @@ EvtScript EVS_EvtTestLoopControl = {
 };
 
 EvtScript EVS_EvtTestStorage = {
-    UseBuf(Ref(EvtTestWords))
+    UseBuf(EvtTestWords)
     BufRead(LVar0, LVar1)
     BufPeek(LVar2, 0)
-    UseFBuf(Ref(EvtTestFloats))
+    UseFBuf(EvtTestFloats)
     FBufRead(LVar3, LVar4)
-    UseArray(Ref(EvtTestArray))
+    UseArray(EvtTestArray)
     Set(ArrayVar(0), 10)
     Add(ArrayVar(0), 5)
     Set(ArrayVar(2), -4)
@@ -386,7 +386,7 @@ EvtScript EVS_EvtTestStorage = {
 
 EvtScript EVS_EvtTestEval = {
     Eval(LVar0, evt_test_eval, 3, 4, 5)
-    EvalF(LVar1, evt_test_evalF, Float(1.5), Float(2.0))
+    EvalF(LVar1, evt_test_evalF, 1.5, 2.0)
     Invoke(evt_test_invoke, 4, 5)
     Set(LVar2, 0)
     IfEval(evt_test_predicate, LVar0)
@@ -406,9 +406,9 @@ EvtScript EVS_EvtTestArgsChild = {
 
 EvtScript EVS_EvtTestArgsParent = {
     Set(LVar0, 12)
-    SetF(LVar1, Float(2.5))
+    SetF(LVar1, 2.5)
     Set(LVarF, 123)
-    ExecWait(EVS_EvtTestArgsChild, 7, ARG_INT(LVar0), Float(1.5), ARG_FLOAT(LVar1), LVarF)
+    ExecWait(EVS_EvtTestArgsChild, 7, ARG_INT(LVar0), 1.5, ARG_FLOAT(LVar1), LVarF)
     Call(EvtTest_VerifyArgCopyback)
     End
 };
@@ -512,7 +512,7 @@ EvtScript EVS_EvtPlusInstrumentation = {
 
     Call(EvtTest_ResetTrace)
     ExecWait(EVS_EvtTestNaturalFinally)
-    Call(EvtTest_ExpectTrace, Ref("CP"))
+    Call(EvtTest_ExpectTrace, "CP")
     DebugPrint("[EVT TEST] natural Finally PASS")
 
     Call(EvtTest_ResetTrace)
@@ -520,7 +520,7 @@ EvtScript EVS_EvtPlusInstrumentation = {
     // give the detached parent one update to start its child
     Wait(2)
     KillScript(LVarF)
-    Call(EvtTest_ExpectTrace, Ref("CP"))
+    Call(EvtTest_ExpectTrace, "CP")
     DebugPrint("[EVT TEST] forced Finally PASS")
 
     Call(EvtTest_ResetTrace)
@@ -528,19 +528,19 @@ EvtScript EVS_EvtPlusInstrumentation = {
     // give the detached owner one update to start its companion
     Wait(2)
     KillScript(LVarF)
-    Call(EvtTest_ExpectTrace, Ref("CP"))
+    Call(EvtTest_ExpectTrace, "CP")
     DebugPrint("[EVT TEST] companion cleanup PASS")
 
     Call(EvtTest_ResetTrace)
     ExecWait(EVS_EvtTestDetachedOwner)
-    Call(EvtTest_ExpectTrace, Ref("P"))
+    Call(EvtTest_ExpectTrace, "P")
     AwaitScript(LVarF)
-    Call(EvtTest_ExpectTrace, Ref("PD"))
+    Call(EvtTest_ExpectTrace, "PD")
     DebugPrint("[EVT TEST] detached script PASS")
 
     Call(EvtTest_ResetTrace)
     ExecWait(EVS_EvtTestAwaitChildren)
-    Call(EvtTest_ExpectTrace, Ref("CP"))
+    Call(EvtTest_ExpectTrace, "CP")
     DebugPrint("[EVT TEST] AwaitChildren PASS")
 
     Call(EvtTest_Finish)

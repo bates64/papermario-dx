@@ -65,7 +65,7 @@ EvtScript EVS_UsePower = {
     Thread
         Loop(10)
             Wait(7)
-            Call(ShakeCam, CAM_BATTLE, 0, 5, Float(1.0))
+            Call(ShakeCam, CAM_BATTLE, 0, 5, 1.0)
             Call(StartRumble, BTL_RUMBLE_PLAYER_LIGHT)
         EndLoop
     EndThread

@@ -9,10 +9,10 @@ EvtScript EVS_ExitDoors_kpa_96_0 =
     EVT_EXIT_DOUBLE_DOOR(kpa_32_ENTRY_3, "kpa_96", kpa_96_ENTRY_0, COLLIDER_tt4, MODEL_o1248, MODEL_o1254);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitDoors_kpa_81_2), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_kpa_90_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deili3, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoors_kpa_51_0), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoors_kpa_96_0), TRIGGER_WALL_PRESS_A, COLLIDER_tt4, 1, 0)
+    BindTrigger(EVS_ExitDoors_kpa_81_2, TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
+    BindTrigger(EVS_ExitWalk_kpa_90_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deili3, 1, 0)
+    BindTrigger(EVS_ExitDoors_kpa_51_0, TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
+    BindTrigger(EVS_ExitDoors_kpa_96_0, TRIGGER_WALL_PRESS_A, COLLIDER_tt4, 1, 0)
     Return
     End
 };
@@ -33,7 +33,7 @@ EvtScript EVS_EnterMap = {
             Exec(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
         CaseEq(kpa_32_ENTRY_1)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
         CaseEq(kpa_32_ENTRY_2)
             Set(LVar0, 2)
@@ -94,20 +94,20 @@ EvtScript EVS_Main = {
     EndThread
     Thread
         Loop(0)
-            Call(ScaleModel, MODEL_o1287, Float(1.02), 1, Float(1.02))
-            Call(ScaleModel, MODEL_o1289, Float(1.02), 1, Float(1.02))
-            Call(ScaleModel, MODEL_o1293, Float(1.02), 1, Float(1.02))
-            Call(ScaleModel, MODEL_o1295, Float(1.02), 1, Float(1.02))
+            Call(ScaleModel, MODEL_o1287, 1.02, 1, 1.02)
+            Call(ScaleModel, MODEL_o1289, 1.02, 1, 1.02)
+            Call(ScaleModel, MODEL_o1293, 1.02, 1, 1.02)
+            Call(ScaleModel, MODEL_o1295, 1.02, 1, 1.02)
             Wait(10)
-            Call(ScaleModel, MODEL_o1287, Float(1.0), 1, Float(1.0))
-            Call(ScaleModel, MODEL_o1289, Float(1.0), 1, Float(1.0))
-            Call(ScaleModel, MODEL_o1293, Float(1.0), 1, Float(1.0))
-            Call(ScaleModel, MODEL_o1295, Float(1.0), 1, Float(1.0))
+            Call(ScaleModel, MODEL_o1287, 1.0, 1, 1.0)
+            Call(ScaleModel, MODEL_o1289, 1.0, 1, 1.0)
+            Call(ScaleModel, MODEL_o1293, 1.0, 1, 1.0)
+            Call(ScaleModel, MODEL_o1295, 1.0, 1, 1.0)
             Wait(10)
-            Call(ScaleModel, MODEL_o1287, Float(0.98), 1, Float(0.98))
-            Call(ScaleModel, MODEL_o1289, Float(0.98), 1, Float(0.98))
-            Call(ScaleModel, MODEL_o1293, Float(0.98), 1, Float(0.98))
-            Call(ScaleModel, MODEL_o1295, Float(0.98), 1, Float(0.98))
+            Call(ScaleModel, MODEL_o1287, 0.98, 1, 0.98)
+            Call(ScaleModel, MODEL_o1289, 0.98, 1, 0.98)
+            Call(ScaleModel, MODEL_o1293, 0.98, 1, 0.98)
+            Call(ScaleModel, MODEL_o1295, 0.98, 1, 0.98)
             Wait(10)
         EndLoop
     EndThread

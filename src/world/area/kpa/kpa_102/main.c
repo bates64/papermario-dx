@@ -5,8 +5,8 @@ EvtScript EVS_ExitDoors_kpa_53_0 =
     EVT_EXIT_DOUBLE_DOOR(kpa_102_ENTRY_1, "kpa_53", kpa_53_ENTRY_0, COLLIDER_tte, MODEL_o631, MODEL_o632);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_kpa_41_2), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoors_kpa_53_0), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
+    BindTrigger(EVS_ExitWalk_kpa_41_2, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitDoors_kpa_53_0, TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
     Return
     End
 };
@@ -15,7 +15,7 @@ EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(kpa_102_ENTRY_0)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
             Wait(1)
         CaseEq(kpa_102_ENTRY_1)
@@ -33,7 +33,7 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_BOWSERS_CASTLE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Call(MakeNpcs, true, DefaultNPCs)
     Exec(EVS_EnterMap)
     Exec(EVS_SetupMusic)
     Call(SetTexPanner, MODEL_o655, TEX_PANNER_1)
@@ -70,20 +70,20 @@ EvtScript EVS_Main = {
     EndThread
     Thread
         Loop(0)
-            Call(ScaleModel, MODEL_o655, Float(1.0), 1, Float(1.0))
-            Call(ScaleModel, MODEL_o657, Float(1.0), 1, Float(1.0))
-            Call(ScaleModel, MODEL_o663, Float(1.0), 1, Float(1.0))
-            Call(ScaleModel, MODEL_o661, Float(1.0), 1, Float(1.0))
+            Call(ScaleModel, MODEL_o655, 1.0, 1, 1.0)
+            Call(ScaleModel, MODEL_o657, 1.0, 1, 1.0)
+            Call(ScaleModel, MODEL_o663, 1.0, 1, 1.0)
+            Call(ScaleModel, MODEL_o661, 1.0, 1, 1.0)
             Wait(10)
-            Call(ScaleModel, MODEL_o655, Float(0.98), 1, Float(0.98))
-            Call(ScaleModel, MODEL_o657, Float(0.98), 1, Float(0.98))
-            Call(ScaleModel, MODEL_o663, Float(0.98), 1, Float(0.98))
-            Call(ScaleModel, MODEL_o661, Float(0.98), 1, Float(0.98))
+            Call(ScaleModel, MODEL_o655, 0.98, 1, 0.98)
+            Call(ScaleModel, MODEL_o657, 0.98, 1, 0.98)
+            Call(ScaleModel, MODEL_o663, 0.98, 1, 0.98)
+            Call(ScaleModel, MODEL_o661, 0.98, 1, 0.98)
             Wait(10)
-            Call(ScaleModel, MODEL_o655, Float(0.961), 1, Float(0.961))
-            Call(ScaleModel, MODEL_o657, Float(0.961), 1, Float(0.961))
-            Call(ScaleModel, MODEL_o663, Float(0.961), 1, Float(0.961))
-            Call(ScaleModel, MODEL_o661, Float(0.961), 1, Float(0.961))
+            Call(ScaleModel, MODEL_o655, 0.961, 1, 0.961)
+            Call(ScaleModel, MODEL_o657, 0.961, 1, 0.961)
+            Call(ScaleModel, MODEL_o663, 0.961, 1, 0.961)
+            Call(ScaleModel, MODEL_o661, 0.961, 1, 0.961)
             Wait(10)
         EndLoop
     EndThread

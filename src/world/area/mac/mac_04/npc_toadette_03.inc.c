@@ -66,7 +66,7 @@ EvtScript EVS_NpcInit_Toadette_03 = {
         CaseRange(STORY_CH3_STAR_SPIRIT_RESCUED, STORY_CH4_STAR_SPIRIT_DEPARTED)
             Call(SetNpcPos, NPC_SELF, -300, 0, 325)
     EndSwitch
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toadette_03))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toadette_03)
     Return
     End
 };

@@ -33,14 +33,14 @@ EvtScript EVS_Scene_TreeOrbitReaction = {
     AddF(LVar0, LVar3)
     AddF(LVar1, LVar4)
     AddF(LVar2, LVar5)
-    DivF(LVar0, Float(2.0))
-    DivF(LVar1, Float(2.0))
-    DivF(LVar2, Float(2.0))
+    DivF(LVar0, 2.0)
+    DivF(LVar1, 2.0)
+    DivF(LVar2, 2.0)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamDistance, CAM_DEFAULT, Float(-300.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(5.0))
+    Call(SetCamDistance, CAM_DEFAULT, -300.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 5.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Call(SpeakToPlayer, NPC_Dryite_03, ANIM_Dryite_Green_Talk, ANIM_Dryite_Green_Idle, 0, MSG_CH2_0079)
     Call(SetPlayerAnimation, ANIM_MarioW2_SpeakUp)
@@ -49,9 +49,9 @@ EvtScript EVS_Scene_TreeOrbitReaction = {
     Call(SpeakToPlayer, NPC_Dryite_03, ANIM_Dryite_Green_Talk, ANIM_Dryite_Green_Idle, 0, MSG_CH2_007A)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(4.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 4.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(SaveSpinningRoofHintTime)
     Set(GF_DRO01_HeardHintAboutSpinningRoof, true)
@@ -151,10 +151,10 @@ EvtScript EVS_NpcInit_HintDryite = {
             Return
         EndCaseGroup
     EndSwitch
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_HintDryite))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_HintDryite)
     IfEq(GF_MAC01_Merlon_HeardAboutDream, true)
         Thread
-            Call(MonitorPlayerOrbiting, Ref(RunAroundTarget))
+            Call(MonitorPlayerOrbiting, RunAroundTarget)
         EndThread
     EndIf
     Return

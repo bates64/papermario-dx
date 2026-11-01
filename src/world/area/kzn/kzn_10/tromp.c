@@ -12,7 +12,7 @@ EvtScript EVS_SpinyTromp_ManageCamera = {
     Call(GetPlayerPos, LVar3, LVar4, LVar5)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar3, LVar4, LVar5)
     Call(SetPanTarget, CAM_DEFAULT, LVar3, LVar4, LVar5)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(10.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 10.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Loop(0)
         IfEq(AF_KZN_TrompHitPlayer, false)
@@ -79,7 +79,7 @@ EvtScript EVS_SpinyTromp_Dust = {
 
 EvtScript EVS_SpinyTromp_ShakeCam = {
     Loop(0)
-        Call(ShakeCam, CAM_DEFAULT, 0, 30, Float(1.0))
+        Call(ShakeCam, CAM_DEFAULT, 0, 30, 1.0)
     EndLoop
     Return
     End
@@ -135,7 +135,7 @@ EvtScript EVS_SetupSpinyTromp = {
             CaseEq(PARTNER_BOW)
             CaseDefault
                 Call(GetPlayerPos, LVar1, LVar2, LVar3)
-                Call(SetPlayerJumpscale, Float(2.5))
+                Call(SetPlayerJumpscale, 2.5)
                 Call(PlayerJump1, LVar1, LVar2, LVar3, 8)
                 Call(InterpPlayerYaw, 270, 0)
                 IfNe(LVar0, PARTNER_LAKILESTER)
@@ -147,8 +147,8 @@ EvtScript EVS_SetupSpinyTromp = {
         EndSwitch
     EndThread
     Call(PlaySoundAt, SOUND_TROMP_DROP, SOUND_SPACE_DEFAULT, -465, 0, 0)
-    Call(ShakeCam, CAM_DEFAULT, 0, 10, Float(2.5))
-    Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(1.2))
+    Call(ShakeCam, CAM_DEFAULT, 0, 10, 2.5)
+    Call(ShakeCam, CAM_DEFAULT, 0, 5, 1.2)
     Wait(15)
     Call(DisablePlayerInput, false)
     ExecGetTID(EVS_SpinyTromp_ManageCamera, LVarA)
@@ -183,7 +183,7 @@ EvtScript EVS_SetupSpinyTromp = {
                         Set(AF_KZN_TrompHitPlayer, true)
                     EndIf
                     Thread
-                        Call(ResetCam, CAM_DEFAULT, Float(2.0))
+                        Call(ResetCam, CAM_DEFAULT, 2.0)
                         Wait(45)
                         Set(AF_KZN_TrompRollingDone, true)
                     EndThread
@@ -197,9 +197,9 @@ EvtScript EVS_SetupSpinyTromp = {
     Set(AF_KZN_Tromp1_ShakingDone, true)
     KillThread(MV_ScreenShakeTID)
     Thread
-        Call(ShakeCam, CAM_DEFAULT, 0, 35, Float(2.0))
-        Call(ShakeCam, CAM_DEFAULT, 0, 20, Float(1.0))
-        Call(ShakeCam, CAM_DEFAULT, 0, 10, Float(0.5))
+        Call(ShakeCam, CAM_DEFAULT, 0, 35, 2.0)
+        Call(ShakeCam, CAM_DEFAULT, 0, 20, 1.0)
+        Call(ShakeCam, CAM_DEFAULT, 0, 10, 0.5)
     EndThread
     Call(StopSound, SOUND_LOOP_TROMP_ROLL)
     Call(PlaySoundAt, SOUND_TROMP_CRASH, SOUND_SPACE_DEFAULT, 415, -240, 0)
@@ -208,7 +208,7 @@ EvtScript EVS_SetupSpinyTromp = {
         Set(LVar0, 418)
         Set(LVar2, 0)
         Call(SpinyTromp_SnapToGround)
-        PlayEffect(EFFECT_BLAST, 0, LVar0, LVar2, 0, Float(3.0), 20)
+        PlayEffect(EFFECT_BLAST, 0, LVar0, LVar2, 0, 3.0, 20)
     EndThread
     Set(LVar0, LVar8)
     Set(LVar1, LVar9)
@@ -250,7 +250,7 @@ EvtScript EVS_SetupSpinyTromp = {
     Wait(10)
     IfEq(AF_KZN_TrompHitPlayer, false)
         KillThread(LVarA)
-        Call(ResetCam, CAM_DEFAULT, Float(90.0))
+        Call(ResetCam, CAM_DEFAULT, 90.0)
         Set(AF_KZN_TrompRollingDone, true)
     EndIf
     Return

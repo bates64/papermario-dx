@@ -156,9 +156,9 @@ EvtScript EVS_Init = {
     Call(SetActorVar, ACTOR_SELF, AVAR_ChargeTaunt, false)
     Call(SetActorVar, ACTOR_SELF, AVAR_ChargedEffectID, 0)
     Call(SetActorVar, ACTOR_SELF, AVAR_SwarmCount, 0)
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
     Call(SetPartTargetFlagBits, ACTOR_SELF, PRT_TARGET, ACTOR_PART_TARGET_NO_SMASH, true)
     Return
     End
@@ -191,10 +191,10 @@ EvtScript EVS_Idle = {
                 Call(GetStatusFlags, ACTOR_SELF, LVar4)
                 IfNotFlag(LVar4, STATUS_FLAG_SHRINK)
                     Add(LVar2, 15)
-                    SetF(LVar4, Float(1.0))
+                    SetF(LVar4, 1.0)
                 Else
                     Add(LVar2, 6)
-                    SetF(LVar4, Float(0.4))
+                    SetF(LVar4, 0.4)
                 EndIf
                 Call(UpdateChargeEffectPos, LVar0, LVar1, LVar2, LVar3, LVar4)
             EndIf
@@ -217,7 +217,7 @@ EvtScript EVS_SelectAnimation = {
 
 EvtScript EVS_HandleEvent = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
-    Call(SetActorScale, ACTOR_SELF, Float(1.0), Float(1.0), Float(1.0))
+    Call(SetActorScale, ACTOR_SELF, 1.0, 1.0, 1.0)
     Call(GetLastEvent, ACTOR_SELF, LVar0)
     Switch(LVar0)
         CaseOrEq(EVENT_HIT_COMBO)
@@ -308,8 +308,8 @@ EvtScript EVS_FleeFromBattle = {
 };
 
 EvtScript EVS_ReturnHome = {
-    Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
-    Call(SetActorJumpGravity, ACTOR_SELF, Float(1.8))
+    Call(SetActorSpeed, ACTOR_SELF, 6.0)
+    Call(SetActorJumpGravity, ACTOR_SELF, 1.8)
     Call(SetGoalToHome, ACTOR_SELF)
     Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Sub(LVar0, 45)
@@ -414,7 +414,7 @@ EvtScript EVS_Attack_Leap = {
     Call(BattleCamTargetActor, ACTOR_SELF)
     Call(SetBattleCamTargetingModes, BTL_CAM_YADJ_TARGET, BTL_CAM_XADJ_AVG, false)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_TubbasHeart_Run)
-    Call(SetActorJumpGravity, ACTOR_SELF, Float(1.8))
+    Call(SetActorJumpGravity, ACTOR_SELF, 1.8)
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Sub(LVar0, 45)
     Set(LVar1, 0)
@@ -424,8 +424,8 @@ EvtScript EVS_Attack_Leap = {
     Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Add(LVar0, 40)
     Set(LVar1, 0)
-    Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
-    Call(SetActorJumpGravity, ACTOR_SELF, Float(1.8))
+    Call(SetActorSpeed, ACTOR_SELF, 6.0)
+    Call(SetActorJumpGravity, ACTOR_SELF, 1.8)
     ExecWait(EVS_Enemy_HopToPos)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_TubbasHeart_Idle)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_TubbasHeart_Squeeze)
@@ -440,13 +440,13 @@ EvtScript EVS_Attack_Leap = {
             Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Sub(LVar0, 30)
             Set(LVar1, 0)
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(1.5))
+            Call(SetActorJumpGravity, ACTOR_SELF, 1.5)
             Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(JumpToGoal, ACTOR_SELF, 8, false, true, false)
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Sub(LVar0, 20)
             Set(LVar1, 0)
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(2.0))
+            Call(SetActorJumpGravity, ACTOR_SELF, 2.0)
             Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(JumpToGoal, ACTOR_SELF, 6, false, true, false)
             Sub(LVar0, 10)
@@ -463,7 +463,7 @@ EvtScript EVS_Attack_Leap = {
         EndCaseGroup
         CaseDefault
             Call(SetGoalToTarget, ACTOR_SELF)
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(0.3))
+            Call(SetActorJumpGravity, ACTOR_SELF, 0.3)
             Call(JumpToGoal, ACTOR_SELF, 4, false, true, false)
     EndSwitch
     Wait(2)
@@ -476,14 +476,14 @@ EvtScript EVS_Attack_Leap = {
         CaseOrEq(HIT_RESULT_10)
             Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_TubbasHeart_Idle)
-            Call(SetActorScale, ACTOR_SELF, Float(1.1), Float(0.8), Float(1.0))
+            Call(SetActorScale, ACTOR_SELF, 1.1, 0.8, 1.0)
             Wait(1)
-            Call(SetActorScale, ACTOR_SELF, Float(1.0), Float(1.0), Float(1.0))
+            Call(SetActorScale, ACTOR_SELF, 1.0, 1.0, 1.0)
             Wait(1)
             Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Add(LVar0, 30)
             Set(LVar1, 0)
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(1.8))
+            Call(SetActorJumpGravity, ACTOR_SELF, 1.8)
             Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(JumpToGoal, ACTOR_SELF, 8, false, true, false)
             Add(LVar0, 20)
@@ -518,10 +518,10 @@ EvtScript EVS_Move_Charge = {
     Call(GetStatusFlags, ACTOR_SELF, LVar4)
     IfNotFlag(LVar4, STATUS_FLAG_SHRINK)
         Add(LVar1, 15)
-        SetF(LVar3, Float(1.0))
+        SetF(LVar3, 1.0)
     Else
         Add(LVar1, 6)
-        SetF(LVar3, Float(0.4))
+        SetF(LVar3, 0.4)
     EndIf
     PlayEffect(EFFECT_GATHER_MAGIC, 1, LVar0, LVar1, LVar2, LVar3, 60)
     PlayEffect(EFFECT_ENERGY_IN_OUT, 6, LVar0, LVar1, LVar2, LVar3, 60)
@@ -529,7 +529,7 @@ EvtScript EVS_Move_Charge = {
     Wait(60)
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
     Call(MoveBattleCamOver, 20)
-    Call(SetActorJumpGravity, ACTOR_SELF, Float(1.0))
+    Call(SetActorJumpGravity, ACTOR_SELF, 1.0)
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(JumpToGoal, ACTOR_SELF, 15, false, true, false)
@@ -538,15 +538,15 @@ EvtScript EVS_Move_Charge = {
     Call(GetStatusFlags, ACTOR_SELF, LVar4)
     IfNotFlag(LVar4, STATUS_FLAG_SHRINK)
         Add(LVar1, 15)
-        SetF(LVar3, Float(1.0))
+        SetF(LVar3, 1.0)
     Else
         Add(LVar1, 6)
-        SetF(LVar3, Float(0.4))
+        SetF(LVar3, 0.4)
     EndIf
     PlayEffect(EFFECT_ENERGY_IN_OUT, 3, LVar0, LVar1, LVar2, LVar3, 0)
     Call(SetActorVar, ACTOR_SELF, AVAR_ChargedEffectID, LVarF)
     Call(EnableActorGlow, ACTOR_SELF, true)
-    Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(ChargedAnims))
+    Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, ChargedAnims)
     Return
     End
 };
@@ -568,14 +568,14 @@ EvtScript EVS_Attack_DarkSwarm = {
     Else
         Add(LVar1, 6)
     EndIf
-    PlayEffect(EFFECT_GATHER_ENERGY_PINK, 0, LVar0, LVar1, LVar2, Float(1.0), 45)
+    PlayEffect(EFFECT_GATHER_ENERGY_PINK, 0, LVar0, LVar1, LVar2, 1.0, 45)
     Wait(60)
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
     Call(MoveBattleCamOver, 20)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_TubbasHeart_TalkAngry)
     Thread
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-        Call(SetActorJumpGravity, ACTOR_SELF, Float(0.8))
+        Call(SetActorJumpGravity, ACTOR_SELF, 0.8)
         Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Call(JumpToGoal, ACTOR_SELF, 18, false, true, false)
     EndThread
@@ -587,7 +587,7 @@ EvtScript EVS_Attack_DarkSwarm = {
         Call(GetActorVar, ACTOR_SELF, AVAR_ChargedEffectID, LVar0)
         Call(RemoveEffect, LVar0)
         Call(SetActorVar, ACTOR_SELF, AVAR_ChargedEffectID, 0)
-        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(DefaultAnims))
+        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, DefaultAnims)
     EndIf
     Call(PlaySound, SOUND_TUBBAS_HEART_SWARM_ATTACK)
     Call(SetGoalToTarget, ACTOR_SELF)
@@ -597,7 +597,7 @@ EvtScript EVS_Attack_DarkSwarm = {
         CaseOrEq(HIT_RESULT_LUCKY)
             Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
             Add(LVar1, 5)
-            PlayEffect(EFFECT_TUBBA_HEART_ATTACK, FX_HEART_SWARM_MISS, LVar0, LVar1, LVar2, Float(1.0), 200)
+            PlayEffect(EFFECT_TUBBA_HEART_ATTACK, FX_HEART_SWARM_MISS, LVar0, LVar1, LVar2, 1.0, 200)
             Wait(145)
             IfEq(LVarA, HIT_RESULT_LUCKY)
                 Call(EnemyTestTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_TRIGGER_LUCKY, 0, 0, 0)
@@ -608,7 +608,7 @@ EvtScript EVS_Attack_DarkSwarm = {
     EndSwitch
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Add(LVar1, 5)
-    PlayEffect(EFFECT_TUBBA_HEART_ATTACK, FX_HEART_SWARM_HIT, LVar0, LVar1, LVar2, Float(1.0), 200)
+    PlayEffect(EFFECT_TUBBA_HEART_ATTACK, FX_HEART_SWARM_HIT, LVar0, LVar1, LVar2, 1.0, 200)
     Thread
         Wait(160)
         Call(PlaySound, SOUND_TUBBAS_HEART_SWARM_VANISH)

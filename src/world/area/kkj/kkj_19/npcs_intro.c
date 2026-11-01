@@ -17,13 +17,13 @@ EvtScript EVS_NpcInteract_Toad = {
 
 EvtScript EVS_NpcInit_TayceT = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_TayceT_Idle)
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_TayceT))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_TayceT)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Toad = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad)
     Return
     End
 };

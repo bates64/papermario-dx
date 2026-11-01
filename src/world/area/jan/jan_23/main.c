@@ -19,7 +19,7 @@ EvtScript EVS_ExitFall_jan_16_4 = {
             Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
             IfEq(LVar0, 0)
                 Call(GetPlayerPos, LVar2, LVar3, LVar4)
-                Call(SetNpcJumpscale, NPC_PARTNER, Float(3.0))
+                Call(SetNpcJumpscale, NPC_PARTNER, 3.0)
                 Call(NpcJump0, NPC_PARTNER, LVar2, LVar3, LVar4, 15)
             Else
                 Wait(10)
@@ -44,7 +44,7 @@ EvtScript EVS_ExitFall_jan_16_4 = {
                     Call(GetPlayerPos, LVar0, LVar1, LVar2)
                     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, 250, 100)
                     Call(SetPanTarget, CAM_DEFAULT, LVar0, -100, LVar2)
-                    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+                    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
                     Call(PanToTarget, CAM_DEFAULT, 0, true)
                     Set(MV_NeedsCamMotion, false)
                 EndCaseGroup
@@ -76,18 +76,18 @@ EvtScript EVS_ExitFall_jan_16_4 = {
     IfEq(MV_NeedsCamMotion, true)
         Call(UseSettingsFrom, CAM_DEFAULT, LVar0, 250, 100)
         Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+        Call(SetCamSpeed, CAM_DEFAULT, 90.0)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
     EndIf
     Wait(30)
-    Call(GotoMap, Ref("jan_16"), jan_16_ENTRY_4)
+    Call(GotoMap, "jan_16", jan_16_ENTRY_4)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_jan_19_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitWalk_jan_19_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
     Exec(EVS_ExitFall_jan_16_4)
     Return
     End
@@ -97,9 +97,9 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_JADE_JUNGLE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, false, Ref(DefaultNPCs))
+    Call(MakeNpcs, false, DefaultNPCs)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitw, COLLIDER_FLAGS_UPPER_MASK)
-    Set(LVar0, Ref(EVS_BindExitTriggers))
+    Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     ExecWait(EVS_SetupMusic)
     Return

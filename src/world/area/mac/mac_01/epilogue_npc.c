@@ -7,7 +7,7 @@ EvtScript EVS_NpcInteract_Kolorado_Epilogue = {
 };
 
 EvtScript EVS_NpcInit_Kolorado_Epilogue = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Kolorado_Epilogue))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Kolorado_Epilogue)
     Return
     End
 };
@@ -19,7 +19,7 @@ EvtScript EVS_NpcInteract_KoloradoWife_Epilogue = {
 };
 
 EvtScript EVS_NpcInit_KoloradoWife_Epilogue = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_KoloradoWife_Epilogue))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_KoloradoWife_Epilogue)
     Return
     End
 };
@@ -31,7 +31,7 @@ EvtScript EVS_NpcInteract_KoopaKoot_Epilogue = {
 };
 
 EvtScript EVS_NpcInit_KoopaKoot_Epilogue = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_KoopaKoot_Epilogue))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_KoopaKoot_Epilogue)
     Return
     End
 };
@@ -43,7 +43,7 @@ EvtScript EVS_NpcInteract_Bobomb_Epilogue = {
 };
 
 EvtScript EVS_NpcInit_Bobomb_Epilogue = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bobomb_Epilogue))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Bobomb_Epilogue)
     Return
     End
 };
@@ -55,7 +55,7 @@ EvtScript EVS_NpcInteract_Koopa_Epilogue = {
 };
 
 EvtScript EVS_NpcInit_Koopa_Epilogue = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Koopa_Epilogue))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Koopa_Epilogue)
     Return
     End
 };
@@ -69,7 +69,7 @@ EvtScript EVS_NpcInteract_Rowf_Epilogue = {
 EvtScript EVS_NpcInit_Rowf_Epilogue = {
     Call(SetNpcPos, NPC_SELF, -225, 0, 320)
     Call(SetNpcYaw, NPC_SELF, 270)
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Rowf_Epilogue))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Rowf_Epilogue)
     Return
     End
 };
@@ -81,10 +81,10 @@ EvtScript EVS_NpcInteract_Rhuff_Epilogue = {
 };
 
 EvtScript EVS_NpcInit_Rhuff_Epilogue = {
-    Call(SetNpcScale, NPC_SELF, Float(0.75), Float(0.75), Float(0.75))
+    Call(SetNpcScale, NPC_SELF, 0.75, 0.75, 0.75)
     Call(SetNpcPos, NPC_SELF, -250, 0, 295)
     Call(SetNpcYaw, NPC_SELF, 270)
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Rhuff_Epilogue))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Rhuff_Epilogue)
     Return
     End
 };
@@ -96,7 +96,7 @@ EvtScript EVS_NpcInteract_Dryite_01_Epilogue = {
 };
 
 EvtScript EVS_NpcInit_Dryite_01_Epilogue = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Dryite_01_Epilogue))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Dryite_01_Epilogue)
     Return
     End
 };
@@ -108,7 +108,7 @@ EvtScript EVS_NpcInteract_Dryite_02_Epilogue = {
 };
 
 EvtScript EVS_NpcInit_Dryite_02_Epilogue = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Dryite_02_Epilogue))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Dryite_02_Epilogue)
     Return
     End
 };
@@ -121,7 +121,7 @@ EvtScript EVS_NpcInteract_Chanterelle_Epilogue = {
 
 EvtScript EVS_NpcInit_Chanterelle_Epilogue = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_Chanterelle_Sing)
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Chanterelle_Epilogue))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Chanterelle_Epilogue)
     Return
     End
 };
@@ -133,7 +133,7 @@ EvtScript EVS_NpcInteract_Poet_Epilogue = {
 };
 
 EvtScript EVS_NpcInit_Poet_Epilogue = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Poet_Epilogue))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Poet_Epilogue)
     Return
     End
 };
@@ -145,7 +145,7 @@ EvtScript EVS_NpcInteract_Composer_Epilogue = {
 };
 
 EvtScript EVS_NpcInit_Composer_Epilogue = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Composer_Epilogue))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Composer_Epilogue)
     Return
     End
 };

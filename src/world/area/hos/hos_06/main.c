@@ -23,7 +23,7 @@ EvtScript EVS_Animate_MysticPyramid = {
 EvtScript EVS_ExitWalk_hos_00_2 = EVT_EXIT_WALK(60, hos_06_ENTRY_0, "hos_00", hos_00_ENTRY_2);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_hos_00_2), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitWalk_hos_00_2, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
     Return
     End
 };
@@ -54,17 +54,17 @@ EvtScript EVS_Main = {
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(AF_HOS06_SpokeWithMerluvlee, false)
-    Call(MakeNpcs, false, Ref(DefaultNPCs))
+    Call(MakeNpcs, false, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     Exec(EVS_SetupMagicChest)
     Exec(EVS_Animate_MysticPyramid)
-    Set(LVar0, Ref(EVS_BindExitTriggers))
+    Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     Wait(1)
     Call(SetMusic, 0, SONG_SHOOTING_STAR_SUMMIT, 0, VOL_LEVEL_FULL)
     Exec(EVS_SetupRooms)
     Exec(EVS_TexPan_Stars)
-    BindTrigger(Ref(EVS_AskForHint), TRIGGER_WALL_PRESS_A, COLLIDER_o224, 1, 0)
+    BindTrigger(EVS_AskForHint, TRIGGER_WALL_PRESS_A, COLLIDER_o224, 1, 0)
     Return
     End
 };

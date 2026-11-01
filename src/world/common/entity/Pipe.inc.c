@@ -10,7 +10,7 @@
     SetGroup(EVT_GROUP_EXIT_MAP) \
     Set(LVarA, entry) \
     Set(LVarB, collider) \
-    Set(LVarC, Ref(script)) \
+    Set(LVarC, script) \
     ExecWait(EVS_Pipe_ExitHorizontal) \
     Return \
     End \
@@ -21,19 +21,19 @@
     SetGroup(EVT_GROUP_EXIT_MAP) \
     Set(LVarA, entry) \
     Set(LVarB, collider) \
-    Set(LVarC, Ref(script)) \
+    Set(LVarC, script) \
     ExecWait(EVS_Pipe_ExitVertical) \
     Return \
     End \
 }
 
 #define EVT_ENTER_PIPE_HORIZONTAL(collider, bindExitsScript) \
-    Set(LVarA, Ref(bindExitsScript)) \
+    Set(LVarA, bindExitsScript) \
     Set(LVarB, collider) \
     Exec(EVS_Pipe_EnterHorizontal)
 
 #define EVT_ENTER_PIPE_VERTICAL(bindExitsScript) \
-    Set(LVarA, Ref(bindExitsScript)) \
+    Set(LVarA, bindExitsScript) \
     Exec(EVS_Pipe_EnterVertical)
 
 // ----------------------------------------------------------------
@@ -184,7 +184,7 @@ EvtScript EVS_Pipe_EnterHorizontal = {
     EndIf
     Call(UseSettingsFrom, CAM_DEFAULT, LVar5, LVar6, LVar7)
     Call(SetPanTarget, CAM_DEFAULT, LVar5, LVar6, LVar7)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(GetCurrentPartnerID, LVar0)
     IfNe(LVar0, PARTNER_NONE)
@@ -202,7 +202,7 @@ EvtScript EVS_Pipe_EnterHorizontal = {
     Call(SetPlayerImgFXFlags, IMGFX_FLAG_REVERSE_ANIM | IMGFX_FLAG_HOLD_DONE)
     Call(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_SET_ANIM, IMGFX_ANIM_HORIZONTAL_PIPE_CURL, 1, 1, 0)
     Loop(40)
-        Call(Pipe_GetPointAheadOfPlayer, Float(1.0))
+        Call(Pipe_GetPointAheadOfPlayer, 1.0)
         Call(SetPlayerPos, LVar0, LVar1, LVar2)
         Wait(1)
     EndLoop
@@ -334,7 +334,7 @@ EvtScript EVS_Pipe_ExitHorizontal = {
     Thread
         Wait(3)
         Loop(40)
-            Call(Pipe_GetPointAheadOfPlayer, Float(1.0))
+            Call(Pipe_GetPointAheadOfPlayer, 1.0)
             Call(SetPlayerPos, LVar0, LVar1, LVar2)
             Wait(1)
         EndLoop

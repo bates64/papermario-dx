@@ -24,10 +24,10 @@ API_CALLABLE(DisablePartnerBlur) {
 EvtScript EVS_BtlPutPartnerAway = {
     Call(DispatchEvent, ACTOR_PARTNER, EVENT_PUT_PARTNER_AWAY)
     ChildThread
-        SetF(LVar0, Float(1.0))
+        SetF(LVar0, 1.0)
         Loop(10)
-            Call(SetActorScale, ACTOR_PARTNER, LVar0, LVar0, Float(1.0))
-            SubF(LVar0, Float(0.1))
+            Call(SetActorScale, ACTOR_PARTNER, LVar0, LVar0, 1.0)
+            SubF(LVar0, 0.1)
             Wait(1)
         EndLoop
     EndChildThread
@@ -35,7 +35,7 @@ EvtScript EVS_BtlPutPartnerAway = {
     Call(PlaySoundAtActor, 0, SOUND_PARTNER_GET_OUT)
     Call(GetActorPos, 0, LVar0, LVar1, LVar2)
     Add(LVar1, 25)
-    Call(SetActorJumpGravity, ACTOR_PARTNER, Float(1.0))
+    Call(SetActorJumpGravity, ACTOR_PARTNER, 1.0)
     Call(SetGoalPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
     Call(JumpToGoal, ACTOR_PARTNER, 10, 0, 0, 1)
     Call(DisablePartnerBlur)
@@ -45,17 +45,17 @@ EvtScript EVS_BtlPutPartnerAway = {
 
 EvtScript EVS_BtlBringPartnerOut = {
     ChildThread
-        SetF(LVar0, Float(0.1))
+        SetF(LVar0, 0.1)
         Loop(20)
-            Call(SetActorScale, ACTOR_PARTNER, LVar0, LVar0, Float(1.0))
-            AddF(LVar0, Float(0.05))
+            Call(SetActorScale, ACTOR_PARTNER, LVar0, LVar0, 1.0)
+            AddF(LVar0, 0.05)
             Wait(1)
         EndLoop
-        Call(SetActorScale, ACTOR_PARTNER, Float(1.0), Float(1.0), Float(1.0))
+        Call(SetActorScale, ACTOR_PARTNER, 1.0, 1.0, 1.0)
     EndChildThread
     Call(PlaySoundAtActor, 0, SOUND_PARTNER_PUT_AWAY)
     Call(GetGoalPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
-    Call(SetActorJumpGravity, ACTOR_PARTNER, Float(1.0))
+    Call(SetActorJumpGravity, ACTOR_PARTNER, 1.0)
     Call(JumpToGoal, ACTOR_PARTNER, 20, 0, 0, 1)
     Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
     Call(ForceHomePos, ACTOR_PARTNER, LVar0, LVar1, LVar2)

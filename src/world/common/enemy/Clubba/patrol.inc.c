@@ -23,7 +23,7 @@ EvtScript EVS_NpcAI_Clubba_Patrol = {
     Call(SetSelfVar, AI_VAR_MELEE_PRE_TIME, 5)
     Call(SetSelfVar, AI_VAR_MELEE_SWING_TIME, 8)
     Call(SetSelfVar, AI_VAR_MELEE_POST_TIME, 12)
-    Call(ClubbaPatrolAI_Main, Ref(AISettings_Clubba_Patrol))
+    Call(ClubbaPatrolAI_Main, AISettings_Clubba_Patrol)
     Return
     End
 };

@@ -81,19 +81,19 @@ EvtScript EVS_NpcInteract_ToadKids = {
 };
 
 EvtScript EVS_NpcInit_ToadKid_01 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ToadKids))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_ToadKids)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_ToadKid_02 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ToadKids))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_ToadKids)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_ToadKid_03 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ToadKids))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_ToadKids)
     Return
     End
 };

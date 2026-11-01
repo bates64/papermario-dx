@@ -33,12 +33,12 @@ EvtScript EVS_NpcIdle_SpikedGloomba = {
             EndIf
         Call(SetNpcRotation, NPC_SELF, 0, 0, 0)
     EndThread
-    Call(SetNpcJumpscale, NPC_SELF, Float(0.7))
+    Call(SetNpcJumpscale, NPC_SELF, 0.7)
     Call(NpcJump0, NPC_SELF, 190, -10, -10, 25)
     Call(SetNpcAnimation, NPC_SELF, ANIM_SpikedGoomba_Dark_Laugh)
     Wait(20)
     Call(SetNpcAnimation, NPC_SELF, ANIM_SpikedGoomba_Dark_Idle)
-    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_SpikedGloomba_Wander))
+    Call(BindNpcAI, NPC_SELF, EVS_NpcAI_SpikedGloomba_Wander)
     Return
     End
 };
@@ -46,7 +46,7 @@ EvtScript EVS_NpcIdle_SpikedGloomba = {
 EvtScript EVS_NpcInit_SpikedGloomba = {
     Call(SetNpcPos, NPC_SELF, 150, 76, -63)
     Call(SetNpcRotation, NPC_SELF, -85, 0, 0)
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_SpikedGloomba))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_SpikedGloomba)
     Return
     End
 };

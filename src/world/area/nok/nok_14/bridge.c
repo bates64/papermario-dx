@@ -129,7 +129,7 @@ EvtScript EVS_SetupBridge = {
         Set(LVar0, 0)
     EndIf
     IfEq(LVar0, 0)
-        BindTrigger(Ref(EVS_Scene_BuildBridge), TRIGGER_AREA_FLAG_SET, AF_NOK14_HitSwitch, 1, 0)
+        BindTrigger(EVS_Scene_BuildBridge, TRIGGER_AREA_FLAG_SET, AF_NOK14_HitSwitch, 1, 0)
         Call(TranslateGroup, MODEL_hashi, 0, -200, 0)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o255, COLLIDER_FLAGS_UPPER_MASK)
         Return

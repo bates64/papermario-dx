@@ -20,10 +20,10 @@ API_CALLABLE(GetAvailableGamesCount) {
 EvtScript EVS_RaisePipe_JumpAttack = {
     Call(UseSettingsFrom, CAM_DEFAULT, -25, 0, -155)
     Call(SetPanTarget, CAM_DEFAULT, -25, 0, -155)
-    Call(SetCamDistance, CAM_DEFAULT, Float(400.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(3.2))
+    Call(SetCamDistance, CAM_DEFAULT, 400.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 3.2)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Wait(5)
     Call(PlaySoundWithVolume, SOUND_GROW, 0)
     Call(EnableModel, MODEL_o5, true)
@@ -36,7 +36,7 @@ EvtScript EVS_RaisePipe_JumpAttack = {
     Call(TranslateModel, MODEL_o5, 0, 0, 0)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o5, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_deili2, COLLIDER_FLAGS_UPPER_MASK)
-    BindTrigger(Ref(EVS_OnEnterPipe_JumpAttack), TRIGGER_FLOOR_TOUCH, COLLIDER_deili2, 1, 0)
+    BindTrigger(EVS_OnEnterPipe_JumpAttack, TRIGGER_FLOOR_TOUCH, COLLIDER_deili2, 1, 0)
     Wait(1)
     Return
     End
@@ -45,10 +45,10 @@ EvtScript EVS_RaisePipe_JumpAttack = {
 EvtScript EVS_RaisePipe_SmashAttack = {
     Call(UseSettingsFrom, CAM_DEFAULT, 95, 0, -155)
     Call(SetPanTarget, CAM_DEFAULT, 95, 0, -155)
-    Call(SetCamDistance, CAM_DEFAULT, Float(400.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(3.2))
+    Call(SetCamDistance, CAM_DEFAULT, 400.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 3.2)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Wait(5)
     Call(PlaySoundWithVolume, SOUND_GROW, 0)
     Call(EnableModel, MODEL_o9, true)
@@ -61,7 +61,7 @@ EvtScript EVS_RaisePipe_SmashAttack = {
     Call(TranslateModel, MODEL_o9, 0, 0, 0)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o9, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_deili3, COLLIDER_FLAGS_UPPER_MASK)
-    BindTrigger(Ref(EVS_OnEnterPipe_SmashAttack), TRIGGER_FLOOR_TOUCH, COLLIDER_deili3, 1, 0)
+    BindTrigger(EVS_OnEnterPipe_SmashAttack, TRIGGER_FLOOR_TOUCH, COLLIDER_deili3, 1, 0)
     Wait(1)
     Return
     End
@@ -72,10 +72,10 @@ EvtScript EVS_SetCamera_RaisePipe = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, 0, LVar2)
-    Call(SetCamDistance, CAM_DEFAULT, Float(450.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(3.2))
+    Call(SetCamDistance, CAM_DEFAULT, 450.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 3.2)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Return
     End
@@ -161,7 +161,7 @@ EvtScript EVS_NpcInteract_RedToad = {
 
 EvtScript EVS_NpcInit_RedToad = {
     Call(SetNpcCollisionSize, NPC_SELF, 32, 75)
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_RedToad))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_RedToad)
     Return
     End
 };
@@ -201,7 +201,7 @@ EvtScript EVS_NpcInteract_GreenToad = {
 
 EvtScript EVS_NpcInit_GreenToad = {
     Call(SetSelfVar, 0, 0)
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_GreenToad))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_GreenToad)
     Return
     End
 };
@@ -251,7 +251,7 @@ EvtScript EVS_NpcInteract_BlueToad = {
 EvtScript EVS_NpcInit_BlueToad = {
     Call(RandInt, 100, LVar0)
     Call(SetSelfVar, 0, LVar0)
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_BlueToad))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_BlueToad)
     Return
     End
 };

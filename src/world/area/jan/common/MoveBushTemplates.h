@@ -15,10 +15,10 @@
         SubF(LVar3, LVar1) \
         SetF(LVar4, LVar2) \
         SetF(LVar5, LVar3) \
-        MulF(LVar4, Float(0.09375)) \
-        MulF(LVar5, Float(0.09375)) \
-        MulF(LVar6, Float(0.8)) \
-        MulF(LVar7, Float(0.8)) \
+        MulF(LVar4, 0.09375) \
+        MulF(LVar5, 0.09375) \
+        MulF(LVar6, 0.8) \
+        MulF(LVar7, 0.8) \
         AddF(LVar6, LVar4) \
         AddF(LVar7, LVar5) \
         AddF(LVar0, LVar6) \
@@ -42,8 +42,8 @@
         SetF(LVar2, moveVar) \
         SubF(LVar2, LVar0) \
         SetF(LVar4, LVar2) \
-        MulF(LVar4, Float(0.09375)) \
-        MulF(LVar6, Float(0.8)) \
+        MulF(LVar4, 0.09375) \
+        MulF(LVar6, 0.8) \
         AddF(LVar6, LVar4) \
         AddF(LVar0, LVar6) \
         Call(TranslateModel, bushModel, moveVar, 0, 0) \

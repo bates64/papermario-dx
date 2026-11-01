@@ -252,10 +252,10 @@ OVL_DEF_ACTOR() = {
 EvtScript EVS_Init = {
     Call(SetTargetPriorityOffset, ACTOR_SELF, PRT_WEAK_POINT, 70)
     Call(SetPartSize, ACTOR_SELF, PRT_WEAK_POINT, 30, 30)
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
-    Call(BindHandlePhase, ACTOR_SELF, Ref(EVS_HandlePhase))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
+    Call(BindHandlePhase, ACTOR_SELF, EVS_HandlePhase)
     Call(SetActorVar, ACTOR_SELF, AVAR_IsFlipped, false)
     Call(SetActorVar, ACTOR_SELF, AVAR_Anim_Hurt, ANIM_KentCKoopa_Hurt)
     Call(SetActorVar, ACTOR_SELF, AVAR_FlippedTurns, 0)
@@ -523,13 +523,13 @@ EvtScript EVS_TakeTurn = {
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Add(LVar0, 36)
             Add(LVar1, 18)
-            Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, Float(3.0))
+            Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, 3.0)
             Loop(5)
                 PlayEffect(EFFECT_SWEAT, 1, LVar0, LVar1, LVar2, 1, 225, 10)
                 Wait(5)
             EndLoop
             Wait(30)
-            Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, Float(1.0))
+            Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, 1.0)
             Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
             Call(MoveBattleCamOver, 20)
             Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
@@ -539,16 +539,16 @@ EvtScript EVS_TakeTurn = {
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Add(LVar0, 36)
             Add(LVar1, 18)
-            Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, Float(3.0))
+            Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, 3.0)
             Loop(5)
                 PlayEffect(EFFECT_SWEAT, 1, LVar0, LVar1, LVar2, 1, 225, 10)
                 Wait(5)
             EndLoop
-            Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, Float(3.0))
+            Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, 3.0)
             Wait(30)
             Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
             Call(MoveBattleCamOver, 15)
-            Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, Float(1.0))
+            Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, 1.0)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_KentCKoopa_StillTopple)
             Thread
                 Wait(3)
@@ -565,27 +565,27 @@ EvtScript EVS_TakeTurn = {
                     Wait(1)
                 EndLoop
             EndThread
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(1.0))
+            Call(SetActorJumpGravity, ACTOR_SELF, 1.0)
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(JumpToGoal, ACTOR_SELF, 15, false, true, false)
             Call(GetStatusFlags, ACTOR_SELF, LVar3)
             IfNotFlag(LVar3, STATUS_FLAG_SHRINK)
                 Call(StartRumbleWithParams, 80, 14)
-                Call(ShakeCam, CAM_BATTLE, 0, 2, Float(0.5))
+                Call(ShakeCam, CAM_BATTLE, 0, 2, 0.5)
             EndIf
             Wait(3)
             Call(SetActorRotation, ACTOR_SELF, 0, 0, 0)
             Call(SetActorRotationOffset, ACTOR_SELF, 0, 0, 0)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_KentCKoopa_ShellExit)
             Wait(10)
-            Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(NormalDefense))
+            Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, NormalDefense)
             Call(SetEnemyTargetOffset, ACTOR_SELF, PRT_MAIN, 0, 60)
             Call(SetPartFlagBits, ACTOR_SELF, PRT_WEAK_POINT, ACTOR_PART_FLAG_NO_TARGET, true)
             Call(SetPartFlagBits, ACTOR_SELF, PRT_WEAK_POINT, ACTOR_PART_FLAG_PRIMARY_TARGET, false)
             Call(SetPartFlags, ACTOR_SELF, PRT_FLIPPED, ACTOR_PART_FLAG_NO_TARGET | ACTOR_PART_FLAG_NO_SHADOW)
             Call(SetPartFlags, ACTOR_SELF, PRT_MAIN, ACTOR_PART_FLAG_PRIMARY_TARGET | ACTOR_PART_FLAG_NO_SHADOW)
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(DefaultAnims))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, DefaultAnims)
             Call(SetAbsoluteStatusOffsets, -26, 38, 2, 63)
             Call(SetActorVar, ACTOR_SELF, AVAR_IsFlipped, false)
             Call(SetActorVar, ACTOR_SELF, AVAR_Anim_Hurt, ANIM_KentCKoopa_Hurt)
@@ -645,7 +645,7 @@ EvtScript EVS_Attack_ShellToss = {
                     Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
                     Sub(LVar0, 40)
                     Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-                    Call(SetActorSpeed, ACTOR_SELF, Float(5.0))
+                    Call(SetActorSpeed, ACTOR_SELF, 5.0)
                     Call(SetGoalPos, ACTOR_SELF, -240, 0, LVar2)
                     Call(RunToGoal, ACTOR_SELF, 0, false)
                     Call(SetActorPos, ACTOR_SELF, 240, 0, LVar2)
@@ -681,7 +681,7 @@ EvtScript EVS_Attack_ShellToss = {
                         Add(LVar0, 12)
                     EndIf
                     Set(LVar1, 0)
-                    Call(SetActorSpeed, ACTOR_SELF, Float(5.0))
+                    Call(SetActorSpeed, ACTOR_SELF, 5.0)
                     Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
                     Call(RunToGoal, ACTOR_SELF, 0, false)
                     IfEq(LVarA, HIT_RESULT_LUCKY)
@@ -710,7 +710,7 @@ EvtScript EVS_Attack_ShellToss = {
                 Add(LVar0, 12)
             EndIf
             Set(LVar1, 0)
-            Call(SetActorSpeed, ACTOR_SELF, Float(5.0))
+            Call(SetActorSpeed, ACTOR_SELF, 5.0)
             Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(RunToGoal, ACTOR_SELF, 0, false)
             Call(SetGoalToTarget, ACTOR_SELF)
@@ -735,7 +735,7 @@ EvtScript EVS_Attack_ShellToss = {
         Call(SetGoalToTarget, ACTOR_SELF)
         Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Add(LVar0, 32)
-        Call(SetActorSpeed, ACTOR_SELF, Float(5.0))
+        Call(SetActorSpeed, ACTOR_SELF, 5.0)
         Call(SetGoalPos, ACTOR_SELF, LVar0, 0, LVar2)
         Call(RunToGoal, ACTOR_SELF, 0, false)
         Call(SetGoalToTarget, ACTOR_SELF)
@@ -772,14 +772,14 @@ EvtScript EVS_Attack_ShellToss = {
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Add(LVar0, 30)
     Set(LVar1, 0)
-    Call(SetActorJumpGravity, ACTOR_SELF, Float(1.8))
+    Call(SetActorJumpGravity, ACTOR_SELF, 1.8)
     Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(JumpToGoal, ACTOR_SELF, 8, false, true, false)
     Thread
         Call(GetStatusFlags, ACTOR_SELF, LVar3)
         IfNotFlag(LVar3, STATUS_FLAG_SHRINK)
             Call(StartRumbleWithParams, 80, 14)
-            Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.5))
+            Call(ShakeCam, CAM_BATTLE, 0, 1, 0.5)
         EndIf
     EndThread
     Add(LVar0, 16)
@@ -789,7 +789,7 @@ EvtScript EVS_Attack_ShellToss = {
         Call(GetStatusFlags, ACTOR_SELF, LVar3)
         IfNotFlag(LVar3, STATUS_FLAG_SHRINK)
             Call(StartRumbleWithParams, 80, 14)
-            Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.5))
+            Call(ShakeCam, CAM_BATTLE, 0, 1, 0.5)
         EndIf
     EndThread
     Add(LVar0, 10)
@@ -799,7 +799,7 @@ EvtScript EVS_Attack_ShellToss = {
         Call(GetStatusFlags, ACTOR_SELF, LVar3)
         IfNotFlag(LVar3, STATUS_FLAG_SHRINK)
             Call(StartRumbleWithParams, 80, 14)
-            Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.5))
+            Call(ShakeCam, CAM_BATTLE, 0, 1, 0.5)
         EndIf
     EndThread
     Call(ResetAllActorSounds, ACTOR_SELF)
@@ -832,7 +832,7 @@ EvtScript EVS_Attack_HeavyStomp = {
     Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Add(LVar0, 50)
     Set(LVar1, 0)
-    Call(SetActorSpeed, ACTOR_SELF, Float(3.0))
+    Call(SetActorSpeed, ACTOR_SELF, 3.0)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_KentCKoopa_Walk)
     Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(RunToGoal, ACTOR_SELF, 0, false)
@@ -851,7 +851,7 @@ EvtScript EVS_Attack_HeavyStomp = {
                 Wait(4)
                 Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_KentCKoopa_Land)
             EndThread
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(1.0))
+            Call(SetActorJumpGravity, ACTOR_SELF, 1.0)
             Call(SetGoalToTarget, ACTOR_SELF)
             Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Sub(LVar0, 20)
@@ -863,11 +863,11 @@ EvtScript EVS_Attack_HeavyStomp = {
                 Call(GetStatusFlags, ACTOR_SELF, LVar3)
                 IfNotFlag(LVar3, STATUS_FLAG_SHRINK)
                     Call(StartRumbleWithParams, 80, 14)
-                    Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.5))
+                    Call(ShakeCam, CAM_BATTLE, 0, 1, 0.5)
                 EndIf
             EndThread
             Sub(LVar0, 15)
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(1.0))
+            Call(SetActorJumpGravity, ACTOR_SELF, 1.0)
             Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(JumpToGoal, ACTOR_SELF, 12, false, true, false)
             Call(PlaySoundAtActor, ACTOR_SELF, SOUND_HEAVY_NPC_STEP_A)
@@ -875,7 +875,7 @@ EvtScript EVS_Attack_HeavyStomp = {
                 Call(GetStatusFlags, ACTOR_SELF, LVar3)
                 IfNotFlag(LVar3, STATUS_FLAG_SHRINK)
                     Call(StartRumbleWithParams, 80, 14)
-                    Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.5))
+                    Call(ShakeCam, CAM_BATTLE, 0, 1, 0.5)
                 EndIf
             EndThread
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_KentCKoopa_Idle)
@@ -887,7 +887,7 @@ EvtScript EVS_Attack_HeavyStomp = {
                 Call(GetStatusFlags, ACTOR_SELF, LVar3)
                 IfNotFlag(LVar3, STATUS_FLAG_SHRINK)
                     Call(StartRumbleWithParams, 80, 14)
-                    Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.5))
+                    Call(ShakeCam, CAM_BATTLE, 0, 1, 0.5)
                 EndIf
             EndThread
             Wait(8)
@@ -903,7 +903,7 @@ EvtScript EVS_Attack_HeavyStomp = {
                 Wait(1)
             EndLoop
             Call(SetGoalToHome, ACTOR_SELF)
-            Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
+            Call(SetActorSpeed, ACTOR_SELF, 6.0)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_KentCKoopa_Run)
             Call(SetPartYaw, ACTOR_SELF, PRT_MAIN, 180)
             Call(AddActorDecoration, ACTOR_SELF, PRT_MAIN, 0, ACTOR_DECORATION_SWEAT)
@@ -929,7 +929,7 @@ EvtScript EVS_Attack_HeavyStomp = {
         Wait(2)
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_KentCKoopa_Land)
     EndThread
-    Call(SetActorJumpGravity, ACTOR_SELF, Float(1.3))
+    Call(SetActorJumpGravity, ACTOR_SELF, 1.3)
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(JumpToGoal, ACTOR_SELF, 14, false, true, false)
     Wait(2)
@@ -961,7 +961,7 @@ EvtScript EVS_Attack_HeavyStomp = {
                 Call(GetStatusFlags, ACTOR_SELF, LVar3)
                 IfNotFlag(LVar3, STATUS_FLAG_SHRINK)
                     Call(StartRumbleWithParams, 80, 14)
-                    Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.5))
+                    Call(ShakeCam, CAM_BATTLE, 0, 1, 0.5)
                 EndIf
             EndThread
             Thread
@@ -971,7 +971,7 @@ EvtScript EVS_Attack_HeavyStomp = {
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Add(LVar0, 40)
             Set(LVar1, 0)
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(1.0))
+            Call(SetActorJumpGravity, ACTOR_SELF, 1.0)
             Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(JumpToGoal, ACTOR_SELF, 12, false, true, false)
             Call(PlaySoundAtActor, ACTOR_SELF, SOUND_HEAVY_NPC_STEP_A)
@@ -979,7 +979,7 @@ EvtScript EVS_Attack_HeavyStomp = {
                 Call(GetStatusFlags, ACTOR_SELF, LVar3)
                 IfNotFlag(LVar3, STATUS_FLAG_SHRINK)
                     Call(StartRumbleWithParams, 80, 14)
-                    Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.5))
+                    Call(ShakeCam, CAM_BATTLE, 0, 1, 0.5)
                 EndIf
             EndThread
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_KentCKoopa_Idle)
@@ -991,7 +991,7 @@ EvtScript EVS_Attack_HeavyStomp = {
                 Call(GetStatusFlags, ACTOR_SELF, LVar3)
                 IfNotFlag(LVar3, STATUS_FLAG_SHRINK)
                     Call(StartRumbleWithParams, 80, 14)
-                    Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.5))
+                    Call(ShakeCam, CAM_BATTLE, 0, 1, 0.5)
                 EndIf
             EndThread
             Wait(8)
@@ -1020,8 +1020,8 @@ EvtScript EVS_KentC_GoHome = {
 
 EvtScript EVS_FlipOver = {
     Call(SetEnemyTargetOffset, ACTOR_SELF, PRT_MAIN, 0, 40)
-    Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(FlippedDefense))
-    Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(FlippedAnims))
+    Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, FlippedDefense)
+    Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, FlippedAnims)
     Call(SetAbsoluteStatusOffsets, -24, 47, 23, 37)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_KentCKoopa_Hurt)
     Call(SetActorVar, ACTOR_SELF, AVAR_IsFlipped, true)
@@ -1041,7 +1041,7 @@ EvtScript EVS_FlipOver = {
             Wait(1)
         EndLoop
     EndThread
-    UseBuf(Ref(FlipPosOffsets))
+    UseBuf(FlipPosOffsets)
     Loop(ARRAY_COUNT(FlipPosOffsets))
         BufRead1(LVar0)
         Call(SetActorDispOffset, ACTOR_SELF, 0, LVar0, 0)
@@ -1050,7 +1050,7 @@ EvtScript EVS_FlipOver = {
                 Call(GetStatusFlags, ACTOR_SELF, LVar3)
                 IfNotFlag(LVar3, STATUS_FLAG_SHRINK)
                     Call(StartRumbleWithParams, 80, 14)
-                    Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.5))
+                    Call(ShakeCam, CAM_BATTLE, 0, 1, 0.5)
                 EndIf
             EndThread
         EndIf
@@ -1173,7 +1173,7 @@ EvtScript EVS_DropDummyCoin = {
     Call(SetPartPos, ACTOR_SELF, LVar5, LVar6, 35, LVar8)
     Call(GetCoinTrajectory, LVar6, LVar8, LVar0, LVar1, LVar2, LVar3)
     Call(SetPartFlagBits, ACTOR_SELF, LVar5, ACTOR_PART_FLAG_INVISIBLE, false)
-    Call(SetPartJumpGravity, ACTOR_SELF, LVar5, Float(1.0))
+    Call(SetPartJumpGravity, ACTOR_SELF, LVar5, 1.0)
     Call(JumpPartTo, ACTOR_SELF, LVar5, LVar0, 0, LVar1, 18, true)
     Call(JumpPartTo, ACTOR_SELF, LVar5, LVar2, 0, LVar3, 9, true)
     Wait(10)

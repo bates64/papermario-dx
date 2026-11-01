@@ -23,7 +23,7 @@ EvtScript EVS_MonitorFallingStairs = {
         EndIf
         Call(DisablePlayerInput, true)
         Thread
-            UseBuf(Ref(ShakeCamParams))
+            UseBuf(ShakeCamParams)
             Loop(10)
                 BufRead2(LVar1, LVar2)
                 Call(ShakeCam, CAM_DEFAULT, 0, LVar1, LVar2)
@@ -32,11 +32,11 @@ EvtScript EVS_MonitorFallingStairs = {
         Call(UseSettingsFrom, CAM_DEFAULT, -170, 0, 35)
         Call(SetPanTarget, CAM_DEFAULT, -170, 0, 35)
         Call(SetCamDistance, CAM_DEFAULT, 600)
-        Call(SetCamPitch, CAM_DEFAULT, Float(25.0), Float(-9.0))
-        Call(SetCamPosA, CAM_DEFAULT, Float(-50.0), Float(25.0))
-        Call(SetCamSpeed, CAM_DEFAULT, Float(1.5))
+        Call(SetCamPitch, CAM_DEFAULT, 25.0, -9.0)
+        Call(SetCamPosA, CAM_DEFAULT, -50.0, 25.0)
+        Call(SetCamSpeed, CAM_DEFAULT, 1.5)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
-        Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+        Call(WaitForCam, CAM_DEFAULT, 1.0)
         Thread
             Wait(100)
             PlayEffect(EFFECT_LANDING_DUST, 4, -180, 0, -15, 0)
@@ -60,7 +60,7 @@ EvtScript EVS_MonitorFallingStairs = {
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_g54, COLLIDER_FLAGS_UPPER_MASK)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_g58, COLLIDER_FLAGS_UPPER_MASK)
         Wait(15)
-        Call(ResetCam, CAM_DEFAULT, Float(90.0))
+        Call(ResetCam, CAM_DEFAULT, 90.0)
         Call(DisablePlayerInput, false)
     Else
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_g54, COLLIDER_FLAGS_UPPER_MASK)

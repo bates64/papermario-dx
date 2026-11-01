@@ -187,7 +187,7 @@ EvtScript EVS_NpcIdle_StoneChomp = {
     Call(DisablePlayerInput, false)
     Call(StartBossBattle, SONG_SPECIAL_BATTLE)
     Wait(15)
-    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_StoneChomp_Wander))
+    Call(BindNpcAI, NPC_SELF, EVS_NpcAI_StoneChomp_Wander)
     Return
     End
 };
@@ -213,8 +213,8 @@ EvtScript EVS_NpcInit_StoneChomp = {
         Return
     EndIf
     Call(SetSelfVar, 1, 0)
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_StoneChomp))
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_StoneChomp_Override))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_StoneChomp)
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_StoneChomp_Override)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, true)
     Call(EnableNpcShadow, NPC_SELF, false)
     Return

@@ -62,8 +62,8 @@ EvtScript EVS_NpcDefeat_Duplighost = {
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
             Call(SetNpcFlagBits, NPC_Duplighost, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
-            Call(SetNpcSpeed, NPC_Duplighost, Float(3.0 / DT))
-            Call(SetNpcJumpscale, NPC_Duplighost, Float(1.5))
+            Call(SetNpcSpeed, NPC_Duplighost, 3.0 / DT)
+            Call(SetNpcJumpscale, NPC_Duplighost, 1.5)
             Call(SetNpcAnimation, NPC_Duplighost, ANIM_Duplighost_Run)
             Call(GetNpcPos, NPC_Duplighost, LVar0, LVar1, LVar2)
             Add(LVar0, 50)
@@ -92,7 +92,7 @@ EvtScript EVS_NpcDefeat_Duplighost = {
 };
 
 EvtScript EVS_NpcInit_TrueKooperA = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_TrueKooperA))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_TrueKooperA)
     IfGe(GB_StoryProgress, STORY_CH7_DEFEATED_FIRST_DUPLIGHOST)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -101,7 +101,7 @@ EvtScript EVS_NpcInit_TrueKooperA = {
 };
 
 EvtScript EVS_NpcInit_RealKooperA = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_FakeKooperA))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_FakeKooperA)
     IfGe(GB_StoryProgress, STORY_CH7_DEFEATED_FIRST_DUPLIGHOST)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -110,8 +110,8 @@ EvtScript EVS_NpcInit_RealKooperA = {
 };
 
 EvtScript EVS_NpcInit_Duplighost = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Duplighost))
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Duplighost))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Duplighost)
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_Duplighost)
     IfGe(GB_StoryProgress, STORY_CH7_DEFEATED_FIRST_DUPLIGHOST)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -165,8 +165,8 @@ EvtScript EVS_NpcIdle_TrueKooperB = {
 EvtScript EVS_NpcInit_TrueKooperB = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_PASSIVE, false)
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_TrueKooperB))
-    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_TrueKooperB))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_TrueKooperB)
+    Call(BindNpcHit, NPC_SELF, EVS_NpcHit_TrueKooperB)
     IfGe(GB_StoryProgress, STORY_CH7_DEFEATED_FIRST_DUPLIGHOST)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -187,8 +187,8 @@ EvtScript EVS_NpcIdle_FakeKooperB = {
 EvtScript EVS_NpcInit_FakeKooperB = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_PASSIVE, false)
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_FakeKooperB))
-    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_FakeKooperB))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_FakeKooperB)
+    Call(BindNpcHit, NPC_SELF, EVS_NpcHit_FakeKooperB)
     IfGe(GB_StoryProgress, STORY_CH7_DEFEATED_FIRST_DUPLIGHOST)
         Call(RemoveNpc, NPC_SELF)
     EndIf

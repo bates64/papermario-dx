@@ -26,7 +26,7 @@ EvtScript EVS_PushMiddleStatue_Impl = {
     EndIf
     Call(DisablePlayerInput, true)
     Thread
-        Call(ShakeCam, CAM_DEFAULT, 0, 100, Float(0.6))
+        Call(ShakeCam, CAM_DEFAULT, 0, 100, 0.6)
     EndThread
     Thread
         IfGe(LVar6, LVar7)
@@ -133,8 +133,8 @@ EvtScript EVS_SetupStatues = {
     Call(ParentColliderToModel, COLLIDER_o145, MODEL_o103)
     Call(ParentColliderToModel, COLLIDER_o143, MODEL_o103)
     Call(ParentColliderToModel, COLLIDER_o144, MODEL_o103)
-    BindTrigger(Ref(EVS_PushMiddleStatue_Impl_FromLeft), TRIGGER_WALL_PUSH, COLLIDER_o143, 1, 0)
-    BindTrigger(Ref(EVS_PushMiddleStatue_Impl_FromRight), TRIGGER_WALL_PUSH, COLLIDER_o144, 1, 0)
+    BindTrigger(EVS_PushMiddleStatue_Impl_FromLeft, TRIGGER_WALL_PUSH, COLLIDER_o143, 1, 0)
+    BindTrigger(EVS_PushMiddleStatue_Impl_FromRight, TRIGGER_WALL_PUSH, COLLIDER_o144, 1, 0)
     Return
     End
 };

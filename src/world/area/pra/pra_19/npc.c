@@ -198,12 +198,12 @@ API_CALLABLE(UpdateExampleKooperMotion) {
 EvtScript EVS_FocusCam_OnPosition = {
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamSpeed, CAM_DEFAULT, LVarA)
-    Call(SetCamDistance, CAM_DEFAULT, Float(350.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(12.0), Float(-5.5))
-    Call(SetCamPosB, CAM_DEFAULT, Float(500.0), Float(20.0))
+    Call(SetCamDistance, CAM_DEFAULT, 350.0)
+    Call(SetCamPitch, CAM_DEFAULT, 12.0, -5.5)
+    Call(SetCamPosB, CAM_DEFAULT, 500.0, 20.0)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Return
     End
 };
@@ -211,12 +211,12 @@ EvtScript EVS_FocusCam_OnPosition = {
 EvtScript EVS_FocusCam_StartBattle = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(6.0))
-    Call(SetCamDistance, CAM_DEFAULT, Float(500.0))
-    Call(SetCamPosB, CAM_DEFAULT, Float(386.0), Float(20.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 6.0)
+    Call(SetCamDistance, CAM_DEFAULT, 500.0)
+    Call(SetCamPosB, CAM_DEFAULT, 386.0, 20.0)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Return
     End
@@ -228,12 +228,12 @@ EvtScript EVS_FocusCam_OnPlayer = {
         Set(LVar0, 386)
     EndIf
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(6.0))
-    Call(SetCamDistance, CAM_DEFAULT, Float(500.0))
-    Call(SetCamPosB, CAM_DEFAULT, Float(500.0), Float(20.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 6.0)
+    Call(SetCamDistance, CAM_DEFAULT, 500.0)
+    Call(SetCamPosB, CAM_DEFAULT, 500.0, 20.0)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Return
     End
@@ -263,7 +263,7 @@ EvtScript EVS_Imposter_Unmask = {
     Thread
         Call(SetNpcAnimation, LVar4, ANIM_Duplighost_Run)
         Call(InterpNpcYaw, LVar4, 90, 0)
-        Call(SetNpcSpeed, LVar4, Float(6.5))
+        Call(SetNpcSpeed, LVar4, 6.5)
         Call(PlaySoundAtNpc, LVar4, SOUND_DUPLIGHOST_LEAP, SOUND_SPACE_DEFAULT)
         Call(NpcMoveTo, LVar4, 0, LVar2, 0)
         Call(SetNpcPos, LVar4, NPC_DISPOSE_LOCATION)
@@ -274,7 +274,7 @@ EvtScript EVS_Imposter_Unmask = {
 };
 
 EvtScript EVS_Imposter_HopTwice = {
-    Call(SetNpcJumpscale, LVar3, Float(1.0))
+    Call(SetNpcJumpscale, LVar3, 1.0)
     Call(GetNpcPos, LVar3, LVar0, LVar1, LVar2)
     Call(NpcJump0, LVar3, LVar0, LVar1, LVar2, 10)
     Call(GetNpcPos, LVar3, LVar0, LVar1, LVar2)
@@ -409,7 +409,7 @@ EvtScript EVS_PreventPlayerLeaving = {
             Call(GetPlayerPos, LVar0, LVar1, LVar2)
             Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
             Call(SetPanTarget, CAM_DEFAULT, LVar0, 0, LVar2)
-            Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+            Call(SetCamSpeed, CAM_DEFAULT, 90.0)
             Call(PanToTarget, CAM_DEFAULT, 0, true)
             Wait(1)
         EndLoop
@@ -508,7 +508,7 @@ EvtScript EVS_Example_UseKooper = {
         Wait(10)
         Call(SetNpcAnimation, NPC_ExamplePlayer, ANIM_Mario1_Land)
     EndThread
-    Call(SetNpcJumpscale, NPC_ExamplePlayer, Float(2.0))
+    Call(SetNpcJumpscale, NPC_ExamplePlayer, 2.0)
     Call(GetNpcPos, NPC_ExamplePlayer, LVar0, LVar1, LVar2)
     Call(NpcJump0, NPC_ExamplePlayer, LVar0, LVar1, LVar2, 10)
     Label(10)
@@ -524,7 +524,7 @@ EvtScript EVS_Example_UseKooper = {
             Wait(10)
             Call(SetNpcAnimation, NPC_ExamplePlayer, ANIM_Mario1_Land)
         EndThread
-        Call(SetNpcJumpscale, NPC_ExamplePlayer, Float(2.0))
+        Call(SetNpcJumpscale, NPC_ExamplePlayer, 2.0)
         Call(GetNpcPos, NPC_ExamplePlayer, LVar0, LVar1, LVar2)
         Call(NpcJump0, NPC_ExamplePlayer, LVar0, LVar1, LVar2, 10)
         Call(SetNpcAnimation, NPC_ExampleKooper, ANIM_WorldKooper_SpinShell)
@@ -536,7 +536,7 @@ EvtScript EVS_Example_UseKooper = {
 EvtScript EVS_Imposter_BurstFromWall = {
     Call(SetNpcPos, LVar3, 533, 0, 77)
     Call(SetNpcFlagBits, LVar3, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
-    Call(SetNpcSpeed, LVar3, Float(6.0))
+    Call(SetNpcSpeed, LVar3, 6.0)
     Call(SetNpcAnimation, LVar3, LVar4)
     Call(NpcMoveTo, LVar3, LVar0, LVar2, 0)
     Call(SetNpcFlagBits, LVar3, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
@@ -570,10 +570,10 @@ EvtScript EVS_ManageImpostersScene = {
             IfLt(LVar0, 110)
                 Goto(1)
             EndIf
-        Call(SetNpcSpeed, NPC_ExamplePlayer, Float(3.0))
+        Call(SetNpcSpeed, NPC_ExamplePlayer, 3.0)
         Call(SetNpcAnimation, NPC_ExamplePlayer, ANIM_Mario1_Walk)
         Thread
-            Call(SetNpcSpeed, NPC_ExampleKooper, Float(3.0))
+            Call(SetNpcSpeed, NPC_ExampleKooper, 3.0)
             Call(SetNpcAnimation, NPC_ExampleKooper, ANIM_WorldKooper_Walk)
             Call(NpcMoveTo, NPC_ExampleKooper, 385, -75, 0)
             Call(SetNpcAnimation, NPC_ExampleKooper, ANIM_WorldKooper_Idle)
@@ -679,53 +679,53 @@ EvtScript EVS_ManageImpostersScene = {
     Wait(10)
     // kolorado imposter speaks
     Call(GetNpcPos, NPC_FakeKolorado, LVar0, LVar1, LVar2)
-    SetF(LVarA, Float(3.0))
+    SetF(LVarA, 3.0)
     ExecWait(EVS_FocusCam_OnPosition)
     Set(LVar3, NPC_FakeKolorado)
     Exec(EVS_Imposter_HopTwice)
     Call(SpeakToPlayer, NPC_FakeKolorado, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH7_0153)
     // goomba imposter speaks
     Call(GetNpcPos, NPC_FakeGoompa, LVar0, LVar1, LVar2)
-    SetF(LVarA, Float(3.0))
+    SetF(LVarA, 3.0)
     ExecWait(EVS_FocusCam_OnPosition)
     Set(LVar3, NPC_FakeGoompa)
     Exec(EVS_Imposter_HopTwice)
     Call(SpeakToPlayer, NPC_FakeGoompa, ANIM_Goompa_Talk, ANIM_Goompa_Idle, 0, MSG_CH7_0154)
     // goomba imposter speaks
     Call(GetNpcPos, NPC_FakeKooper, LVar0, LVar1, LVar2)
-    SetF(LVarA, Float(3.0))
+    SetF(LVarA, 3.0)
     ExecWait(EVS_FocusCam_OnPosition)
     Set(LVar3, NPC_FakeKooper)
     Exec(EVS_Imposter_HopTwice)
     Call(SpeakToPlayer, NPC_FakeKooper, ANIM_WorldKooper_Talk, ANIM_WorldKooper_Idle, 0, MSG_CH7_0155)
     // goomba imposter speaks
     Call(GetNpcPos, NPC_FakeKoopaKoot, LVar0, LVar1, LVar2)
-    SetF(LVarA, Float(3.0))
+    SetF(LVarA, 3.0)
     ExecWait(EVS_FocusCam_OnPosition)
     Set(LVar3, NPC_FakeKoopaKoot)
     Exec(EVS_Imposter_HopTwice)
     Call(SpeakToPlayer, NPC_FakeKoopaKoot, ANIM_KoopaKoot_Talk, ANIM_KoopaKoot_Idle, 0, MSG_CH7_0156)
     // luigi imposter speaks
     Call(GetNpcPos, NPC_FakeLuigi, LVar0, LVar1, LVar2)
-    SetF(LVarA, Float(3.0))
+    SetF(LVarA, 3.0)
     ExecWait(EVS_FocusCam_OnPosition)
     Set(LVar3, NPC_FakeLuigi)
     Exec(EVS_Imposter_HopTwice)
     Call(SpeakToPlayer, NPC_FakeLuigi, ANIM_Luigi_Talk, ANIM_Luigi_Idle, 0, MSG_CH7_0157)
     // follow-up dialogue
     Call(GetNpcPos, NPC_FakeKolorado, LVar0, LVar1, LVar2)
-    SetF(LVarA, Float(3.0))
+    SetF(LVarA, 3.0)
     ExecWait(EVS_FocusCam_OnPosition)
     Call(SpeakToPlayer, NPC_FakeKolorado, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH7_0158)
     Call(GetNpcPos, NPC_FakeGoompa, LVar0, LVar1, LVar2)
-    SetF(LVarA, Float(3.0))
+    SetF(LVarA, 3.0)
     ExecWait(EVS_FocusCam_OnPosition)
     Call(SpeakToPlayer, NPC_FakeGoompa, ANIM_Goompa_Talk, ANIM_Goompa_Idle, 0, MSG_CH7_0159)
     Call(GetNpcPos, NPC_FakeLuigi, LVar0, LVar1, LVar2)
-    SetF(LVarA, Float(3.0))
+    SetF(LVarA, 3.0)
     ExecWait(EVS_FocusCam_OnPosition)
     Call(SpeakToPlayer, NPC_FakeLuigi, ANIM_Luigi_Talk, ANIM_Luigi_Idle, 0, MSG_CH7_015A)
-    Call(ResetCam, CAM_DEFAULT, Float(2.0))
+    Call(ResetCam, CAM_DEFAULT, 2.0)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(DisablePlayerInput, false)
     Call(SetPlayerFlagBits, PS_FLAG_NO_CHANGE_PARTNER | PS_FLAG_NO_PARTNER_USAGE, true)
@@ -767,7 +767,7 @@ EvtScript EVS_ManageImpostersScene = {
                         Call(SetPlayerFlagBits, PS_FLAG_NO_CHANGE_PARTNER | PS_FLAG_NO_PARTNER_USAGE, false)
                         Call(EnablePartnerAI)
                         Call(DisablePlayerInput, false)
-                        BindTrigger(Ref(EVS_ExitWalk_pra_20_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilise, 1, 0)
+                        BindTrigger(EVS_ExitWalk_pra_20_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilise, 1, 0)
                         Set(GB_StoryProgress, STORY_CH7_DEFEATED_KOOPER_DUPLIGHOSTS)
                         BreakLoop
                     EndIf
@@ -781,7 +781,7 @@ EvtScript EVS_ManageImpostersScene = {
                 Call(DisablePlayerInput, true)
                 Call(SetNpcAnimation, NPC_FakeKooper, ANIM_WorldKooper_Hurt)
                 Call(GetNpcPos, NPC_FakeKooper, LVar0, LVar1, LVar2)
-                SetF(LVarA, Float(6.0))
+                SetF(LVarA, 6.0)
                 ExecWait(EVS_FocusCam_OnPosition)
                 Call(SpeakToPlayer, NPC_FakeKooper, ANIM_WorldKooper_Hurt, ANIM_WorldKooper_Hurt, 0, MSG_CH7_0162)
                 ExecWait(EVS_FocusCam_StartBattle)
@@ -796,7 +796,7 @@ EvtScript EVS_ManageImpostersScene = {
             CaseEq(NPC_FakeGoompa + 1)
                 Call(DisablePlayerInput, true)
                 Call(GetNpcPos, NPC_FakeGoompa, LVar0, LVar1, LVar2)
-                SetF(LVarA, Float(6.0))
+                SetF(LVarA, 6.0)
                 ExecWait(EVS_FocusCam_OnPosition)
                 Set(LVar3, NPC_FakeGoompa)
                 Set(LVar4, NPC_GoompaGhost)
@@ -810,7 +810,7 @@ EvtScript EVS_ManageImpostersScene = {
             CaseEq(NPC_FakeLuigi + 1)
                 Call(DisablePlayerInput, true)
                 Call(GetNpcPos, NPC_FakeLuigi, LVar0, LVar1, LVar2)
-                SetF(LVarA, Float(6.0))
+                SetF(LVarA, 6.0)
                 ExecWait(EVS_FocusCam_OnPosition)
                 Set(LVar3, NPC_FakeLuigi)
                 Set(LVar4, NPC_LuigiGhost)
@@ -824,7 +824,7 @@ EvtScript EVS_ManageImpostersScene = {
             CaseEq(NPC_FakeKoopaKoot + 1)
                 Call(DisablePlayerInput, true)
                 Call(GetNpcPos, NPC_FakeKoopaKoot, LVar0, LVar1, LVar2)
-                SetF(LVarA, Float(6.0))
+                SetF(LVarA, 6.0)
                 ExecWait(EVS_FocusCam_OnPosition)
                 Set(LVar3, NPC_FakeKoopaKoot)
                 Set(LVar4, NPC_KoopaKootGhost)
@@ -838,7 +838,7 @@ EvtScript EVS_ManageImpostersScene = {
             CaseEq(NPC_FakeKolorado + 1)
                 Call(DisablePlayerInput, true)
                 Call(GetNpcPos, NPC_FakeKolorado, LVar0, LVar1, LVar2)
-                SetF(LVarA, Float(6.0))
+                SetF(LVarA, 6.0)
                 ExecWait(EVS_FocusCam_OnPosition)
                 Set(LVar3, NPC_FakeKolorado)
                 Set(LVar4, NPC_KoloradoGhost)
@@ -866,7 +866,7 @@ EvtScript EVS_Scene_DefeatMiniboss = {
     Call(SetPlayerFlagBits, PS_FLAG_NO_CHANGE_PARTNER | PS_FLAG_NO_PARTNER_USAGE, false)
     Call(EnablePartnerAI)
     Call(DisablePlayerInput, false)
-    BindTrigger(Ref(EVS_ExitWalk_pra_20_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilise, 1, 0)
+    BindTrigger(EVS_ExitWalk_pra_20_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilise, 1, 0)
     Set(GB_StoryProgress, STORY_CH7_DEFEATED_KOOPER_DUPLIGHOSTS)
     Return
     End
@@ -903,7 +903,7 @@ EvtScript EVS_NpcInteract_FakeKolorado = {
 };
 
 EvtScript EVS_NpcInit_Duplighost_Controller = {
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_Scene_DefeatMiniboss))
+    Call(BindNpcDefeat, NPC_SELF, EVS_Scene_DefeatMiniboss)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
     Exec(EVS_ManageImpostersScene)
     Return
@@ -911,7 +911,7 @@ EvtScript EVS_NpcInit_Duplighost_Controller = {
 };
 
 EvtScript EVS_NpcInit_FakeKooper = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_FakeKooper))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_FakeKooper)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_REFLECT_FLOOR, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Return
@@ -919,7 +919,7 @@ EvtScript EVS_NpcInit_FakeKooper = {
 };
 
 EvtScript EVS_NpcInit_FakeGoompa = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_FakeGoompa))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_FakeGoompa)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_REFLECT_FLOOR, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Return
@@ -927,7 +927,7 @@ EvtScript EVS_NpcInit_FakeGoompa = {
 };
 
 EvtScript EVS_NpcInit_FakeLuigi = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_FakeLuigi))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_FakeLuigi)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_REFLECT_FLOOR, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Return
@@ -935,7 +935,7 @@ EvtScript EVS_NpcInit_FakeLuigi = {
 };
 
 EvtScript EVS_NpcInit_FakeKoopaKoot = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_FakeKoopaKoot))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_FakeKoopaKoot)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_REFLECT_FLOOR, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Return
@@ -943,7 +943,7 @@ EvtScript EVS_NpcInit_FakeKoopaKoot = {
 };
 
 EvtScript EVS_NpcInit_FakeKolorado = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_FakeKolorado))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_FakeKolorado)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_REFLECT_FLOOR, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Return
@@ -1266,40 +1266,40 @@ EvtScript EVS_NpcHit_TargetKolorado = {
 };
 
 EvtScript EVS_NpcInit_TargetKooper = {
-    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_TargetKooper))
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_TargetKooper))
+    Call(BindNpcHit, NPC_SELF, EVS_NpcHit_TargetKooper)
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_TargetKooper)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_TargetGoompa = {
-    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_TargetGoompa))
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_TargetGoompa))
+    Call(BindNpcHit, NPC_SELF, EVS_NpcHit_TargetGoompa)
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_TargetGoompa)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_TargetLuigi = {
-    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_TargetLuigi))
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_TargetLuigi))
+    Call(BindNpcHit, NPC_SELF, EVS_NpcHit_TargetLuigi)
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_TargetLuigi)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_TargetKoopaKoot = {
-    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_TargetKoopaKoot))
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_TargetKoopaKoot))
+    Call(BindNpcHit, NPC_SELF, EVS_NpcHit_TargetKoopaKoot)
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_TargetKoopaKoot)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_TargetKolorado = {
-    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_TargetKolorado))
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_TargetKolorado))
+    Call(BindNpcHit, NPC_SELF, EVS_NpcHit_TargetKolorado)
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_TargetKolorado)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
     Return
     End

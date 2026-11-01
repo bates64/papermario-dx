@@ -18,14 +18,14 @@ EvtScript EVS_ExitWalk_kmr_10_1 = EVT_EXIT_WALK(60, mac_00_ENTRY_0, "kmr_10", km
 EvtScript EVS_ExitWalk_mac_01_0 = EVT_EXIT_WALK(60, mac_00_ENTRY_1, "mac_01", mac_01_ENTRY_0);
 
 EvtScript EVS_GotoMap_tik_19_9 = {
-    Call(GotoMap, Ref("tik_19"), tik_19_ENTRY_0)
+    Call(GotoMap, "tik_19", tik_19_ENTRY_0)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_GotoMap_kmr_20_4 = {
-    Call(GotoMap, Ref("kmr_20"), kmr_20_ENTRY_4)
+    Call(GotoMap, "kmr_20", kmr_20_ENTRY_4)
     Wait(100)
     Return
     End
@@ -35,13 +35,13 @@ EvtScript EVS_ExitPipe_tik_19_9 = EVT_EXIT_PIPE_VERTICAL(mac_00_ENTRY_3, COLLIDE
 EvtScript EVS_ExitPipe_kmr_20_4 = EVT_EXIT_PIPE_VERTICAL(mac_00_ENTRY_4, COLLIDER_deilim, EVS_GotoMap_kmr_20_4);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_mac_01_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
-    BindTrigger(Ref(EVS_ExitPipe_kmr_20_4), TRIGGER_FLOOR_ABOVE, COLLIDER_deilim, 1, 0)
+    BindTrigger(EVS_ExitWalk_mac_01_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitPipe_kmr_20_4, TRIGGER_FLOOR_ABOVE, COLLIDER_deilim, 1, 0)
     IfGe(GB_StoryProgress, STORY_EPILOGUE)
         Return
     EndIf
-    BindTrigger(Ref(EVS_ExitWalk_kmr_10_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deilinw, 1, 0)
-    BindTrigger(Ref(EVS_ExitPipe_tik_19_9), TRIGGER_FLOOR_TOUCH, COLLIDER_deilit, 1, 0)
+    BindTrigger(EVS_ExitWalk_kmr_10_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deilinw, 1, 0)
+    BindTrigger(EVS_ExitPipe_tik_19_9, TRIGGER_FLOOR_TOUCH, COLLIDER_deilit, 1, 0)
     Return
     End
 };
@@ -59,7 +59,7 @@ EvtScript EVS_EnterMap = {
             ExecWait(EVS_Scene_BeginEpilogue)
             Exec(EVS_BindExitTriggers)
         CaseDefault
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
     EndSwitch
     Return
@@ -81,11 +81,11 @@ EvtScript EVS_Main = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_dummy, COLLIDER_FLAGS_UPPER_MASK)
     Switch(GB_StoryProgress)
         CaseEq(STORY_INTRO)
-            Call(MakeNpcs, false, Ref(IntroNPCs))
+            Call(MakeNpcs, false, IntroNPCs)
         CaseGe(STORY_EPILOGUE)
-            Call(MakeNpcs, false, Ref(EpilogueNPCs))
+            Call(MakeNpcs, false, EpilogueNPCs)
         CaseDefault
-            Call(MakeNpcs, false, Ref(DefaultNPCs))
+            Call(MakeNpcs, false, DefaultNPCs)
     EndSwitch
     ExecWait(EVS_MakeEntities)
     Exec(EVS_SetupRooms)

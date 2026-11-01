@@ -284,7 +284,7 @@ EvtScript EVS_OpenHiddenPassage = {
     Thread
         Wait(20 * DT)
         Call(PlaySoundAt, SOUND_KKJ_DROP_INTO_ASHES, SOUND_SPACE_DEFAULT, -125, 10, -120)
-        PlayEffect(EFFECT_SMOKE_BURST, 0, -125, 10, -120, Float(2.0), 30)
+        PlayEffect(EFFECT_SMOKE_BURST, 0, -125, 10, -120, 2.0, 30)
     EndThread
     Call(MakeLerp, 0, -180, 30 * DT, EASING_QUADRATIC_IN)
     Loop(0)
@@ -320,7 +320,7 @@ EvtScript EVS_Inspect_HiddenButton = {
             Call(PlaySoundAtCollider, COLLIDER_o128, SOUND_KKJ_PRESS_BUTTON, 0)
         EndThread
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
-        Call(SetPlayerJumpscale, Float(1.0))
+        Call(SetPlayerJumpscale, 1.0)
         Call(PlayerJump1, LVar0, LVar1, LVar2, 10)
         Call(SetPlayerAnimation, ANIM_Peach3_AfterPressButtonHigh)
         Wait(20)
@@ -359,7 +359,7 @@ EvtScript EVS_Inspect_HiddenButton_FirstTime = {
             Call(PlaySoundAtCollider, COLLIDER_o128, SOUND_KKJ_PRESS_BUTTON, 0)
         EndThread
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
-        Call(SetPlayerJumpscale, Float(1.0))
+        Call(SetPlayerJumpscale, 1.0)
         Call(PlayerJump1, LVar0, LVar1, LVar2, 10)
         Call(SetPlayerAnimation, ANIM_Peach3_AfterPressButtonHigh)
         Wait(20)
@@ -370,14 +370,14 @@ EvtScript EVS_Inspect_HiddenButton_FirstTime = {
             Call(GetPlayerPos, LVar0, LVar1, LVar2)
             Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
             Call(SetPanTarget, CAM_DEFAULT, -120, 25, 0)
-            Call(SetCamSpeed, CAM_DEFAULT, Float(3.0 / DT))
+            Call(SetCamSpeed, CAM_DEFAULT, 3.0 / DT)
             Call(SetCamDistance, CAM_DEFAULT, 300)
             Call(PanToTarget, CAM_DEFAULT, 0, true)
-            Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+            Call(WaitForCam, CAM_DEFAULT, 1.0)
         EndIf
         ExecWait(EVS_OpenHiddenPassage)
         IfEq(AF_KKJ14_HiddenPassageRemark, false)
-            Call(ResetCam, CAM_DEFAULT, Float(3.0 / DT))
+            Call(ResetCam, CAM_DEFAULT, 3.0 / DT)
             Call(SetPlayerAnimation, ANIM_Peach2_Delighted)
             Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_ShoutJoy, ANIM_Twink_ShoutJoy, 5, MSG_Peach_0047)
             Set(AF_KKJ14_HiddenPassageRemark, true)
@@ -403,13 +403,13 @@ EvtScript EVS_SetupInteractables = {
         Call(EnableGroup, MODEL_g27, false)
         Exec(EVS_TexPan_Fireplace)
         Call(SetModelCustomGfx, MODEL_o157, CUSTOM_GFX_1, ENV_TINT_UNCHANGED)
-        Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(setup_gfx_fireplace), nullptr)
+        Call(SetCustomGfxBuilders, CUSTOM_GFX_1, setup_gfx_fireplace, nullptr)
         Switch(GB_StoryProgress)
             CaseLt(STORY_CH0_WAKE_UP)
             CaseLt(STORY_CH2_BEGAN_PEACH_MISSION)
-                BindTrigger(Ref(EVS_Inspect_HiddenButton_FirstTime), TRIGGER_WALL_PRESS_A, COLLIDER_o128, 1, 0)
+                BindTrigger(EVS_Inspect_HiddenButton_FirstTime, TRIGGER_WALL_PRESS_A, COLLIDER_o128, 1, 0)
             CaseLt(STORY_CH8_REACHED_PEACHS_CASTLE)
-                BindTrigger(Ref(EVS_Inspect_HiddenButton), TRIGGER_WALL_PRESS_A, COLLIDER_o128, 1, 0)
+                BindTrigger(EVS_Inspect_HiddenButton, TRIGGER_WALL_PRESS_A, COLLIDER_o128, 1, 0)
             CaseDefault
         EndSwitch
     Else
@@ -418,12 +418,12 @@ EvtScript EVS_SetupInteractables = {
         Call(RotateModel, MODEL_o39, -180, 1, 0, 0)
         Call(EnableGroup, MODEL_g45, false)
     EndIf
-    BindTrigger(Ref(EVS_Inspect_Fireplace), TRIGGER_WALL_PRESS_A, COLLIDER_o129, 1, 0)
-    BindTrigger(Ref(EVS_Inspect_Dresses), TRIGGER_WALL_PRESS_A, COLLIDER_o143, 1, 0)
-    BindTrigger(Ref(EVS_Inspect_Vanity), TRIGGER_WALL_PRESS_A, COLLIDER_o142, 1, 0)
-    BindTrigger(Ref(EVS_Inspect_Photo), TRIGGER_WALL_PRESS_A, COLLIDER_o141, 1, 0)
-    BindTrigger(Ref(EVS_Inspect_Bed), TRIGGER_WALL_PRESS_A, COLLIDER_o25, 1, 0)
-    BindTrigger(Ref(EVS_Inspect_Flowers), TRIGGER_WALL_PRESS_A, COLLIDER_o135, 1, 0)
+    BindTrigger(EVS_Inspect_Fireplace, TRIGGER_WALL_PRESS_A, COLLIDER_o129, 1, 0)
+    BindTrigger(EVS_Inspect_Dresses, TRIGGER_WALL_PRESS_A, COLLIDER_o143, 1, 0)
+    BindTrigger(EVS_Inspect_Vanity, TRIGGER_WALL_PRESS_A, COLLIDER_o142, 1, 0)
+    BindTrigger(EVS_Inspect_Photo, TRIGGER_WALL_PRESS_A, COLLIDER_o141, 1, 0)
+    BindTrigger(EVS_Inspect_Bed, TRIGGER_WALL_PRESS_A, COLLIDER_o25, 1, 0)
+    BindTrigger(EVS_Inspect_Flowers, TRIGGER_WALL_PRESS_A, COLLIDER_o135, 1, 0)
     Return
     End
 };

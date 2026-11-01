@@ -57,7 +57,7 @@ PlayerOrbitTarget RunAroundTarget = {
 
 EvtScript EVS_SetupMusicalHill = {
     Exec(EVS_RotateHillTowardPlayer)
-    Call(MonitorPlayerOrbiting, Ref(RunAroundTarget))
+    Call(MonitorPlayerOrbiting, RunAroundTarget)
     Return
     End
 };

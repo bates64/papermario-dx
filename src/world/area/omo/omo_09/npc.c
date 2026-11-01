@@ -18,7 +18,7 @@ MobileAISettings AISettings_ShyGuy_Wander_NoReaction = {
 };
 
 EvtScript EVS_NpcAI_ShyGuy_Wander_NoReaction = {
-    Call(BasicAI_Main, Ref(AISettings_ShyGuy_Wander_NoReaction))
+    Call(BasicAI_Main, AISettings_ShyGuy_Wander_NoReaction)
     Return
     End
 };
@@ -102,7 +102,7 @@ EvtScript EVS_NpcIdle_Pokey = {
     Call(DisablePlayerInput, true)
     Call(DisableCameraLeadingPlayer)
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
-    Call(SetCamProperties, CAM_DEFAULT, Float(5.0), LVar0, LVar1, LVar2, 300, Float(13.0), Float(-9.5))
+    Call(SetCamProperties, CAM_DEFAULT, 5.0, LVar0, LVar1, LVar2, 300, 13.0, -9.5)
     IfEq(GB_OMO_PeachChoice3, 0)
         Call(SpeakToPlayer, NPC_Pokey, ANIM_Pokey_Idle4, ANIM_Pokey_Idle4, 0, MSG_CH4_003E)
     Else
@@ -110,7 +110,7 @@ EvtScript EVS_NpcIdle_Pokey = {
     EndIf
     Thread
         Call(EnableCameraLeadingPlayer)
-        Call(ResetCam, CAM_DEFAULT, Float(4.0))
+        Call(ResetCam, CAM_DEFAULT, 4.0)
     EndThread
     Call(DisablePlayerInput, false)
     Call(StartBossBattle, SONG_SPECIAL_BATTLE)
@@ -133,8 +133,8 @@ EvtScript EVS_NpcDefeat_Pokey = {
 
 EvtScript EVS_NpcInit_Pokey = {
     IfEq(GB_OMO_PeachChoice3, 0)
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Pokey))
-        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Pokey))
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Pokey)
+        Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_Pokey)
     Else
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndIf
@@ -144,8 +144,8 @@ EvtScript EVS_NpcInit_Pokey = {
 
 EvtScript EVS_NpcInit_Koopatrol = {
     IfEq(GB_OMO_PeachChoice3, 1)
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Pokey))
-        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Pokey))
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Pokey)
+        Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_Pokey)
     Else
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndIf
@@ -154,7 +154,7 @@ EvtScript EVS_NpcInit_Koopatrol = {
 };
 
 EvtScript EVS_NpcInit_Kammy = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Kammy))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Kammy)
     Return
     End
 };
@@ -167,7 +167,7 @@ EvtScript EVS_NpcAI_ShyGuy_Jackpot = {
                 Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
                 IfEq(LVar1, 0)
                     Call(SetSelfVar, 0, 1)
-                    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_ShyGuy_Wander))
+                    Call(BindNpcAI, NPC_SELF, EVS_NpcAI_ShyGuy_Wander)
                 EndIf
             CaseEq(2)
                 Call(DisablePlayerInput, true)
@@ -189,7 +189,7 @@ EvtScript EVS_NpcDefeat_ShyGuy_Jackpot = {
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
             Call(SetSelfVar, 0, 2)
-            Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_ShyGuy_Jackpot))
+            Call(BindNpcAI, NPC_SELF, EVS_NpcAI_ShyGuy_Jackpot)
             Call(DoNpcDefeat)
         CaseEq(OUTCOME_PLAYER_LOST)
         CaseEq(OUTCOME_PLAYER_FLED)
@@ -199,8 +199,8 @@ EvtScript EVS_NpcDefeat_ShyGuy_Jackpot = {
 };
 
 EvtScript EVS_NpcInit_ShyGuy_Jackpot = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcAI_ShyGuy_Jackpot))
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_ShyGuy_Jackpot))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcAI_ShyGuy_Jackpot)
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_ShyGuy_Jackpot)
     Return
     End
 };
@@ -369,7 +369,7 @@ EvtScript EVS_ShyGuy_Thief = {
         Call(RemoveNpc, NPC_SELF)
         Return
     EndIf
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_ShyGuy_Thief))
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_ShyGuy_Thief)
     Set(LVar0, NPC_ShyGuy_Thief)
     Set(LVar1, ITEM_MYSTERY_NOTE)
     Set(LVar2, ITEM_TYPE_KEY)

@@ -73,14 +73,14 @@ EvtScript EVS_CapturePeach_Later = {
     Call(GetApproachPeachPos, NPC_SELF, 50, LVar3, LVar0, LVar2)
     IfNe(LVar3, 0)
         Call(SetNpcAnimation, NPC_SELF, ANIM_HammerBros_Run)
-        Call(SetNpcSpeed, NPC_SELF, Float(5.0))
+        Call(SetNpcSpeed, NPC_SELF, 5.0)
         Call(NpcMoveTo, NPC_SELF, LVar0, LVar2, 0)
         Call(SetNpcAnimation, NPC_SELF, ANIM_HammerBros_Idle)
     EndIf
     Call(SpeakToPlayer, NPC_SELF, ANIM_HammerBros_Talk, ANIM_HammerBros_Idle, 0, MSG_Peach_0175)
     Call(SetPlayerAnimation, ANIM_Peach2_ForwardSad)
     Wait(20)
-    Call(GotoMapSpecial, Ref("kkj_14"), kkj_14_ENTRY_B, TRANSITION_PEACH_CAPTURED)
+    Call(GotoMapSpecial, "kkj_14", kkj_14_ENTRY_B, TRANSITION_PEACH_CAPTURED)
     Wait(100)
     Call(DisablePlayerInput, false)
     Return
@@ -94,7 +94,7 @@ EvtScript EVS_WatchForPlayer_Later = {
             Call(SetSelfEnemyFlagBits, ENEMY_FLAG_CANT_INTERACT, true)
             Call(CheckPlayerInSight, LVar0, 85, 60, 38)
             IfNe(LVar0, 0)
-                Call(BindNpcAI, NPC_SELF, Ref(EVS_CapturePeach_Later))
+                Call(BindNpcAI, NPC_SELF, EVS_CapturePeach_Later)
                 Return
             EndIf
         Else
@@ -115,7 +115,7 @@ EvtScript EVS_NpcIdle_HammerBros_01_Later = {
 EvtScript EVS_NpcIdle_HammerBros_02_Later = {
     Exec(EVS_WatchForPlayer_Later)
     Call(SetNpcAnimation, NPC_SELF, ANIM_HammerBros_Walk)
-    Call(SetNpcSpeed, NPC_SELF, Float(1.7))
+    Call(SetNpcSpeed, NPC_SELF, 1.7)
     Loop(0)
         Call(SetNpcAnimation, NPC_SELF, ANIM_HammerBros_Idle)
         Wait(20)
@@ -135,7 +135,7 @@ EvtScript EVS_NpcIdle_HammerBros_02_Later = {
 EvtScript EVS_NpcIdle_HammerBros_03_Later = {
     Exec(EVS_WatchForPlayer_Later)
     Call(SetNpcAnimation, NPC_SELF, ANIM_HammerBros_Walk)
-    Call(SetNpcSpeed, NPC_SELF, Float(1.7))
+    Call(SetNpcSpeed, NPC_SELF, 1.7)
     Loop(0)
         Call(SetNpcAnimation, NPC_SELF, ANIM_HammerBros_Idle)
         Wait(30)
@@ -155,24 +155,24 @@ EvtScript EVS_NpcIdle_HammerBros_03_Later = {
 EvtScript EVS_NpcInit_HammerBros_01_Later = {
     Call(SetNpcPos, NPC_SELF, -700, 0, 50)
     Call(SetNpcYaw, NPC_SELF, 90)
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_HammerBros_01_Later))
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_HammerBros_01_Later))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_HammerBros_01_Later)
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_HammerBros_01_Later)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_HammerBros_02_Later = {
     Call(SetNpcPos, NPC_SELF, 180, 0, 50)
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_HammerBros_02_Later))
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_HammerBros_02_Later))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_HammerBros_02_Later)
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_HammerBros_02_Later)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_HammerBros_03_Later = {
     Call(SetNpcPos, NPC_SELF, -510, 0, 50)
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_HammerBros_03_Later))
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_HammerBros_03_Later))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_HammerBros_03_Later)
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_HammerBros_03_Later)
     Return
     End
 };

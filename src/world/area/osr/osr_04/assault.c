@@ -26,7 +26,7 @@ s32 ThinTileSpawnPositions[] = {
 };
 
 EvtScript EVS_DropDebris_ThinTiles = {
-    UseBuf(Ref(ThinTileSpawnPositions))
+    UseBuf(ThinTileSpawnPositions)
     Loop(0)
         BufRead3(LVar2, LVar3, LVar4)
         IfEq(LVar2, -1)
@@ -61,7 +61,7 @@ s32 ThickTileSpawnPositions[] = {
 };
 
 EvtScript EVS_DropDebris_ThickTiles = {
-    UseBuf(Ref(ThickTileSpawnPositions))
+    UseBuf(ThickTileSpawnPositions)
     Loop(0)
         BufRead3(LVar2, LVar3, LVar4)
         IfEq(LVar2, -1)
@@ -108,7 +108,7 @@ s32 LeafClumpSpawnPositions[] = {
 };
 
 EvtScript EVS_DropDebris_Leaves = {
-    UseBuf(Ref(LeafClumpSpawnPositions))
+    UseBuf(LeafClumpSpawnPositions)
     Loop(0)
         BufRead3(LVar2, LVar3, LVar4)
         IfEq(LVar2, -1)
@@ -159,7 +159,7 @@ s32 StoneBlockSpawnPositions[] = {
 };
 
 EvtScript EVS_DropDebris_StoneBlocks = {
-    UseBuf(Ref(StoneBlockSpawnPositions))
+    UseBuf(StoneBlockSpawnPositions)
     Loop(0)
         BufRead3(LVar2, LVar3, LVar4)
         IfEq(LVar2, -1)
@@ -440,8 +440,8 @@ EvtScript EVS_Scene_BowsersAssault = {
     Call(SetPlayerPos, 0, 0, 2000)
     Thread
         Call(PlaySound, SOUND_LOOP_OSR_RUMBLING)
-        Call(ShakeCam, CAM_DEFAULT, 0, 450 * DT, Float(2.0))
-        Call(ShakeCam, CAM_DEFAULT, 0, 100 * DT, Float(1.0))
+        Call(ShakeCam, CAM_DEFAULT, 0, 450 * DT, 2.0)
+        Call(ShakeCam, CAM_DEFAULT, 0, 100 * DT, 1.0)
     EndThread
     Wait(50 * DT)
     Thread
@@ -571,7 +571,7 @@ EvtScript EVS_Scene_BowsersAssault = {
     EndLoop
     Exec(EVS_RaiseSmokeClouds)
     ExecWait(EVS_LiftCastleUp)
-    Call(GotoMap, Ref("kkj_03"), kkj_03_ENTRY_1)
+    Call(GotoMap, "kkj_03", kkj_03_ENTRY_1)
     Wait(100 * DT)
     Call(DisablePlayerPhysics, false)
     Call(DisablePlayerInput, false)

@@ -201,10 +201,10 @@ EvtScript EVS_Init = {
     Call(SetActorVar, ACTOR_SELF, AVAR_TurnsSinceRecover, 0)
     Call(SetActorVar, ACTOR_SELF, AVAR_RecoversLeft, 1)
     Call(SetActorVar, ACTOR_SELF, AVAR_Unused, 0)
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
-    Call(BindHandlePhase, ACTOR_SELF, Ref(EVS_HandlePhase))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
+    Call(BindHandlePhase, ACTOR_SELF, EVS_HandlePhase)
     Call(ModifyActorDecoration, ACTOR_SELF, PRT_MAIN, 1, 100, 0, 0, 0)
     Exec(EVS_AnimateImgFX)
     Return
@@ -333,7 +333,7 @@ EvtScript EVS_HandleEvent = {
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_BattleBowser_Hurt)
             ExecWait(EVS_ShockReaction)
-            Call(SetActorSpeed, ACTOR_SELF, Float(8.0))
+            Call(SetActorSpeed, ACTOR_SELF, 8.0)
             Set(LVar1, ANIM_BattleBowser_Walk)
             ExecWait(EVS_ReturnHome)
         CaseEq(EVENT_SHOCK_DEATH)
@@ -372,7 +372,7 @@ EvtScript EVS_HandleEvent = {
             SetConst(LVar1, ANIM_BattleBowser_Jump)
             ExecWait(EVS_Enemy_Recover)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBowser_PostJump)
-            Call(ShakeCam, CAM_BATTLE, 0, 4, Float(3.0))
+            Call(ShakeCam, CAM_BATTLE, 0, 4, 3.0)
         CaseEq(EVENT_30)
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_BattleBowser_Hurt)
@@ -396,11 +396,11 @@ EvtScript EVS_HandleEvent = {
             PlayEffect(EFFECT_SPARKLES, 0, LVar0, LVar1, LVar2, 50)
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Add(LVar1, LVar4)
-            PlayEffect(EFFECT_SHIMMER_BURST, 1, LVar0, LVar1, LVar2, Float(0.7), 30)
+            PlayEffect(EFFECT_SHIMMER_BURST, 1, LVar0, LVar1, LVar2, 0.7, 30)
             Call(SetPartEventBits, ACTOR_SELF, PRT_MAIN, ACTOR_EVENT_FLAG_ENCHANTED, false)
             Call(SetActorVar, ACTOR_SELF, AVAR_TurnsSinceStarBeam, 0)
-            Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(NormalDefense))
-            Call(SetStatusTable, ACTOR_SELF, Ref(StatusTable))
+            Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, NormalDefense)
+            Call(SetStatusTable, ACTOR_SELF, StatusTable)
             Set(LVar1, ANIM_BattleBowser_Hurt)
             ExecWait(EVS_Hit)
             Call(GetActorVar, ACTOR_SELF, AVAR_Flags, LVar0)
@@ -587,7 +587,7 @@ EvtScript EVS_ReturnHome = {
     Call(GetGoalPos, ACTOR_SELF, LVarD, LVarE, LVarF)
     Call(SetActorYaw, ACTOR_SELF, 0)
     Call(GetDist2D, LVar9, LVarA, LVarC, LVarD, LVarF)
-    IfGe(LVar9, Float(5.0))
+    IfGe(LVar9, 5.0)
         Call(SetAnimation, ACTOR_SELF, LVar0, LVar1)
         Call(RunToGoal, ACTOR_SELF, 0, false)
     EndIf
@@ -619,7 +619,7 @@ EvtScript EVS_StarRodCast = {
         Thread
             Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BOWSER_STAR_ROD_GATHER)
             Add(LVar2, 10)
-            Call(StarRodAppearEffect, LVar0, LVar1, LVar2, Float(2.5), Float(0.05))
+            Call(StarRodAppearEffect, LVar0, LVar1, LVar2, 2.5, 0.05)
         EndThread
     Else
         Add(LVar0, 6)
@@ -627,7 +627,7 @@ EvtScript EVS_StarRodCast = {
         Thread
             Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BOWSER_STAR_ROD_GATHER)
             Add(LVar2, 10)
-            Call(StarRodAppearEffect, LVar0, LVar1, LVar2, Float(2.5), Float(0.02))
+            Call(StarRodAppearEffect, LVar0, LVar1, LVar2, 2.5, 0.02)
         EndThread
     EndIf
     Wait(65)
@@ -635,17 +635,17 @@ EvtScript EVS_StarRodCast = {
     IfNotFlag(LVar3, STATUS_FLAG_SHRINK)
         Add(LVar0, 15)
         Sub(LVar2, 3)
-        PlayEffect(EFFECT_LIGHT_RAYS, 2, LVar0, 90, LVar2, Float(1.0), LVarF)
-        PlayEffect(EFFECT_BULB_GLOW, 2, LVar0, 90, LVar2, Float(1.0), LVarE)
+        PlayEffect(EFFECT_LIGHT_RAYS, 2, LVar0, 90, LVar2, 1.0, LVarF)
+        PlayEffect(EFFECT_BULB_GLOW, 2, LVar0, 90, LVar2, 1.0, LVarE)
         Sub(LVar2, 3)
-        PlayEffect(EFFECT_BULB_GLOW, 2, LVar0, 90, LVar2, Float(1.0), LVarD)
+        PlayEffect(EFFECT_BULB_GLOW, 2, LVar0, 90, LVar2, 1.0, LVarD)
     Else
         Add(LVar0, 6)
         Sub(LVar2, 3)
-        PlayEffect(EFFECT_LIGHT_RAYS, 2, LVar0, 36, LVar2, Float(0.4), LVarF)
-        PlayEffect(EFFECT_BULB_GLOW, 2, LVar0, 36, LVar2, Float(0.4), LVarE)
+        PlayEffect(EFFECT_LIGHT_RAYS, 2, LVar0, 36, LVar2, 0.4, LVarF)
+        PlayEffect(EFFECT_BULB_GLOW, 2, LVar0, 36, LVar2, 0.4, LVarE)
         Sub(LVar2, 3)
-        PlayEffect(EFFECT_BULB_GLOW, 2, LVar0, 36, LVar2, Float(0.4), LVarD)
+        PlayEffect(EFFECT_BULB_GLOW, 2, LVar0, 36, LVar2, 0.4, LVarD)
     EndIf
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BOWSER_STAR_ROD_USE)
     Wait(30)
@@ -654,8 +654,8 @@ EvtScript EVS_StarRodCast = {
     Call(RemoveEffect, LVarD)
     Call(SetPartEventBits, ACTOR_SELF, PRT_MAIN, ACTOR_EVENT_FLAG_ENCHANTED, true)
     Call(AddActorDecoration, ACTOR_SELF, PRT_MAIN, 1, ACTOR_DECORATION_RADIAL_STAR_EMITTER)
-    Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(BoostedDefense))
-    Call(SetStatusTable, ACTOR_SELF, Ref(BoostedStatusTable))
+    Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, BoostedDefense)
+    Call(SetStatusTable, ACTOR_SELF, BoostedStatusTable)
     Call(RemoveChillOut)
     Wait(3)
     Call(GetStatusFlags, ACTOR_SELF, LVar3)
@@ -673,7 +673,7 @@ EvtScript EVS_StarRodCast = {
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BOWSER_STAR_ROD_ENCHANT)
     Thread
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-        Call(StarRodPowerUpEffect, LVar0, LVar1, LVar2, Float(0.8))
+        Call(StarRodPowerUpEffect, LVar0, LVar1, LVar2, 0.8)
     EndThread
     Wait(75)
     Thread
@@ -687,7 +687,7 @@ EvtScript EVS_StarRodCast = {
     Else
         Add(LVar1, 16)
     EndIf
-    PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_PALE_WAVE, LVar0, LVar1, LVar2, Float(1.0), 15)
+    PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_PALE_WAVE, LVar0, LVar1, LVar2, 1.0, 15)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BOWSER_STAR_ROD_SHOCKWAVE)
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
     Call(MoveBattleCamOver, 39)
@@ -701,7 +701,7 @@ EvtScript EVS_ShockReaction = {
         Call(SetAnimation, ACTOR_SELF, LVar0, LVar1)
     EndIf
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
-    Call(SetActorJumpGravity, ACTOR_SELF, Float(1.4))
+    Call(SetActorJumpGravity, ACTOR_SELF, 1.4)
     Call(SetGoalToHome, ACTOR_SELF)
     Call(GetGoalPos, ACTOR_SELF, LVar2, LVar3, LVar4)
     Call(GetActorPos, ACTOR_SELF, LVar5, LVar6, LVar7)
@@ -785,21 +785,21 @@ EvtScript EVS_Recover = {
         Add(LVar0, 15)
         Add(LVar1, 90)
         Sub(LVar2, 3)
-        PlayEffect(EFFECT_ENERGY_IN_OUT, 2, LVar0, LVar1, LVar2, Float(1.0), 50)
+        PlayEffect(EFFECT_ENERGY_IN_OUT, 2, LVar0, LVar1, LVar2, 1.0, 50)
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Add(LVar0, 15)
         Sub(LVar2, 3)
-        PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, 90, LVar2, Float(0.3), 30)
+        PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, 90, LVar2, 0.3, 30)
     Else
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Add(LVar0, 6)
         Add(LVar1, 36)
         Sub(LVar2, 3)
-        PlayEffect(EFFECT_ENERGY_IN_OUT, 2, LVar0, LVar1, LVar2, Float(0.4), 50)
+        PlayEffect(EFFECT_ENERGY_IN_OUT, 2, LVar0, LVar1, LVar2, 0.4, 50)
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Add(LVar0, 6)
         Sub(LVar2, 3)
-        PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, 36, LVar2, Float(0.12), 30)
+        PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, 36, LVar2, 0.12, 30)
     EndIf
     Wait(30)
     Call(GetEnemyMaxHP, ACTOR_SELF, LVar0)
@@ -1001,11 +1001,11 @@ EvtScript EVS_ManageCommandLoss = {
                 Call(MakeItemEntity, LVar4, LVar1, LVar2, LVar3, ITEM_SPAWN_MODE_DECORATION, 0)
                 Call(SetActorVar, ACTOR_SELF, AVAR_CommandLossItemIdx, LVar0)
                 Add(LVar1, 7)
-                Call(ItemEntityJumpToPos, LVar0, LVar1, LVar2, LVar3, 8, Float(1.0))
+                Call(ItemEntityJumpToPos, LVar0, LVar1, LVar2, LVar3, 8, 1.0)
                 Add(LVar1, 12)
-                Call(ItemEntityJumpToPos, LVar0, LVar1, LVar2, LVar3, 8, Float(1.0))
+                Call(ItemEntityJumpToPos, LVar0, LVar1, LVar2, LVar3, 8, 1.0)
                 Add(LVar1, 7)
-                Call(ItemEntityJumpToPos, LVar0, LVar1, LVar2, LVar3, 5, Float(1.0))
+                Call(ItemEntityJumpToPos, LVar0, LVar1, LVar2, LVar3, 5, 1.0)
                 Call(SetActorVar, ACTOR_SELF, AVAR_CommandLossState, AVAL_LossState_Idle)
             CaseEq(AVAL_LossState_ShowMessage)
                 Call(ShowMessageBox, LVar5, 60)
@@ -1041,14 +1041,14 @@ EvtScript EVS_Attack_BodySlam = {
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBowser_Walk)
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(AddGoalPos, ACTOR_SELF, 60, 0, 0)
-    Call(SetActorSpeed, ACTOR_SELF, Float(3.0))
+    Call(SetActorSpeed, ACTOR_SELF, 3.0)
     Call(RunToGoal, ACTOR_SELF, 0, false)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBowser_Idle)
     Wait(15)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBowser_PreJump)
     Wait(3)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBowser_Jump)
-    Call(SetActorJumpGravity, ACTOR_SELF, Float(1.2))
+    Call(SetActorJumpGravity, ACTOR_SELF, 1.2)
     Call(EnemyTestTarget, ACTOR_SELF, LVarA, 0, 0, 1, BS_FLAGS1_INCLUDE_POWER_UPS)
     Switch(LVarA)
         CaseOrEq(HIT_RESULT_MISS)
@@ -1062,14 +1062,14 @@ EvtScript EVS_Attack_BodySlam = {
             Call(JumpToGoal, ACTOR_SELF, 18, false, true, false)
             Thread
                 Call(StartRumbleWithParams, 80, 14)
-                Call(ShakeCam, CAM_BATTLE, 0, 4, Float(3.0))
+                Call(ShakeCam, CAM_BATTLE, 0, 4, 3.0)
             EndThread
             Sub(LVar0, 35)
             Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(JumpToGoal, ACTOR_SELF, 14, false, true, false)
             Thread
                 Call(StartRumbleWithParams, 80, 14)
-                Call(ShakeCam, CAM_BATTLE, 0, 4, Float(2.0))
+                Call(ShakeCam, CAM_BATTLE, 0, 4, 2.0)
             EndThread
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBowser_PostJump)
             Wait(3)
@@ -1079,7 +1079,7 @@ EvtScript EVS_Attack_BodySlam = {
             IfEq(LVarA, HIT_RESULT_LUCKY)
                 Call(EnemyTestTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_TRIGGER_LUCKY, 0, 0, 0)
             EndIf
-            Call(SetActorSpeed, ACTOR_SELF, Float(8.0))
+            Call(SetActorSpeed, ACTOR_SELF, 8.0)
             Set(LVar1, ANIM_BattleBowser_Walk)
             ExecWait(EVS_ReturnHome)
             Return
@@ -1089,7 +1089,7 @@ EvtScript EVS_Attack_BodySlam = {
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(JumpToGoal, ACTOR_SELF, 15, false, true, false)
     Thread
-        Call(ShakeCam, CAM_BATTLE, 0, 4, Float(3.0))
+        Call(ShakeCam, CAM_BATTLE, 0, 4, 3.0)
     EndThread
     Wait(2)
     Call(SetGoalToTarget, ACTOR_SELF)
@@ -1130,14 +1130,14 @@ EvtScript EVS_Attack_BodySlam = {
         Call(PlaySoundAtActor, ACTOR_SELF, SOUND_HEAVY_NPC_LANDING)
         Thread
             Call(StartRumbleWithParams, 80, 14)
-            Call(ShakeCam, CAM_BATTLE, 0, 4, Float(3.0))
+            Call(ShakeCam, CAM_BATTLE, 0, 4, 3.0)
         EndThread
         Add(LVar0, 30)
         Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Call(JumpToGoal, ACTOR_SELF, 10, false, true, false)
         Thread
             Call(StartRumbleWithParams, 80, 14)
-            Call(ShakeCam, CAM_BATTLE, 0, 3, Float(2.0))
+            Call(ShakeCam, CAM_BATTLE, 0, 3, 2.0)
         EndThread
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBowser_PostJump)
         Wait(3)
@@ -1153,38 +1153,38 @@ EvtScript EVS_Attack_BodySlam = {
         Call(GetActorVar, ACTOR_SELF, AVAR_CommandLossItemIdx, LVar0)
         Call(GetItemPos, LVar0, LVar1, LVar2, LVar3)
         Add(LVar1, 30)
-        Call(SetActorSpeed, ACTOR_SELF, Float(2.0))
+        Call(SetActorSpeed, ACTOR_SELF, 2.0)
         Call(SetGoalPos, ACTOR_SELF, LVar1, LVar2, LVar3)
         Call(RunToGoal, ACTOR_SELF, 0, false)
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBowser_Idle)
         Wait(8)
-        Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, Float(2.0))
+        Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, 2.0)
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBowser_StompOnce)
         Wait(2)
         Call(GetActorVar, ACTOR_SELF, AVAR_CommandLossItemIdx, LVar0)
         Call(GetItemPos, LVar0, LVar1, LVar2, LVar3)
         Call(SetActorVar, ACTOR_SELF, AVAR_CommandLossState, AVAL_LossState_ShowMessage)
-        PlayEffect(EFFECT_FIREWORK, 0, LVar1, 0, LVar3, Float(0.5), 0)
-        PlayEffect(EFFECT_LANDING_DUST, 1, LVar1, 0, LVar3, Float(2.0))
+        PlayEffect(EFFECT_FIREWORK, 0, LVar1, 0, LVar3, 0.5, 0)
+        PlayEffect(EFFECT_LANDING_DUST, 1, LVar1, 0, LVar3, 2.0)
         Call(PlaySoundAtActor, ACTOR_SELF, SOUND_HEAVY_NPC_STEP_C)
         Wait(4)
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBowser_Idle)
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBowser_StompOnce)
         Wait(2)
-        PlayEffect(EFFECT_FIREWORK, 0, LVar1, 0, LVar3, Float(0.5), 0)
-        PlayEffect(EFFECT_LANDING_DUST, 1, LVar1, 0, LVar3, Float(2.0))
+        PlayEffect(EFFECT_FIREWORK, 0, LVar1, 0, LVar3, 0.5, 0)
+        PlayEffect(EFFECT_LANDING_DUST, 1, LVar1, 0, LVar3, 2.0)
         Call(PlaySoundAtActor, ACTOR_SELF, SOUND_HEAVY_NPC_STEP_C)
         Wait(4)
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBowser_Idle)
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBowser_StompOnce)
         Wait(2)
-        PlayEffect(EFFECT_FIREWORK, 0, LVar1, 0, LVar3, Float(0.5), 0)
-        PlayEffect(EFFECT_LANDING_DUST, 1, LVar1, 0, LVar3, Float(2.0))
+        PlayEffect(EFFECT_FIREWORK, 0, LVar1, 0, LVar3, 0.5, 0)
+        PlayEffect(EFFECT_LANDING_DUST, 1, LVar1, 0, LVar3, 2.0)
         Call(PlaySoundAtActor, ACTOR_SELF, SOUND_HEAVY_NPC_STEP_C)
         Wait(20)
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBowser_Mock)
         Wait(20)
-        Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, Float(1.0))
+        Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, 1.0)
     Else
         Call(GetBattleFlags, LVar1)
         IfNotFlag(LVar1, BS_FLAGS1_ATK_BLOCKED)
@@ -1206,7 +1206,7 @@ EvtScript EVS_Attack_BodySlam = {
         Call(PlaySoundAtActor, ACTOR_SELF, SOUND_HEAVY_NPC_LANDING)
         Thread
             Call(StartRumbleWithParams, 80, 14)
-            Call(ShakeCam, CAM_BATTLE, 0, 4, Float(3.0))
+            Call(ShakeCam, CAM_BATTLE, 0, 4, 3.0)
         EndThread
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBowser_PostJump)
         Wait(3)
@@ -1217,7 +1217,7 @@ EvtScript EVS_Attack_BodySlam = {
         Return
     EndIf
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
-    Call(SetActorSpeed, ACTOR_SELF, Float(8.0))
+    Call(SetActorSpeed, ACTOR_SELF, 8.0)
     Set(LVar1, ANIM_BattleBowser_Walk)
     ExecWait(EVS_ReturnHome)
     Return
@@ -1230,7 +1230,7 @@ EvtScript EVS_AttackMissed = {
         Wait(5)
         Loop(4)
             Call(StartRumbleWithParams, 80, 14)
-            Call(ShakeCam, CAM_BATTLE, 0, 2, Float(2.0))
+            Call(ShakeCam, CAM_BATTLE, 0, 2, 2.0)
             Wait(4)
         EndLoop
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBowser_Idle)
@@ -1265,7 +1265,7 @@ EvtScript EVS_Attack_ClawSwipe = {
     Else
         Call(AddGoalPos, ACTOR_SELF, 16, 0, 0)
     EndIf
-    Call(SetActorSpeed, ACTOR_SELF, Float(3.0))
+    Call(SetActorSpeed, ACTOR_SELF, 3.0)
     Call(RunToGoal, ACTOR_SELF, 0, false)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBowser_RearUpMock)
     Wait(25)
@@ -1286,7 +1286,7 @@ EvtScript EVS_Attack_ClawSwipe = {
             Else
                 Wait(30)
             EndIf
-            Call(SetActorSpeed, ACTOR_SELF, Float(8.0))
+            Call(SetActorSpeed, ACTOR_SELF, 8.0)
             Set(LVar1, ANIM_BattleBowser_Walk)
             ExecWait(EVS_ReturnHome)
             Return
@@ -1317,7 +1317,7 @@ EvtScript EVS_Attack_ClawSwipe = {
             EndIf
             Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
             Call(MoveBattleCamOver, 20)
-            Call(SetActorSpeed, ACTOR_SELF, Float(8.0))
+            Call(SetActorSpeed, ACTOR_SELF, 8.0)
             Set(LVar1, ANIM_BattleBowser_Walk)
             ExecWait(EVS_ReturnHome)
         EndCaseGroup
@@ -1359,16 +1359,16 @@ EvtScript EVS_UseDrainingShockwave = {
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Add(LVar0, 15)
         Sub(LVar2, 3)
-        PlayEffect(EFFECT_LIGHT_RAYS, 2, LVar0, 90, LVar2, Float(1.0), LVarF)
+        PlayEffect(EFFECT_LIGHT_RAYS, 2, LVar0, 90, LVar2, 1.0, LVarF)
         Sub(LVar2, 3)
-        PlayEffect(EFFECT_BULB_GLOW, 2, LVar0, 90, LVar2, Float(1.0), LVarE)
+        PlayEffect(EFFECT_BULB_GLOW, 2, LVar0, 90, LVar2, 1.0, LVarE)
     Else
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Add(LVar0, 6)
         Sub(LVar2, 3)
-        PlayEffect(EFFECT_LIGHT_RAYS, 2, LVar0, 36, LVar2, Float(0.4), LVarF)
+        PlayEffect(EFFECT_LIGHT_RAYS, 2, LVar0, 36, LVar2, 0.4, LVarF)
         Sub(LVar2, 3)
-        PlayEffect(EFFECT_BULB_GLOW, 2, LVar0, 36, LVar2, Float(0.4), LVarE)
+        PlayEffect(EFFECT_BULB_GLOW, 2, LVar0, 36, LVar2, 0.4, LVarE)
     EndIf
     Wait(25)
     Call(UseBattleCamPreset, BTL_CAM_REPOSITION)
@@ -1385,12 +1385,12 @@ EvtScript EVS_UseDrainingShockwave = {
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Add(LVar0, 13)
         Set(LVar1, 55)
-        PlayEffect(EFFECT_ENERGY_SHOCKWAVE, 0, LVar0, LVar1, LVar2, Float(1.0), 60)
+        PlayEffect(EFFECT_ENERGY_SHOCKWAVE, 0, LVar0, LVar1, LVar2, 1.0, 60)
     Else
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Add(LVar0, 5)
         Set(LVar1, 22)
-        PlayEffect(EFFECT_ENERGY_SHOCKWAVE, 0, LVar0, LVar1, LVar2, Float(1.0), 60)
+        PlayEffect(EFFECT_ENERGY_SHOCKWAVE, 0, LVar0, LVar1, LVar2, 1.0, 60)
     EndIf
     Thread
         Call(LightenBackground)
@@ -1607,7 +1607,7 @@ EvtScript EVS_BurnHit = {
                 EndCaseGroup
                 CaseDefault
                     Call(GetActorPos, ACTOR_SELF, LVar4, LVar5, LVar6)
-                    Call(SetActorJumpGravity, ACTOR_SELF, Float(0.01))
+                    Call(SetActorJumpGravity, ACTOR_SELF, 0.01)
                     Add(LVar5, 55)
                     Call(SetGoalPos, ACTOR_SELF, LVar4, LVar5, LVar6)
                     Call(JumpToGoal, ACTOR_SELF, 8, false, false, false)
@@ -1626,7 +1626,7 @@ EvtScript EVS_BurnHit = {
                 EndCaseGroup
                 CaseDefault
                     Sub(LVar5, 55)
-                    Call(SetActorJumpGravity, ACTOR_SELF, Float(0.8))
+                    Call(SetActorJumpGravity, ACTOR_SELF, 0.8)
                     IfEq(LVar5, 0)
                         Call(SetGoalPos, ACTOR_SELF, LVar4, LVar5, LVar6)
                         Call(JumpToGoal, ACTOR_SELF, 15, false, true, false)
@@ -1659,23 +1659,23 @@ EvtScript EVS_BurnHit = {
                 Call(GetActorSize, ACTOR_SELF, LVar3, LVar4)
                 Call(GetStatusFlags, ACTOR_SELF, LVar5)
                 IfFlag(LVar5, STATUS_FLAG_SHRINK)
-                    MulF(LVar3, Float(0.4))
-                    MulF(LVar4, Float(0.4))
+                    MulF(LVar3, 0.4)
+                    MulF(LVar4, 0.4)
                 EndIf
-                DivF(LVar3, Float(2.0))
+                DivF(LVar3, 2.0)
                 Call(GetActorFlags, ACTOR_SELF, LVar5)
                 IfFlag(LVar5, ACTOR_FLAG_UPSIDE_DOWN)
                     SubF(LVar1, LVar3)
                 Else
                     AddF(LVar1, LVar3)
                 EndIf
-                AddF(LVar2, Float(5.0))
-                DivF(LVar3, Float(10.0))
+                AddF(LVar2, 5.0)
+                DivF(LVar3, 10.0)
                 Call(GetStatusFlags, ACTOR_SELF, LVar5)
                 IfFlag(LVar5, STATUS_FLAG_SHRINK)
-                    MulF(LVar3, Float(0.4))
+                    MulF(LVar3, 0.4)
                     IfLt(LVar3, 1)
-                        SetF(LVar3, Float(1.0))
+                        SetF(LVar3, 1.0)
                     EndIf
                 EndIf
                 PlayEffect(EFFECT_SMOKE_BURST, 0, LVar0, LVar1, LVar2, LVar3, 10)

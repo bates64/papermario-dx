@@ -25,17 +25,17 @@ EvtScript EVS_NpcAI_Goompa = {
             Call(SpeakToPlayer, NPC_Goompa, ANIM_Goompa_Talk, ANIM_Goompa_Idle, 0, MSG_CH0_00A6)
             Call(UseSettingsFrom, CAM_DEFAULT, -220, 20, -72)
             Call(SetPanTarget, CAM_DEFAULT, -20, 0, 68)
-            Call(SetCamPitch, CAM_DEFAULT, Float(15.0), Float(-8.5))
+            Call(SetCamPitch, CAM_DEFAULT, 15.0, -8.5)
             Call(SetCamDistance, CAM_DEFAULT, 275)
-            Call(SetCamSpeed, CAM_DEFAULT, Float(1.5 / DT))
+            Call(SetCamSpeed, CAM_DEFAULT, 1.5 / DT)
             Call(PanToTarget, CAM_DEFAULT, 0, true)
             Thread
                 Wait(20 * DT)
-                Call(SetPlayerSpeed, Float(2.0))
+                Call(SetPlayerSpeed, 2.0)
                 Call(PlayerMoveTo, -38, 68, 0)
             EndThread
             Call(GetNpcPos, NPC_Goompa, LVar7, LVar8, LVar9)
-            Call(SetNpcSpeed, NPC_Goompa, Float(4.0 / DT))
+            Call(SetNpcSpeed, NPC_Goompa, 4.0 / DT)
             Call(SetNpcAnimation, NPC_Goompa, ANIM_Goompa_Run)
             Call(NpcMoveTo, NPC_Goompa, 0, 70, 0)
             Call(SetNpcAnimation, NPC_Goompa, ANIM_Goompa_Idle)
@@ -51,9 +51,9 @@ EvtScript EVS_NpcAI_Goompa = {
             Call(UseSettingsFrom, CAM_DEFAULT, -220, 20, -72)
             Call(GetPlayerPos, LVar0, LVar1, LVar2)
             Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-            Call(SetCamSpeed, CAM_DEFAULT, Float(3.0 / DT))
+            Call(SetCamSpeed, CAM_DEFAULT, 3.0 / DT)
             Call(PanToTarget, CAM_DEFAULT, 0, true)
-            Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+            Call(WaitForCam, CAM_DEFAULT, 1.0)
             Call(PanToTarget, CAM_DEFAULT, 0, false)
             Call(EnablePartnerAI)
             Call(DisablePlayerInput, false)
@@ -96,15 +96,15 @@ EvtScript EVS_NpcHit_Goompa = {
         Call(SetNpcPos, NPC_Goompa, NPC_DISPOSE_LOCATION)
         Call(SetNpcFlagBits, NPC_Goompa, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
         Call(EnablePartnerAI)
-        Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_Goompa))
+        Call(BindNpcAI, NPC_SELF, EVS_NpcAI_Goompa)
     EndIf
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Goompa = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcAI_Goompa))
-    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_Goompa))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcAI_Goompa)
+    Call(BindNpcHit, NPC_SELF, EVS_NpcHit_Goompa)
     Switch(GB_StoryProgress)
         CaseGe(STORY_CH0_GOOMPA_JOINED_PARTY)
             Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, false)

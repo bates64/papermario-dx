@@ -17,9 +17,9 @@ EvtScript EVS_ExitDoor_obk_03_0 =
 EvtScript EVS_ExitWalk_obk_06_1 = EVT_EXIT_WALK(60, obk_02_ENTRY_2, "obk_06", obk_06_ENTRY_1);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitDoor_obk_01_1), TRIGGER_WALL_PRESS_A, COLLIDER_tt1, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoor_obk_03_0), TRIGGER_WALL_PRESS_A, COLLIDER_tt2, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_obk_06_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deili3, 1, 0)
+    BindTrigger(EVS_ExitDoor_obk_01_1, TRIGGER_WALL_PRESS_A, COLLIDER_tt1, 1, 0)
+    BindTrigger(EVS_ExitDoor_obk_03_0, TRIGGER_WALL_PRESS_A, COLLIDER_tt2, 1, 0)
+    BindTrigger(EVS_ExitWalk_obk_06_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deili3, 1, 0)
     Return
     End
 };
@@ -38,7 +38,7 @@ EvtScript EVS_EnterMap = {
             ExecWait(EnterSingleDoor)
             ExecWait(EVS_BindExitTriggers)
         CaseEq(obk_02_ENTRY_2)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
     EndSwitch
     Return
@@ -103,9 +103,9 @@ EvtScript EVS_DisableModels_UpperFloor = {
 };
 
 EvtScript EVS_ManageRegionVisibility = {
-    BindTrigger(Ref(EVS_OnStep_UpperFloor), TRIGGER_FLOOR_TOUCH, COLLIDER_o296, 1, 0)
-    BindTrigger(Ref(EVS_OnStep_Stairs), TRIGGER_FLOOR_TOUCH, COLLIDER_o309, 1, 0)
-    BindTrigger(Ref(EVS_OnStep_LowerFloor), TRIGGER_FLOOR_TOUCH, COLLIDER_o291, 1, 0)
+    BindTrigger(EVS_OnStep_UpperFloor, TRIGGER_FLOOR_TOUCH, COLLIDER_o296, 1, 0)
+    BindTrigger(EVS_OnStep_Stairs, TRIGGER_FLOOR_TOUCH, COLLIDER_o309, 1, 0)
+    BindTrigger(EVS_OnStep_LowerFloor, TRIGGER_FLOOR_TOUCH, COLLIDER_o291, 1, 0)
     Set(MV_CurrentMapRegion, REGION_INIT)
     Set(MV_LastMapRegion, REGION_INIT_LAST)
     Loop(0)
@@ -148,7 +148,7 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_BOOS_MANSION)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, false, Ref(DefaultNPCs))
+    Call(MakeNpcs, false, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     Exec(EVS_SetupTexPan)
     Exec(EVS_SetupBombableWall)

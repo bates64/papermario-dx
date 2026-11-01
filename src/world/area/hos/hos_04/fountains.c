@@ -44,8 +44,8 @@ EvtScript EVS_SetupFountains = {
     Call(SetModelCustomGfx, MODEL_o462, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
     Call(SetModelCustomGfx, MODEL_o465, CUSTOM_GFX_1, ENV_TINT_UNCHANGED)
     Call(SetModelCustomGfx, MODEL_o461, CUSTOM_GFX_1, ENV_TINT_UNCHANGED)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_0, Ref(setup_gfx_fountain_water), nullptr)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(setup_gfx_fountain_stars), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_0, setup_gfx_fountain_water, nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_1, setup_gfx_fountain_stars, nullptr)
     Return
     End
 };

@@ -8,7 +8,7 @@ EvtScript EVS_EnterMap = {
             Thread
                 Wait(10)
                 Call(GetPlayerPos, LVar0, LVar1, LVar2)
-                Call(SetPlayerSpeed, Float(3.0))
+                Call(SetPlayerSpeed, 3.0)
                 Call(PlayerMoveTo, -150, LVar2, 0)
             EndThread
             Call(EnableModel, MODEL_door_off1, false)
@@ -70,7 +70,7 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_BOOS_MANSION)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, false, Ref(DefaultNPCs))
+    Call(MakeNpcs, false, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     Exec(EVS_ManageHole)
     Exec(EVS_SetupTexPan)

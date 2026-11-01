@@ -6,7 +6,7 @@ EvtScript EVS_GoombaKing_Init = {
 };
 
 EvtScript EVS_NpcCreate_GoombaKing = {
-    Call(SetNpcScale, NPC_SELF, Float(0.5), Float(0.5), Float(0.5))
+    Call(SetNpcScale, NPC_SELF, 0.5, 0.5, 0.5)
     Return
     End
 };

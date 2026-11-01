@@ -8,9 +8,9 @@ EvtScript EVS_MakeEntities = {
     IfLt(GB_StoryProgress, STORY_CH7_STAR_SPIRIT_DEPARTED)
         Return
     EndIf
-    Call(MakeEntity, Ref(Entity_HiddenYellowBlock), 180, 60, -15, 0, ITEM_ULTRA_SHROOM, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_HiddenYellowBlock, 180, 60, -15, 0, ITEM_ULTRA_SHROOM, MAKE_ENTITY_END)
     Call(AssignBlockFlag, GF_OSR02_HiddenItem_UltraShroom)
-    Call(MakeEntity, Ref(Entity_SavePoint), -100, 60, -50, 0, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_SavePoint, -100, 60, -50, 0, MAKE_ENTITY_END)
     Return
     End
 };

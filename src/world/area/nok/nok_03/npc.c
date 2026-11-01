@@ -48,9 +48,9 @@ EvtScript EVS_NpcIdle_Fuzzy_01 = {
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_SEQ_FUZZY_HOP, SOUND_SPACE_DEFAULT)
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     Set(LVar1, 0)
-    Call(SetNpcJumpscale, NPC_SELF, Float(3.0))
+    Call(SetNpcJumpscale, NPC_SELF, 3.0)
     Call(NpcJump0, NPC_SELF, LVar0, LVar1, LVar2, 6)
-    Call(SetNpcJumpscale, NPC_SELF, Float(1.2))
+    Call(SetNpcJumpscale, NPC_SELF, 1.2)
     Add(LVar0, 20)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_SEQ_FUZZY_HOP, SOUND_SPACE_DEFAULT)
     Call(NpcJump0, NPC_SELF, LVar0, LVar1, LVar2, 8)
@@ -63,10 +63,10 @@ EvtScript EVS_NpcIdle_Fuzzy_01 = {
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_SEQ_FUZZY_HOP, SOUND_SPACE_DEFAULT)
     Call(NpcJump0, NPC_SELF, LVar0, LVar1, LVar2, 8)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_SEQ_FUZZY_HOP, SOUND_SPACE_DEFAULT)
-    Call(SetNpcJumpscale, NPC_SELF, Float(1.8))
+    Call(SetNpcJumpscale, NPC_SELF, 1.8)
     Call(NpcJump0, NPC_SELF, -341, 0, 23, 15)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_BEGIN_WITH_CHASING, true)
-    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_Fuzzy_Wander))
+    Call(BindNpcAI, NPC_SELF, EVS_NpcAI_Fuzzy_Wander)
     Return
     End
 };
@@ -81,23 +81,23 @@ EvtScript EVS_NpcIdle_Fuzzy_02 = {
         EndIf
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     Set(LVar1, 0)
-    Call(SetNpcJumpscale, NPC_SELF, Float(3.0))
+    Call(SetNpcJumpscale, NPC_SELF, 3.0)
     Call(NpcJump0, NPC_SELF, LVar0, LVar1, LVar2, 6)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_BEGIN_WITH_CHASING, true)
-    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_Fuzzy_Wander))
+    Call(BindNpcAI, NPC_SELF, EVS_NpcAI_Fuzzy_Wander)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Fuzzy_01 = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Fuzzy_01))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Fuzzy_01)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION, true)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Fuzzy_02 = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Fuzzy_02))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Fuzzy_02)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION, true)
     Return
     End
@@ -113,7 +113,7 @@ EvtScript EVS_NpcInit_FuzzyBoss = {
         Call(EnableNpcShadow, NPC_KoopersShell, false)
         Return
     EndIf
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_FuzzyBoss))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_FuzzyBoss)
     Return
     End
 };

@@ -3,7 +3,7 @@
 EvtScript EVS_ExitWalk_dgb_03_5 = EVT_EXIT_WALK(26, dgb_13_ENTRY_0, "dgb_03", dgb_03_ENTRY_5);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_dgb_03_5), TRIGGER_FLOOR_ABOVE, COLLIDER_deilis, 1, 0)
+    BindTrigger(EVS_ExitWalk_dgb_03_5, TRIGGER_FLOOR_ABOVE, COLLIDER_deilis, 1, 0)
     Return
     End
 };
@@ -16,7 +16,7 @@ EvtScript EVS_Main = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilits, COLLIDER_FLAGS_UPPER_MASK)
     ExecWait(EVS_SetupDrawers)
     Exec(EVS_SetupMusic)
-    Set(LVar0, Ref(EVS_BindExitTriggers))
+    Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     Wait(1)
     Return

@@ -25,7 +25,7 @@ EvtScript EVS_EndPeachChapter4 = {
     Set(LVar0, GB_KKJ_LastPartner)
     Call(RestoreFromPeachState)
     Call(PlaySound, SOUND_SLIDE_WHISTLE_OUT)
-    Call(GotoMapSpecial, Ref("mac_04"), mac_04_ENTRY_5, TRANSITION_END_PEACH_INTERLUDE)
+    Call(GotoMapSpecial, "mac_04", mac_04_ENTRY_5, TRANSITION_END_PEACH_INTERLUDE)
     Wait(100)
     Return
     End
@@ -66,9 +66,9 @@ EvtScript EVS_ExitDoor_0 = {
     Exec(ExitSingleDoor)
     Wait(17)
     IfEq(AB_KKJ_CompletedBakeStep, CAKE_TYPE_NONE)
-        Call(GotoMap, Ref("kkj_11"), kkj_11_ENTRY_6)
+        Call(GotoMap, "kkj_11", kkj_11_ENTRY_6)
     Else
-        Call(GotoMap, Ref("kkj_19"), kkj_19_ENTRY_0)
+        Call(GotoMap, "kkj_19", kkj_19_ENTRY_0)
     EndIf
     Wait(100)
     Return
@@ -99,7 +99,7 @@ EvtScript EVS_EnterMap = {
     Set(LVar3, DOOR_SWING_OUT)
     ExecWait(EnterSingleDoor)
     Call(DisablePlayerInput, false)
-    BindTrigger(Ref(EVS_ExitDoor_0), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
+    BindTrigger(EVS_ExitDoor_0, TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
     Return
     End
 };
@@ -109,7 +109,7 @@ EvtScript EVS_Main = {
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     IfEq(GB_StoryProgress, STORY_CH4_BEGAN_PEACH_MISSION)
-        Call(MakeNpcs, false, Ref(DefaultNPCs))
+        Call(MakeNpcs, false, DefaultNPCs)
     EndIf
     Exec(EVS_UpdateClockPendulum)
     Call(SetTexPanner, MODEL_o56, TEX_PANNER_0)
@@ -121,7 +121,7 @@ EvtScript EVS_Main = {
         Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetModelCustomGfx, MODEL_o56, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
-    Call(SetCustomGfx, CUSTOM_GFX_0, Ref(setup_gfx_candle_lights), nullptr)
+    Call(SetCustomGfx, CUSTOM_GFX_0, setup_gfx_candle_lights, nullptr)
     Exec(EVS_SetupMusic)
     Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
     Exec(EVS_EnterMap)

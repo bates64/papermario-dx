@@ -213,9 +213,9 @@ EvtScript EVS_NpcInit_ChetRippo = {
     EndIf
     IfEq(LVar0, 0)
         Call(SetNpcCollisionSize, NPC_SELF, 38, 52)
-        Call(SetNpcShadowScale, -1, Float(2.0))
+        Call(SetNpcShadowScale, -1, 2.0)
         Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_DIRTY_SHADOW, true)
-        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ChetRippo))
+        Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_ChetRippo)
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf

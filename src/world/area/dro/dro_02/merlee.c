@@ -645,7 +645,7 @@ API_CALLABLE(PlayShuffleSoundRight) {
 }
 
 EvtScript EVS_PerformRitual = {
-    UseArray(Ref(RitualBuffer))
+    UseArray(RitualBuffer)
     Set(RITUAL_VAR_STATE, RITUAL_STATE_INIT)
     Call(GetNpcPos, NPC_Merlee, RITUAL_VAR_POS_X, RITUAL_VAR_POS_Y, RITUAL_VAR_POS_Z)
     Add(RITUAL_VAR_POS_X, 60)
@@ -786,18 +786,18 @@ EvtScript EVS_BeginMerleeCamera = {
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamDistance, CAM_DEFAULT, 200)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(8.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 8.0)
     Call(SetCamPitch, CAM_DEFAULT, 20, -15)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Return
     End
 };
 
 EvtScript EVS_EndMerleeCamera = {
     Call(PanToTarget, CAM_DEFAULT, 0, false)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(3.0))
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 3.0)
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Return
     End
 };

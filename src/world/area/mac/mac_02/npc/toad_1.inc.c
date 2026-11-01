@@ -48,7 +48,7 @@ EvtScript EVS_NpcInteract_Toad_01 = {
 
 EvtScript EVS_NpcIdle_Toad_01 = {
     Call(SetNpcPos, NPC_SELF, 20, 0, -550)
-    Call(SetNpcSpeed, NPC_SELF, Float(2.0))
+    Call(SetNpcSpeed, NPC_SELF, 2.0)
     Loop(0)
         Call(SetNpcAnimation, NPC_SELF, ANIM_Toad_Blue_Walk)
         Call(NpcMoveTo, NPC_SELF, -20, -550, 0)
@@ -71,9 +71,9 @@ EvtScript EVS_NpcIdle_Toad_01 = {
 
 EvtScript EVS_NpcInit_Toad_01 = {
     IfLt(GB_StoryProgress, STORY_CH1_BEGAN_PEACH_MISSION)
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Toad_01))
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Toad_01)
     EndIf
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_01))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad_01)
     Return
     End
 };

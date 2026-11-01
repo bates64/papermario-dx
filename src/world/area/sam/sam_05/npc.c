@@ -108,7 +108,7 @@ EvtScript EVS_NpcDefeat_Monstar = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
-            Call(SetNpcAux, NPC_SELF, Ref(EVS_NpcAux_Monstar))
+            Call(SetNpcAux, NPC_SELF, EVS_NpcAux_Monstar)
             ExecWait(EVS_Scene_MonstarDefeated)
         CaseEq(OUTCOME_PLAYER_FLED)
     EndSwitch
@@ -121,13 +121,13 @@ EvtScript EVS_NpcInit_Monstar = {
     Call(EnableNpcShadow, NPC_SELF, false)
     Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     Call(SetNpcVar, NPC_Monstar, 3, 255)
-    Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_Monstar))
+    Call(BindNpcAux, NPC_SELF, EVS_NpcAux_Monstar)
     IfGe(GB_StoryProgress, STORY_CH7_DEFEATED_MONSTAR)
         Call(RemoveNpc, NPC_SELF)
     Else
         Exec(EVS_Scene_MonstarAppears)
-        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Monstar))
-        Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_Monstar))
+        Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_Monstar)
+        Call(BindNpcAI, NPC_SELF, EVS_NpcAI_Monstar)
     EndIf
     Return
     End

@@ -213,14 +213,14 @@ EvtScript EVS_NpcIdle_StoneChomp = {
     Thread
         SetF(LVar0, 0)
         Loop(10)
-            AddF(LVar0, Float(12.796))
+            AddF(LVar0, 12.796)
             Call(SetChompAmbushColor, 255, 128, 255, LVar0)
             Wait(1)
         EndLoop
         Call(SetChompAmbushColor, 255, 128, 255, 128)
         SetF(LVar0, 128)
         Loop(20)
-            AddF(LVar0, Float(6.343))
+            AddF(LVar0, 6.343)
             Call(SetChompAmbushColor, 255, LVar0, 255, LVar0)
             Wait(1)
         EndLoop
@@ -232,7 +232,7 @@ EvtScript EVS_NpcIdle_StoneChomp = {
         Call(MakeLerp, 0, 360, 10, EASING_COS_IN_OUT)
         Label(10)
         Call(UpdateLerp)
-        Call(SetChompAmbushRot, LVar0, 0, Float(90.0))
+        Call(SetChompAmbushRot, LVar0, 0, 90.0)
         Wait(1)
         IfEq(LVar1, 1)
             Goto(10)
@@ -254,7 +254,7 @@ EvtScript EVS_NpcIdle_StoneChomp = {
     Thread
         Call(InterpPlayerYaw, 180, 0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
-        Call(SetNpcJumpscale, NPC_SELF, Float(1.0))
+        Call(SetNpcJumpscale, NPC_SELF, 1.0)
         Call(NpcJump0, NPC_SELF, LVar0, LVar1, LVar2, 20)
         Loop(30)
             Call(SetPlayerAnimation, ANIM_MarioW2_PanicHover)
@@ -295,8 +295,8 @@ EvtScript EVS_NpcInit_StoneChomp = {
         Call(RemoveNpc, NPC_SELF)
         Return
     EndIf
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_StoneChomp))
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_StoneChomp_Override))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_StoneChomp)
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_StoneChomp_Override)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, true)
     Call(EnableNpcShadow, NPC_SELF, false)
     Return

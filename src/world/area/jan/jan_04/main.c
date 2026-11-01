@@ -2,7 +2,7 @@
 
 EvtScript EVS_GotoMap_kmr_24_0 = {
     Call(FadeOutMusic, 0, 1500)
-    Call(GotoMapSpecial, Ref("kmr_24"), kmr_24_ENTRY_0, TRANSITION_MARIO_WHITE)
+    Call(GotoMapSpecial, "kmr_24", kmr_24_ENTRY_0, TRANSITION_MARIO_WHITE)
     Wait(100)
     Return
     End
@@ -12,14 +12,14 @@ EvtScript EVS_ExitWalk_jan_05_2 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(UseExitHeading, 60, jan_04_ENTRY_0)
     Exec(ExitWalk)
-    Call(GotoMap, Ref("jan_05"), jan_05_ENTRY_2)
+    Call(GotoMap, "jan_05", jan_05_ENTRY_2)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_jan_05_2), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitWalk_jan_05_2, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
     Return
     End
 };
@@ -29,7 +29,7 @@ EvtScript EVS_EnterMap = {
     Switch(LVar0)
         CaseEq(jan_04_ENTRY_0)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitw, COLLIDER_FLAGS_UPPER_MASK)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
         CaseRange(jan_04_ENTRY_1, jan_04_ENTRY_2)
             Exec(EVS_Scene_TreasureChest)
@@ -48,9 +48,9 @@ EvtScript EVS_Main = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(jan_04_ENTRY_0)
-            Call(MakeNpcs, false, Ref(DefaultNPCs))
+            Call(MakeNpcs, false, DefaultNPCs)
         CaseEq(jan_04_ENTRY_3)
-            Call(MakeNpcs, false, Ref(EpilogueNPCs))
+            Call(MakeNpcs, false, EpilogueNPCs)
     EndSwitch
     Exec(EVS_MakeEntities)
     Exec(EVS_SetupTrees)

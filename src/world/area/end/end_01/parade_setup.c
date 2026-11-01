@@ -96,7 +96,7 @@ API_CALLABLE(WaitForConfirmInput) {
 EvtScript EVS_SetupInitialCamera = {
     Call(UseSettingsFrom, CAM_DEFAULT, PARADE_START, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, PARADE_START, 0, 0)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Return
     End
@@ -104,7 +104,7 @@ EvtScript EVS_SetupInitialCamera = {
 
 EvtScript EVS_UpdateScrollPos = {
     Call(SetPanTarget, CAM_DEFAULT, Float(PARADE_START), 0, 0)
-    SetF(LVar1, Float(0.0))
+    SetF(LVar1, 0.0)
     Loop(0)
         Call(UpdateCameraScroll)
         Call(TranslateGroup, MODEL_bg, LVar1, 0, 0)
@@ -833,7 +833,7 @@ EvtScript EVS_ManageParade = {
     Wait(150)
     Exec(EVS_MarioPeachExit)
     Wait(200)
-    Call(GotoMap, Ref("kmr_30"), kmr_30_ENTRY_0)
+    Call(GotoMap, "kmr_30", kmr_30_ENTRY_0)
     Wait(100)
     Return
     End

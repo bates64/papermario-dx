@@ -59,9 +59,9 @@ EvtScript EVS_ExitWalk_kpa_1X_Upper = {
     Call(UseExitHeading, 60, kpa_60_ENTRY_1)
     Exec(ExitWalk)
     IfEq(GF_KPA16_ShutOffLava, false)
-        Call(GotoMap, Ref("kpa_11"), kpa_11_ENTRY_0)
+        Call(GotoMap, "kpa_11", kpa_11_ENTRY_0)
     Else
-        Call(GotoMap, Ref("kpa_10"), kpa_10_ENTRY_0)
+        Call(GotoMap, "kpa_10", kpa_10_ENTRY_0)
     EndIf
     Wait(100)
     Return
@@ -73,9 +73,9 @@ EvtScript EVS_ExitWalk_kpa_1X_Lower = {
     Call(UseExitHeading, 60, kpa_60_ENTRY_2)
     Exec(ExitWalk)
     IfEq(GF_KPA16_ShutOffLava, false)
-        Call(GotoMap, Ref("kpa_11"), kpa_11_ENTRY_3)
+        Call(GotoMap, "kpa_11", kpa_11_ENTRY_3)
     Else
-        Call(GotoMap, Ref("kpa_10"), kpa_10_ENTRY_3)
+        Call(GotoMap, "kpa_10", kpa_10_ENTRY_3)
     EndIf
     Wait(100)
     Return
@@ -89,7 +89,7 @@ EvtScript EVS_ExitDoor_kpa_63_0 = {
     Wait(15)
     Call(UseExitHeading, 60, kpa_60_ENTRY_3)
     Exec(ExitWalk)
-    Call(GotoMap, Ref("kpa_63"), kpa_63_ENTRY_0)
+    Call(GotoMap, "kpa_63", kpa_63_ENTRY_0)
     Wait(100)
     Return
     End
@@ -104,11 +104,11 @@ EvtScript EVS_EnterFromAirshipDock = {
     Call(EnableModel, MODEL_o1616, false)
     Call(TranslateModel, MODEL_o1650, -10, 0, 45)
     Thread
-        Call(SetPlayerSpeed, Float(3.0))
+        Call(SetPlayerSpeed, 3.0)
         Call(PlayerMoveTo, 75, 580, 0)
     EndThread
     Wait(15)
-    Call(SetNpcSpeed, NPC_PARTNER, Float(3.0))
+    Call(SetNpcSpeed, NPC_PARTNER, 3.0)
     Call(NpcMoveTo, NPC_PARTNER, 65, 600, 0)
     ExecWait(EVS_CloseAirshipDockDoor)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION, false)
@@ -119,9 +119,9 @@ EvtScript EVS_EnterFromAirshipDock = {
 };
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_kpa_1X_Upper), TRIGGER_FLOOR_ABOVE, COLLIDER_deilise, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_kpa_1X_Lower), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoor_kpa_63_0), TRIGGER_WALL_PRESS_A, COLLIDER_deilitts, 1, 0)
+    BindTrigger(EVS_ExitWalk_kpa_1X_Upper, TRIGGER_FLOOR_ABOVE, COLLIDER_deilise, 1, 0)
+    BindTrigger(EVS_ExitWalk_kpa_1X_Lower, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitDoor_kpa_63_0, TRIGGER_WALL_PRESS_A, COLLIDER_deilitts, 1, 0)
     Return
     End
 };
@@ -157,7 +157,7 @@ EvtScript EVS_EnterMap = {
             Exec(EVS_Scene_Departure)
         CaseDefault
             ExecWait(EVS_HideDistalGeometry)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
             Wait(1)
     EndSwitch
@@ -203,7 +203,7 @@ EvtScript EVS_Main = {
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o1508, SURFACE_TYPE_LAVA)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_deilie, SURFACE_TYPE_LAVA)
             Thread
-                Call(ResetFromLava, Ref(SafeFloorColliders))
+                Call(ResetFromLava, SafeFloorColliders)
             EndThread
         EndThread
     EndIf

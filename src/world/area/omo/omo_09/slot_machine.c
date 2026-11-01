@@ -25,7 +25,7 @@ EvtScript EVS_SetCam_ViewReels = {
     Call(DisableCameraLeadingPlayer)
     Call(UseSettingsFrom, CAM_DEFAULT, 535, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, 535, 0, 0)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(1.5))
+    Call(SetCamSpeed, CAM_DEFAULT, 1.5)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Return
     End
@@ -34,11 +34,11 @@ EvtScript EVS_SetCam_ViewReels = {
 EvtScript EVS_SetCam_ViewPayout = {
     Call(UseSettingsFrom, CAM_DEFAULT, 535, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, 535, 0, 0)
-    Call(SetCamDistance, CAM_DEFAULT, Float(275.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(16.0), Float(-30.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(3.0))
+    Call(SetCamDistance, CAM_DEFAULT, 275.0)
+    Call(SetCamPitch, CAM_DEFAULT, 16.0, -30.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 3.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Return
     End
 };
@@ -50,7 +50,7 @@ s32 HitBlockRecoilOffsets[] = {
 };
 
 EvtScript EVS_HitBlockRecoil = {
-    UseBuf(Ref(HitBlockRecoilOffsets))
+    UseBuf(HitBlockRecoilOffsets)
     Loop(12)
         BufRead1(LVar1)
         Call(TranslateModel, LVar0, 0, LVar1, 0)
@@ -619,7 +619,7 @@ EvtScript EVS_SlotMachine_MainUpdate = {
     IfNe(LVarA, 0)
         Set(MF_AnimateSlotLights, true)
     EndIf
-    Set(MV_ResetCamSpeed, Float(90.0))
+    Set(MV_ResetCamSpeed, 90.0)
     // dispense rewards
     Switch(LVarB)
         CaseEq(SYM_SHYGUY)
@@ -628,31 +628,31 @@ EvtScript EVS_SlotMachine_MainUpdate = {
                     ExecWait(EVS_SetCam_ViewPayout)
                     Thread
                         Call(SetNpcPos, NPC_ShyGuy_Jackpot1, 485, 130, -50)
-                        Call(SetNpcJumpscale, NPC_ShyGuy_Jackpot1, Float(0.8))
+                        Call(SetNpcJumpscale, NPC_ShyGuy_Jackpot1, 0.8)
                         Call(NpcJump0, NPC_ShyGuy_Jackpot1, 460, 0, 50, 30)
                         Call(SetNpcFlagBits, NPC_ShyGuy_Jackpot1, NPC_FLAG_IGNORE_WORLD_COLLISION, false)
                     EndThread
                     Thread
                         Call(SetNpcPos, NPC_ShyGuy_Jackpot2, 510, 130, -50)
-                        Call(SetNpcJumpscale, NPC_ShyGuy_Jackpot2, Float(0.8))
+                        Call(SetNpcJumpscale, NPC_ShyGuy_Jackpot2, 0.8)
                         Call(NpcJump0, NPC_ShyGuy_Jackpot2, 497, 0, 50, 30)
                         Call(SetNpcFlagBits, NPC_ShyGuy_Jackpot2, NPC_FLAG_IGNORE_WORLD_COLLISION, false)
                     EndThread
                     Thread
                         Call(SetNpcPos, NPC_ShyGuy_Jackpot3, 535, 130, -50)
-                        Call(SetNpcJumpscale, NPC_ShyGuy_Jackpot3, Float(0.8))
+                        Call(SetNpcJumpscale, NPC_ShyGuy_Jackpot3, 0.8)
                         Call(NpcJump0, NPC_ShyGuy_Jackpot3, 535, 0, 50, 30)
                         Call(SetNpcFlagBits, NPC_ShyGuy_Jackpot3, NPC_FLAG_IGNORE_WORLD_COLLISION, false)
                     EndThread
                     Thread
                         Call(SetNpcPos, NPC_ShyGuy_Jackpot4, 560, 130, -50)
-                        Call(SetNpcJumpscale, NPC_ShyGuy_Jackpot4, Float(0.8))
+                        Call(SetNpcJumpscale, NPC_ShyGuy_Jackpot4, 0.8)
                         Call(NpcJump0, NPC_ShyGuy_Jackpot4, 573, 0, 50, 30)
                         Call(SetNpcFlagBits, NPC_ShyGuy_Jackpot4, NPC_FLAG_IGNORE_WORLD_COLLISION, false)
                     EndThread
                     Thread
                         Call(SetNpcPos, NPC_ShyGuy_Jackpot5, 585, 130, -50)
-                        Call(SetNpcJumpscale, NPC_ShyGuy_Jackpot5, Float(0.8))
+                        Call(SetNpcJumpscale, NPC_ShyGuy_Jackpot5, 0.8)
                         Call(NpcJump0, NPC_ShyGuy_Jackpot5, 610, 0, 50, 30)
                         Call(SetNpcFlagBits, NPC_ShyGuy_Jackpot5, NPC_FLAG_IGNORE_WORLD_COLLISION, false)
                     EndThread
@@ -661,19 +661,19 @@ EvtScript EVS_SlotMachine_MainUpdate = {
                     ExecWait(EVS_SetCam_ViewPayout)
                     Thread
                         Call(SetNpcPos, NPC_ShyGuy_Jackpot2, 510, 130, -50)
-                        Call(SetNpcJumpscale, NPC_ShyGuy_Jackpot2, Float(0.8))
+                        Call(SetNpcJumpscale, NPC_ShyGuy_Jackpot2, 0.8)
                         Call(NpcJump0, NPC_ShyGuy_Jackpot2, 497, 0, 50, 30)
                         Call(SetNpcFlagBits, NPC_ShyGuy_Jackpot2, NPC_FLAG_IGNORE_WORLD_COLLISION, false)
                     EndThread
                     Thread
                         Call(SetNpcPos, NPC_ShyGuy_Jackpot4, 560, 130, -50)
-                        Call(SetNpcJumpscale, NPC_ShyGuy_Jackpot4, Float(0.8))
+                        Call(SetNpcJumpscale, NPC_ShyGuy_Jackpot4, 0.8)
                         Call(NpcJump0, NPC_ShyGuy_Jackpot4, 573, 0, 50, 30)
                         Call(SetNpcFlagBits, NPC_ShyGuy_Jackpot4, NPC_FLAG_IGNORE_WORLD_COLLISION, false)
                     EndThread
                     Wait(20)
                 CaseDefault
-                    Set(MV_ResetCamSpeed, Float(2.0))
+                    Set(MV_ResetCamSpeed, 2.0)
             EndSwitch
         CaseEq(SYM_COIN)
             Switch(LVarA)
@@ -695,7 +695,7 @@ EvtScript EVS_SlotMachine_MainUpdate = {
                     Call(MakeItemEntity, ITEM_COIN, 535, 150, 50, ITEM_SPAWN_MODE_TOSS_SPAWN_ALWAYS, 0)
                     Wait(30)
                 CaseDefault
-                    Set(MV_ResetCamSpeed, Float(2.0))
+                    Set(MV_ResetCamSpeed, 2.0)
             EndSwitch
         CaseEq(SYM_STAR)
             Switch(LVarA)
@@ -717,7 +717,7 @@ EvtScript EVS_SlotMachine_MainUpdate = {
                     Call(MakeItemEntity, ITEM_MUSHROOM, 535, 150, 50, ITEM_SPAWN_MODE_TOSS_SPAWN_ALWAYS, 0)
                     Wait(30)
                 CaseDefault
-                    Set(MV_ResetCamSpeed, Float(2.0))
+                    Set(MV_ResetCamSpeed, 2.0)
             EndSwitch
     EndSwitch
     Call(EnableCameraLeadingPlayer)
@@ -818,10 +818,10 @@ EvtScript EVS_SetupSlotMachine = {
     Call(ParentColliderToModel, COLLIDER_h1, MODEL_h1)
     Call(ParentColliderToModel, COLLIDER_h2, MODEL_h2)
     Call(ParentColliderToModel, COLLIDER_h3, MODEL_h3)
-    BindTrigger(Ref(EVS_HitBlock_SlotStart), TRIGGER_CEILING_TOUCH, COLLIDER_s1, 1, 0)
-    BindTrigger(Ref(EVS_HitBlock_SlotWheel1), TRIGGER_CEILING_TOUCH, COLLIDER_h1, 1, 0)
-    BindTrigger(Ref(EVS_HitBlock_SlotWheel2), TRIGGER_CEILING_TOUCH, COLLIDER_h2, 1, 0)
-    BindTrigger(Ref(EVS_HitBlock_SlotWheel3), TRIGGER_CEILING_TOUCH, COLLIDER_h3, 1, 0)
+    BindTrigger(EVS_HitBlock_SlotStart, TRIGGER_CEILING_TOUCH, COLLIDER_s1, 1, 0)
+    BindTrigger(EVS_HitBlock_SlotWheel1, TRIGGER_CEILING_TOUCH, COLLIDER_h1, 1, 0)
+    BindTrigger(EVS_HitBlock_SlotWheel2, TRIGGER_CEILING_TOUCH, COLLIDER_h2, 1, 0)
+    BindTrigger(EVS_HitBlock_SlotWheel3, TRIGGER_CEILING_TOUCH, COLLIDER_h3, 1, 0)
     Call(RandInt, 7, MV_SlotWheel1_Angle)
     Mul(MV_SlotWheel1_Angle, 45)
     Call(RotateModel, MODEL_o864, MV_SlotWheel1_Angle, 1, 0, 0)

@@ -17,7 +17,7 @@ Formation CloneFormation = {
 
 EvtScript EVS_TakeTurn = {
     // ...
-    Call(SummonEnemy, Ref(CloneFormation), false)
+    Call(SummonEnemy, CloneFormation, false)
     // LVar0 holds the new actor's ID
     // ...
 };
@@ -38,7 +38,7 @@ enum ActorVars {
 
 EvtScript EVS_TakeTurn = {
     // ...
-    Call(SummonEnemy, Ref(CloneFormation), false)
+    Call(SummonEnemy, CloneFormation, false)
     Call(SetActorVar,
         ACTOR_SELF, AVAR_SpawnedActorID, LVar0)
     // ...
@@ -68,7 +68,7 @@ API_CALLABLE(SetBulletInitVars) {
 EvtScript EVS_Move_FireBullet = {
     // ...
     Call(SetBulletInitVars)
-    Call(SummonEnemy, Ref(BulletFormation), false)
+    Call(SummonEnemy, BulletFormation, false)
     // ...
 };
 ```

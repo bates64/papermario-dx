@@ -252,12 +252,12 @@ EvtScript EVS_AnimateDrifting = {
     Set(LVarA, LVar0) // modelID
     Set(LVarB, LVar1)
     Set(LVar5, 5)
-    UseBuf(Ref(DriftBobbingOffsets))
+    UseBuf(DriftBobbingOffsets)
     Label(0)
         // drift along from left to right
         BufRead1(LVar1)
         IfEq(LVar1, 255)
-            UseBuf(Ref(DriftBobbingOffsets))
+            UseBuf(DriftBobbingOffsets)
             BufRead1(LVar1)
         EndIf
         Set(LVar0, LVar5)

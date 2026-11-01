@@ -23,7 +23,7 @@ EvtScript EVS_StarBoxLaunch_Impl = {
     EndLoop
     Call(EnableCameraFollowPlayerY)
     ExecGetTID(EVS_TetherCamToPlayer, LVarA)
-    Call(SetPlayerJumpscale, Float(0.7))
+    Call(SetPlayerJumpscale, 0.7)
     Call(PlayerJump, -290, 85, -78, 40)
     KillThread(LVarA)
     Call(DisableCameraFollowPlayerY)
@@ -37,14 +37,14 @@ EvtScript EVS_StarBoxLaunch_Impl = {
 };
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Ref(Entity_YellowBlock), 300, 60, -100, 0, ITEM_SLEEPY_SHEEP, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_YellowBlock, 300, 60, -100, 0, ITEM_SLEEPY_SHEEP, MAKE_ENTITY_END)
     Call(AssignBlockFlag, GF_OMO02_ItemBlock_SleepySheep)
-    Call(MakeEntity, Ref(Entity_HiddenYellowBlock), -200, 60, -78, 0, ITEM_COIN, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_HiddenYellowBlock, -200, 60, -78, 0, ITEM_COIN, MAKE_ENTITY_END)
     Call(AssignBlockFlag, GF_OMO02_HiddenItem_Coin)
-    Call(MakeEntity, Ref(Entity_BrickBlock), -80, 89, -78, 0, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_BrickBlock, -80, 89, -78, 0, MAKE_ENTITY_END)
     Call(MakeItemEntity, ITEM_SHOOTING_STAR, -80, 114, -78, ITEM_SPAWN_MODE_FALL_NEVER_VANISH, GF_OMO02_Item_ShootingStar)
-    Call(MakeEntity, Ref(Entity_StarBoxLauncher), -358, 0, -82, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(EVS_StarBoxLaunch_Impl))
+    Call(MakeEntity, Entity_StarBoxLauncher, -358, 0, -82, 0, MAKE_ENTITY_END)
+    Call(AssignScript, EVS_StarBoxLaunch_Impl)
     Return
     End
 };

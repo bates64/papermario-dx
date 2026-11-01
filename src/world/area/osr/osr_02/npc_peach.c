@@ -65,8 +65,8 @@ EvtScript EVS_NpcInit_Clubba = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldClubba_Sleep)
     Call(SetNpcPos, NPC_SELF, -40, 20, -170)
     Call(SetNpcYaw, NPC_SELF, 200)
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Clubba))
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Clubba))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Clubba)
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Clubba)
     Return
     End
 };

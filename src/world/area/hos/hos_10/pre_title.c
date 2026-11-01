@@ -12,7 +12,7 @@ EvtScript EVS_Scene_PreTitle = {
     Call(SetCamLeadPlayer, CAM_DEFAULT, false)
     Call(UseSettingsFrom, CAM_DEFAULT, 0, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, 0, 0, 0)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_2)
@@ -45,7 +45,7 @@ EvtScript EVS_Scene_PreTitle = {
         SetF(LVar0, -1800)
         Loop(450 * DT)
             Call(TranslateModel, MODEL_o3, 0, LVar0, 0)
-            AddF(LVar0, Float(1.5 / DT))
+            AddF(LVar0, 1.5 / DT)
             Wait(1)
         EndLoop
     EndThread
@@ -53,7 +53,7 @@ EvtScript EVS_Scene_PreTitle = {
         SetF(LVar0, -1725)
         Loop(450 * DT)
             Call(TranslateGroup, MODEL_kumo, 0, LVar0, 0)
-            AddF(LVar0, Float(2.5 / DT))
+            AddF(LVar0, 2.5 / DT)
             Wait(1)
         EndLoop
     EndThread
@@ -72,15 +72,15 @@ EvtScript EVS_Scene_PreTitle = {
     Loop(0)
         Call(UpdateLerp)
         Call(TranslateModel, MODEL_mario_o, 0, LVar0, 480)
-        Call(ScaleModel, MODEL_mario_o, Float(1.25), Float(1.25), Float(1.25))
+        Call(ScaleModel, MODEL_mario_o, 1.25, 1.25, 1.25)
         Call(RotateModel, MODEL_mario_o, LVar2, 1, 0, 0)
-        Add(LVar2, Float(22.5))
+        Add(LVar2, 22.5)
         Wait(1)
         IfEq(LVar1, 0)
             BreakLoop
         EndIf
     EndLoop
-    Call(GotoMapSpecial, Ref("kmr_21"), kmr_21_ENTRY_0, TRANSITION_SLOW_FADE_TO_WHITE)
+    Call(GotoMapSpecial, "kmr_21", kmr_21_ENTRY_0, TRANSITION_SLOW_FADE_TO_WHITE)
     Wait(100 * DT)
     Return
     End

@@ -11,19 +11,19 @@ EvtScript EVS_ExitDoors_pra_36_0 = {
     Call(DisablePlayerInput, true)
     Set(LVar0, pra_21_ENTRY_1)
     Set(LVar1, COLLIDER_deilittnne)
-    Set(LVar2, Ref(DoorModelsL))
-    Set(LVar3, Ref(DoorModelsR))
+    Set(LVar2, DoorModelsL)
+    Set(LVar3, DoorModelsR)
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, Ref("pra_36"), pra_36_ENTRY_0)
+    Call(GotoMap, "pra_36", pra_36_ENTRY_0)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitDoor_pra_20_1), TRIGGER_WALL_PRESS_A, COLLIDER_deilittnnw, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoors_pra_36_0), TRIGGER_WALL_PRESS_A, COLLIDER_deilittnne, 1, 0)
+    BindTrigger(EVS_ExitDoor_pra_20_1, TRIGGER_WALL_PRESS_A, COLLIDER_deilittnnw, 1, 0)
+    BindTrigger(EVS_ExitDoors_pra_36_0, TRIGGER_WALL_PRESS_A, COLLIDER_deilittnne, 1, 0)
     Return
     End
 };
@@ -36,8 +36,8 @@ EvtScript EVS_EnterMap = {
             Set(LVar3, DOOR_SWING_IN)
             ExecWait(EnterSingleDoor)
         CaseEq(pra_21_ENTRY_1)
-            Set(LVar2, Ref(DoorModelsL))
-            Set(LVar3, Ref(DoorModelsR))
+            Set(LVar2, DoorModelsL)
+            Set(LVar3, DoorModelsR)
             ExecWait(BaseEnterDoor)
     EndSwitch
     Exec(EVS_BindExitTriggers)

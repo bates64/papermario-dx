@@ -5,7 +5,7 @@
 EvtScript EVS_ExitWalk_mac_02_3 = EVT_EXIT_WALK(60, mac_03_ENTRY_0, "mac_02", mac_02_ENTRY_3);
 
 EvtScript EVS_GotoMap_mgm_00_0 = {
-    Call(GotoMap, Ref("mgm_00"), mgm_00_ENTRY_0)
+    Call(GotoMap, "mgm_00", mgm_00_ENTRY_0)
     Wait(100)
     Return
     End
@@ -14,8 +14,8 @@ EvtScript EVS_GotoMap_mgm_00_0 = {
 EvtScript EVS_ExitPipe_mgm_00_0 = EVT_EXIT_PIPE_VERTICAL(mac_02_ENTRY_2, COLLIDER_deilim, EVS_GotoMap_mgm_00_0);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_mac_02_3), TRIGGER_FLOOR_ABOVE, COLLIDER_deilin, 1, 0)
-    BindTrigger(Ref(EVS_ExitPipe_mgm_00_0), TRIGGER_FLOOR_TOUCH, COLLIDER_deilim, 1, 0)
+    BindTrigger(EVS_ExitWalk_mac_02_3, TRIGGER_FLOOR_ABOVE, COLLIDER_deilin, 1, 0)
+    BindTrigger(EVS_ExitPipe_mgm_00_0, TRIGGER_FLOOR_TOUCH, COLLIDER_deilim, 1, 0)
     Return
     End
 };
@@ -24,7 +24,7 @@ EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(mac_03_ENTRY_0)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
         CaseEq(mac_03_ENTRY_1)
             Exec(EVS_ArriveFromMtRugged)
@@ -70,7 +70,7 @@ EvtScript EVS_Main = {
     Set(AF_MAC03_Unread_23, false)
     Set(AF_MAC03_Unread_24, false)
     Set(AF_MAC03_Unread_25, false)
-    Call(MakeNpcs, false, Ref(DefaultNPCs))
+    Call(MakeNpcs, false, DefaultNPCs)
     Exec(EVS_MakeEntities)
     Exec(EVS_SetupFoliage)
     Call(GetDemoState, LVar0)

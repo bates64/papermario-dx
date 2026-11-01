@@ -54,7 +54,7 @@ EvtScript EVS_NpcInteract_CookingApprentice = {
 };
 
 EvtScript EVS_NpcInit_CookingApprentice = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_CookingApprentice))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_CookingApprentice)
     Return
     End
 };

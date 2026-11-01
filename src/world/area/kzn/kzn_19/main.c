@@ -25,7 +25,7 @@ EvtScript EVS_TrySpawningStarCard = {
         // card appearing scene
         Call(DisablePlayerInput, true)
         Call(UseSettingsFrom, CAM_DEFAULT, 185, 110, -30)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(0.44))
+        Call(SetCamSpeed, CAM_DEFAULT, 0.44)
         Call(SetPanTarget, CAM_DEFAULT, 185, 55, -30)
         EVT_SPIRIT_ADJUST_CAM(10000)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
@@ -60,9 +60,9 @@ EvtScript EVS_TrySpawningStarCard = {
         Call(AwaitSpiritCardProgress, SPIRIT_CARD_NOTIFY_DONE_FALLING)
         Call(GetPlayerPos, LVar2, LVar3, LVar4)
         Call(UseSettingsFrom, CAM_DEFAULT, LVar2, LVar3, LVar4)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(1.0))
+        Call(SetCamSpeed, CAM_DEFAULT, 1.0)
         Call(SetPanTarget, CAM_DEFAULT, LVar2, LVar3, LVar4)
-        Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+        Call(WaitForCam, CAM_DEFAULT, 1.0)
         Call(PanToTarget, CAM_DEFAULT, 0, false)
         Call(DisablePlayerInput, false)
     Else
@@ -77,7 +77,7 @@ EvtScript EVS_TrySpawningStarCard = {
     Call(AwaitSpiritCardProgress, SPIRIT_CARD_NOTIFY_PLAYER_TOUCH)
     Call(PlaySoundAtPlayer, SOUND_RESCUE_STAR_SPIRIT, SOUND_SPACE_DEFAULT)
     Call(DisablePlayerInput, true)
-    Call(GotoMapSpecial, Ref("kmr_23"), kmr_23_ENTRY_4, TRANSITION_GET_STAR_CARD)
+    Call(GotoMapSpecial, "kmr_23", kmr_23_ENTRY_4, TRANSITION_GET_STAR_CARD)
     Wait(100)
     Return
     End
@@ -88,9 +88,9 @@ EvtScript EVS_ExitWalk_kzn_18_2 = EVT_EXIT_WALK(60, kzn_19_ENTRY_1, "kzn_18", kz
 EvtScript EVS_ExitWalk_kzn_20_0 = EVT_EXIT_WALK(60, kzn_19_ENTRY_2, "kzn_20", kzn_20_ENTRY_0);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_kzn_18_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deili3, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_kzn_18_2), TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_kzn_20_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deili2, 1, 0)
+    BindTrigger(EVS_ExitWalk_kzn_18_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deili3, 1, 0)
+    BindTrigger(EVS_ExitWalk_kzn_18_2, TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
+    BindTrigger(EVS_ExitWalk_kzn_20_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deili2, 1, 0)
     Return
     End
 };
@@ -160,8 +160,8 @@ EvtScript EVS_UpdateLavaWaves = {
         Call(MakeLerp, 0, 180, 40, EASING_COS_IN)
         Loop(0)
             Call(UpdateLerp)
-            DivF(LVar0, Float(100.0))
-            SubF(LVar0, Float(0.9))
+            DivF(LVar0, 100.0)
+            SubF(LVar0, 0.9)
             Call(ScaleModel, MODEL_yougan1_1, 1, LVar0, 1)
             Wait(1)
             IfEq(LVar1, 0)
@@ -171,8 +171,8 @@ EvtScript EVS_UpdateLavaWaves = {
         Call(MakeLerp, 180, 0, 40, EASING_SIN_OUT)
         Loop(0)
             Call(UpdateLerp)
-            DivF(LVar0, Float(100.0))
-            SubF(LVar0, Float(0.9))
+            DivF(LVar0, 100.0)
+            SubF(LVar0, 0.9)
             Call(ScaleModel, MODEL_yougan1_1, 1, LVar0, 1)
             Wait(1)
             IfEq(LVar1, 0)
@@ -190,9 +190,9 @@ EvtScript EVS_Main = {
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, kzn_19_ENTRY_3)
-        Call(MakeNpcs, true, Ref(EscapeNPCs))
+        Call(MakeNpcs, true, EscapeNPCs)
     Else
-        Call(MakeNpcs, true, Ref(BossNPCs))
+        Call(MakeNpcs, true, BossNPCs)
     EndIf
     ExecWait(EVS_MakeEntities)
     Call(GetEntryID, LVar0)
@@ -202,7 +202,7 @@ EvtScript EVS_Main = {
             Exec(EVS_BindExitTriggers)
         EndThread
     Else
-        Set(LVar0, Ref(EVS_BindExitTriggers))
+        Set(LVar0, EVS_BindExitTriggers)
         Exec(EnterWalk)
         Wait(1)
     EndIf

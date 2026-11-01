@@ -22,7 +22,7 @@ EvtScript EVS_NpcIdle_Blooper = {
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_LARGE_ACTOR_JUMP, SOUND_SPACE_DEFAULT)
     Call(NpcFlyTo, NPC_SELF, LVar0, 0, 0, 10, 0, EASING_QUADRATIC_IN)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Blooper_Jump)
-    Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(1.0))
+    Call(ShakeCam, CAM_DEFAULT, 0, 5, 1.0)
     Wait(15)
     Call(StartBossBattle, SONG_SPECIAL_BATTLE)
     Return
@@ -66,17 +66,17 @@ EvtScript EVS_NpcDefeat_Blooper = {
 
 EvtScript EVS_NpcInit_Blooper = {
     IfEq(GF_TIK01_Defeated_Blooper, false)
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Blooper))
-        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Blooper))
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Blooper)
+        Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_Blooper)
         IfEq(GF_TIK_DefeatedOneBlooper, false)
-            Call(SetNpcScale, NPC_SELF, Float(0.75), Float(0.75), Float(0.75))
+            Call(SetNpcScale, NPC_SELF, 0.75, 0.75, 0.75)
             Call(GetBlooperBattleID, 0)
         Else
             IfEq(GF_TIK_DefeatedTwoBloopers, false)
-                Call(SetNpcScale, NPC_SELF, Float(1.25), Float(1.25), Float(1.25))
+                Call(SetNpcScale, NPC_SELF, 1.25, 1.25, 1.25)
                 Call(GetBlooperBattleID, 1)
             Else
-                Call(SetNpcScale, NPC_SELF, Float(2.0), Float(2.0), Float(2.0))
+                Call(SetNpcScale, NPC_SELF, 2.0, 2.0, 2.0)
                 Call(GetBlooperBattleID, 2)
             EndIf
         EndIf

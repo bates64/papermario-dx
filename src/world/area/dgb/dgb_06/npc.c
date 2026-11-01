@@ -18,7 +18,7 @@ EvtScript EVS_NpcInit_Boo = {
     IfGe(GB_StoryProgress, STORY_CH3_TUBBA_CHASED_MARIO_IN_FOYER)
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndIf
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Boo))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Boo)
     Return
     End
 };

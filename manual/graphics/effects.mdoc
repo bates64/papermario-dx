@@ -23,7 +23,7 @@ The `EFFECT_` IDs are in `effects.h`. Battle files that include `script_api/batt
   args: s32, f32, f32, f32, f32, s32
 ```
 
-`PlayEffect` must have exactly that many arguments after the ID. An `f32` can be a whole number, a variable, or a decimal number written with `Float`, such as `Float(0.5)`.
+`PlayEffect` must have exactly that many arguments after the ID. An `f32` can be a whole number, a decimal number such as `0.5`, or a variable.
 
 To learn what each argument means, open the effect's file in `effects/`, such as `effects/energy_orb_wave.c`. Its function named after the effect, with `_main` on the end, names the arguments:
 

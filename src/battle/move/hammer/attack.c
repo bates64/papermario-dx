@@ -50,17 +50,17 @@ EvtScript EVS_UseMove_Impl = {
                 CaseEq(0)
                     Call(StartRumble, BTL_RUMBLE_PLAYER_MIN)
                     Thread
-                        Call(ShakeCam, CAM_BATTLE, 0, 10, Float(1.3))
+                        Call(ShakeCam, CAM_BATTLE, 0, 10, 1.3)
                     EndThread
                 CaseEq(1)
                     Call(StartRumble, BTL_RUMBLE_PLAYER_LIGHT)
                     Thread
-                        Call(ShakeCam, CAM_BATTLE, 0, 10, Float(1.6))
+                        Call(ShakeCam, CAM_BATTLE, 0, 10, 1.6)
                     EndThread
                 CaseEq(2)
                     Call(StartRumble, BTL_RUMBLE_PLAYER_HEAVY)
                     Thread
-                        Call(ShakeCam, CAM_BATTLE, 0, 10, Float(1.9))
+                        Call(ShakeCam, CAM_BATTLE, 0, 10, 1.9)
                     EndThread
             EndSwitch
         CaseDefault
@@ -69,17 +69,17 @@ EvtScript EVS_UseMove_Impl = {
                 CaseEq(0)
                     Call(StartRumble, BTL_RUMBLE_PLAYER_MIN)
                     Thread
-                        Call(ShakeCam, CAM_BATTLE, 0, 2, Float(1.3))
+                        Call(ShakeCam, CAM_BATTLE, 0, 2, 1.3)
                     EndThread
                 CaseEq(1)
                     Call(StartRumble, BTL_RUMBLE_PLAYER_LIGHT)
                     Thread
-                        Call(ShakeCam, CAM_BATTLE, 0, 2, Float(1.6))
+                        Call(ShakeCam, CAM_BATTLE, 0, 2, 1.6)
                     EndThread
                 CaseEq(2)
                     Call(StartRumble, BTL_RUMBLE_PLAYER_HEAVY)
                     Thread
-                        Call(ShakeCam, CAM_BATTLE, 0, 2, Float(1.9))
+                        Call(ShakeCam, CAM_BATTLE, 0, 2, 1.9)
                     EndThread
             EndSwitch
     EndSwitch
@@ -167,19 +167,19 @@ EvtScript EVS_FirstStrike = {
             Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_HAMMER_SWING_1)
             Call(StartRumble, BTL_RUMBLE_PLAYER_MIN)
             Thread
-                Call(ShakeCam, CAM_BATTLE, 0, 10, Float(1.3))
+                Call(ShakeCam, CAM_BATTLE, 0, 10, 1.3)
             EndThread
         CaseEq(1)
             Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_HAMMER_SWING_2)
             Call(StartRumble, BTL_RUMBLE_PLAYER_LIGHT)
             Thread
-                Call(ShakeCam, CAM_BATTLE, 0, 10, Float(1.6))
+                Call(ShakeCam, CAM_BATTLE, 0, 10, 1.6)
             EndThread
         CaseEq(2)
             Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_HAMMER_SWING_3)
             Call(StartRumble, BTL_RUMBLE_PLAYER_HEAVY)
             Thread
-                Call(ShakeCam, CAM_BATTLE, 0, 10, Float(1.9))
+                Call(ShakeCam, CAM_BATTLE, 0, 10, 1.9)
             EndThread
     EndSwitch
     Call(UseBattleCamPreset, BTL_CAM_PLAYER_HAMMER_STRIKE)
@@ -247,17 +247,17 @@ EvtScript EVS_UseBerserker_Impl = {
             CaseEq(0)
                 Call(StartRumble, BTL_RUMBLE_PLAYER_LIGHT)
                 Thread
-                    Call(ShakeCam, CAM_BATTLE, 0, 2, Float(1.3))
+                    Call(ShakeCam, CAM_BATTLE, 0, 2, 1.3)
                 EndThread
             CaseEq(1)
                 Call(StartRumble, BTL_RUMBLE_PLAYER_HEAVY)
                 Thread
-                    Call(ShakeCam, CAM_BATTLE, 0, 2, Float(1.6))
+                    Call(ShakeCam, CAM_BATTLE, 0, 2, 1.6)
                 EndThread
             CaseEq(2)
                 Call(StartRumble, BTL_RUMBLE_PLAYER_EXTREME)
                 Thread
-                    Call(ShakeCam, CAM_BATTLE, 0, 2, Float(1.9))
+                    Call(ShakeCam, CAM_BATTLE, 0, 2, 1.9)
                 EndThread
         EndSwitch
         Call(UseBattleCamPreset, BTL_CAM_PLAYER_HAMMER_STRIKE)
@@ -272,17 +272,17 @@ EvtScript EVS_UseBerserker_Impl = {
                 CaseEq(0)
                     Call(StartRumble, BTL_RUMBLE_PLAYER_LIGHT)
                     Thread
-                        Call(ShakeCam, CAM_BATTLE, 0, 10, Float(1.3))
+                        Call(ShakeCam, CAM_BATTLE, 0, 10, 1.3)
                     EndThread
                 CaseEq(1)
                     Call(StartRumble, BTL_RUMBLE_PLAYER_HEAVY)
                     Thread
-                        Call(ShakeCam, CAM_BATTLE, 0, 10, Float(1.6))
+                        Call(ShakeCam, CAM_BATTLE, 0, 10, 1.6)
                     EndThread
                 CaseEq(2)
                     Call(StartRumble, BTL_RUMBLE_PLAYER_EXTREME)
                     Thread
-                        Call(ShakeCam, CAM_BATTLE, 0, 10, Float(1.9))
+                        Call(ShakeCam, CAM_BATTLE, 0, 10, 1.9)
                     EndThread
             EndSwitch
         CaseDefault
@@ -291,17 +291,17 @@ EvtScript EVS_UseBerserker_Impl = {
                 CaseEq(0)
                     Call(StartRumble, BTL_RUMBLE_PLAYER_LIGHT)
                     Thread
-                        Call(ShakeCam, CAM_BATTLE, 0, 2, Float(1.3))
+                        Call(ShakeCam, CAM_BATTLE, 0, 2, 1.3)
                     EndThread
                 CaseEq(1)
                     Call(StartRumble, BTL_RUMBLE_PLAYER_HEAVY)
                     Thread
-                        Call(ShakeCam, CAM_BATTLE, 0, 2, Float(1.6))
+                        Call(ShakeCam, CAM_BATTLE, 0, 2, 1.6)
                     EndThread
                 CaseEq(2)
                     Call(StartRumble, BTL_RUMBLE_PLAYER_EXTREME)
                     Thread
-                        Call(ShakeCam, CAM_BATTLE, 0, 2, Float(1.9))
+                        Call(ShakeCam, CAM_BATTLE, 0, 2, 1.9)
                     EndThread
             EndSwitch
     EndSwitch

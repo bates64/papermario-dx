@@ -101,9 +101,9 @@ s32 DefaultAnims[] = {
 };
 
 EvtScript EVS_Init = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
     Call(GetActorVar, ACTOR_SELF, AVAR_FiredFromBlaster, LVar0)
     IfEq(LVar0, 0)
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -130,7 +130,7 @@ EvtScript EVS_Init = {
         Call(SetActorSounds, ACTOR_SELF, ACTOR_SOUND_JUMP, SOUND_NONE, 0)
         Call(GetActorPos, LVar0, LVar1, LVarB, LVarC)
         Sub(LVar1, 90)
-        Call(SetActorJumpGravity, ACTOR_SELF, Float(0.01))
+        Call(SetActorJumpGravity, ACTOR_SELF, 0.01)
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BulletBill_Gold_Tense)
         Call(SetGoalPos, ACTOR_SELF, LVar1, LVar2, LVar3)
         Call(JumpToGoal, ACTOR_SELF, 5, false, true, false)
@@ -261,7 +261,7 @@ EvtScript EVS_TakeTurn = {
             Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
             Set(LVar1, LVar3)
             Sub(LVar0, 90)
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(0.01))
+            Call(SetActorJumpGravity, ACTOR_SELF, 0.01)
             Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(JumpToGoal, ACTOR_SELF, 18, false, true, false)
             IfEq(LVarA, HIT_RESULT_LUCKY)
@@ -280,7 +280,7 @@ EvtScript EVS_TakeTurn = {
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Set(LVar1, LVar3)
     Add(LVar0, 10)
-    Call(SetActorJumpGravity, ACTOR_SELF, Float(0.01))
+    Call(SetActorJumpGravity, ACTOR_SELF, 0.01)
     Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(JumpToGoal, ACTOR_SELF, 12, false, true, false)
     ExecWait(EVS_MakeExplosionFX)
@@ -303,11 +303,11 @@ EvtScript EVS_MakeExplosionFX = {
     PlayEffect(EFFECT_SMOKE_RING, 0, LVar0, LVar1, LVar2)
     Add(LVar1, 16)
     Add(LVar2, 2)
-    PlayEffect(EFFECT_BLAST, 0, LVar0, LVar1, LVar2, Float(3.0), 30)
+    PlayEffect(EFFECT_BLAST, 0, LVar0, LVar1, LVar2, 3.0, 30)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BULLET_BILL_EXPLODE_A)
     Call(StartRumble, BTL_RUMBLE_PLAYER_MAX)
     Thread
-        Call(ShakeCam, CAM_BATTLE, 0, 5, Float(1.0))
+        Call(ShakeCam, CAM_BATTLE, 0, 5, 1.0)
     EndThread
     Return
     End

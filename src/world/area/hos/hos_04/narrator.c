@@ -80,10 +80,10 @@ EvtScript EVS_SetupNarrator = {
     Switch(LVar0)
 #if VERSION_JP
         CaseEq(hos_04_ENTRY_3)
-            Call(SetCurtainCallback, Ref(curtain_callback_jp_narration))
+            Call(SetCurtainCallback, curtain_callback_jp_narration)
 #endif
         CaseEq(hos_04_ENTRY_4)
-            Call(SetCurtainCallback, Ref(curtain_callback_narration))
+            Call(SetCurtainCallback, curtain_callback_narration)
     EndSwitch
     Return
     End

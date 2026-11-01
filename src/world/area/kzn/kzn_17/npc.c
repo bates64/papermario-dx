@@ -50,11 +50,11 @@ EvtScript EVS_Kolorado_TrompImpact = {
     Call(SetNpcRotationPivot, NPC_Kolorado, 13)
     Call(SetNpcRotation, NPC_Kolorado, 0, 0, 250)
     Call(SetNpcAnimation, NPC_Kolorado, ANIM_Kolorado_HurtStill)
-    Call(SetNpcImgFXParams, NPC_Kolorado, IMGFX_SET_WAVY, Float(3.0), Float(3.0), 0, 0)
+    Call(SetNpcImgFXParams, NPC_Kolorado, IMGFX_SET_WAVY, 3.0, 3.0, 0, 0)
     Call(PlaySoundAtNpc, NPC_Kolorado, SOUND_HIT_PLAYER_NORMAL, SOUND_SPACE_DEFAULT)
     Thread
         Call(SetNpcCollisionSize, NPC_Kolorado, 20, 24)
-        Call(LoadPath, 30, Ref(KoloradoThrownPath), ARRAY_COUNT(KoloradoThrownPath), EASING_LINEAR)
+        Call(LoadPath, 30, KoloradoThrownPath, ARRAY_COUNT(KoloradoThrownPath), EASING_LINEAR)
         Label(0)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_Kolorado, LVar1, LVar2, LVar3)
@@ -75,7 +75,7 @@ EvtScript EVS_Kolorado_HurtInit = {
     Call(SetNpcRotationPivot, NPC_Kolorado, 13)
     Call(SetNpcRotation, NPC_Kolorado, 0, 0, 250)
     Call(SetNpcAnimation, NPC_Kolorado, ANIM_Kolorado_HurtStill)
-    Call(SetNpcImgFXParams, NPC_Kolorado, IMGFX_SET_WAVY, Float(3.0), Float(3.0), 0, 0)
+    Call(SetNpcImgFXParams, NPC_Kolorado, IMGFX_SET_WAVY, 3.0, 3.0, 0, 0)
     Return
     End
 };
@@ -91,7 +91,7 @@ EvtScript EVS_NpcIdle_Kolorado = {
     Call(ShowMessageAtScreenPos, MSG_CH5_00F7, 160, 40)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcPos, NPC_SELF, 290, 0, 30)
-    Call(SetNpcSpeed, NPC_SELF, Float(5.0 / DT))
+    Call(SetNpcSpeed, NPC_SELF, 5.0 / DT)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Panic)
     Call(NpcMoveTo, NPC_SELF, 640, 80, 0)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
@@ -106,11 +106,11 @@ EvtScript EVS_NpcIdle_Kolorado = {
 EvtScript EVS_NpcInteract_Kolorado = {
     IfLt(GB_StoryProgress, STORY_CH5_HIDDEN_PASSAGE_OPEN)
         Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Shout, ANIM_Kolorado_Yell, 0, MSG_CH5_00FC)
-        Set(LVar0, Ref(LetterDelivery_Kolorado1))
+        Set(LVar0, LetterDelivery_Kolorado1)
         ExecWait(EVS_TryLetterDelivery)
     Else
         Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_HurtStill, 5, MSG_CH5_00FA)
-        Set(LVar0, Ref(LetterDelivery_Kolorado2))
+        Set(LVar0, LetterDelivery_Kolorado2)
         ExecWait(EVS_TryLetterDelivery)
     EndIf
     Return
@@ -118,10 +118,10 @@ EvtScript EVS_NpcInteract_Kolorado = {
 };
 
 EvtScript EVS_NpcInit_Kolorado = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Kolorado))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Kolorado)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_KOLORADO_AT_DEAD_END)
-            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Kolorado))
+            Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Kolorado)
             Return
         CaseLt(STORY_CH5_HIDDEN_PASSAGE_OPEN)
             Call(SetNpcPos, NPC_SELF, 640, 0, 80)

@@ -18,11 +18,11 @@ EvtScript EVS_ReadSign_ToMerluvlee = {
 };
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Ref(Entity_Signpost), 450, 10, -185, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(EVS_ReadSign_ToSummit))
-    Call(MakeEntity, Ref(Entity_Signpost), 855, -10, -40, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(EVS_ReadSign_ToMerluvlee))
-    Call(MakeEntity, Ref(Entity_HiddenPanel), 380, -10, 25, 0, MODEL_o239, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_Signpost, 450, 10, -185, 0, MAKE_ENTITY_END)
+    Call(AssignScript, EVS_ReadSign_ToSummit)
+    Call(MakeEntity, Entity_Signpost, 855, -10, -40, 0, MAKE_ENTITY_END)
+    Call(AssignScript, EVS_ReadSign_ToMerluvlee)
+    Call(MakeEntity, Entity_HiddenPanel, 380, -10, 25, 0, MODEL_o239, MAKE_ENTITY_END)
     Call(AssignPanelFlag, GF_HOS00_HiddenPanel)
     Return
     End

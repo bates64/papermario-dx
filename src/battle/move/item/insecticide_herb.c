@@ -96,8 +96,8 @@ EvtScript EVS_UseItem = {
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Throw)
     Call(PlaySound, SOUND_THROW)
     Wait(3)
-    Call(CreateVirtualEntity, LVarA, Ref(modelCommandList))
-    SetF(LVar0, Float(1.0))
+    Call(CreateVirtualEntity, LVarA, modelCommandList)
+    SetF(LVar0, 1.0)
     Call(MultiplyByActorScale, LVar0)
     Call(SetVirtualEntityScale, LVarA, LVar0, LVar0, LVar0)
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
@@ -120,7 +120,7 @@ EvtScript EVS_UseItem = {
             Wait(1)
         EndLoop
     EndThread
-    Call(SetVirtualEntityJumpGravity, LVarA, Float(0.8))
+    Call(SetVirtualEntityJumpGravity, LVarA, 0.8)
     Add(LVar2, 5)
     Call(VirtualEntityJumpTo, LVarA, LVar0, LVar1, LVar2, 18)
     PlayEffect(EFFECT_WALKING_DUST, 3, LVar0, LVar1, LVar2, 0, 0)

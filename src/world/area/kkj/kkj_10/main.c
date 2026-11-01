@@ -36,17 +36,17 @@ EvtScript EVS_ExitDoors_kkj_29_0 = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(
 
 EvtScript EVS_BindExitTriggers = {
     IfGt(GB_StoryProgress, STORY_CH6_BEGAN_PEACH_MISSION)
-        BindTrigger(Ref(EVS_ExitDoors_osr_02_1), TRIGGER_WALL_PRESS_A, COLLIDER_tts, 1, 0)
+        BindTrigger(EVS_ExitDoors_osr_02_1, TRIGGER_WALL_PRESS_A, COLLIDER_tts, 1, 0)
     EndIf
     Switch(GB_StoryProgress)
         CaseEq(STORY_CH5_BEGAN_PEACH_MISSION)
-            BindTrigger(Ref(EVS_ExitDoors_kkj_29_0), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
+            BindTrigger(EVS_ExitDoors_kkj_29_0, TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
         CaseDefault
-            BindTrigger(Ref(EVS_ExitDoors_kkj_21_0), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
+            BindTrigger(EVS_ExitDoors_kkj_21_0, TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
     EndSwitch
-    BindTrigger(Ref(EVS_ExitDoors_kkj_11_0), TRIGGER_WALL_PRESS_A, COLLIDER_ttn, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoors_kkj_19_0), TRIGGER_WALL_PRESS_A, COLLIDER_ttne, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoors_kkj_20_0), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
+    BindTrigger(EVS_ExitDoors_kkj_11_0, TRIGGER_WALL_PRESS_A, COLLIDER_ttn, 1, 0)
+    BindTrigger(EVS_ExitDoors_kkj_19_0, TRIGGER_WALL_PRESS_A, COLLIDER_ttne, 1, 0)
+    BindTrigger(EVS_ExitDoors_kkj_20_0, TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
     Return
     End
 };
@@ -89,11 +89,11 @@ EvtScript EVS_Main = {
     Switch(GB_StoryProgress)
         CaseOrEq(STORY_CH4_BEGAN_PEACH_MISSION)
         CaseOrEq(STORY_CH5_BEGAN_PEACH_MISSION)
-            Call(MakeNpcs, false, Ref(EarlyNPCs))
+            Call(MakeNpcs, false, EarlyNPCs)
         EndCaseGroup
         CaseEq(STORY_CH6_BEGAN_PEACH_MISSION)
             Call(SetAvailableDisguise, PEACH_DISGUISE_KOOPATROL)
-            Call(MakeNpcs, false, Ref(LaterNPCs))
+            Call(MakeNpcs, false, LaterNPCs)
         CaseDefault
             Call(EnableModel, MODEL_o273, false)
             Call(EnableModel, MODEL_o274, false)

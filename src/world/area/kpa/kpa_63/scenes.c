@@ -64,7 +64,7 @@ EvtScript EVS_Starship_Update = {
     Loop(0)
         Call(UpdateLerp)
         SetF(LVar3, LVar0)
-        MulF(LVar3, Float(0.1))
+        MulF(LVar3, 0.1)
         AddF(LVar3, MV_Starship_PosY)
         Call(TranslateGroup, MODEL_g55, 0, LVar3, 0)
         Call(RotateGroup, MODEL_g55, MV_Starship_Yaw, 0, 1, 0)
@@ -78,7 +78,7 @@ EvtScript EVS_Starship_Update = {
     Loop(0)
         Call(UpdateLerp)
         SetF(LVar3, LVar0)
-        MulF(LVar3, Float(0.1))
+        MulF(LVar3, 0.1)
         AddF(LVar3, MV_Starship_PosY)
         Call(TranslateGroup, MODEL_g55, 0, LVar3, 0)
         Call(RotateGroup, MODEL_g55, MV_Starship_Yaw, 0, 1, 0)
@@ -157,7 +157,7 @@ EvtScript EVS_Starship_Depart = {
         EndLoop
     EndThread
     Wait(50)
-    Call(GotoMap, Ref("kpa_60"), kpa_60_ENTRY_5)
+    Call(GotoMap, "kpa_60", kpa_60_ENTRY_5)
     Wait(100)
     Return
     End
@@ -176,7 +176,7 @@ EvtScript EVS_Starship_Arrive = {
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(UseSettingsFrom, CAM_DEFAULT, -120, 0, 230)
     Call(SetPanTarget, CAM_DEFAULT, -120, 0, 230)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(HidePlayerShadow, false)
     Call(EnableNpcShadow, NPC_PARTNER, true)

@@ -56,7 +56,7 @@ EvtScript EVS_NpcAI_SpearGuy_Wander = {
     Call(SetSelfVar, AI_VAR_MELEE_PRE_TIME, 5)
     Call(SetSelfVar, AI_VAR_MELEE_SWING_TIME, 12)
     Call(SetSelfVar, AI_VAR_MELEE_POST_TIME, 9)
-    Call(SpearGuyAI_Main, Ref(AISettings_SpearGuy_Wander))
+    Call(SpearGuyAI_Main, AISettings_SpearGuy_Wander)
     Return
     End
 };

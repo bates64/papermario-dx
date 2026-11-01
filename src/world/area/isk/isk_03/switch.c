@@ -6,7 +6,7 @@ EvtScript EVS_SetupSwitch = {
     Call(ParentColliderToModel, COLLIDER_o1989, MODEL_o1992)
     Call(ParentColliderToModel, COLLIDER_o1990, MODEL_o1992)
     IfEq(AF_ISK03_SandSwitchActivated, false)
-        BindTrigger(Ref(EVS_OnTouch_DrainSwitch), TRIGGER_FLOOR_TOUCH, COLLIDER_o1990, 1, 0)
+        BindTrigger(EVS_OnTouch_DrainSwitch, TRIGGER_FLOOR_TOUCH, COLLIDER_o1990, 1, 0)
     Else
         Call(TranslateGroup, MODEL_g319, 0, -14, 0)
         Call(UpdateColliderTransform, COLLIDER_o1989)
@@ -32,7 +32,7 @@ EvtScript EVS_OnTouch_DrainSwitch = {
     IfLt(LVar1, 50)
         Thread
             Call(DisablePartnerAI, false)
-            Call(SetNpcJumpscale, NPC_PARTNER, Float(2.5))
+            Call(SetNpcJumpscale, NPC_PARTNER, 2.5)
             Call(NpcJump0, NPC_PARTNER, 470, 50, 268, 10)
             Wait(10)
             Call(EnablePartnerAI)

@@ -8,11 +8,11 @@ EvtScript EVS_ExitWalk_kzn_05_1 = EVT_EXIT_WALK(60, kzn_03_ENTRY_3, "kzn_05", kz
 EvtScript EVS_ExitWalk_kzn_09_2 = EVT_EXIT_WALK(60, kzn_03_ENTRY_4, "kzn_09", kzn_09_ENTRY_2);
 
 EvtScript EVS_BindTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_kzn_02_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_kzn_04_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deili2, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_kzn_09_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deili3, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_kzn_05_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deili4, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_kzn_09_2), TRIGGER_FLOOR_ABOVE, COLLIDER_deili5, 1, 0)
+    BindTrigger(EVS_ExitWalk_kzn_02_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
+    BindTrigger(EVS_ExitWalk_kzn_04_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deili2, 1, 0)
+    BindTrigger(EVS_ExitWalk_kzn_09_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deili3, 1, 0)
+    BindTrigger(EVS_ExitWalk_kzn_05_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deili4, 1, 0)
+    BindTrigger(EVS_ExitWalk_kzn_09_2, TRIGGER_FLOOR_ABOVE, COLLIDER_deili5, 1, 0)
     Return
     End
 };
@@ -72,14 +72,14 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_MT_LAVALAVA)
     Call(SetSpriteShading, SHADING_KZN_03)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Call(MakeNpcs, true, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     Call(GetLoadType, LVar1)
     IfEq(LVar1, LOAD_FROM_FILE_SELECT)
         Exec(EnterSavePoint)
         Exec(EVS_BindTriggers)
     Else
-        Set(LVar0, Ref(EVS_BindTriggers))
+        Set(LVar0, EVS_BindTriggers)
         Exec(EnterWalk)
     EndIf
     Wait(1)

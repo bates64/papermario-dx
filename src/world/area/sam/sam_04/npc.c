@@ -72,7 +72,7 @@ EvtScript EVS_ItemPrompt_Scarf = {
 };
 
 EvtScript EVS_NpcInteract_Snowman_03 = {
-    BindPadlock(Ref(EVS_ItemPrompt_Scarf), TRIGGER_FORCE_ACTIVATE, 0, Ref(ScarfList), 0, 1)
+    BindPadlock(EVS_ItemPrompt_Scarf, TRIGGER_FORCE_ACTIVATE, 0, ScarfList, 0, 1)
     Return
     End
 };
@@ -112,7 +112,7 @@ EvtScript EVS_ItemPrompt_Bucket = {
 };
 
 EvtScript EVS_NpcInteract_Snowman_06 = {
-    BindPadlock(Ref(EVS_ItemPrompt_Bucket), TRIGGER_FORCE_ACTIVATE, 0, Ref(BucketList), 0, 1)
+    BindPadlock(EVS_ItemPrompt_Bucket, TRIGGER_FORCE_ACTIVATE, 0, BucketList, 0, 1)
     Return
     End
 };
@@ -148,8 +148,8 @@ EvtScript EVS_NpcIdle_Snowman_06 = {
 };
 
 EvtScript EVS_NpcInit_Snowman_01 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Snowman_01))
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Snowman_01))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Snowman_01)
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Snowman_01)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_USE_INSPECT_ICON, true)
     Call(EnableNpcShadow, NPC_SELF, false)
     Return
@@ -157,8 +157,8 @@ EvtScript EVS_NpcInit_Snowman_01 = {
 };
 
 EvtScript EVS_NpcInit_Snowman_02 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Snowman_02))
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Snowman_02))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Snowman_02)
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Snowman_02)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_USE_INSPECT_ICON, true)
     Call(EnableNpcShadow, NPC_SELF, false)
     Return
@@ -166,8 +166,8 @@ EvtScript EVS_NpcInit_Snowman_02 = {
 };
 
 EvtScript EVS_NpcInit_Snowman_03 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Snowman_03))
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Snowman_03))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Snowman_03)
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Snowman_03)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_USE_INSPECT_ICON, true)
     Call(EnableNpcShadow, NPC_SELF, false)
     Return
@@ -175,8 +175,8 @@ EvtScript EVS_NpcInit_Snowman_03 = {
 };
 
 EvtScript EVS_NpcInit_Snowman_04 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Snowman_04))
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Snowman_04))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Snowman_04)
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Snowman_04)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_USE_INSPECT_ICON, true)
     Call(EnableNpcShadow, NPC_SELF, false)
     Return
@@ -184,8 +184,8 @@ EvtScript EVS_NpcInit_Snowman_04 = {
 };
 
 EvtScript EVS_NpcInit_Snowman_05 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Snowman_05))
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Snowman_05))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Snowman_05)
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Snowman_05)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_USE_INSPECT_ICON, true)
     Call(EnableNpcShadow, NPC_SELF, false)
     Return
@@ -193,8 +193,8 @@ EvtScript EVS_NpcInit_Snowman_05 = {
 };
 
 EvtScript EVS_NpcInit_Snowman_06 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Snowman_06))
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Snowman_06))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Snowman_06)
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Snowman_06)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_USE_INSPECT_ICON, true)
     Call(EnableNpcShadow, NPC_SELF, false)
     Return

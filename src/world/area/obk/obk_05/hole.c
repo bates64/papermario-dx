@@ -11,7 +11,7 @@ API_CALLABLE(AwaitPlayerEnterHole) {
 EvtScript EVS_ManageHole = {
     Call(AwaitPlayerEnterHole)
     Call(DisablePlayerPhysics, true)
-    Call(GotoMap, Ref("obk_06"), obk_06_ENTRY_0)
+    Call(GotoMap, "obk_06", obk_06_ENTRY_0)
     Wait(100)
     Return
     End

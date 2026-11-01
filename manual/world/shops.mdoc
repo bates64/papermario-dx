@@ -130,7 +130,7 @@ EvtScript EVS_NpcInteract_Koopa_ShopOwner = {
 };
 
 EvtScript EVS_NpcInit_Koopa_ShopOwner = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Koopa_ShopOwner))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Koopa_ShopOwner)
     Return
     End
 };
@@ -162,8 +162,8 @@ Make the shop with `MakeShop`, then give it its shopkeeper with `MakeShopOwner`.
 
 ```c
 EvtScript EVS_SetupShop = {
-    Call(MakeShop, Ref(ItemPositions), Ref(Inventory), Ref(PriceList), 0)
-    Call(MakeShopOwner, Ref(Owner))
+    Call(MakeShop, ItemPositions, Inventory, PriceList, 0)
+    Call(MakeShopOwner, Owner)
     Return
     End
 };
@@ -202,12 +202,12 @@ The shop's stock is set when the map loads. To sell different items later in the
 ```c
 EvtScript EVS_SetupShop = {
     IfLt(GB_StoryProgress, STORY_CH2_STAR_SPIRIT_DEPARTED)
-        Set(LVar0, Ref(InventoryEarly))
+        Set(LVar0, InventoryEarly)
     Else
-        Set(LVar0, Ref(InventoryLate))
+        Set(LVar0, InventoryLate)
     EndIf
-    Call(MakeShop, Ref(ItemPositions), LVar0, Ref(PriceList), 0)
-    Call(MakeShopOwner, Ref(Owner))
+    Call(MakeShop, ItemPositions, LVar0, PriceList, 0)
+    Call(MakeShopOwner, Owner)
     Return
     End
 };

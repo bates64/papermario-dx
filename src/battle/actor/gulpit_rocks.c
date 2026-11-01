@@ -95,18 +95,18 @@ OVL_DEF_ACTOR() = {
 };
 
 EvtScript EVS_Init = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
     Call(GetActorVar, ACTOR_SELF, AVAR_RockType, LVar0)
     Switch(LVar0)
         CaseEq(0)
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(BigRockAnims))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, BigRockAnims)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Gulpit_LargeRock)
             Call(GetActorVar, ACTOR_SELF, AVAR_RockType, 0)
             Call(SetActorSize, ACTOR_SELF, 24, 15)
         CaseEq(1)
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(SmallRockAnims))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, SmallRockAnims)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Gulpit_SmallRock)
             Call(GetActorVar, ACTOR_SELF, AVAR_RockType, 1)
             Call(SetActorSize, ACTOR_SELF, 10, 8)

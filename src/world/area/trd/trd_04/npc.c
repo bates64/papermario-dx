@@ -25,7 +25,7 @@ EvtScript EVS_NpcInit_KoopaTroopa = {
         Call(RemoveNpc, NPC_SELF)
         Return
     EndIf
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_KoopaTroopa))
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_KoopaTroopa)
     Return
     End
 };

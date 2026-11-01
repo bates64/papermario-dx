@@ -7,7 +7,7 @@ s32 FlyingKammyHoverOffsets_Npc3[] = {
 
 EvtScript EVS_NpcAux_Kammy_Broom_Npc3 = {
     Label(0)
-        UseBuf(Ref(FlyingKammyHoverOffsets_Npc3))
+        UseBuf(FlyingKammyHoverOffsets_Npc3)
         Loop(10)
             BufRead1(LVar1)
             Call(GetNpcPos, NPC_Kammy_05, LVar2, LVar3, LVar4)
@@ -42,7 +42,7 @@ EvtScript EVS_NpcInit_Peach_Npc3 = {
 };
 
 EvtScript EVS_NpcInit_Kammy_Broom_Npc3 = {
-    Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_Kammy_Broom_Npc3))
+    Call(BindNpcAux, NPC_SELF, EVS_NpcAux_Kammy_Broom_Npc3)
     Call(SetNpcPos, NPC_Kammy_05, 525, 10, 0)
     Call(SetNpcAnimation, NPC_Kammy_05, ANIM_BattleKammy_FlyStill)
     Call(InterpNpcYaw, NPC_Kammy_05, 270, 0)

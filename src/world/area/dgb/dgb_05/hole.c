@@ -19,7 +19,7 @@ EvtScript EVS_SetupHole = {
     Call(GrabCamera, CAM_DEFAULT, LVar2, LVar3, LVar4, LVar5)
     Call(AwaitFallDownHole)
     Set(GF_DGB05_BoardedFloor, true)
-    Call(GotoMap, Ref("dgb_06"), dgb_06_ENTRY_1)
+    Call(GotoMap, "dgb_06", dgb_06_ENTRY_1)
     Wait(100)
     Return
     End

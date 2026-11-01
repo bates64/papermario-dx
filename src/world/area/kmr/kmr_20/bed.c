@@ -36,7 +36,7 @@ EvtScript EVS_ToadHouse_SetDialogue = {
 
 EvtScript EVS_ToadHouse_GetInBed = {
     Exec(EVS_PlayRestingSong)
-    Call(SetPlayerSpeed, Float(3.0))
+    Call(SetPlayerSpeed, 3.0)
     Call(PlayerMoveTo, -28, -100, 0)
     Call(InterpPlayerYaw, 300, 0)
     Call(DisablePlayerPhysics, true)
@@ -49,7 +49,7 @@ EvtScript EVS_ToadHouse_GetInBed = {
         Call(SetCamPosA, CAM_DEFAULT, -170, 0)
         Call(SetCamPosB, CAM_DEFAULT, -109, -76)
         Call(SetCamPosC, CAM_DEFAULT, 0, 120)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+        Call(SetCamSpeed, CAM_DEFAULT, 90.0)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
         Call(EnableGroup, MODEL_o170, false)
         Call(EnableGroup, MODEL_o172, false)
@@ -193,7 +193,7 @@ EvtScript EVS_UseBed = {
 };
 
 EvtScript EVS_SetupBed = {
-    BindTrigger(Ref(EVS_UseBed), TRIGGER_WALL_PRESS_A, COLLIDER_o352, 1, 0)
+    BindTrigger(EVS_UseBed, TRIGGER_WALL_PRESS_A, COLLIDER_o352, 1, 0)
     Return
     End
 };

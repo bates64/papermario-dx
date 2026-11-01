@@ -143,7 +143,7 @@ EvtScript EVS_PlayClubbaDefeatFX = {
         Add(LVar0, -15)
         Add(LVar0, LVar3)
         Add(LVar1, LVar4)
-        PlayEffect(EFFECT_FIREWORK, 0, LVar0, LVar1, LVar2, Float(0.8), 0)
+        PlayEffect(EFFECT_FIREWORK, 0, LVar0, LVar1, LVar2, 0.8, 0)
         Call(PlaySoundAt, SOUND_SEQ_BULLET_BILL_EXPLODE, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
         Wait(2)
         Set(LVar0, LVarA)
@@ -154,7 +154,7 @@ EvtScript EVS_PlayClubbaDefeatFX = {
         Add(LVar0, -15)
         Add(LVar0, LVar3)
         Add(LVar1, LVar4)
-        PlayEffect(EFFECT_FIREWORK, 0, LVar0, LVar1, LVar2, Float(0.8), 0)
+        PlayEffect(EFFECT_FIREWORK, 0, LVar0, LVar1, LVar2, 0.8, 0)
         Call(PlaySoundAt, SOUND_SEQ_BULLET_BILL_EXPLODE, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
         Wait(8)
     EndLoop
@@ -225,7 +225,7 @@ EvtScript EVS_NpcDefeat_Clubba_03 = {
             Call(SetGroupVisibility, MODEL_g298, MODEL_GROUP_HIDDEN)
         EndLoop
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o1174, COLLIDER_FLAGS_UPPER_MASK)
-        BindTrigger(Ref(EVS_ExitDoors_pra_33_1), TRIGGER_WALL_PRESS_A, COLLIDER_deilittne, 1, 0)
+        BindTrigger(EVS_ExitDoors_pra_33_1, TRIGGER_WALL_PRESS_A, COLLIDER_deilittne, 1, 0)
         Set(GB_StoryProgress, STORY_CH7_DEFEATED_CLUBBAS)
         Call(DisablePlayerInput, false)
     EndThread
@@ -250,10 +250,10 @@ EvtScript EVS_NpcInit_Clubba_01 = {
         Call(RemoveNpc, NPC_SELF)
         Return
     EndIf
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Clubba_01))
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Clubba_01))
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Clubba_01))
-    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_Clubba_01))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Clubba_01)
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Clubba_01)
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_Clubba_01)
+    Call(BindNpcHit, NPC_SELF, EVS_NpcHit_Clubba_01)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_USE_INSPECT_ICON, true)
     Return
     End
@@ -268,10 +268,10 @@ EvtScript EVS_NpcInit_Clubba_02 = {
         Call(RemoveNpc, NPC_SELF)
         Return
     EndIf
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Clubba_02))
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Clubba_02))
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Clubba_02))
-    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_Clubba_02))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Clubba_02)
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Clubba_02)
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_Clubba_02)
+    Call(BindNpcHit, NPC_SELF, EVS_NpcHit_Clubba_02)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_USE_INSPECT_ICON, true)
     Return
     End
@@ -282,10 +282,10 @@ EvtScript EVS_NpcInit_Clubba_03 = {
         Call(RemoveNpc, NPC_SELF)
         Return
     EndIf
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Clubba_03))
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Clubba_03))
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Clubba_03))
-    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_Clubba_03))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Clubba_03)
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Clubba_03)
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_Clubba_03)
+    Call(BindNpcHit, NPC_SELF, EVS_NpcHit_Clubba_03)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_USE_INSPECT_ICON, true)
     Return
     End
@@ -301,7 +301,7 @@ EvtScript EVS_NpcInit_Clubba_01_Aux = {
         Return
     EndIf
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_USE_INSPECT_ICON, true)
-    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_Clubba_01_Aux))
+    Call(BindNpcHit, NPC_SELF, EVS_NpcHit_Clubba_01_Aux)
     Return
     End
 };
@@ -316,7 +316,7 @@ EvtScript EVS_NpcInit_Clubba_02_Aux = {
         Return
     EndIf
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_USE_INSPECT_ICON, true)
-    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_Clubba_02_Aux))
+    Call(BindNpcHit, NPC_SELF, EVS_NpcHit_Clubba_02_Aux)
     Return
     End
 };
@@ -327,7 +327,7 @@ EvtScript EVS_NpcInit_Clubba_03_Aux = {
         Return
     EndIf
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_USE_INSPECT_ICON, true)
-    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_Clubba_03_Aux))
+    Call(BindNpcHit, NPC_SELF, EVS_NpcHit_Clubba_03_Aux)
     Return
     End
 };

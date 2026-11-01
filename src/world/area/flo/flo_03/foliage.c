@@ -36,9 +36,9 @@ BombTrigger BombPos_Tree1 = {
 EvtScript EVS_SetupFoliage = {
     Set(AF_FLO_TreeDrop_RedBerry1, false)
     Set(AF_FLO_TreeDrop_RedBerry2, false)
-    Set(LVar0, Ref(ShakeTree_Tree1))
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_WALL_HAMMER, COLLIDER_o242, 1, 0)
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(BombPos_Tree1), 1, 0)
+    Set(LVar0, ShakeTree_Tree1)
+    BindTrigger(EVS_ShakeTree, TRIGGER_WALL_HAMMER, COLLIDER_o242, 1, 0)
+    BindTrigger(EVS_ShakeTree, TRIGGER_POINT_BOMB, BombPos_Tree1, 1, 0)
     Return
     End
 };

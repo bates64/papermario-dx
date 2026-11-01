@@ -240,9 +240,9 @@ EvtScript EVS_Interact_NearCabinet = {
     EndIf
     Call(PlaySoundAtCollider, COLLIDER_tansu1, SOUND_OBK_CABINET_CRASH, SOUND_SPACE_DEFAULT)
     Thread
-        Call(ShakeCam, CAM_DEFAULT, 0, 30, Float(1.5))
+        Call(ShakeCam, CAM_DEFAULT, 0, 30, 1.5)
     EndThread
-    UseBuf(Ref(DustEmitters_NearCabinet))
+    UseBuf(DustEmitters_NearCabinet)
     Loop(16)
         BufRead2(LVar0, LVar1)
         PlayEffect(EFFECT_LANDING_DUST, 2, LVar0, 0, LVar1, 0)
@@ -295,9 +295,9 @@ EvtScript EVS_Interact_FarCabinet = {
     EndIf
     Call(PlaySoundAtCollider, COLLIDER_tansu3, SOUND_OBK_CABINET_CRASH, SOUND_SPACE_DEFAULT)
     Thread
-        Call(ShakeCam, CAM_DEFAULT, 0, 30, Float(1.5))
+        Call(ShakeCam, CAM_DEFAULT, 0, 30, 1.5)
     EndThread
-    UseBuf(Ref(DustEmitters_FarCabinet))
+    UseBuf(DustEmitters_FarCabinet)
     Loop(16)
         BufRead2(LVar0, LVar1)
         PlayEffect(EFFECT_LANDING_DUST, 2, LVar0, 0, LVar1, 0)
@@ -324,17 +324,17 @@ EvtScript EVS_SetupCabinets = {
     Call(ParentColliderToModel, COLLIDER_o372, MODEL_tansu1)
     Call(ParentColliderToModel, COLLIDER_tansu3, MODEL_tansu3)
     Call(ParentColliderToModel, COLLIDER_o373, MODEL_tansu3)
-    BindTrigger(Ref(EVS_Interact_NearCabinet), TRIGGER_WALL_PRESS_A, COLLIDER_tansu1, 1, MV_Trigger_NearCabinet)
-    BindTrigger(Ref(EVS_Interact_MiddleCabinet), TRIGGER_WALL_PRESS_A, COLLIDER_tansu2, 1, MV_Trigger_MidCabinet)
-    BindTrigger(Ref(EVS_Interact_FarCabinet), TRIGGER_WALL_PRESS_A, COLLIDER_tansu3, 1, MV_Trigger_FarCabinet)
+    BindTrigger(EVS_Interact_NearCabinet, TRIGGER_WALL_PRESS_A, COLLIDER_tansu1, 1, MV_Trigger_NearCabinet)
+    BindTrigger(EVS_Interact_MiddleCabinet, TRIGGER_WALL_PRESS_A, COLLIDER_tansu2, 1, MV_Trigger_MidCabinet)
+    BindTrigger(EVS_Interact_FarCabinet, TRIGGER_WALL_PRESS_A, COLLIDER_tansu3, 1, MV_Trigger_FarCabinet)
     Return
     End
 };
 
 EvtScript EVS_BindCabinetTriggers = {
-    BindTrigger(Ref(EVS_Interact_NearCabinet), TRIGGER_WALL_PRESS_A, COLLIDER_tansu1, 1, MV_Trigger_NearCabinet)
-    BindTrigger(Ref(EVS_Interact_MiddleCabinet), TRIGGER_WALL_PRESS_A, COLLIDER_tansu2, 1, MV_Trigger_MidCabinet)
-    BindTrigger(Ref(EVS_Interact_FarCabinet), TRIGGER_WALL_PRESS_A, COLLIDER_tansu3, 1, MV_Trigger_FarCabinet)
+    BindTrigger(EVS_Interact_NearCabinet, TRIGGER_WALL_PRESS_A, COLLIDER_tansu1, 1, MV_Trigger_NearCabinet)
+    BindTrigger(EVS_Interact_MiddleCabinet, TRIGGER_WALL_PRESS_A, COLLIDER_tansu2, 1, MV_Trigger_MidCabinet)
+    BindTrigger(EVS_Interact_FarCabinet, TRIGGER_WALL_PRESS_A, COLLIDER_tansu3, 1, MV_Trigger_FarCabinet)
     Return
     End
 };

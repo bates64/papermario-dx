@@ -163,8 +163,8 @@ EvtScript EVS_NpcHit_PutridPiranha = {
 
 EvtScript EVS_NpcInit_PutridPiranha = {
     IfLt(GB_StoryProgress, STORY_CH5_DEFEATED_PIRANHAS_MINIBOSS)
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_PutridPiranha))
-        Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_PutridPiranha))
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_PutridPiranha)
+        Call(BindNpcHit, NPC_SELF, EVS_NpcHit_PutridPiranha)
     Else
         Call(SetNpcPos, NPC_PutridPiranha_01, NPC_DISPOSE_LOCATION)
         Call(SetNpcPos, NPC_PutridPiranha_02, NPC_DISPOSE_LOCATION)

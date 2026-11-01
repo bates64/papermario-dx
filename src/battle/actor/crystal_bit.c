@@ -213,10 +213,10 @@ OVL_DEF_ACTOR(prism) = {
 };
 
 EvtScript EVS_Init = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
-    Call(BindHandlePhase, ACTOR_SELF, Ref(EVS_HandlePhase))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
+    Call(BindHandlePhase, ACTOR_SELF, EVS_HandlePhase)
     Return
     End
 };
@@ -243,7 +243,7 @@ API_CALLABLE(UpdateCrystalBitEffect) {
 }
 
 EvtScript EVS_Idle = {
-    PlayEffect(EFFECT_MISC_PARTICLES, 1, NPC_DISPOSE_LOCATION, 24, 24, Float(1.0), 5, 0)
+    PlayEffect(EFFECT_MISC_PARTICLES, 1, NPC_DISPOSE_LOCATION, 24, 24, 1.0, 5, 0)
     Call(SetActorVar, ACTOR_SELF, AVAR_Bit_ParticlesEffect, LVarF)
     ChildThread
         Call(UpdateCrystalBitEffect, LVarF)
@@ -299,7 +299,7 @@ EvtScript EVS_HandleEvent = {
             ExecWait(EVS_Enemy_Hit)
             Call(HideHealthBar, ACTOR_SELF)
             Call(PlaySoundAtActor, ACTOR_SELF, SOUND_FALL_QUICK)
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(0.8))
+            Call(SetActorJumpGravity, ACTOR_SELF, 0.8)
             Call(GetActorPos, ACTOR_SELF, LVar1, LVar2, LVar3)
             Call(SetGoalPos, ACTOR_SELF, LVar1, 0, LVar3)
             Call(JumpToGoal, ACTOR_SELF, 15, false, true, false)
@@ -316,16 +316,16 @@ EvtScript EVS_HandleEvent = {
             IfEq(LVar0, LVar1)
                 Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_CrystalKing_PrismInert)
             EndIf
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(1.2))
+            Call(SetActorJumpGravity, ACTOR_SELF, 1.2)
             Call(RandInt, 360, LVar0)
             Call(GetActorPos, ACTOR_SELF, LVar1, LVar2, LVar3)
-            Call(AddVectorPolar, LVar1, LVar3, Float(30.0), LVar0)
+            Call(AddVectorPolar, LVar1, LVar3, 30.0, LVar0)
             Call(SetGoalPos, ACTOR_SELF, LVar1, 0, LVar3)
             Call(JumpToGoal, ACTOR_SELF, 15, false, true, false)
-            Call(AddVectorPolar, LVar1, LVar3, Float(20.0), LVar0)
+            Call(AddVectorPolar, LVar1, LVar3, 20.0, LVar0)
             Call(SetGoalPos, ACTOR_SELF, LVar1, 0, LVar3)
             Call(JumpToGoal, ACTOR_SELF, 10, false, true, false)
-            Call(AddVectorPolar, LVar1, LVar3, Float(10.0), LVar0)
+            Call(AddVectorPolar, LVar1, LVar3, 10.0, LVar0)
             Call(SetGoalPos, ACTOR_SELF, LVar1, 0, LVar3)
             Call(JumpToGoal, ACTOR_SELF, 5, false, true, false)
             Set(LVar0, 255)
@@ -361,20 +361,20 @@ EvtScript EVS_HandleEvent = {
             ExecWait(EVS_Enemy_BurnHit)
             Call(HideHealthBar, ACTOR_SELF)
             Call(PlaySoundAtActor, ACTOR_SELF, SOUND_FALL_QUICK)
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(0.8))
+            Call(SetActorJumpGravity, ACTOR_SELF, 0.8)
             Call(GetActorPos, ACTOR_SELF, LVar1, LVar2, LVar3)
             Call(SetGoalPos, ACTOR_SELF, LVar1, 0, LVar3)
             Call(JumpToGoal, ACTOR_SELF, 15, false, true, false)
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(1.2))
+            Call(SetActorJumpGravity, ACTOR_SELF, 1.2)
             Call(RandInt, 360, LVar0)
             Call(GetActorPos, ACTOR_SELF, LVar1, LVar2, LVar3)
-            Call(AddVectorPolar, LVar1, LVar3, Float(30.0), LVar0)
+            Call(AddVectorPolar, LVar1, LVar3, 30.0, LVar0)
             Call(SetGoalPos, ACTOR_SELF, LVar1, 0, LVar3)
             Call(JumpToGoal, ACTOR_SELF, 15, false, true, false)
-            Call(AddVectorPolar, LVar1, LVar3, Float(20.0), LVar0)
+            Call(AddVectorPolar, LVar1, LVar3, 20.0, LVar0)
             Call(SetGoalPos, ACTOR_SELF, LVar1, 0, LVar3)
             Call(JumpToGoal, ACTOR_SELF, 10, false, true, false)
-            Call(AddVectorPolar, LVar1, LVar3, Float(10.0), LVar0)
+            Call(AddVectorPolar, LVar1, LVar3, 10.0, LVar0)
             Call(SetGoalPos, ACTOR_SELF, LVar1, 0, LVar3)
             Call(JumpToGoal, ACTOR_SELF, 5, false, true, false)
             Set(LVar0, 255)

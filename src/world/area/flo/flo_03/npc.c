@@ -38,17 +38,17 @@ EvtScript EVS_Scene_SunReturns = {
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamDistance, CAM_DEFAULT, 300)
-    Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-9.5))
+    Call(SetCamPitch, CAM_DEFAULT, 17.0, -9.5)
     Call(SetCamPosA, CAM_DEFAULT, -27, 0)
     Call(SetCamPosB, CAM_DEFAULT, 0, -50)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Wait(20)
     Call(SpeakToPlayer, NPC_Petunia, ANIM_Petunia_Talk, ANIM_Petunia_Idle, 0, MSG_CH6_00C8)
     Call(SetNpcAnimation, NPC_Petunia, ANIM_Petunia_Dance)
     Wait(10)
-    Call(GotoMap, Ref("flo_18"), flo_18_ENTRY_1)
+    Call(GotoMap, "flo_18", flo_18_ENTRY_1)
     Wait(100)
     Return
     End
@@ -131,7 +131,7 @@ EvtScript EVS_FocusCamBetween = {
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     Add(LVar0, LVar3)
     Div(LVar0, 2)
-    Call(SetCamProperties, CAM_DEFAULT, LVar4, LVar0, LVar1, LVar2, 300, Float(20.0), Float(-9.5))
+    Call(SetCamProperties, CAM_DEFAULT, LVar4, LVar0, LVar1, LVar2, 300, 20.0, -9.5)
     Return
     End
 };
@@ -141,7 +141,7 @@ EvtScript EVS_NpcInteract_Petunia = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH6_ASKED_TO_DEFEAT_MONTY_MOLES)
             Set(MV_PauseBurrowing, true)
-            Set(LVar4, Float(3.5 / DT))
+            Set(LVar4, 3.5 / DT)
             ExecWait(EVS_FocusCamBetween)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Petunia_AngryTalk, ANIM_Petunia_Angry, 0, MSG_CH6_0050)
             Call(SetNpcAnimation, NPC_SELF, ANIM_Petunia_Angry)
@@ -153,11 +153,11 @@ EvtScript EVS_NpcInteract_Petunia = {
             Call(GetNpcPos, NPC_MontyMole_01, LVar0, LVar1, LVar2)
             Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
             Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-            Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-            Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-8.0))
+            Call(SetCamSpeed, CAM_DEFAULT, 90.0)
+            Call(SetCamPitch, CAM_DEFAULT, 17.0, -8.0)
             Call(SetCamDistance, CAM_DEFAULT, 200)
             Call(PanToTarget, CAM_DEFAULT, 0, true)
-            Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+            Call(WaitForCam, CAM_DEFAULT, 1.0)
             Wait(20 * DT)
             Call(PlaySoundAtNpc, NPC_MontyMole_01, SOUND_BURROW_SURFACE, SOUND_SPACE_DEFAULT)
             Call(SetNpcAnimation, NPC_MontyMole_01, ANIM_MontyMole_Dark_WorldEmerge)
@@ -171,9 +171,9 @@ EvtScript EVS_NpcInteract_Petunia = {
             Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
             Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
             Call(SetCamDistance, CAM_DEFAULT, 200)
-            Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-8.0))
+            Call(SetCamPitch, CAM_DEFAULT, 17.0, -8.0)
             Call(PanToTarget, CAM_DEFAULT, 0, true)
-            Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+            Call(WaitForCam, CAM_DEFAULT, 1.0)
             Call(SetNpcAnimation, NPC_MontyMole_02, ANIM_MontyMole_Dark_Still)
             Wait(20 * DT)
             Call(PlaySoundAtNpc, NPC_MontyMole_02, SOUND_BURROW_SURFACE, SOUND_SPACE_DEFAULT)
@@ -186,9 +186,9 @@ EvtScript EVS_NpcInteract_Petunia = {
             Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
             Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
             Call(SetCamDistance, CAM_DEFAULT, 200)
-            Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-8.0))
+            Call(SetCamPitch, CAM_DEFAULT, 17.0, -8.0)
             Call(PanToTarget, CAM_DEFAULT, 0, true)
-            Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+            Call(WaitForCam, CAM_DEFAULT, 1.0)
             Wait(20 * DT)
             Call(SetNpcAnimation, NPC_MontyMole_03, ANIM_MontyMole_Dark_Sleep)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Petunia_AngryTalk, ANIM_Petunia_Angry, 0, MSG_CH6_0054)
@@ -197,9 +197,9 @@ EvtScript EVS_NpcInteract_Petunia = {
             Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
             Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
             Call(SetCamDistance, CAM_DEFAULT, 200)
-            Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-9.0))
+            Call(SetCamPitch, CAM_DEFAULT, 17.0, -9.0)
             Call(PanToTarget, CAM_DEFAULT, 0, true)
-            Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+            Call(WaitForCam, CAM_DEFAULT, 1.0)
             Call(SetNpcAnimation, NPC_MontyMole_04, ANIM_MontyMole_Dark_HurtJump)
             Wait(20 * DT)
             Call(SetNpcAnimation, NPC_MontyMole_04, ANIM_MontyMole_Dark_HurtMidair)
@@ -213,15 +213,15 @@ EvtScript EVS_NpcInteract_Petunia = {
             Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
             Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
             Call(SetCamDistance, CAM_DEFAULT, 300)
-            Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-9.0))
+            Call(SetCamPitch, CAM_DEFAULT, 17.0, -9.0)
             Call(PanToTarget, CAM_DEFAULT, 0, true)
-            Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+            Call(WaitForCam, CAM_DEFAULT, 1.0)
             Call(SetNpcAnimation, NPC_Dayzee, ANIM_Dayzee_Shocked)
             Call(PlaySoundAtNpc, NPC_Dayzee, SOUND_EMOTE_IDEA, SOUND_SPACE_DEFAULT)
             Call(ShowEmote, NPC_Dayzee, EMOTE_EXCLAMATION, 45, 30, EMOTER_NPC, 0, 0, 0, 0)
             Wait(15 * DT)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Petunia_AngryTalk, ANIM_Petunia_Angry, 0, MSG_CH6_0056)
-            Set(LVar4, Float(90.0))
+            Set(LVar4, 90.0)
             ExecWait(EVS_FocusCamBetween)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Petunia_AngryTalk, ANIM_Petunia_Angry, 0, MSG_CH6_0057)
             Call(SetEnemyFlagBits, NPC_Dayzee, ENEMY_FLAG_PASSIVE, false)
@@ -229,7 +229,7 @@ EvtScript EVS_NpcInteract_Petunia = {
             Call(SetEnemyFlagBits, NPC_MontyMole_02, ENEMY_FLAG_PASSIVE, false)
             Call(SetEnemyFlagBits, NPC_MontyMole_03, ENEMY_FLAG_PASSIVE, false)
             Call(SetEnemyFlagBits, NPC_MontyMole_04, ENEMY_FLAG_PASSIVE, false)
-            Call(BindNpcAI, NPC_Dayzee, Ref(EVS_NpcAI_Dayzee))
+            Call(BindNpcAI, NPC_Dayzee, EVS_NpcAI_Dayzee)
             Set(MV_PauseBurrowing, false)
             Set(MV_NextBurrowTriggerRadius, 60)
             Set(GB_StoryProgress, STORY_CH6_ASKED_TO_DEFEAT_MONTY_MOLES)
@@ -238,7 +238,7 @@ EvtScript EVS_NpcInteract_Petunia = {
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Petunia_AngryTalk, ANIM_Petunia_Angry, 0, MSG_CH6_0058)
                 Call(SetNpcAnimation, NPC_SELF, ANIM_Petunia_Angry)
             Else
-                Set(LVar4, Float(3.5 / DT))
+                Set(LVar4, 3.5 / DT)
                 ExecWait(EVS_FocusCamBetween)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Petunia_HappyTalk, ANIM_Petunia_Dance, 0, MSG_CH6_0059)
                 Call(EndSpeech, NPC_SELF, ANIM_Petunia_Talk, ANIM_Petunia_Idle, 0)
@@ -263,14 +263,14 @@ EvtScript EVS_NpcInteract_Petunia = {
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Petunia_Talk, ANIM_Petunia_Idle, 0, MSG_CH6_005E)
             EndIf
     EndSwitch
-    Call(ResetCam, CAM_DEFAULT, Float(8.0 / DT))
+    Call(ResetCam, CAM_DEFAULT, 8.0 / DT)
     ExecWait(EVS_PopSong)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Petunia = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Petunia))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Petunia)
     IfEq(GF_FLO03_DefeatedAll_MontyMoles, false)
         Call(SetNpcAnimation, NPC_Petunia, ANIM_Petunia_Angry)
     Else
@@ -281,7 +281,7 @@ EvtScript EVS_NpcInit_Petunia = {
 };
 
 EvtScript EVS_NpcInit_Dayzee = {
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Dayzee))
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_Dayzee)
     Call(EnableNpcShadow, NPC_Dayzee, false)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH6_ASKED_TO_DEFEAT_MONTY_MOLES)
@@ -289,7 +289,7 @@ EvtScript EVS_NpcInit_Dayzee = {
         CaseDefault
             IfEq(GF_FLO03_Defeated_Dayzee, false)
                 Call(SetEnemyFlagBits, NPC_Dayzee, ENEMY_FLAG_PASSIVE, false)
-                Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcAI_Dayzee))
+                Call(BindNpcIdle, NPC_SELF, EVS_NpcAI_Dayzee)
             Else
                 Call(SetNpcPos, NPC_Dayzee, NPC_DISPOSE_LOCATION)
             EndIf
@@ -410,7 +410,7 @@ EvtScript EVS_NpcIdle_MontyMole_01 = {
                 IfEq(GF_FLO03_Defeated_MontyMoleA, false)
                     Call(RandInt, ARRAY_COUNT(BurrowLocations_Mole_01) - 1, LVar0)
                     Add(LVar0, 1)
-                    UseBuf(Ref(BurrowLocations_Mole_01))
+                    UseBuf(BurrowLocations_Mole_01)
                     Loop(LVar0)
                         BufRead3(LVar1, LVar2, LVar3)
                     EndLoop
@@ -489,7 +489,7 @@ EvtScript EVS_NpcIdle_MontyMole_02 = {
                 IfEq(GF_FLO03_Defeated_MontyMoleB, false)
                     Call(RandInt, ARRAY_COUNT(BurrowLocations_Mole_02) - 1, LVar0)
                     Add(LVar0, 1)
-                    UseBuf(Ref(BurrowLocations_Mole_02))
+                    UseBuf(BurrowLocations_Mole_02)
                     Loop(LVar0)
                         BufRead3(LVar1, LVar2, LVar3)
                     EndLoop
@@ -568,7 +568,7 @@ EvtScript EVS_NpcIdle_MontyMole_03 = {
                 IfEq(GF_FLO03_Defeated_MontyMoleC, false)
                     Call(RandInt, ARRAY_COUNT(BurrowLocations_Mole_03) - 1, LVar0)
                     Add(LVar0, 1)
-                    UseBuf(Ref(BurrowLocations_Mole_03))
+                    UseBuf(BurrowLocations_Mole_03)
                     Loop(LVar0)
                         BufRead3(LVar1, LVar2, LVar3)
                     EndLoop
@@ -647,7 +647,7 @@ EvtScript EVS_NpcIdle_MontyMole_04 = {
                 IfEq(GF_FLO03_Defeated_MontyMoleD, false)
                     Call(RandInt, ARRAY_COUNT(BurrowLocations_Mole_04) - 1, LVar0)
                     Add(LVar0, 1)
-                    UseBuf(Ref(BurrowLocations_Mole_04))
+                    UseBuf(BurrowLocations_Mole_04)
                     Loop(LVar0)
                         BufRead3(LVar1, LVar2, LVar3)
                     EndLoop
@@ -677,16 +677,16 @@ EvtScript EVS_NpcIdle_MontyMole_04 = {
 };
 
 EvtScript EVS_NpcInit_MontyMole_01 = {
-    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_MontyMole))
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_MontyMole))
+    Call(BindNpcHit, NPC_SELF, EVS_NpcHit_MontyMole)
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_MontyMole)
     Call(EnableNpcShadow, NPC_MontyMole_01, false)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH6_ASKED_TO_DEFEAT_MONTY_MOLES)
-            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_MontyMole_01))
+            Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_MontyMole_01)
             Call(SetNpcAnimation, NPC_MontyMole_01, ANIM_MontyMole_Dark_Emerge)
         CaseEq(STORY_CH6_ASKED_TO_DEFEAT_MONTY_MOLES)
             IfEq(GF_FLO03_Defeated_MontyMoleA, false)
-                Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_MontyMole_01))
+                Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_MontyMole_01)
                 Call(SetNpcAnimation, NPC_MontyMole_01, ANIM_MontyMole_Dark_Emerge)
                 Call(SetEnemyFlagBits, NPC_MontyMole_01, ENEMY_FLAG_PASSIVE, false)
             Else
@@ -700,16 +700,16 @@ EvtScript EVS_NpcInit_MontyMole_01 = {
 };
 
 EvtScript EVS_NpcInit_MontyMole_02 = {
-    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_MontyMole))
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_MontyMole))
+    Call(BindNpcHit, NPC_SELF, EVS_NpcHit_MontyMole)
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_MontyMole)
     Call(EnableNpcShadow, NPC_MontyMole_02, false)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH6_ASKED_TO_DEFEAT_MONTY_MOLES)
-            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_MontyMole_02))
+            Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_MontyMole_02)
             Call(SetNpcAnimation, NPC_MontyMole_02, ANIM_MontyMole_Dark_Emerge)
         CaseEq(STORY_CH6_ASKED_TO_DEFEAT_MONTY_MOLES)
             IfEq(GF_FLO03_Defeated_MontyMoleB, false)
-                Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_MontyMole_02))
+                Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_MontyMole_02)
                 Call(SetNpcAnimation, NPC_MontyMole_02, ANIM_MontyMole_Dark_Emerge)
                 Call(SetEnemyFlagBits, NPC_MontyMole_02, ENEMY_FLAG_PASSIVE, false)
             Else
@@ -723,16 +723,16 @@ EvtScript EVS_NpcInit_MontyMole_02 = {
 };
 
 EvtScript EVS_NpcInit_MontyMole_03 = {
-    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_MontyMole))
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_MontyMole))
+    Call(BindNpcHit, NPC_SELF, EVS_NpcHit_MontyMole)
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_MontyMole)
     Call(EnableNpcShadow, NPC_MontyMole_03, false)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH6_ASKED_TO_DEFEAT_MONTY_MOLES)
-            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_MontyMole_03))
+            Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_MontyMole_03)
             Call(SetNpcAnimation, NPC_MontyMole_03, ANIM_MontyMole_Dark_Emerge)
         CaseEq(STORY_CH6_ASKED_TO_DEFEAT_MONTY_MOLES)
             IfEq(GF_FLO03_Defeated_MontyMoleC, false)
-                Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_MontyMole_03))
+                Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_MontyMole_03)
                 Call(SetNpcAnimation, NPC_MontyMole_03, ANIM_MontyMole_Dark_Emerge)
                 Call(SetEnemyFlagBits, NPC_MontyMole_03, ENEMY_FLAG_PASSIVE, false)
             Else
@@ -746,16 +746,16 @@ EvtScript EVS_NpcInit_MontyMole_03 = {
 };
 
 EvtScript EVS_NpcInit_MontyMole_04 = {
-    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_MontyMole))
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_MontyMole))
+    Call(BindNpcHit, NPC_SELF, EVS_NpcHit_MontyMole)
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_MontyMole)
     Call(EnableNpcShadow, NPC_MontyMole_04, false)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH6_ASKED_TO_DEFEAT_MONTY_MOLES)
-            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_MontyMole_04))
+            Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_MontyMole_04)
             Call(SetNpcAnimation, NPC_MontyMole_04, ANIM_MontyMole_Dark_Emerge)
         CaseEq(STORY_CH6_ASKED_TO_DEFEAT_MONTY_MOLES)
             IfEq(GF_FLO03_Defeated_MontyMoleD, false)
-                Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_MontyMole_04))
+                Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_MontyMole_04)
                 Call(SetNpcAnimation, NPC_MontyMole_04, ANIM_MontyMole_Dark_Emerge)
                 Call(SetEnemyFlagBits, NPC_MontyMole_04, ENEMY_FLAG_PASSIVE, false)
             Else

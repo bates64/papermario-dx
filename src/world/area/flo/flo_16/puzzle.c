@@ -31,8 +31,8 @@ EvtScript EVS_OnTouch_RedPillar = {
     Wait(15)
     Call(PlaySound, SOUND_FLO_MOVE_PILLAR)
     Thread
-        Call(ShakeCam, CAM_DEFAULT, 0, 30, Float(0.8))
-        Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(0.2))
+        Call(ShakeCam, CAM_DEFAULT, 0, 30, 0.8)
+        Call(ShakeCam, CAM_DEFAULT, 0, 5, 0.2)
     EndThread
     Call(MakeLerp, LVar5, LVar6, 30, EASING_LINEAR)
     Loop(0)
@@ -94,8 +94,8 @@ EvtScript EVS_OnTouch_GreenPillar = {
     Wait(15)
     Call(PlaySound, SOUND_FLO_MOVE_PILLAR)
     Thread
-        Call(ShakeCam, CAM_DEFAULT, 0, 30, Float(0.8))
-        Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(0.2))
+        Call(ShakeCam, CAM_DEFAULT, 0, 30, 0.8)
+        Call(ShakeCam, CAM_DEFAULT, 0, 5, 0.2)
     EndThread
     Call(MakeLerp, LVar5, LVar6, 30, EASING_LINEAR)
     Loop(0)
@@ -165,8 +165,8 @@ EvtScript EVS_OnTouch_PurplePillar = {
     Wait(15)
     Call(PlaySound, SOUND_FLO_MOVE_PILLAR)
     Thread
-        Call(ShakeCam, CAM_DEFAULT, 0, 30, Float(0.8))
-        Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(0.2))
+        Call(ShakeCam, CAM_DEFAULT, 0, 30, 0.8)
+        Call(ShakeCam, CAM_DEFAULT, 0, 5, 0.2)
     EndThread
     Call(MakeLerp, LVar5, LVar6, 30, EASING_LINEAR)
     Loop(0)
@@ -224,13 +224,13 @@ EvtScript EVS_SetupPillarPuzzle = {
     Call(ParentColliderToModel, COLLIDER_o255, MODEL_g91)
     Call(ParentColliderToModel, COLLIDER_o248, MODEL_g93)
     Call(ParentColliderToModel, COLLIDER_o256, MODEL_g93)
-    BindTrigger(Ref(EVS_OnTouch_RedPillar), TRIGGER_FLOOR_TOUCH, COLLIDER_o242, 1, 0)
-    BindTrigger(Ref(EVS_OnTouch_GreenPillar), TRIGGER_FLOOR_TOUCH, COLLIDER_o243, 1, 0)
-    BindTrigger(Ref(EVS_OnTouch_RedPillar), TRIGGER_FLOOR_TOUCH, COLLIDER_o244, 1, 0)
-    BindTrigger(Ref(EVS_OnTouch_GreenPillar), TRIGGER_FLOOR_TOUCH, COLLIDER_o245, 1, 0)
-    BindTrigger(Ref(EVS_OnTouch_PurplePillar), TRIGGER_FLOOR_TOUCH, COLLIDER_o246, 1, 0)
-    BindTrigger(Ref(EVS_OnTouch_GreenPillar), TRIGGER_FLOOR_TOUCH, COLLIDER_o247, 1, 0)
-    BindTrigger(Ref(EVS_OnTouch_PurplePillar), TRIGGER_FLOOR_TOUCH, COLLIDER_o248, 1, 0)
+    BindTrigger(EVS_OnTouch_RedPillar, TRIGGER_FLOOR_TOUCH, COLLIDER_o242, 1, 0)
+    BindTrigger(EVS_OnTouch_GreenPillar, TRIGGER_FLOOR_TOUCH, COLLIDER_o243, 1, 0)
+    BindTrigger(EVS_OnTouch_RedPillar, TRIGGER_FLOOR_TOUCH, COLLIDER_o244, 1, 0)
+    BindTrigger(EVS_OnTouch_GreenPillar, TRIGGER_FLOOR_TOUCH, COLLIDER_o245, 1, 0)
+    BindTrigger(EVS_OnTouch_PurplePillar, TRIGGER_FLOOR_TOUCH, COLLIDER_o246, 1, 0)
+    BindTrigger(EVS_OnTouch_GreenPillar, TRIGGER_FLOOR_TOUCH, COLLIDER_o247, 1, 0)
+    BindTrigger(EVS_OnTouch_PurplePillar, TRIGGER_FLOOR_TOUCH, COLLIDER_o248, 1, 0)
     Return
     End
 };

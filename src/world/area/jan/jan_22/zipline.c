@@ -120,7 +120,7 @@ EvtScript EVS_RideZipline = {
         Sub(LVar0, 10)
         Set(LVar1, ArrayVar(5))
         Add(LVar1, -5)
-        Call(SetNpcJumpscale, NPC_PARTNER, Float(0.5))
+        Call(SetNpcJumpscale, NPC_PARTNER, 0.5)
         Call(NpcJump0, NPC_PARTNER, ArrayVar(3), LVar0, LVar1, 8)
         Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
     EndThread
@@ -208,7 +208,7 @@ EvtScript EVS_RideZipline = {
 EvtScript EVS_SetupZiplines = {
     MallocArray(9, LVar0)
     UseArray(LVar0)
-    Set(ArrayVar(0), Ref(Zipline_Endpoints1))
+    Set(ArrayVar(0), Zipline_Endpoints1)
     Set(ArrayVar(1), MODEL_o112)
     Set(ArrayVar(2), MODEL_o113)
     Set(ArrayVar(3), 507)
@@ -217,11 +217,11 @@ EvtScript EVS_SetupZiplines = {
     Set(ArrayVar(6), NPC_ZiplineDummy1)
     Set(ArrayVar(7), 795)
     Set(ArrayVar(8), 940)
-    BindTrigger(Ref(EVS_RideZipline), TRIGGER_FLOOR_PRESS_A, COLLIDER_o170, 1, 0)
+    BindTrigger(EVS_RideZipline, TRIGGER_FLOOR_PRESS_A, COLLIDER_o170, 1, 0)
     Exec(EVS_SyncZiplineDummyNPC1)
     MallocArray(9, LVar0)
     UseArray(LVar0)
-    Set(ArrayVar(0), Ref(Zipline_Endpoints2))
+    Set(ArrayVar(0), Zipline_Endpoints2)
     Set(ArrayVar(1), MODEL_o131)
     Set(ArrayVar(2), MODEL_o132)
     Set(ArrayVar(3), 974)
@@ -230,7 +230,7 @@ EvtScript EVS_SetupZiplines = {
     Set(ArrayVar(6), NPC_ZiplineDummy2)
     Set(ArrayVar(7), 800)
     Set(ArrayVar(8), 930)
-    BindTrigger(Ref(EVS_RideZipline), TRIGGER_FLOOR_PRESS_A, COLLIDER_o119, 1, 0)
+    BindTrigger(EVS_RideZipline, TRIGGER_FLOOR_PRESS_A, COLLIDER_o119, 1, 0)
     Exec(EVS_SyncZiplineDummyNPC2)
     Return
     End

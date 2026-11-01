@@ -30,7 +30,7 @@ EvtScript EVS_EnterMap = {
     EndSwitch
     Call(DisablePlayerInput, true)
     Call(InterpPlayerYaw, 180, 0)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Loop(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -51,7 +51,7 @@ EvtScript EVS_Main = {
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     ExecWait(EVS_MakeEntities)
     Exec(EVS_SetupMusic)
-    BindTrigger(Ref(EVS_ExitDoor_dgb_02_3), TRIGGER_WALL_PRESS_A, COLLIDER_deilits, 1, 0)
+    BindTrigger(EVS_ExitDoor_dgb_02_3, TRIGGER_WALL_PRESS_A, COLLIDER_deilits, 1, 0)
     Exec(EVS_EnterMap)
     Return
     End

@@ -9,8 +9,8 @@ EvtScript EVS_OnBlast_Rock = {
 
 EvtScript EVS_MakeEntities = {
     IfEq(GF_FLO15_BombedRock, false)
-        Call(MakeEntity, Ref(Entity_BombableRock), -180, 0, -18, 0, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(EVS_OnBlast_Rock))
+        Call(MakeEntity, Entity_BombableRock, -180, 0, -18, 0, MAKE_ENTITY_END)
+        Call(AssignScript, EVS_OnBlast_Rock)
     EndIf
     Return
     End

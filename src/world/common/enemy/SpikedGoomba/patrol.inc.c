@@ -17,7 +17,7 @@ MobileAISettings AISettings_SpikedGoomba_Patrol = {
 };
 
 EvtScript EVS_NpcAI_SpikedGoomba_Patrol = {
-    Call(PatrolNoAttackAI_Main, Ref(AISettings_SpikedGoomba_Patrol))
+    Call(PatrolNoAttackAI_Main, AISettings_SpikedGoomba_Patrol)
     Return
     End
 };

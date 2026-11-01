@@ -4,8 +4,8 @@ EvtScript EVS_ExitWalk_omo_13_1 = EVT_EXIT_WALK(60, omo_03_ENTRY_0, "omo_13", om
 EvtScript EVS_ExitWalk_omo_04_0 = EVT_EXIT_WALK(60, omo_03_ENTRY_1, "omo_04", omo_04_ENTRY_0);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_omo_13_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_omo_04_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deili2, 1, 0)
+    BindTrigger(EVS_ExitWalk_omo_13_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
+    BindTrigger(EVS_ExitWalk_omo_04_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deili2, 1, 0)
     Return
     End
 };
@@ -21,7 +21,7 @@ EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseRange(omo_03_ENTRY_0, omo_03_ENTRY_1)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
             Wait(1)
         CaseEq(omo_03_ENTRY_4)
@@ -64,9 +64,9 @@ EvtScript EVS_Main = {
         Set(GF_MAP_ShyGuysToybox, true)
         Call(GetEntryID, LVar0)
         IfNe(LVar0, omo_03_ENTRY_5)
-            Call(MakeNpcs, true, Ref(DefaultNPCs))
+            Call(MakeNpcs, true, DefaultNPCs)
         Else
-            Call(MakeNpcs, true, Ref(EpilogueNPCs))
+            Call(MakeNpcs, true, EpilogueNPCs)
         EndIf
         ExecWait(EVS_MakeEntities)
         ExecWait(EVS_SetupGizmos)

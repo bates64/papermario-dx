@@ -59,7 +59,7 @@ EvtScript EVS_Starship_Depart = {
     Call(DisablePlayerPhysics, true)
     Call(DisablePartnerAI, false)
     Add(LVar0, 10)
-    Call(SetNpcJumpscale, NPC_PARTNER, Float(1.5))
+    Call(SetNpcJumpscale, NPC_PARTNER, 1.5)
     Call(NpcJump0, NPC_PARTNER, LVar0, LVar1, LVar2, 12)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
     Set(MV_PartnerOnBoard, true)
@@ -116,9 +116,9 @@ EvtScript EVS_Starship_Depart = {
         EndIf
     EndLoop
     IfLt(GB_StoryProgress, STORY_UNUSED_0000005D)
-        Call(GotoMap, Ref("hos_04"), hos_04_ENTRY_2)
+        Call(GotoMap, "hos_04", hos_04_ENTRY_2)
     Else
-        Call(GotoMap, Ref("hos_20"), hos_20_ENTRY_0)
+        Call(GotoMap, "hos_20", hos_20_ENTRY_0)
     EndIf
     Wait(100)
     Return
@@ -136,9 +136,9 @@ EvtScript EVS_EnterStarship = {
     Call(EnableNpcShadow, NPC_PARTNER, false)
     Call(UseSettingsFrom, CAM_DEFAULT, 0, 180, -5)
     Call(SetPanTarget, CAM_DEFAULT, 0, 180, -5)
-    Call(SetCamDistance, CAM_DEFAULT, Float(550.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-35.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamDistance, CAM_DEFAULT, 550.0)
+    Call(SetCamPitch, CAM_DEFAULT, 17.0, -35.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Set(MV_PlayerOnBoard, true)
     Set(MV_PartnerOnBoard, true)
@@ -150,8 +150,8 @@ EvtScript EVS_EnterStarship = {
             Call(UpdateLerp)
             SetF(LVar2, LVar0)
             DivF(LVar2, 10)
-            Call(SetCamPitch, CAM_DEFAULT, Float(17.0), LVar2)
-            Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+            Call(SetCamPitch, CAM_DEFAULT, 17.0, LVar2)
+            Call(SetCamSpeed, CAM_DEFAULT, 90.0)
             Call(PanToTarget, CAM_DEFAULT, 0, true)
             Wait(1)
             IfEq(LVar1, 0)
@@ -194,8 +194,8 @@ EvtScript EVS_EnterStarship = {
     EndThread
     Call(DisablePlayerPhysics, false)
     Call(SetMusic, 0, SONG_STAR_SANCTUARY, 0, VOL_LEVEL_FULL)
-    Call(ResetCam, CAM_DEFAULT, Float(1.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(2.5))
+    Call(ResetCam, CAM_DEFAULT, 1.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 2.5)
     Call(DisablePlayerInput, false)
     Return
     End

@@ -3,13 +3,13 @@
 
 EvtScript EVS_SetupCamera = {
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_CONSTRAIN_BETWEEN_POINTS, true)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(3.0 / DT))
+    Call(SetCamSpeed, CAM_DEFAULT, 3.0 / DT)
     Call(UseSettingsFrom, CAM_DEFAULT, 60, 30, 0)
     Call(SetPanTarget, CAM_DEFAULT, 60, 30, 0)
-    Call(SetCamPitch, CAM_DEFAULT, Float(20.0), Float(-13.0))
+    Call(SetCamPitch, CAM_DEFAULT, 20.0, -13.0)
     Call(SetCamDistance, CAM_DEFAULT, 275)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Return
     End
 };
@@ -17,7 +17,7 @@ EvtScript EVS_SetupCamera = {
 EvtScript EVS_Scene_MeetHeart = {
     Call(DisablePlayerInput, true)
     Wait(30 * DT)
-    Call(SetPlayerSpeed, Float(3.0 / DT))
+    Call(SetPlayerSpeed, 3.0 / DT)
     Call(PlayerMoveTo, 6, 0, 0)
     Call(SpeakToPlayer, NPC_TubbasHeart, ANIM_TubbasHeart_TalkAngry, ANIM_TubbasHeart_Idle, 0, MSG_CH3_00BF)
     Wait(10 * DT)
@@ -33,7 +33,7 @@ EvtScript EVS_Scene_MeetHeart = {
     Wait(20 * DT)
     Call(SetPlayerAnimation, ANIM_MarioW3_ShakeHead)
     Thread
-        Call(SetNpcJumpscale, NPC_TubbasHeart, Float(2.5))
+        Call(SetNpcJumpscale, NPC_TubbasHeart, 2.5)
         Call(GetNpcPos, NPC_TubbasHeart, LVar0, LVar1, LVar2)
         Call(PlaySoundAtNpc, NPC_TubbasHeart, SOUND_TUBBA_HEART_JUMP, SOUND_SPACE_DEFAULT)
         Call(NpcJump0, NPC_TubbasHeart, LVar0, LVar1, LVar2, 10 * DT)
@@ -55,7 +55,7 @@ EvtScript EVS_ExitDoor_arn_13_1 =
     EVT_EXIT_SINGLE_DOOR(arn_11_ENTRY_0, "arn_13", arn_13_ENTRY_1, COLLIDER_ttw, MODEL_o37, DOOR_SWING_IN);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitDoor_arn_13_1), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
+    BindTrigger(EVS_ExitDoor_arn_13_1, TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
     Return
     End
 };
@@ -81,7 +81,7 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_WINDY_MILL)
     Call(SetSpriteShading, SHADING_ARN_11)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, false, Ref(DefaultNPCs))
+    Call(MakeNpcs, false, DefaultNPCs)
     Exec(EVS_SetupMusic)
     Exec(EVS_EnterMap)
     Wait(1)

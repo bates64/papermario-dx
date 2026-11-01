@@ -1,8 +1,8 @@
 #include "kpa_70.h"
 
 EvtScript EVS_SetupChainDrive = {
-    Call(LoadAnimatedModel, 0, Ref(ChainDriveSkeleton))
-    Call(PlayModelAnimation, 0, Ref(AS_ChainDriveAnim))
+    Call(LoadAnimatedModel, 0, ChainDriveSkeleton)
+    Call(PlayModelAnimation, 0, AS_ChainDriveAnim)
     Call(SetAnimatedModelRootPosition, 0, 0, 0, 0)
     Call(SetAnimatedModelRenderMode, 0, RENDER_MODE_SURFACE_OPA)
     Return
@@ -19,7 +19,7 @@ EvtScript EVS_ExitDoors_kpa_62_0 = {
     Set(LVar3, MODEL_o1432)
     Exec(ExitDoubleDoor)
     Wait(17)
-    Call(GotoMap, Ref("kpa_62"), kpa_62_ENTRY_0)
+    Call(GotoMap, "kpa_62", kpa_62_ENTRY_0)
     Wait(100)
     Return
     End
@@ -28,7 +28,7 @@ EvtScript EVS_ExitDoors_kpa_62_0 = {
 EvtScript EVS_ExitWalk_kpa_50_0 = EVT_EXIT_WALK(60, kpa_70_ENTRY_1, "kpa_50", kpa_50_ENTRY_0);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_kpa_50_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitWalk_kpa_50_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     Return
     End
 };
@@ -73,7 +73,7 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_BOWSERS_CASTLE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Call(MakeNpcs, true, DefaultNPCs)
     Call(InitAnimatedModels)
     Exec(EVS_SetupChainDrive)
     Thread
@@ -86,7 +86,7 @@ EvtScript EVS_Main = {
     EndThread
     Exec(EVS_Update_Gears)
     Exec(EVS_TexPan_Lava)
-    BindTrigger(Ref(EVS_ExitDoors_kpa_62_0), TRIGGER_WALL_PRESS_A, COLLIDER_deilittw, 1, 0)
+    BindTrigger(EVS_ExitDoors_kpa_62_0, TRIGGER_WALL_PRESS_A, COLLIDER_deilittw, 1, 0)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(kpa_70_ENTRY_0)
@@ -97,7 +97,7 @@ EvtScript EVS_Main = {
                 ExecWait(EVS_BindExitTriggers)
             EndThread
         CaseEq(kpa_70_ENTRY_1)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
     EndSwitch
     Exec(EVS_SetupMusic)

@@ -131,12 +131,12 @@ EvtScript EVS_NpcInteract_MayorPenguin = {
             Call(GetNpcPos, NPC_MayorPenguin, LVar0, LVar1, LVar2)
             Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
             Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-            Call(SetCamDistance, CAM_DEFAULT, Float(250.0))
-            Call(SetCamPitch, CAM_DEFAULT, Float(15.0), Float(-8.5))
-            Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+            Call(SetCamDistance, CAM_DEFAULT, 250.0)
+            Call(SetCamPitch, CAM_DEFAULT, 15.0, -8.5)
+            Call(SetCamSpeed, CAM_DEFAULT, 90.0)
             Call(PanToTarget, CAM_DEFAULT, 0, true)
             Call(SpeakToPlayer, NPC_SELF, ANIM_MayorPenguin_Talk, ANIM_MayorPenguin_Idle, 0, MSG_CH7_003D)
-            Call(ResetCam, CAM_DEFAULT, Float(3.0 / DT))
+            Call(ResetCam, CAM_DEFAULT, 3.0 / DT)
             Call(PanToTarget, CAM_DEFAULT, 0, false)
             Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
             Set(GB_StoryProgress, STORY_CH7_GOT_SNOWMAN_BUCKET)
@@ -147,7 +147,7 @@ EvtScript EVS_NpcInteract_MayorPenguin = {
         CaseGe(STORY_CH7_STAR_SPIRIT_RESCUED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_MayorPenguin_Talk, ANIM_MayorPenguin_Idle, 0, MSG_CH7_0040)
     EndSwitch
-    Set(LVar0, Ref(LetterDelivery_Mayor))
+    Set(LVar0, LetterDelivery_Mayor)
     ExecWait(EVS_TryLetterDelivery)
     Return
     End
@@ -369,7 +369,7 @@ EvtScript EVS_PenguinCrowd_Leave = {
     Call(BindNpcInteract, NPC_Penguin_07, 0)
     Call(BindNpcInteract, NPC_Penguin_08, 0)
     Thread
-        Call(SetNpcSpeed, NPC_Penguin_05, Float(3.0))
+        Call(SetNpcSpeed, NPC_Penguin_05, 3.0)
         Call(SetNpcAnimation, NPC_Penguin_05, ANIM_Penguin_Walk)
         Call(NpcMoveTo, NPC_Penguin_05, 600, 0, 0)
         Call(SetNpcAnimation, NPC_Penguin_05, ANIM_Penguin_Idle)
@@ -377,7 +377,7 @@ EvtScript EVS_PenguinCrowd_Leave = {
     EndThread
     Wait(10)
     Thread
-        Call(SetNpcSpeed, NPC_Penguin_06, Float(3.0))
+        Call(SetNpcSpeed, NPC_Penguin_06, 3.0)
         Call(SetNpcAnimation, NPC_Penguin_06, ANIM_Penguin_Walk)
         Call(NpcMoveTo, NPC_Penguin_06, 600, 0, 0)
         Call(SetNpcAnimation, NPC_Penguin_06, ANIM_Penguin_Idle)
@@ -385,7 +385,7 @@ EvtScript EVS_PenguinCrowd_Leave = {
     EndThread
     Wait(10)
     Thread
-        Call(SetNpcSpeed, NPC_Penguin_07, Float(3.0))
+        Call(SetNpcSpeed, NPC_Penguin_07, 3.0)
         Call(SetNpcAnimation, NPC_Penguin_07, ANIM_Penguin_Walk)
         Call(NpcMoveTo, NPC_Penguin_07, 600, 0, 0)
         Call(SetNpcAnimation, NPC_Penguin_07, ANIM_Penguin_Idle)
@@ -393,7 +393,7 @@ EvtScript EVS_PenguinCrowd_Leave = {
     EndThread
     Wait(10)
     Thread
-        Call(SetNpcSpeed, NPC_Penguin_08, Float(3.0))
+        Call(SetNpcSpeed, NPC_Penguin_08, 3.0)
         Call(SetNpcAnimation, NPC_Penguin_08, ANIM_Penguin_Walk)
         Call(NpcMoveTo, NPC_Penguin_08, 600, 0, 0)
         Call(SetNpcAnimation, NPC_Penguin_08, ANIM_Penguin_Idle)
@@ -453,7 +453,7 @@ EvtScript EVS_Inspect_Present = {
 };
 
 EvtScript EVS_NpcInit_MayorPenguin = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_MayorPenguin))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_MayorPenguin)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_MAYOR_MURDER_SOLVED)
             Call(SetNpcPos, NPC_SELF, -270, 0, -205)
@@ -474,7 +474,7 @@ EvtScript EVS_NpcInit_MayorDummy = {
 };
 
 EvtScript EVS_NpcInit_MayorPenguinWife = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_MayorPenguinWife))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_MayorPenguinWife)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_MAYOR_MURDER_MYSTERY)
             Call(SetNpcPos, NPC_SELF, -310, 0, 94)
@@ -488,8 +488,8 @@ EvtScript EVS_NpcInit_MayorPenguinWife = {
 };
 
 EvtScript EVS_NpcInit_PenguinPatrol = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_PenguinPatrol))
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_PenguinPatrol))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_PenguinPatrol)
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_PenguinPatrol)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_MAYOR_MURDER_MYSTERY)
             Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
@@ -509,7 +509,7 @@ EvtScript EVS_NpcInit_Herringway = {
             Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
             Call(InterpNpcYaw, NPC_SELF, 270, 0)
         CaseLt(STORY_CH7_MAYOR_MURDER_SOLVED)
-            Call(BindNpcInteract, NPC_Herringway, Ref(EVS_NpcInteract_Herringway))
+            Call(BindNpcInteract, NPC_Herringway, EVS_NpcInteract_Herringway)
             Call(SetNpcPos, NPC_SELF, -228, 0, 91)
             Call(InterpNpcYaw, NPC_SELF, 270, 0)
         CaseGe(STORY_CH7_MAYOR_MURDER_SOLVED)
@@ -521,31 +521,31 @@ EvtScript EVS_NpcInit_Herringway = {
 };
 
 EvtScript EVS_NpcInit_Penguin_01 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Penguin_01))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Penguin_01)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Penguin_02 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Penguin_02))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Penguin_02)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Penguin_03 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Penguin_03))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Penguin_03)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Penguin_04 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Penguin_04))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Penguin_04)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Penguin_05 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_PenguinCrowd))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_PenguinCrowd)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_MAYOR_MURDER_MYSTERY)
         CaseLt(STORY_CH7_MAYOR_MURDER_SOLVED)
@@ -557,7 +557,7 @@ EvtScript EVS_NpcInit_Penguin_05 = {
 };
 
 EvtScript EVS_NpcInit_Penguin_06 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Penguin_06))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Penguin_06)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_MAYOR_MURDER_MYSTERY)
         CaseLt(STORY_CH7_MAYOR_MURDER_SOLVED)
@@ -569,7 +569,7 @@ EvtScript EVS_NpcInit_Penguin_06 = {
 };
 
 EvtScript EVS_NpcInit_Penguin_07 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Penguin_07))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Penguin_07)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_MAYOR_MURDER_MYSTERY)
         CaseLt(STORY_CH7_MAYOR_MURDER_SOLVED)
@@ -581,7 +581,7 @@ EvtScript EVS_NpcInit_Penguin_07 = {
 };
 
 EvtScript EVS_NpcInit_Penguin_08 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Penguin_08))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Penguin_08)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_MAYOR_MURDER_MYSTERY)
         CaseLt(STORY_CH7_MAYOR_MURDER_SOLVED)

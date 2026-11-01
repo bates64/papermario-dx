@@ -91,7 +91,7 @@ EvtScript EVS_KeyItemChoicePopup = {
 
 EvtScript EVS_ChooseKeyItem = {
     Call(BuildKeyItemChoiceList, LVar0)
-    BindPadlock(Ref(EVS_KeyItemChoicePopup), TRIGGER_FORCE_ACTIVATE, 0, Ref(KeyItemChoiceList), 0, 1)
+    BindPadlock(EVS_KeyItemChoicePopup, TRIGGER_FORCE_ACTIVATE, 0, KeyItemChoiceList, 0, 1)
     Call(ItemChoice_WaitForSelection, LVar0)
     Return
     End
@@ -103,7 +103,7 @@ EvtScript EVS_ChooseKeyItem = {
     ExecWait(EVS_ChooseKeyItem)
 
 #define EVT_CHOOSE_KEY_ITEM_FROM(itemList, recipientNpc) \
-    Set(LVar0, Ref(itemList)) \
+    Set(LVar0, itemList) \
     Set(LVar1, recipientNpc) \
     ExecWait(EVS_ChooseKeyItem)
 

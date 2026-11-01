@@ -21,7 +21,7 @@ EvtScript EVS_UnlockPrompt_FrontDoor = {
     Set(GF_KKJ10_UnlockedDoor, true)
     Call(CloseChoicePopup)
     Unbind
-    BindTrigger(Ref(EVS_ExitDoors_osr_02_1), TRIGGER_WALL_PRESS_A, COLLIDER_tts, 1, 0)
+    BindTrigger(EVS_ExitDoors_osr_02_1, TRIGGER_WALL_PRESS_A, COLLIDER_tts, 1, 0)
     Return
     End
 };
@@ -29,11 +29,11 @@ EvtScript EVS_UnlockPrompt_FrontDoor = {
 EvtScript EVS_MakeEntities = {
     IfLe(GB_StoryProgress, STORY_CH6_BEGAN_PEACH_MISSION)
         IfEq(GF_KKJ10_UnlockedDoor, false)
-            Call(MakeEntity, Ref(Entity_Padlock), 0, 10, 490, 180, MAKE_ENTITY_END)
+            Call(MakeEntity, Entity_Padlock, 0, 10, 490, 180, MAKE_ENTITY_END)
             Set(MV_EntityID_Padlock, LVar0)
-            BindPadlock(Ref(EVS_UnlockPrompt_FrontDoor), TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), Ref(PeachKeyList), 0, 1)
+            BindPadlock(EVS_UnlockPrompt_FrontDoor, TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), PeachKeyList, 0, 1)
         Else
-            BindTrigger(Ref(EVS_ExitDoors_osr_02_1), TRIGGER_WALL_PRESS_A, COLLIDER_tts, 1, 0)
+            BindTrigger(EVS_ExitDoors_osr_02_1, TRIGGER_WALL_PRESS_A, COLLIDER_tts, 1, 0)
         EndIf
     EndIf
     Return

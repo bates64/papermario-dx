@@ -4,8 +4,8 @@ EvtScript EVS_ExitWalk_iwa_02_2 = EVT_EXIT_WALK(60, iwa_04_ENTRY_0, "iwa_02", iw
 EvtScript EVS_ExitWalk_sbk_99_0 = EVT_EXIT_WALK(60, iwa_04_ENTRY_1, "sbk_99", sbk_99_ENTRY_0);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_iwa_02_2), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_sbk_99_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitWalk_iwa_02_2, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitWalk_sbk_99_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     Return
     End
 };
@@ -14,7 +14,7 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_MT_RUGGED)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Call(MakeNpcs, true, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     Exec(EVS_SetupMusic)
     Call(ParentColliderToModel, COLLIDER_o962, MODEL_o962)
@@ -27,7 +27,7 @@ EvtScript EVS_Main = {
     Call(ParentColliderToModel, COLLIDER_o985, MODEL_o985)
     Call(ParentColliderToModel, COLLIDER_o992, MODEL_o992)
     Call(ParentColliderToModel, COLLIDER_o993, MODEL_o993)
-    Set(LVar0, Ref(EVS_BindExitTriggers))
+    Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     Wait(1)
     Return

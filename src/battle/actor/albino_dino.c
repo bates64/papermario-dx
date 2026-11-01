@@ -98,9 +98,9 @@ OVL_DEF_ACTOR() = {
 };
 
 EvtScript EVS_Init = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
     Return
     End
 };
@@ -113,7 +113,7 @@ EvtScript EVS_Idle = {
 EvtScript EVS_ReturnHome = {
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_AlbinoDino_Run)
     Call(SetGoalToHome, ACTOR_SELF)
-    Call(SetActorSpeed, ACTOR_SELF, Float(8.0))
+    Call(SetActorSpeed, ACTOR_SELF, 8.0)
     Call(RunToGoal, ACTOR_SELF, 0, false)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_AlbinoDino_Idle)
     Return
@@ -227,7 +227,7 @@ EvtScript EVS_AddWalkQuakeFX = {
         EndIf
         PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 25, 8, 45, 20)
         IfGt(LVarA, 3)
-            Call(ShakeCam, CAM_BATTLE, 0, 2, Float(0.2))
+            Call(ShakeCam, CAM_BATTLE, 0, 2, 0.2)
             Set(LVarA, 0)
         EndIf
         Add(LVarA, 1)
@@ -262,7 +262,7 @@ EvtScript EVS_TakeTurn = {
             Thread
                 Call(SetGoalToTarget, ACTOR_SELF)
                 Call(AddGoalPos, ACTOR_SELF, -100, 0, 0)
-                Call(SetActorSpeed, ACTOR_SELF, Float(12.0))
+                Call(SetActorSpeed, ACTOR_SELF, 12.0)
                 Call(RunToGoal, ACTOR_SELF, 0, false)
                 KillThread(LVar9)
             EndThread
@@ -291,10 +291,10 @@ EvtScript EVS_TakeTurn = {
     Else
         Call(AddGoalPos, ACTOR_SELF, 30, 0, 0)
     EndIf
-    Call(SetActorSpeed, ACTOR_SELF, Float(12.0))
+    Call(SetActorSpeed, ACTOR_SELF, 12.0)
     Call(RunToGoal, ACTOR_SELF, 0, false)
     Thread
-        Call(ShakeCam, CAM_BATTLE, 0, 4, Float(1.5))
+        Call(ShakeCam, CAM_BATTLE, 0, 4, 1.5)
     EndThread
     KillThread(LVar9)
     Wait(2)
@@ -307,12 +307,12 @@ EvtScript EVS_TakeTurn = {
             Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Add(LVar0, 40)
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(1.0))
+            Call(SetActorJumpGravity, ACTOR_SELF, 1.0)
             Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(JumpToGoal, ACTOR_SELF, 15, false, true, false)
             Call(PlaySoundAtActor, ACTOR_SELF, SOUND_ALBINO_DINO_STEP_B)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_AlbinoDino_Idle)
-            Call(ShakeCam, CAM_BATTLE, 0, 3, Float(1.0))
+            Call(ShakeCam, CAM_BATTLE, 0, 3, 1.0)
             Wait(10)
             Call(YieldTurn)
             ExecWait(EVS_ReturnHome)

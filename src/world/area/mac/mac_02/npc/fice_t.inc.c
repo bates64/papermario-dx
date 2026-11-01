@@ -54,7 +54,7 @@ EvtScript EVS_NpcInteract_FiceT = {
             Call(SpeakToPlayer, NPC_FiceT, ANIM_FiceT_Afraid, ANIM_FiceT_Afraid, 0, LVar0)
         EndIf
     EndIf
-    Set(LVar0, Ref(LetterDelivery_FiceT))
+    Set(LVar0, LetterDelivery_FiceT)
     ExecWait(EVS_TryLetterDelivery)
     IfEq(LVar0, DELIVERY_ACCEPTED)
         Call(SpeakToPlayer, NPC_FiceT, ANIM_FiceT_Talk, ANIM_FiceT_Idle, 0, MSG_MAC_Bridge_0039)
@@ -73,7 +73,7 @@ EvtScript EVS_NpcInit_FiceT = {
     Else
         Call(SetNpcPos, NPC_SELF, 390, 0, -50)
     EndIf
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_FiceT))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_FiceT)
     Return
     End
 };

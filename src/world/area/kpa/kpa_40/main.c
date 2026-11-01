@@ -10,16 +10,16 @@ EvtScript EVS_ExitWalk_kpa_41_3 = {
     Call(UseExitHeading, 60, kpa_40_ENTRY_2)
     Exec(ExitWalk)
     Set(AB_KPA_MazeProgress, 1)
-    Call(GotoMap, Ref("kpa_41"), kpa_41_ENTRY_3)
+    Call(GotoMap, "kpa_41", kpa_41_ENTRY_3)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitDoors_kpa_52_1), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_kpa_40_3), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie2, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_kpa_41_3), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitDoors_kpa_52_1, TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
+    BindTrigger(EVS_ExitWalk_kpa_40_3, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie2, 1, 0)
+    BindTrigger(EVS_ExitWalk_kpa_41_3, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     Return
     End
 };
@@ -34,7 +34,7 @@ EvtScript EVS_EnterMap = {
             Exec(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
         CaseDefault
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
     EndSwitch
     Return

@@ -11,15 +11,15 @@ EvtScript EVS_ExitWalk_nok_03_0 = {
     EndIf
     Call(UseExitHeading, 60, nok_02_ENTRY_1)
     Exec(ExitWalk)
-    Call(GotoMap, Ref("nok_03"), nok_03_ENTRY_0)
+    Call(GotoMap, "nok_03", nok_03_ENTRY_0)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_nok_01_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_nok_03_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilin, 1, 0)
+    BindTrigger(EVS_ExitWalk_nok_01_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitWalk_nok_03_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilin, 1, 0)
     Return
     End
 };
@@ -69,11 +69,11 @@ EvtScript EVS_EnterMap = {
                 Call(DisablePlayerPhysics, false)
                 Call(DisablePlayerInput, false)
             EndIf
-            Set(LVarA, Ref(EVS_BindExitTriggers))
+            Set(LVarA, EVS_BindExitTriggers)
             ExecWait(EVS_Pipe_EnterVertical)
         CaseEq(nok_02_ENTRY_4)
         CaseDefault
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
     EndSwitch
     Return
@@ -86,7 +86,7 @@ EvtScript EVS_Main = {
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, nok_02_ENTRY_3)
-        Call(MakeNpcs, false, Ref(EpilogueNPCs))
+        Call(MakeNpcs, false, EpilogueNPCs)
         ExecWait(EVS_MakeEntities)
         Exec(EVS_TexPan_Flowers)
         Exec(EVS_Scene_Epilogue)
@@ -104,15 +104,15 @@ EvtScript EVS_Main = {
         Set(GF_NOK02_RecoveredShellB, true)
     EndIf
     IfLt(GB_StoryProgress, STORY_CH1_KOOPER_JOINED_PARTY)
-        Call(MakeNpcs, false, Ref(CrisisNPCs))
+        Call(MakeNpcs, false, CrisisNPCs)
     Else
-        Call(MakeNpcs, false, Ref(NormalNPCs))
+        Call(MakeNpcs, false, NormalNPCs)
     EndIf
     Call(ClearDefeatedEnemies)
     ExecWait(EVS_MakeEntities)
     ExecWait(EVS_SetupFoliage)
     Exec(EVS_TexPan_Flowers)
-    BindTrigger(Ref(EVS_Setup_Bookshelf), TRIGGER_WALL_PRESS_A, COLLIDER_o236, 1, 0)
+    BindTrigger(EVS_Setup_Bookshelf, TRIGGER_WALL_PRESS_A, COLLIDER_o236, 1, 0)
     ExecWait(EVS_SetupRooms)
     Call(GetDemoState, LVar0)
     IfNe(LVar0, DEMO_STATE_NONE)

@@ -26,7 +26,7 @@ EvtScript EVS_PushClock_Impl = {
     EndIf
     Call(DisablePlayerInput, true)
     Thread
-        Call(ShakeCam, CAM_DEFAULT, 0, 100, Float(0.6))
+        Call(ShakeCam, CAM_DEFAULT, 0, 100, 0.6)
     EndThread
     Thread
         IfGe(LVar6, LVar7)
@@ -114,8 +114,8 @@ EvtScript EVS_SetupClock = {
     Call(ParentColliderToModel, COLLIDER_o112, MODEL_o77)
     Call(ParentColliderToModel, COLLIDER_o113, MODEL_o77)
     IfEq(GF_DGB03_PushedClock, false)
-        BindTrigger(Ref(EVS_PushClockRight), TRIGGER_WALL_PUSH, COLLIDER_o77, 1, 0)
-        BindTrigger(Ref(EVS_PushClockLeft), TRIGGER_WALL_PUSH, COLLIDER_o112, 1, 0)
+        BindTrigger(EVS_PushClockRight, TRIGGER_WALL_PUSH, COLLIDER_o77, 1, 0)
+        BindTrigger(EVS_PushClockLeft, TRIGGER_WALL_PUSH, COLLIDER_o112, 1, 0)
     Else
         IfEq(GF_DGB03_PushedClockLeft, false)
             Set(LVar0, 48)

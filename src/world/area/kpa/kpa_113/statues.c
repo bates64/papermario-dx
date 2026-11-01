@@ -27,7 +27,7 @@ EvtScript EVS_PushLeftStatue_Impl = {
     Call(DisablePlayerInput, true)
     Call(SetPlayerActionState, ACTION_STATE_PUSHING_BLOCK)
     Thread
-        Call(ShakeCam, CAM_DEFAULT, 0, 100, Float(0.6))
+        Call(ShakeCam, CAM_DEFAULT, 0, 100, 0.6)
     EndThread
     Thread
         IfGe(LVar6, LVar7)
@@ -126,8 +126,8 @@ EvtScript EVS_SetupStatues = {
     Call(ParentColliderToModel, COLLIDER_kpa_c, MODEL_o101)
     Call(ParentColliderToModel, COLLIDER_kpa_l, MODEL_o101)
     Call(ParentColliderToModel, COLLIDER_kpa_r, MODEL_o101)
-    BindTrigger(Ref(EVS_PushLeftStatue_FromLeft), TRIGGER_WALL_PUSH, COLLIDER_kpa_l, 1, 0)
-    BindTrigger(Ref(EVS_PushLeftStatue_FromRight), TRIGGER_WALL_PUSH, COLLIDER_kpa_r, 1, 0)
+    BindTrigger(EVS_PushLeftStatue_FromLeft, TRIGGER_WALL_PUSH, COLLIDER_kpa_l, 1, 0)
+    BindTrigger(EVS_PushLeftStatue_FromRight, TRIGGER_WALL_PUSH, COLLIDER_kpa_r, 1, 0)
     Return
     End
 };

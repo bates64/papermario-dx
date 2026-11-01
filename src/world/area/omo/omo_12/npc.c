@@ -108,11 +108,11 @@ EvtScript EVS_EnterScene = {
     Call(SetNpcPos, NPC_BigLanternGhost, -150, 0, 20)
     Call(UseSettingsFrom, CAM_DEFAULT, -150, 0, 20)
     Call(SetPanTarget, CAM_DEFAULT, -150, 0, 20)
-    Call(SetCamDistance, CAM_DEFAULT, Float(350.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(15.0), Float(-9.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamDistance, CAM_DEFAULT, 350.0)
+    Call(SetCamPitch, CAM_DEFAULT, 15.0, -9.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Wait(20 * DT)
     Call(GetNpcPos, NPC_BigLanternGhost, LVar2, LVar3, LVar4)
     Add(LVar2, 32)
@@ -128,18 +128,18 @@ EvtScript EVS_EnterScene = {
         EndIf
     Call(SpeakToPlayer, NPC_BigLanternGhost, ANIM_BigLanternGhost_Talk, ANIM_BigLanternGhost_Idle, 0, MSG_CH4_004F)
     Call(SetPanTarget, CAM_DEFAULT, 50, 0, 20)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(0.7 / DT))
+    Call(SetCamSpeed, CAM_DEFAULT, 0.7 / DT)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Set(AB_OMO12_LightSource, LIGHT_FROM_GHOST)
     Set(AB_OMO12_LightPowerMod, -28)
     Call(SetNpcAnimation, NPC_BigLanternGhost, ANIM_BigLanternGhost_Walk)
-    Call(SetNpcSpeed, NPC_BigLanternGhost, Float(3.0 / DT))
+    Call(SetNpcSpeed, NPC_BigLanternGhost, 3.0 / DT)
     Call(NpcMoveTo, NPC_BigLanternGhost, 0, 20, 0)
     Call(SetNpcAnimation, NPC_BigLanternGhost, ANIM_BigLanternGhost_Idle)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(SpeakToPlayer, NPC_BigLanternGhost, ANIM_BigLanternGhost_Talk, ANIM_BigLanternGhost_Idle, 0, MSG_CH4_0050)
     Thread
-        Call(ShakeCam, CAM_DEFAULT, 0, 10, Float(0.5))
+        Call(ShakeCam, CAM_DEFAULT, 0, 10, 0.5)
     EndThread
     Call(SetNpcAnimation, NPC_BigLanternGhost, ANIM_BigLanternGhost_Reveal)
     Wait(5 * DT)
@@ -187,7 +187,7 @@ EvtScript EVS_Scene_ReleaseWatt = {
     Call(DisablePlayerInput, true)
     Call(DisableCameraLeadingPlayer)
     Call(GetNpcPos, NPC_LaternTop, LVar0, LVar1, LVar2)
-    Call(SetCamProperties, CAM_DEFAULT, Float(2.0 / DT), LVar0, LVar1, LVar2, Float(450.0), Float(15.0), Float(-6.0))
+    Call(SetCamProperties, CAM_DEFAULT, 2.0 / DT, LVar0, LVar1, LVar2, 450.0, 15.0, -6.0)
     Set(LVarA, 0)
     Call(GetOwnerEncounterTrigger, LVar0)
     IfEq(LVar0, ENCOUNTER_TRIGGER_PARTNER)
@@ -244,7 +244,7 @@ EvtScript EVS_Scene_ReleaseWatt = {
     EndIf
     Call(SetPartnerForcedFollowMode, 1)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
-    Call(SetPlayerSpeed, Float(3.0 / DT))
+    Call(SetPlayerSpeed, 3.0 / DT)
     Call(PlayerMoveTo, LVar1, 0, 0)
     Call(PlayerFaceNpc, NPC_LaternTop, 3)
     Thread
@@ -278,10 +278,10 @@ EvtScript EVS_Scene_ReleaseWatt = {
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamDistance, CAM_DEFAULT, 300)
-    Call(SetCamPitch, CAM_DEFAULT, Float(15.0), Float(-8.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(5.0 / DT))
+    Call(SetCamPitch, CAM_DEFAULT, 15.0, -8.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 5.0 / DT)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     IfEq(LVarA, -1)
         Call(SpeakToPlayer, NPC_Watt, ANIM_WorldWatt_Strain, ANIM_WorldWatt_Hurt, 0, MSG_CH4_0058)
         Thread
@@ -318,7 +318,7 @@ EvtScript EVS_Scene_ReleaseWatt = {
     Thread
         Call(DisablePartnerAI, false)
         Add(LVar1, LVar2)
-        Call(SetNpcSpeed, NPC_PARTNER, Float(3.0 / DT))
+        Call(SetNpcSpeed, NPC_PARTNER, 3.0 / DT)
         Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_WALK)
         Call(NpcMoveTo, NPC_PARTNER, LVar1, LVar4, 0)
         Call(NpcFacePlayer, NPC_PARTNER, 3)
@@ -328,16 +328,16 @@ EvtScript EVS_Scene_ReleaseWatt = {
     Call(GetNpcPos, NPC_Watt, LVar7, LVar8, LVar9)
     Call(GetAngleToPlayer, NPC_Watt, LVar0)
     IfLt(LVar0, 180)
-        Call(LoadPath, 15 * DT, Ref(WattRightFlightPath), ARRAY_COUNT(WattRightFlightPath), EASING_LINEAR)
+        Call(LoadPath, 15 * DT, WattRightFlightPath, ARRAY_COUNT(WattRightFlightPath), EASING_LINEAR)
         Set(LVar4, 12)
     Else
-        Call(LoadPath, 15 * DT, Ref(WattLeftFlightPath), ARRAY_COUNT(WattLeftFlightPath), EASING_LINEAR)
+        Call(LoadPath, 15 * DT, WattLeftFlightPath, ARRAY_COUNT(WattLeftFlightPath), EASING_LINEAR)
         Set(LVar4, -12)
     EndIf
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Add(LVar0, LVar4)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, 0, 0)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(1.0 / DT))
+    Call(SetCamSpeed, CAM_DEFAULT, 1.0 / DT)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Label(30)
         Call(GetNextPathPos)
@@ -361,7 +361,7 @@ EvtScript EVS_Scene_ReleaseWatt = {
     Set(AB_OMO12_LightSource, LIGHT_FROM_NO_CHANGE)
     Wait(1)
     Call(ChangeNpcToPartner, NPC_Watt, PARTNER_WATT)
-    Call(LoadPartyImage, Ref("party_akari"))
+    Call(LoadPartyImage, "party_akari")
     Exec(EVS_PushPartnerSong)
     Wait(15 * DT)
     Call(ShowMessageAtScreenPos, MSG_Menus_018E, 160, 40)
@@ -391,7 +391,7 @@ EvtScript EVS_Scene_ReleaseWatt = {
     Call(EnablePartnerAI)
     Exec(EVS_UseWattTutorial)
     Call(EnableCameraLeadingPlayer)
-    Call(ResetCam, CAM_DEFAULT, Float(5.0 / DT))
+    Call(ResetCam, CAM_DEFAULT, 5.0 / DT)
     Set(GB_StoryProgress, STORY_CH4_WATT_JOINED_PARTY)
     Call(DisablePlayerInput, false)
     Call(RemoveNpc, NPC_LaternTop)
@@ -420,7 +420,7 @@ EvtScript EVS_NpcDefeat_BigLanternGhost = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
-            Call(ResetCam, CAM_DEFAULT, Float(90.0))
+            Call(ResetCam, CAM_DEFAULT, 90.0)
             Set(AB_OMO12_LightSource, LIGHT_FROM_DEFAULT)
             Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
             Call(SetLightOriginAndPower, LVar0, LVar1, LVar2, 100)
@@ -431,13 +431,13 @@ EvtScript EVS_NpcDefeat_BigLanternGhost = {
             EndThread
             Thread
                 Wait(15)
-                Call(SetNpcJumpscale, NPC_LaternTop, Float(1.0))
+                Call(SetNpcJumpscale, NPC_LaternTop, 1.0)
                 Call(SetNpcPos, NPC_LaternTop, 0, 0, 20)
                 Call(NpcJump0, NPC_LaternTop, 0, 0, 20, 10)
                 Call(SetNpcPos, NPC_LaternBottom, 0, 0, 20)
             EndThread
             Call(SetNpcAnimation, NPC_SELF, ANIM_BigLanternGhost_Run)
-            Call(SetNpcSpeed, NPC_SELF, Float(10.0))
+            Call(SetNpcSpeed, NPC_SELF, 10.0)
             Call(NpcMoveTo, NPC_SELF, 400, 0, 0)
             Label(0)
                 IfEq(MF_LanternGhost_DoneSpeaking, false)
@@ -448,11 +448,11 @@ EvtScript EVS_NpcDefeat_BigLanternGhost = {
             SubF(LVar3, LVar0)
             SubF(LVar4, LVar1)
             SubF(LVar5, LVar2)
-            DivF(LVar3, Float(60.0))
-            DivF(LVar4, Float(60.0))
-            DivF(LVar5, Float(60.0))
-            SetF(LVar6, Float(2.167))
-            SetF(LVar7, Float(100.0))
+            DivF(LVar3, 60.0)
+            DivF(LVar4, 60.0)
+            DivF(LVar5, 60.0)
+            SetF(LVar6, 2.167)
+            SetF(LVar7, 100.0)
             Loop(60)
                 AddF(LVar0, LVar3)
                 AddF(LVar1, LVar4)
@@ -480,8 +480,8 @@ EvtScript EVS_NpcInit_BigLanternGhost = {
         Call(RemoveNpc, NPC_SELF)
         Return
     EndIf
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_BigLanternGhost))
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_BigLanternGhost))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_BigLanternGhost)
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_BigLanternGhost)
     Return
     End
 };
@@ -526,7 +526,7 @@ EvtScript EVS_NpcIdle_LanternTop = {
                 IfNe(LVar0, true)
                     Call(DisablePlayerInput, true)
                     Thread
-                        Call(SetNpcJumpscale, NPC_SELF, Float(1.0))
+                        Call(SetNpcJumpscale, NPC_SELF, 1.0)
                         Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
                         Call(NpcJump0, NPC_SELF, LVar0, LVar1, LVar2, 16)
                         Call(NpcJump0, NPC_SELF, LVar0, LVar1, LVar2, 8)
@@ -565,8 +565,8 @@ EvtScript EVS_NpcInit_LanternTop = {
             Call(RemoveNpc, NPC_SELF)
             Return
     EndSwitch
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_LanternTop))
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_LanternTop))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_LanternTop)
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_LanternTop)
     Return
     End
 };
@@ -582,7 +582,7 @@ EvtScript EVS_NpcInit_LanternBottom = {
             Call(RemoveNpc, NPC_SELF)
             Return
     EndSwitch
-    Call(BindNpcHit, NPC_SELF, Ref(EVS_Scene_ReleaseWatt))
+    Call(BindNpcHit, NPC_SELF, EVS_Scene_ReleaseWatt)
     Call(SetNpcFlagBits, NPC_LaternBottom, NPC_FLAG_INVISIBLE, true)
     Return
     End

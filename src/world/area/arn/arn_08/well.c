@@ -45,14 +45,14 @@ EvtScript EVS_ExitWell = {
     IfLt(GB_StoryProgress, STORY_CH3_WENT_DOWN_THE_WELL)
         Set(GB_StoryProgress, STORY_CH3_WENT_DOWN_THE_WELL)
     EndIf
-    Call(GotoMap, Ref("arn_09"), arn_09_ENTRY_1)
+    Call(GotoMap, "arn_09", arn_09_ENTRY_1)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_SetupHole = {
-    Call(SetCamProperties, CAM_DEFAULT, Float(90.0), 0, 0, 0, Float(470.0), Float(17.0), Float(-7.0))
+    Call(SetCamProperties, CAM_DEFAULT, 90.0, 0, 0, 0, 470.0, 17.0, -7.0)
     Exec(EVS_ExitWell)
     Return
     End

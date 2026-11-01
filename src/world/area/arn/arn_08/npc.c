@@ -12,7 +12,7 @@ EvtScript EVS_NpcInit_TubbasHeart = {
     IfNe(GB_StoryProgress, STORY_CH3_HEART_ESCAPED_WELL)
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     Else
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_TubbasHeart))
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_TubbasHeart)
     EndIf
     Return
     End
@@ -39,7 +39,7 @@ EvtScript EVS_NpcInit_Yakkey = {
     IfLt(GB_StoryProgress, STORY_CH4_FRYING_PAN_STOLEN)
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     Else
-        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Yakkey))
+        Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Yakkey)
     EndIf
     Return
     End

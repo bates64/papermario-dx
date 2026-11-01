@@ -10,7 +10,7 @@ EvtScript EVS_NpcIdle_Kammy = {
     Call(SetSelfVar, 0, 0)
     Call(GetNpcPos, NPC_SELF, LVar6, LVar3, LVar4)
     Loop(0)
-        UseBuf(Ref(HoverOffsets))
+        UseBuf(HoverOffsets)
         Loop(10)
             Call(GetNpcPos, NPC_SELF, LVar2, LVar3, LVar4)
             Call(GetSelfVar, 0, LVar5)
@@ -53,7 +53,7 @@ EvtScript EVS_NpcAux_Kammy = {
         SetF(LVar8, LVarB)
         IfNe(LVar3, 0)
             IfNe(LVar5, 0)
-                PlayEffect(EFFECT_PURPLE_RING, 0, LVar0, LVar1, LVar2, LVar3, LVar4, LVar5, Float(1.0))
+                PlayEffect(EFFECT_PURPLE_RING, 0, LVar0, LVar1, LVar2, LVar3, LVar4, LVar5, 1.0)
             EndIf
         EndIf
         Wait(3)
@@ -82,11 +82,11 @@ EvtScript EVS_Scene_KammySetAmbush = {
     EndIf
     Call(UseSettingsFrom, CAM_DEFAULT, 1900, 150, 0)
     Call(SetPanTarget, CAM_DEFAULT, 1900, 150, 0)
-    Call(SetCamDistance, CAM_DEFAULT, Float(350.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(15.0), Float(-7.5))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamDistance, CAM_DEFAULT, 350.0)
+    Call(SetCamPitch, CAM_DEFAULT, 15.0, -7.5)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Wait(5 * DT)
     Call(SetNpcVar, NPC_Kammy, 0, 1)
     Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlyIdleSly)
@@ -96,7 +96,7 @@ EvtScript EVS_Scene_KammySetAmbush = {
     Add(LVar0, 25)
     Add(LVar1, 38)
     Call(PlaySoundAt, SOUND_KAMMY_SUMMON_MAGIC, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
-    PlayEffect(EFFECT_GATHER_ENERGY_PINK, 0, LVar0, LVar1, LVar2, Float(1.0), 75)
+    PlayEffect(EFFECT_GATHER_ENERGY_PINK, 0, LVar0, LVar1, LVar2, 1.0, 75)
     Wait(75 * DT)
     Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlyRodCast)
     Add(LVar0, 55)
@@ -118,7 +118,7 @@ EvtScript EVS_Scene_KammySetAmbush = {
         Call(ShowEmote, MV_AmbushID, EMOTE_QUESTION, 0, 20, EMOTER_NPC, 0, 0, 0, 0)
         Wait(5 * DT)
     EndIf
-    Call(GotoMap, Ref("omo_09"), omo_09_ENTRY_0)
+    Call(GotoMap, "omo_09", omo_09_ENTRY_0)
     Wait(100 * DT)
     Return
     End

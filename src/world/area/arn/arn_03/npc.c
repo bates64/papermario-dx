@@ -42,7 +42,7 @@ EvtScript EVS_NpcIdle_Boo_01 = {
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
         Call(SetCamDistance, CAM_DEFAULT, 325)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(4.0 / DT))
+        Call(SetCamSpeed, CAM_DEFAULT, 4.0 / DT)
         Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
     EndThread
@@ -93,12 +93,12 @@ EvtScript EVS_NpcIdle_Boo_01 = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
 #if VERSION_PAL
-    Call(SetCamSpeed, CAM_DEFAULT, Float(3 / DT))
+    Call(SetCamSpeed, CAM_DEFAULT, 3 / DT)
 #else
     Call(SetCamSpeed, CAM_DEFAULT, 3)
 #endif
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Return
     End
@@ -107,9 +107,9 @@ EvtScript EVS_NpcIdle_Boo_01 = {
 EvtScript EVS_NpcInit_Boo_01 = {
     IfLt(GB_StoryProgress, STORY_CH3_ARRIVED_AT_GHOST_TOWN)
         Call(SetNpcPos, NPC_SELF, 175, 240, 145)
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Boo_01))
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Boo_01)
     EndIf
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Boo_01))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Boo_01)
     Return
     End
 };
@@ -170,7 +170,7 @@ EvtScript EVS_NpcInteract_Boo_02 = {
 };
 
 EvtScript EVS_NpcInit_Boo_02 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Boo_02))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Boo_02)
     Return
     End
 };
@@ -288,7 +288,7 @@ EvtScript EVS_NpcInteract_Boo_03 = {
             Thread
                 Call(GetPlayerPos, LVar0, LVar1, LVar2)
                 Add(LVar2, -20)
-                Call(SetNpcSpeed, NPC_PARTNER, Float(2.0))
+                Call(SetNpcSpeed, NPC_PARTNER, 2.0)
                 Call(NpcMoveTo, NPC_PARTNER, LVar0, LVar2, 0)
                 Call(NpcFaceNpc, NPC_PARTNER, NPC_SELF, 1)
             EndThread
@@ -307,7 +307,7 @@ EvtScript EVS_NpcInteract_Boo_03 = {
             Thread
                 Call(GetPlayerPos, LVar0, LVar1, LVar2)
                 Add(LVar2, -20)
-                Call(SetNpcSpeed, NPC_PARTNER, Float(2.0))
+                Call(SetNpcSpeed, NPC_PARTNER, 2.0)
                 Call(NpcMoveTo, NPC_PARTNER, LVar0, LVar2, 0)
                 Call(NpcFaceNpc, NPC_PARTNER, NPC_SELF, 1)
             EndThread
@@ -326,7 +326,7 @@ EvtScript EVS_NpcInteract_Boo_03 = {
 };
 
 EvtScript EVS_NpcInit_Boo_03 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Boo_03))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Boo_03)
     Return
     End
 };
@@ -355,7 +355,7 @@ EvtScript EVS_NpcInteract_Boo_04 = {
 };
 
 EvtScript EVS_NpcInit_Boo_04 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Boo_04))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Boo_04)
     Return
     End
 };
@@ -462,14 +462,14 @@ EvtScript EVS_NpcIdle_Boo_06 = {
     Loop(0)
         Call(RandInt, 5, LVar5)
         SetF(LVar6, LVar5)
-        MulF(LVar6, Float(0.1))
-        AddF(LVar6, Float(0.8))
+        MulF(LVar6, 0.1)
+        AddF(LVar6, 0.8)
         Call(SetNpcSpeed, NPC_SELF, LVar6)
         Call(NpcMoveTo, NPC_SELF, LVar3, LVar2, 0)
         Call(RandInt, 5, LVar5)
         SetF(LVar6, LVar5)
-        MulF(LVar6, Float(0.1))
-        AddF(LVar6, Float(0.8))
+        MulF(LVar6, 0.1)
+        AddF(LVar6, 0.8)
         Call(SetNpcSpeed, NPC_SELF, LVar6)
         Call(NpcMoveTo, NPC_SELF, LVar4, LVar2, 0)
     EndLoop
@@ -478,28 +478,28 @@ EvtScript EVS_NpcIdle_Boo_06 = {
 };
 
 EvtScript EVS_NpcInit_Boo_06 = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Boo_06))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Boo_06)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_HAS_SHADOW, false)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Boo_07 = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Boo_06))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Boo_06)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_HAS_SHADOW, false)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Boo_08 = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Boo_06))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Boo_06)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_HAS_SHADOW, false)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Boo_09 = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Boo_06))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Boo_06)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_HAS_SHADOW, false)
     Return
     End

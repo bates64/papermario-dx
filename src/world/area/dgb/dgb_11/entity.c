@@ -50,7 +50,7 @@ EvtScript EVS_UseSpring = {
             Wait(1)
             Set(LVar3, 500)
             ExecGetTID(EVS_TetherCamToPlayer, LVarA)
-            Call(SetPlayerJumpscale, Float(0.7))
+            Call(SetPlayerJumpscale, 0.7)
             ExecGetTID(EVS_LaunchToCeiling, LVarB)
             Loop(0)
                 Wait(1)
@@ -63,14 +63,14 @@ EvtScript EVS_UseSpring = {
             Call(SetPlayerPos, LVar0, 165, LVar2)
             KillThread(LVarB)
             Call(SetPlayerAnimation, ANIM_MarioW2_JumpHitHead)
-            Call(ShakeCam, CAM_DEFAULT, 0, 20, Float(1.0))
+            Call(ShakeCam, CAM_DEFAULT, 0, 20, 1.0)
             Wait(10)
             Call(SetPlayerAnimation, ANIM_Mario1_Idle)
-            Call(SetPlayerJumpscale, Float(0.0))
+            Call(SetPlayerJumpscale, 0.0)
             Call(PlayerJump1, 375, 25, -250, 10)
             Call(PlaySpringAnimation)
             Call(PlaySoundAtPlayer, SOUND_SPRING, SOUND_SPACE_DEFAULT)
-            Call(SetPlayerJumpscale, Float(0.7))
+            Call(SetPlayerJumpscale, 0.7)
             Call(PlayerJump, 375, 0, -175, 15)
             KillThread(LVarA)
             Call(SetPlayerActionState, ACTION_STATE_IDLE)
@@ -85,12 +85,12 @@ EvtScript EVS_UseSpring = {
             Wait(1)
             Thread
                 Wait(8)
-                Call(GotoMap, Ref("dgb_10"), dgb_10_ENTRY_1)
+                Call(GotoMap, "dgb_10", dgb_10_ENTRY_1)
                 Wait(100)
             EndThread
             Set(LVar3, 500)
             ExecGetTID(EVS_TetherCamToPlayer, LVarA)
-            Call(SetPlayerJumpscale, Float(0.7))
+            Call(SetPlayerJumpscale, 0.7)
             Call(PlayerJump, 375, 270, -250, 20)
             Set(AF_DGB11_SpringInUse, false)
         EndIf
@@ -98,7 +98,7 @@ EvtScript EVS_UseSpring = {
         Call(SetPlayerActionState, ACTION_STATE_JUMP)
         Wait(1)
         Set(LVar3, 25)
-        Call(SetPlayerJumpscale, Float(0.7))
+        Call(SetPlayerJumpscale, 0.7)
         Call(PlayerJump, 375, 0, -175, 15)
         Set(AF_DGB11_FallingFromHole, false)
         KillThread(LVarA)
@@ -114,8 +114,8 @@ EvtScript EVS_UseSpring = {
 
 EvtScript EVS_MakeEntities = {
     Call(MakeItemEntity, ITEM_D_DOWN_JUMP, 250, 75, -100, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_DGB11_Item_DDownJump)
-    Call(MakeEntity, Ref(Entity_ScriptSpring), 375, 0, -250, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(EVS_UseSpring))
+    Call(MakeEntity, Entity_ScriptSpring, 375, 0, -250, 0, MAKE_ENTITY_END)
+    Call(AssignScript, EVS_UseSpring)
     Set(MV_SpringEntityID, LVar0)
     Return
     End

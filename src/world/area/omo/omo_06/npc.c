@@ -11,7 +11,7 @@ EvtScript EVS_NpcInteract_Conductor = {
 };
 
 EvtScript EVS_NpcInit_Conductor = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Conductor))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Conductor)
     Return
     End
 };
@@ -40,7 +40,7 @@ EvtScript EVS_NpcInteract_TrainToad = {
 };
 
 EvtScript EVS_NpcInit_TrainToad = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_TrainToad))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_TrainToad)
     Return
     End
 };

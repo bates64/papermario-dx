@@ -59,7 +59,7 @@ EvtScript EVS_NpcIdle_Tubba = {
         Call(PlaySoundAtCollider, COLLIDER_deilittne, SOUND_CREAKY_DOOR_CLOSE, SOUND_SPACE_DEFAULT)
     EndThread
     Call(NpcMoveTo, NPC_SELF, -500, 80, 10)
-    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_Tubba))
+    Call(BindNpcAI, NPC_SELF, EVS_NpcAI_Tubba)
     Return
     End
 };
@@ -108,14 +108,14 @@ EvtScript EVS_NpcAI_Tubba = {
     Thread
         Loop(0)
             Call(PlaySoundAtNpc, NPC_SELF, SOUND_HEAVY_NPC_STEP_C, SOUND_PARAM_QUIET)
-            Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(2.0))
+            Call(ShakeCam, CAM_DEFAULT, 0, 5, 2.0)
             Wait(5)
             Call(PlaySoundAtNpc, NPC_SELF, SOUND_HEAVY_NPC_STEP_C, SOUND_PARAM_QUIET)
-            Call(ShakeCam, CAM_DEFAULT, 0, 2, Float(1.0))
+            Call(ShakeCam, CAM_DEFAULT, 0, 2, 1.0)
             Wait(8)
         EndLoop
     EndThread
-    Call(PatrolNoAttackAI_Main, Ref(AISettings_Tubba_Patrol))
+    Call(PatrolNoAttackAI_Main, AISettings_Tubba_Patrol)
     Return
     End
 };
@@ -129,7 +129,7 @@ API_CALLABLE(PostBattleHideWorld) {
 // failsafe if the player somehow defeats Tubba
 EvtScript EVS_NpcDefeat_Tubba = {
     Call(PostBattleHideWorld)
-    Call(GotoMap, Ref("dgb_01"), dgb_01_ENTRY_2)
+    Call(GotoMap, "dgb_01", dgb_01_ENTRY_2)
     Wait(100)
     Return
     End
@@ -146,8 +146,8 @@ EvtScript EVS_NpcInit_Tubba = {
         Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INACTIVE, true)
         Return
     EndIf
-    Call(SetNpcScale, NPC_SELF, Float(1.25), Float(1.25), Float(1.25))
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Tubba))
+    Call(SetNpcScale, NPC_SELF, 1.25, 1.25, 1.25)
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_Tubba)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(dgb_08_ENTRY_0)
@@ -156,14 +156,14 @@ EvtScript EVS_NpcInit_Tubba = {
                 Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INACTIVE, true)
             Else
                 Call(SetNpcPos, NPC_SELF, -130, 0, 200)
-                Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcAI_Tubba))
+                Call(BindNpcIdle, NPC_SELF, EVS_NpcAI_Tubba)
             EndIf
         CaseEq(dgb_08_ENTRY_1)
             IfNe(GB_ARN_Tubba_MapID, 8)
-                Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Tubba))
+                Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Tubba)
             Else
                 Call(SetNpcPos, NPC_SELF, -130, 210, 80)
-                Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcAI_Tubba))
+                Call(BindNpcIdle, NPC_SELF, EVS_NpcAI_Tubba)
             EndIf
     EndSwitch
     Return
@@ -388,8 +388,8 @@ EvtScript EVS_NpcInteract_LastClubba = {
 EvtScript EVS_NpcInit_LastClubba = {
     Call(SetNpcCollisionSize, NPC_SELF, 36, 30)
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldClubba_Sleep)
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_LastClubba))
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_LastClubba))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_LastClubba)
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_LastClubba)
     Return
     End
 };
@@ -425,7 +425,7 @@ EvtScript EVS_NpcIdle_Clubba_Unused = {
 };
 
 EvtScript EVS_NpcInit_Clubba_Unused = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Clubba_Unused))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Clubba_Unused)
     Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     Return
     End

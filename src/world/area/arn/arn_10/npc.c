@@ -5,7 +5,7 @@
 
 EvtScript EVS_NpcIdle_TubbasHeart = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_TubbasHeart_JumpSad)
-    Call(SetNpcJumpscale, NPC_SELF, Float(3.0))
+    Call(SetNpcJumpscale, NPC_SELF, 3.0)
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     Sub(LVar0, 30)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_TUBBA_HEART_JUMP, SOUND_SPACE_DEFAULT)
@@ -14,14 +14,14 @@ EvtScript EVS_NpcIdle_TubbasHeart = {
     Wait(1)
     Call(SetNpcAnimation, NPC_SELF, ANIM_TubbasHeart_JumpSad)
     Sub(LVar0, 80)
-    Call(SetNpcJumpscale, NPC_SELF, Float(2.5))
+    Call(SetNpcJumpscale, NPC_SELF, 2.5)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_TUBBA_HEART_JUMP, SOUND_SPACE_DEFAULT)
     Call(NpcJump0, NPC_SELF, LVar0, 0, LVar2, 12)
     Call(SetNpcAnimation, NPC_SELF, ANIM_TubbasHeart_LandSad)
     Wait(1)
     Call(SetNpcAnimation, NPC_SELF, ANIM_TubbasHeart_JumpSad)
     Sub(LVar0, 80)
-    Call(SetNpcJumpscale, NPC_SELF, Float(2.5))
+    Call(SetNpcJumpscale, NPC_SELF, 2.5)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_TUBBA_HEART_JUMP, SOUND_SPACE_DEFAULT)
     Call(NpcJump0, NPC_SELF, LVar0, 0, LVar2, 12)
     Call(EnableNpcShadow, NPC_SELF, false)
@@ -39,7 +39,7 @@ EvtScript EVS_NpcDefeat_HyperGoomba = {
 };
 
 EvtScript EVS_NpcInit_TubbasHeart = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_TubbasHeart))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_TubbasHeart)
     IfNe(GB_StoryProgress, STORY_UNUSED_FFFFFFEC)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -53,7 +53,7 @@ EvtScript EVS_NpcInit_HyperGoomba = {
             Call(RemoveNpc, NPC_SELF)
             Return
         EndIf
-        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_HyperGoomba))
+        Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_HyperGoomba)
     EndIf
     Return
     End

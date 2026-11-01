@@ -81,11 +81,11 @@ EvtScript EVS_RoomListener_MayorOffice = {
                     Call(SetNpcFlagBits, NPC_Herringway, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
                     Call(SetNpcFlagBits, NPC_Herringway, NPC_FLAG_IGNORE_WORLD_COLLISION, true)
                     Call(SetNpcAnimation, NPC_Herringway, ANIM_Penguin_Walk)
-                    Call(SetNpcSpeed, NPC_Herringway, Float(1.5 / DT))
+                    Call(SetNpcSpeed, NPC_Herringway, 1.5 / DT)
                     Call(NpcMoveTo, NPC_Herringway, -252, -55, 0)
                     Call(SetNpcAnimation, NPC_Herringway, ANIM_Penguin_Idle)
                     Call(SetNpcFlagBits, NPC_Herringway, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
-                    Call(BindNpcInteract, NPC_Herringway, Ref(EVS_NpcInteract_Herringway))
+                    Call(BindNpcInteract, NPC_Herringway, EVS_NpcInteract_Herringway)
                 EndThread
             EndIf
         CaseEq(ROOM_UPDATE_ENTER_DONE)
@@ -225,19 +225,19 @@ s32 InteriorNPCs_RightHouse[] = {
 EvtScript EVS_SetupMayorRooms = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_MAYOR_MURDER_MYSTERY)
-            Set(LVar0, Ref(InteriorNPCs_MayorBefore))
+            Set(LVar0, InteriorNPCs_MayorBefore)
         CaseLt(STORY_CH7_MAYOR_MURDER_SOLVED)
-            Set(LVar0, Ref(InteriorNPCs_MayorBefore))
+            Set(LVar0, InteriorNPCs_MayorBefore)
         CaseGe(STORY_CH7_MAYOR_MURDER_SOLVED)
-            Set(LVar0, Ref(InteriorNPCs_MayorAfter))
+            Set(LVar0, InteriorNPCs_MayorAfter)
     EndSwitch
     // mayor's foyer
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
-        Ref(EVS_SetDoorRot_MayorFoyer),
-        Ref(EVS_SetWallRot_MayorFoyer),
-        Ref(EVS_DropDoor_MayorFoyer),
-        Ref(EVS_RoomListener_MayorFoyer),
+        EVS_SetDoorRot_MayorFoyer,
+        EVS_SetWallRot_MayorFoyer,
+        EVS_DropDoor_MayorFoyer,
+        EVS_RoomListener_MayorFoyer,
         COLLIDER_tts,
         COLLIDER_o352,
         MODEL_son,
@@ -245,10 +245,10 @@ EvtScript EVS_SetupMayorRooms = {
     // mayor's office
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
-        Ref(EVS_SetDoorRot_MayorOffice),
-        Ref(EVS_SetWallRot_MayorOffice),
+        EVS_SetDoorRot_MayorOffice,
+        EVS_SetWallRot_MayorOffice,
         nullptr,
-        Ref(EVS_RoomListener_MayorOffice),
+        EVS_RoomListener_MayorOffice,
         COLLIDER_ttsn,
         COLLIDER_o353,
         MODEL_o430,
@@ -266,38 +266,38 @@ EvtScript EVS_SetupRooms = {
     Call(SetGroupVisibility, MODEL_f_naiso, MODEL_GROUP_HIDDEN)
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT),
-        Ref(EVS_SetDoorRot_MiddleHouse),
-        Ref(EVS_SetWallRot_MiddleHouse),
+        EVS_SetDoorRot_MiddleHouse,
+        EVS_SetWallRot_MiddleHouse,
         nullptr,
-        Ref(EVS_RoomListener_MiddleHouse),
+        EVS_RoomListener_MiddleHouse,
         COLLIDER_ttf2,
         COLLIDER_o354,
         MODEL_f2,
-        Ref(InteriorNPCs_MiddleHouse))
+        InteriorNPCs_MiddleHouse)
     // lower right house
     Call(SetGroupVisibility, MODEL_m_naiso, MODEL_GROUP_HIDDEN)
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_1, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
-        Ref(EVS_SetDoorRot_UpperRightHouse),
-        Ref(EVS_SetWallRot_RightHouse),
+        EVS_SetDoorRot_UpperRightHouse,
+        EVS_SetWallRot_RightHouse,
         nullptr,
-        Ref(EVS_RoomListener_UpperRightHouse),
+        EVS_RoomListener_UpperRightHouse,
         COLLIDER_ttm,
         COLLIDER_o355,
         MODEL_min,
-        Ref(InteriorNPCs_RightHouse))
+        InteriorNPCs_RightHouse)
     // upper right house
     Call(SetGroupVisibility, MODEL_m_naiso, MODEL_GROUP_HIDDEN)
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT),
-        Ref(EVS_SetDoorRot_LowerRightHouse),
-        Ref(EVS_SetWallRot_RightHouse),
+        EVS_SetDoorRot_LowerRightHouse,
+        EVS_SetWallRot_RightHouse,
         nullptr,
-        Ref(EVS_RoomListener_LowerRightHouse),
+        EVS_RoomListener_LowerRightHouse,
         COLLIDER_o376,
         COLLIDER_o390,
         MODEL_min,
-        Ref(InteriorNPCs_RightHouse))
+        InteriorNPCs_RightHouse)
     Return
     End
 };

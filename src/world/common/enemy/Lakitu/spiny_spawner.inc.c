@@ -23,7 +23,7 @@ EvtScript EVS_NpcAI_Lakitu_SpinySpawner = {
     Call(SetSelfVar, AI_VAR_FLYING_CHASE_VELY, AI_PACK_FLT(-6.5))
     Call(SetSelfVar, AI_VAR_FLYING_CHASE_ACCEL, AI_PACK_FLT(0.3))
     Call(SetSelfVar, AI_VAR_FLYING_BOB_AMPLITUDE, AI_PACK_FLT(4.0))
-    Call(LakituAI_Main, Ref(AISettings_Lakitu_SpinySpawner))
+    Call(LakituAI_Main, AISettings_Lakitu_SpinySpawner)
     Return
     End
 };

@@ -8,7 +8,7 @@ EvtScript EVS_ExitDoors_tik_22_0 =
     EVT_EXIT_DOUBLE_DOOR(tik_21_ENTRY_1, "tik_22", tik_22_ENTRY_0, COLLIDER_tte, MODEL_o46, MODEL_o47);
 
 EvtScript EVS_GotoMap_tik_14_0 = {
-    Call(GotoMap, Ref("tik_14"), tik_14_ENTRY_0)
+    Call(GotoMap, "tik_14", tik_14_ENTRY_0)
     Wait(100)
     Return
     End
@@ -25,13 +25,13 @@ EvtScript EVS_ShowMessage_DoorLocked = {
 };
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_tik_20_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitWalk_tik_20_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
     IfGe(GB_StoryProgress, STORY_CH7_INVITED_TO_STARBORN_VALLEY)
-        BindTrigger(Ref(EVS_ExitDoors_tik_22_0), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
+        BindTrigger(EVS_ExitDoors_tik_22_0, TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
     Else
-        BindTrigger(Ref(EVS_ShowMessage_DoorLocked), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
+        BindTrigger(EVS_ShowMessage_DoorLocked, TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
     EndIf
-    BindTrigger(Ref(EVS_ExitPipe_tik_14_0), TRIGGER_FLOOR_TOUCH, COLLIDER_o49, 1, 0)
+    BindTrigger(EVS_ExitPipe_tik_14_0, TRIGGER_FLOOR_TOUCH, COLLIDER_o49, 1, 0)
     Return
     End
 };
@@ -40,7 +40,7 @@ EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(tik_21_ENTRY_0)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
         CaseEq(tik_21_ENTRY_1)
             Set(LVar2, MODEL_o46)
@@ -80,7 +80,7 @@ DripVolumeList DripVolumes = {
 };
 
 EvtScript EVS_SetupDrips = {
-    Set(LVar0, Ref(DripVolumes))
+    Set(LVar0, DripVolumes)
     Set(LVar1, MODEL_sizuku)
     Exec(EVS_CreateDripVolumes)
     Return

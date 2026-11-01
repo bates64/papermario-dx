@@ -8,10 +8,10 @@ EvtScript EVS_ExitWalk_s = EVT_EXIT_WALK(60, mim_01_ENTRY_2, "mim_01", mim_01_EN
 EvtScript EVS_ExitWalk_e = EVT_EXIT_WALK(60, mim_01_ENTRY_3, "mim_02", mim_02_ENTRY_1);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_n), TRIGGER_FLOOR_ABOVE, COLLIDER_deilin, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_w), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_s), TRIGGER_FLOOR_ABOVE, COLLIDER_deilis, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_e), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitWalk_n, TRIGGER_FLOOR_ABOVE, COLLIDER_deilin, 1, 0)
+    BindTrigger(EVS_ExitWalk_w, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitWalk_s, TRIGGER_FLOOR_ABOVE, COLLIDER_deilis, 1, 0)
+    BindTrigger(EVS_ExitWalk_e, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     Return
     End
 };
@@ -24,15 +24,15 @@ EvtScript EVS_Main = {
     Set(AB_MIM_PrevMapID, GB_MIM_CurrentMapID)
     Call(GetMapID, GB_MIM_CurrentMapID)
     ExecWait(EVS_SetupGates)
-    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Call(MakeNpcs, true, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     ExecWait(EVS_SetupExitHint)
-    Set(LVar0, Ref(EVS_BindExitTriggers))
+    Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     Wait(1)
     Call(SetForeverForestFog)
     Exec(EVS_SetupMusic)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(3.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 3.0)
     Return
     End
 };

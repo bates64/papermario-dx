@@ -15,11 +15,11 @@ EvtScript EVS_ExitWalk_trd_05_2 = EVT_EXIT_WALK(60, trd_00_ENTRY_3, "trd_05", tr
 EvtScript EVS_ExitWalk_nok_15_2 = EVT_EXIT_WALK(60, trd_00_ENTRY_4, "nok_15", nok_15_ENTRY_2);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_nok_15_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoors_trd_01_0), TRIGGER_WALL_PRESS_A, COLLIDER_tt2, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoors_trd_05_1), TRIGGER_WALL_PRESS_A, COLLIDER_tt3, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_trd_05_2), TRIGGER_FLOOR_ABOVE, COLLIDER_deili5, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_nok_15_2), TRIGGER_FLOOR_ABOVE, COLLIDER_deilit, 1, 0)
+    BindTrigger(EVS_ExitWalk_nok_15_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitDoors_trd_01_0, TRIGGER_WALL_PRESS_A, COLLIDER_tt2, 1, 0)
+    BindTrigger(EVS_ExitDoors_trd_05_1, TRIGGER_WALL_PRESS_A, COLLIDER_tt3, 1, 0)
+    BindTrigger(EVS_ExitWalk_trd_05_2, TRIGGER_FLOOR_ABOVE, COLLIDER_deili5, 1, 0)
+    BindTrigger(EVS_ExitWalk_nok_15_2, TRIGGER_FLOOR_ABOVE, COLLIDER_deilit, 1, 0)
     Return
     End
 };
@@ -33,18 +33,18 @@ EvtScript EVS_Scene_ArriveAtFortress = {
         Call(UseSettingsFrom, CAM_DEFAULT, -730, 0, 400)
         Call(SetPanTarget, CAM_DEFAULT, 20, 0, 400)
         Call(SetCamDistance, CAM_DEFAULT, -1000)
-        Call(SetCamPitch, CAM_DEFAULT, 18, Float(-20.0))
-        Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+        Call(SetCamPitch, CAM_DEFAULT, 18, -20.0)
+        Call(SetCamSpeed, CAM_DEFAULT, 90.0)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
-        Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+        Call(WaitForCam, CAM_DEFAULT, 1.0)
         Call(SetPanTarget, CAM_DEFAULT, -480, 0, 400)
         Call(SetCamDistance, CAM_DEFAULT, -1300)
-        Call(SetCamPitch, CAM_DEFAULT, 18, Float(-11.5))
-        Call(SetCamSpeed, CAM_DEFAULT, Float(0.8))
+        Call(SetCamPitch, CAM_DEFAULT, 18, -11.5)
+        Call(SetCamSpeed, CAM_DEFAULT, 0.8)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
-        Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+        Call(WaitForCam, CAM_DEFAULT, 1.0)
         Wait(5)
-        Call(ResetCam, CAM_DEFAULT, Float(4.0))
+        Call(ResetCam, CAM_DEFAULT, 4.0)
     EndThread
     Wait(82)
     Call(SetPlayerPos, -1041, 0, 204)
@@ -75,7 +75,7 @@ EvtScript EVS_EnterMap = {
                 ExecWait(EVS_Scene_ArriveAtFortress)
                 Exec(EVS_BindExitTriggers)
             Else
-                Set(LVar0, Ref(EVS_BindExitTriggers))
+                Set(LVar0, EVS_BindExitTriggers)
                 Exec(EnterWalk)
             EndIf
         CaseEq(trd_00_ENTRY_1)
@@ -89,10 +89,10 @@ EvtScript EVS_EnterMap = {
             ExecWait(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
         CaseEq(trd_00_ENTRY_3)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
         CaseEq(trd_00_ENTRY_4)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
         CaseEq(trd_00_ENTRY_5)
             Exec(EVS_BindExitTriggers)
@@ -107,7 +107,7 @@ EvtScript EVS_Main = {
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(GF_MAP_KoopaBrosFortress, true)
-    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Call(MakeNpcs, true, DefaultNPCs)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(trd_00_ENTRY_0)

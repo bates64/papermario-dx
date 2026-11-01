@@ -20,7 +20,7 @@ EvtScript EVS_NpcAI_Ember_Wander = {
     Call(SetSelfVar, AI_VAR_FLYING_CHASE_VELY, AI_PACK_FLT(0.0f))
     Call(SetSelfVar, AI_VAR_FLYING_CHASE_ACCEL, AI_PACK_FLT(0.0f))
     Call(SetSelfVar, AI_VAR_FLYING_BOB_AMPLITUDE, AI_PACK_FLT(0.0f))
-    Call(FlyingNoAttackAI_Main, Ref(AISettings_Ember_Wander))
+    Call(FlyingNoAttackAI_Main, AISettings_Ember_Wander)
     Return
     End
 };

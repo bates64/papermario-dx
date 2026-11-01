@@ -12,16 +12,16 @@ EvtScript EVS_ExitDoors_dgb_01_0 = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
 );
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_arn_04_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitWalk_arn_04_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_TUBBA_SMASHED_THE_BRIDGES)
-            BindTrigger(Ref(EVS_ExitDoors_dgb_01_0), TRIGGER_WALL_PRESS_A, COLLIDER_deiliwt, 1, 0)
+            BindTrigger(EVS_ExitDoors_dgb_01_0, TRIGGER_WALL_PRESS_A, COLLIDER_deiliwt, 1, 0)
         CaseLt(STORY_CH3_ESCAPED_TUBBAS_MANOR)
         CaseLt(STORY_CH3_DEFEATED_TUBBA_BLUBBA)
             Exec(EVS_TubbaTaunting)
             ExecWait(EVS_SetBoosBracingDoor)
         CaseDefault
-            BindTrigger(Ref(EVS_ExitDoors_dgb_01_0), TRIGGER_WALL_PRESS_A, COLLIDER_deiliwt, 1, 0)
+            BindTrigger(EVS_ExitDoors_dgb_01_0, TRIGGER_WALL_PRESS_A, COLLIDER_deiliwt, 1, 0)
     EndSwitch
     Return
     End
@@ -37,7 +37,7 @@ EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(dgb_00_ENTRY_0)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
             Wait(1)
         CaseEq(dgb_00_ENTRY_1)
@@ -71,9 +71,9 @@ EvtScript EVS_Main = {
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, dgb_00_ENTRY_2)
-        Call(MakeNpcs, false, Ref(DefaultNPCs))
+        Call(MakeNpcs, false, DefaultNPCs)
     Else
-        Call(MakeNpcs, false, Ref(BooNPCs))
+        Call(MakeNpcs, false, BooNPCs)
     EndIf
     ExecWait(EVS_MakeEntities)
     Exec(EVS_SetupMusic)

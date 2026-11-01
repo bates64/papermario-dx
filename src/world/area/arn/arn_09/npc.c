@@ -20,13 +20,13 @@ API_CALLABLE(PlaySpringAnimation) {
 EvtScript EVS_NpcIdle_TubbasHeart = {
     Call(EnableNpcShadow, NPC_SELF, false)
     Call(SetNpcAnimation, NPC_SELF, ANIM_TubbasHeart_JumpSad)
-    Call(SetNpcJumpscale, NPC_SELF, Float(2.5))
+    Call(SetNpcJumpscale, NPC_SELF, 2.5)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_TUBBA_HEART_JUMP, SOUND_SPACE_DEFAULT)
     Call(NpcJump0, NPC_SELF, 0, 25, -10, 6 * DT)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_SPRING, SOUND_SPACE_DEFAULT)
     Call(PlaySpringAnimation)
     Call(SetNpcAnimation, NPC_SELF, ANIM_TubbasHeart_JumpSad)
-    Call(SetNpcJumpscale, NPC_SELF, Float(2.5))
+    Call(SetNpcJumpscale, NPC_SELF, 2.5)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_TUBBA_HEART_JUMP, SOUND_SPACE_DEFAULT)
     Call(NpcJump0, NPC_SELF, 0, 200, 0, 15 * DT)
     Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
@@ -39,7 +39,7 @@ EvtScript EVS_NpcInit_TubbasHeart = {
     IfNe(GB_StoryProgress, STORY_CH3_HEART_FLED_SECOND_TUNNEL)
         Call(RemoveNpc, NPC_SELF)
     Else
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_TubbasHeart))
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_TubbasHeart)
     EndIf
     Return
     End

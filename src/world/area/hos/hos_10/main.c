@@ -10,9 +10,9 @@ EvtScript EVS_Main = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(hos_10_ENTRY_1)
-            Call(MakeNpcs, false, Ref(NpcGroup_Descent))
+            Call(MakeNpcs, false, NpcGroup_Descent)
         CaseEq(hos_10_ENTRY_2)
-            Call(MakeNpcs, false, Ref(NpcGroup_FlyAway))
+            Call(MakeNpcs, false, NpcGroup_FlyAway)
         CaseDefault
     EndSwitch
     IfNe(GB_StoryProgress, STORY_INTRO)

@@ -79,7 +79,7 @@ OVL_DEF_MAP() = {
 };
 
 EvtScript EVS_GotoMap_tst_03_1 = {
-    Call(GotoMap, Ref("tst_03"), tst_03_ENTRY_1)
+    Call(GotoMap, "tst_03", tst_03_ENTRY_1)
     Wait(100)
     Return
     End
@@ -157,9 +157,9 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_TESTING)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Call(MakeNpcs, false, Ref(DefaultNPCs))
+    Call(MakeNpcs, false, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
-    BindTrigger(Ref(EVS_GotoMap_tst_03_1), TRIGGER_WALL_PUSH, COLLIDER_deilitw, 1, 0)
+    BindTrigger(EVS_GotoMap_tst_03_1, TRIGGER_WALL_PUSH, COLLIDER_deilitw, 1, 0)
     Call(ParentColliderToModel, COLLIDER_o5, MODEL_o5)
     Call(ParentColliderToModel, COLLIDER_o3, MODEL_o3)
     Call(ParentColliderToModel, COLLIDER_o1, MODEL_o1)

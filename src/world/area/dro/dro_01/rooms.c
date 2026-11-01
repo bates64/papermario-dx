@@ -158,34 +158,34 @@ s32 InteriorNPCs_RightHouse[] = {
 EvtScript EVS_SetupRooms = {
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_LARGE_DOOR_RIGHT_HINGE_OPENS_OUT),
-        Ref(EVS_SetDoorRot_LeftHouse),
-        Ref(EVS_SetWallRot_LeftHouse),
-        Ref(EVS_DropDoor_LeftHouse),
-        Ref(EVS_RoomListener_LeftHouse),
+        EVS_SetDoorRot_LeftHouse,
+        EVS_SetWallRot_LeftHouse,
+        EVS_DropDoor_LeftHouse,
+        EVS_RoomListener_LeftHouse,
         COLLIDER_ei1_1,
         COLLIDER_ei1_2,
         MODEL_k_i1,
-        Ref(InteriorNPCs_LeftHouse))
+        InteriorNPCs_LeftHouse)
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_LARGE_DOOR_RIGHT_HINGE_OPENS_OUT),
-        Ref(EVS_SetDoorRot_Shop),
-        Ref(EVS_SetWallRot_Shop),
+        EVS_SetDoorRot_Shop,
+        EVS_SetWallRot_Shop,
         nullptr,
-        Ref(EVS_RoomListener_Shop),
+        EVS_RoomListener_Shop,
         COLLIDER_em_1,
         COLLIDER_em_2,
         MODEL_k_m1,
-        Ref(InteriorNPCs_Shop))
+        InteriorNPCs_Shop)
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_LARGE_DOOR_RIGHT_HINGE_OPENS_OUT),
-        Ref(EVS_SetDoorRot_RightHouse),
-        Ref(EVS_SetWallRot_RightHouse),
-        Ref(EVS_DropDoor_RightHouse),
-        Ref(EVS_RoomListener_RightHouse),
+        EVS_SetDoorRot_RightHouse,
+        EVS_SetWallRot_RightHouse,
+        EVS_DropDoor_RightHouse,
+        EVS_RoomListener_RightHouse,
         COLLIDER_ei2_1,
         COLLIDER_ei_2,
         MODEL_k_i2,
-        Ref(InteriorNPCs_RightHouse))
+        InteriorNPCs_RightHouse)
     Set(LVar0, ROOM_UPDATE_EXIT_END)
     Exec(EVS_RoomListener_LeftHouse)
     Exec(EVS_RoomListener_Shop)

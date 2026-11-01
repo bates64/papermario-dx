@@ -96,14 +96,14 @@ Call `CreateMapRoom` from an EVT script that the map's main EVT script starts, s
 EvtScript EVS_SetupRooms = {
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_LEFT_HINGE_OPENS_OUT), // item group and flags
-        Ref(EVS_SetDoorRot_TayceT),   // door
-        Ref(EVS_SetWallRot_TayceT),   // walls, or nullptr
+        EVS_SetDoorRot_TayceT,        // door
+        EVS_SetWallRot_TayceT,        // walls, or nullptr
         nullptr,                      // dropping door, or nullptr
-        Ref(EVS_RoomListener_TayceT), // listener, or nullptr
+        EVS_RoomListener_TayceT,      // listener, or nullptr
         COLLIDER_deilit1u,            // doorway collider, faced from outside
         COLLIDER_deilit1,             // doorway collider, faced from inside
         MODEL_cooking,                // the whole building
-        Ref(InsideNPCs_TayceT))       // NPCs that stay visible inside, or nullptr
+        InsideNPCs_TayceT)            // NPCs that stay visible inside, or nullptr
     Set(LVar0, ROOM_UPDATE_EXIT_END)
     Exec(EVS_RoomListener_TayceT)
     Return

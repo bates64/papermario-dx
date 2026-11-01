@@ -23,7 +23,7 @@ EvtScript EVS_ExitDoors_dgb_14_0 = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
 );
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_dgb_13_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilin, 1, 0)
+    BindTrigger(EVS_ExitWalk_dgb_13_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilin, 1, 0)
     Return
     End
 };
@@ -62,7 +62,7 @@ EvtScript EVS_EnterMap = {
             ExecWait(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
         CaseEq(dgb_03_ENTRY_5)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalkShort)
             Wait(1)
     EndSwitch
@@ -77,18 +77,18 @@ EvtScript EVS_Main = {
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     IfLt(GB_StoryProgress, STORY_CH3_STAR_SPIRIT_RESCUED)
-        Call(MakeNpcs, true, Ref(DefaultNPCs))
+        Call(MakeNpcs, true, DefaultNPCs)
     EndIf
     ExecWait(EVS_MakeEntities)
     Exec(EVS_SetupClock)
-    BindTrigger(Ref(EVS_ExitDoors_dgb_02_0), TRIGGER_WALL_PRESS_A, COLLIDER_deilittse, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoors_dgb_09_0), TRIGGER_WALL_PRESS_A, COLLIDER_deilittne, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoors_dgb_04_0), TRIGGER_WALL_PRESS_A, COLLIDER_deilittsw, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoors_dgb_05_0), TRIGGER_WALL_PRESS_A, COLLIDER_deilitts, 1, 0)
+    BindTrigger(EVS_ExitDoors_dgb_02_0, TRIGGER_WALL_PRESS_A, COLLIDER_deilittse, 1, 0)
+    BindTrigger(EVS_ExitDoors_dgb_09_0, TRIGGER_WALL_PRESS_A, COLLIDER_deilittne, 1, 0)
+    BindTrigger(EVS_ExitDoors_dgb_04_0, TRIGGER_WALL_PRESS_A, COLLIDER_deilittsw, 1, 0)
+    BindTrigger(EVS_ExitDoors_dgb_05_0, TRIGGER_WALL_PRESS_A, COLLIDER_deilitts, 1, 0)
     IfEq(GF_DGB03_UnlockedThirdFloor, false)
-        BindPadlock(Ref(EVS_UnlockPrompt_UpperDoor), TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), Ref(KeyList_UpperDoor), 0, 1)
+        BindPadlock(EVS_UnlockPrompt_UpperDoor, TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), KeyList_UpperDoor, 0, 1)
     Else
-        BindTrigger(Ref(EVS_ExitDoors_dgb_14_0), TRIGGER_WALL_PRESS_A, COLLIDER_deilittnw, 1, 0)
+        BindTrigger(EVS_ExitDoors_dgb_14_0, TRIGGER_WALL_PRESS_A, COLLIDER_deilittnw, 1, 0)
     EndIf
     Exec(EVS_SetupMusic)
     Exec(EVS_EnterMap)

@@ -46,15 +46,15 @@ EvtScript EVS_NpcIdle_Goomba = {
         EndIf
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_FLIP_INSTANTLY, true)
     Wait(3)
-    SetF(LVar0, Float(0.0))
+    SetF(LVar0, 0.0)
     Loop(9)
-        AddF(LVar0, Float(10.0))
+        AddF(LVar0, 10.0)
         Call(SetNpcRotation, NPC_SELF, 0, LVar0, 0)
         Wait(1)
     EndLoop
     Call(SetNpcAnimation, NPC_SELF, ANIM_Goomba_Still)
     Loop(9)
-        AddF(LVar0, Float(10.0))
+        AddF(LVar0, 10.0)
         Call(SetNpcRotation, NPC_SELF, 0, LVar0, 0)
         Wait(1)
     EndLoop
@@ -68,21 +68,21 @@ EvtScript EVS_NpcIdle_Goomba = {
     Wait(5)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_NPC_JUMP, SOUND_SPACE_DEFAULT)
     Call(EnableNpcShadow, NPC_SELF, true)
-    Call(SetNpcJumpscale, NPC_SELF, Float(0.6))
+    Call(SetNpcJumpscale, NPC_SELF, 0.6)
     Call(NpcJump0, NPC_SELF, -35, 0, 30, 23)
     Call(SetNpcImgFXParams, NPC_SELF, IMGFX_CLEAR, 0, 0, 0, 0)
     Call(InterpNpcYaw, NPC_SELF, 90, 0)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_FLIP_INSTANTLY, false)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_DISABLE_AI, false)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_BEGIN_WITH_CHASING, true)
-    BindTrigger(Ref(EVS_OnReadBillboard), TRIGGER_WALL_PRESS_A, COLLIDER_o78, 1, 0)
-    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_Goomba_Wander))
+    BindTrigger(EVS_OnReadBillboard, TRIGGER_WALL_PRESS_A, COLLIDER_o78, 1, 0)
+    Call(BindNpcAI, NPC_SELF, EVS_NpcAI_Goomba_Wander)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Goomba = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Goomba))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Goomba)
     Return
     End
 };

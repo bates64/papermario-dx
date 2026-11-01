@@ -349,10 +349,10 @@ s32 DefaultAnims[] = {
 };
 
 EvtScript EVS_Init = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
-    Call(BindHandlePhase, ACTOR_SELF, Ref(EVS_HandlePhase))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
+    Call(BindHandlePhase, ACTOR_SELF, EVS_HandlePhase)
     Call(SetActorVar, ACTOR_SELF, AVAR_SquadArrived, false)
     Call(SetActorVar, ACTOR_SELF, AVAR_BeenAttackedCount, 0)
     Call(SetActorVar, ACTOR_SELF, AVAR_HasBeenAttacked, 0)
@@ -487,7 +487,7 @@ EvtScript EVS_HandlePhase = {
                 Call(SetHomePos, ACTOR_SELF, 65, 0, -10)
                 Call(HPBarToHome, ACTOR_SELF)
                 Call(SetActorYaw, ACTOR_SELF, 0)
-                Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
+                Call(SetActorSpeed, ACTOR_SELF, 6.0)
                 Set(LVar1, ANIM_ShySquadGuy_Run)
                 Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SHY_GUY_SCREAMS_1)
                 ExecWait(EVS_MoveSquadHome)
@@ -572,7 +572,7 @@ EvtScript EVS_MoveSquadHome = {
         Add(LVar2, LVar4)
         Call(GetPartMovementVar, ACTOR_SELF, LVar0, HOME_OFFSET_Z, LVar4)
         Add(LVar3, LVar4)
-        Set(LVar4, Float(6.0))
+        Set(LVar4, 6.0)
         Set(LVar5, 0)
         ExecWait(EVS_MoveMemberToPos)
         Set(LVarA, 2)
@@ -585,7 +585,7 @@ EvtScript EVS_MoveSquadHome = {
     EndThread
     Add(LVar0, 1)
     EndLoop
-    Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
+    Call(SetActorSpeed, ACTOR_SELF, 6.0)
     Call(SetGoalToHome, ACTOR_SELF)
     Call(GetGoalPos, ACTOR_SELF, LVarD, LVarE, LVarF)
     Call(SetGoalPos, ACTOR_SELF, LVarD, LVarE, LVarF)
@@ -897,7 +897,7 @@ EvtScript EVS_HandleEvent = {
             ExecWait(EVS_Shock)
             Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
             Call(MoveBattleCamOver, 20)
-            Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
+            Call(SetActorSpeed, ACTOR_SELF, 6.0)
             Call(SetActorYaw, ACTOR_SELF, 180)
             Set(LVar1, ANIM_ShySquadGuy_Run)
             ExecWait(EVS_MoveSquadHome)
@@ -932,7 +932,7 @@ EvtScript EVS_HandleEvent = {
             ExecWait(EVS_SetMembersAnimation)
             Wait(1000)
         CaseEq(EVENT_END_FIRST_STRIKE)
-            Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
+            Call(SetActorSpeed, ACTOR_SELF, 6.0)
             Call(SetActorYaw, ACTOR_SELF, 180)
             Set(LVar1, ANIM_ShySquadGuy_Run)
             ExecWait(EVS_MoveSquadHome)
@@ -984,7 +984,7 @@ EvtScript EVS_ReduceCrowdSize = {
                 Call(GetPartMovementVar, ACTOR_SELF, LVar0, HIT_OFFSET_Z, LVar8)
                 Add(LVar1, LVar7)
                 Add(LVar3, LVar8)
-                Call(SetPartJumpGravity, ACTOR_SELF, LVar0, Float(0.5))
+                Call(SetPartJumpGravity, ACTOR_SELF, LVar0, 0.5)
                 Call(JumpPartTo, ACTOR_SELF, LVar0, LVar1, 0, LVar3, 15, true)
                 Call(GetDamageSource, LVar5)
                 Switch(LVar5)
@@ -1152,13 +1152,13 @@ EvtScript EVS_Attack_Swarm = {
             Add(LVar2, LVar5)
             Call(GetPartMovementVar, ACTOR_SELF, LVar0, SWARM_OFFSET_Z, LVar5)
             Add(LVar3, LVar5)
-            SetF(LVar4, Float(6.0))
+            SetF(LVar4, 6.0)
             Set(LVar5, 30)
             ExecWait(EVS_MoveMemberToPos)
         EndThread
         Add(LVar0, 1)
     EndLoop
-    Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
+    Call(SetActorSpeed, ACTOR_SELF, 6.0)
     Call(GetGoalPos, ACTOR_PLAYER, LVar2, LVar5, LVar3)
     Call(GetPartMovementVar, ACTOR_SELF, PRT_MEMBER_15, SWARM_OFFSET_X, LVar5)
     Add(LVar2, LVar5)
@@ -1218,7 +1218,7 @@ EvtScript EVS_Attack_Swarm = {
                 CaseDefault
                     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_LARGE_CROWD_WALK)
             EndSwitch
-            Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
+            Call(SetActorSpeed, ACTOR_SELF, 6.0)
             Call(SetActorYaw, ACTOR_SELF, 180)
             Set(LVar1, ANIM_ShySquadGuy_Dash)
             ExecWait(EVS_MoveSquadHome)
@@ -1315,7 +1315,7 @@ EvtScript EVS_Flee = {
             Add(LVar2, 190)
             Call(RandInt, 100, LVar3)
             Add(LVar3, -50)
-            SetF(LVar4, Float(6.0))
+            SetF(LVar4, 6.0)
             Set(LVar5, 0)
             ExecWait(EVS_MoveMemberToPos)
         EndThread
@@ -1326,7 +1326,7 @@ EvtScript EVS_Flee = {
         Set(LVar1, ANIM_ShySquadGuy_Panic)
         Set(LVar2, 240)
         Set(LVar3, 0)
-        SetF(LVar4, Float(6.0))
+        SetF(LVar4, 6.0)
         Set(LVar5, 0)
         ExecWait(EVS_MoveMemberToPos)
     EndThread
@@ -1342,13 +1342,13 @@ EvtScript EVS_Flee = {
         CaseDefault
             Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SHY_GUY_SCREAMS_2)
     EndSwitch
-    Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
+    Call(SetActorSpeed, ACTOR_SELF, 6.0)
     Call(SetActorYaw, ACTOR_SELF, 180)
     Call(SetGoalPos, ACTOR_SELF, 240, 0, 0)
     Call(RunToGoal, ACTOR_SELF, 0, true)
     Wait(30)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_DISTANT_THUD)
-    Call(ShakeCam, CAM_BATTLE, 0, 6, Float(2.5))
+    Call(ShakeCam, CAM_BATTLE, 0, 6, 2.5)
     Call(GetActorVar, ACTOR_SELF, AVAR_NumDefeated, LVar0)
     IfLt(LVar0, 14)
         Call(ActorSpeak, MSG_CH4_0067, ACTOR_GENERAL, PRT_MAIN, -1, -1)
@@ -1357,10 +1357,10 @@ EvtScript EVS_Flee = {
     EndIf
     Thread
         Call(PlaySoundAtActor, ACTOR_SELF, SOUND_DISTANT_THUD)
-        Call(ShakeCam, CAM_BATTLE, 0, 4, Float(2.0))
+        Call(ShakeCam, CAM_BATTLE, 0, 4, 2.0)
         Wait(12)
         Call(PlaySoundAtActor, ACTOR_SELF, SOUND_DISTANT_THUD)
-        Call(ShakeCam, CAM_BATTLE, 0, 4, Float(2.0))
+        Call(ShakeCam, CAM_BATTLE, 0, 4, 2.0)
     EndThread
     Call(EndActorSpeech, ACTOR_GENERAL, PRT_MAIN, -1, -1)
     Call(SetActorSounds, ACTOR_SELF, ACTOR_SOUND_WALK, SOUND_NONE, SOUND_NONE)
@@ -1378,7 +1378,7 @@ EvtScript EVS_Flee = {
             Add(LVar2, -290)
             Call(RandInt, 100, LVar3)
             Add(LVar3, -50)
-            SetF(LVar4, Float(10.0))
+            SetF(LVar4, 10.0)
             ExecWait(EVS_MoveMemberToPos)
         EndThread
         Add(LVar0, 1)
@@ -1419,11 +1419,11 @@ EvtScript EVS_Flee = {
         Set(LVar1, ANIM_ShySquadGuy_Panic)
         Set(LVar2, -240)
         Set(LVar3, 0)
-        SetF(LVar4, Float(10.0))
+        SetF(LVar4, 10.0)
         Set(LVar5, 0)
         ExecWait(EVS_MoveMemberToPos)
     EndThread
-    Call(SetActorSpeed, ACTOR_SELF, Float(10.0))
+    Call(SetActorSpeed, ACTOR_SELF, 10.0)
     Call(SetActorYaw, ACTOR_SELF, 0)
     Call(SetGoalPos, ACTOR_SELF, -240, 0, 0)
     Call(RunToGoal, ACTOR_SELF, 0, true)

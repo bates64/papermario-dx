@@ -84,8 +84,8 @@ EvtScript EVS_SetupShop = {
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o489, COLLIDER_FLAGS_UPPER_MASK)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o490, COLLIDER_FLAGS_UPPER_MASK)
     EndIf
-    Call(MakeShop, Ref(ItemPositions), Ref(Inventory), Ref(PriceList), 0)
-    Call(MakeShopOwner, Ref(Owner))
+    Call(MakeShop, ItemPositions, Inventory, PriceList, 0)
+    Call(MakeShopOwner, Owner)
     Return
     End
 };

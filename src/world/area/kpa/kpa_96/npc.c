@@ -83,8 +83,8 @@ EvtScript EVS_SetupShop = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o863, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o864, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o865, COLLIDER_FLAGS_UPPER_MASK)
-    Call(MakeShop, Ref(ItemPositions), Ref(Inventory), Ref(PriceList), 0)
-    Call(MakeShopOwner, Ref(Owner))
+    Call(MakeShop, ItemPositions, Inventory, PriceList, 0)
+    Call(MakeShopOwner, Owner)
     Return
     End
 };
@@ -135,7 +135,7 @@ EvtScript EVS_NpcInteract_SpikedGoomba = {
 };
 
 EvtScript EVS_NpcInit_SpikedGoomba = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_SpikedGoomba))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_SpikedGoomba)
     Return
     End
 };

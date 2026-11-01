@@ -19,12 +19,12 @@ Some commands use local variables for their own work. `SpeakToPlayer`, `SpeakToN
 
 ## Arithmetic
 
-Each command changes the variable it's given first. Commands ending in `F` work with decimal numbers, written with `Float`:
+Each command changes the variable it's given first. Commands ending in `F` work with decimal numbers:
 
 ```c
 Set(LVar0, 5)
 Add(LVar0, 1)           // LVar0 is 6
-SetF(LVar1, Float(1.5))
+SetF(LVar1, 1.5)
 ```
 
 | Command | What it does |

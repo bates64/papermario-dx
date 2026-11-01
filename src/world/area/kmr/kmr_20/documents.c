@@ -525,11 +525,11 @@ EvtScript EVS_Setup_SecretPanel = {
 };
 
 EvtScript EVS_Setup_Interactables = {
-    BindTrigger(Ref(EVS_Inspect_Letters), TRIGGER_WALL_PRESS_A, COLLIDER_o251, 1, 0)
-    BindTrigger(Ref(EVS_Inspect_LuigisDiary), TRIGGER_WALL_PRESS_A, COLLIDER_o240, 1, 0)
-    BindTrigger(Ref(EVS_Shake_Mailbox), TRIGGER_WALL_PRESS_A, COLLIDER_o305, 1, 0)
-    BindTrigger(Ref(EVS_Setup_SecretPanel), TRIGGER_FLOOR_TOUCH, COLLIDER_o252, 1, 0)
-    BindTrigger(Ref(EVS_Inspect_Records), TRIGGER_WALL_PRESS_A, COLLIDER_o355, 1, 0)
+    BindTrigger(EVS_Inspect_Letters, TRIGGER_WALL_PRESS_A, COLLIDER_o251, 1, 0)
+    BindTrigger(EVS_Inspect_LuigisDiary, TRIGGER_WALL_PRESS_A, COLLIDER_o240, 1, 0)
+    BindTrigger(EVS_Shake_Mailbox, TRIGGER_WALL_PRESS_A, COLLIDER_o305, 1, 0)
+    BindTrigger(EVS_Setup_SecretPanel, TRIGGER_FLOOR_TOUCH, COLLIDER_o252, 1, 0)
+    BindTrigger(EVS_Inspect_Records, TRIGGER_WALL_PRESS_A, COLLIDER_o355, 1, 0)
     Return
     End
 };

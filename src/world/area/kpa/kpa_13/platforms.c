@@ -50,7 +50,7 @@ EvtScript EVS_SetupPlatforms = {
                 Goto(11)
             EndIf
             Wait(20)
-            Call(ShakeCam, CAM_DEFAULT, 0, 30, Float(0.5))
+            Call(ShakeCam, CAM_DEFAULT, 0, 30, 0.5)
             Set(GF_KPA13_BlueSwitchA, true)
         EndIf
         Set(LVar0, 125)
@@ -121,7 +121,7 @@ EvtScript EVS_SetupPlatforms = {
         EndIf
 #if !VERSION_JP
         Wait(20)
-        Call(ShakeCam, CAM_DEFAULT, 0, 30, Float(0.5))
+        Call(ShakeCam, CAM_DEFAULT, 0, 30, 0.5)
 #endif
         Set(GF_KPA13_BlueSwitchB, true)
     EndIf

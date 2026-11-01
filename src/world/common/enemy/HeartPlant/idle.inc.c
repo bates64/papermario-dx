@@ -28,7 +28,7 @@ EvtScript EVS_NpcCreate_HeartPlant = {
 
 EvtScript EVS_HeartPlant_RebindInteractAfterDelay = {
     Wait(45)
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_HeartPlant))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_HeartPlant)
     Return
     End
 };

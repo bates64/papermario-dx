@@ -11,7 +11,7 @@ API_CALLABLE(FadeOutAmbientSounds) {
 
 EvtScript EVS_ShakeScreen = {
     Loop(0)
-        Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(0.5))
+        Call(ShakeCam, CAM_DEFAULT, 0, 5, 0.5)
     EndLoop
     Return
     End
@@ -40,7 +40,7 @@ EvtScript EVS_NpcIdle_Kolorado = {
         Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
         // repeatedly jump for the treasure chest
         Label(1)
-            Call(SetNpcJumpscale, NPC_SELF, Float(2.0))
+            Call(SetNpcJumpscale, NPC_SELF, 2.0)
             Call(PlaySoundAtNpc, NPC_SELF, SOUND_NPC_JUMP, SOUND_SPACE_DEFAULT)
             Call(NpcJump0, NPC_SELF, LVar0, LVar1, LVar2, 15)
             IfEq(AF_KZN23_GrabbedKolorado, false)
@@ -52,14 +52,14 @@ EvtScript EVS_NpcIdle_Kolorado = {
     Call(GetNpcPos, NPC_SELF, LVar3, LVar4, LVar5)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar3, LVar4, LVar5)
     Call(SetPanTarget, CAM_DEFAULT, LVar3, LVar4, LVar5)
-    Call(SetCamDistance, CAM_DEFAULT, Float(350.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(15.0), Float(-4.0))
-    Call(SetCamPosB, CAM_DEFAULT, Float(480.0), Float(299.6))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(5.0))
+    Call(SetCamDistance, CAM_DEFAULT, 350.0)
+    Call(SetCamPitch, CAM_DEFAULT, 15.0, -4.0)
+    Call(SetCamPosB, CAM_DEFAULT, 480.0, 299.6)
+    Call(SetCamSpeed, CAM_DEFAULT, 5.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Thread
-        Call(SetPlayerSpeed, Float(3.0))
+        Call(SetPlayerSpeed, 3.0)
         Call(PlayerMoveTo, 250, 210, 0)
     EndThread
     Wait(20)
@@ -71,7 +71,7 @@ EvtScript EVS_NpcIdle_Kolorado = {
 };
 
 EvtScript EVS_NpcInit_Kolorado = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Kolorado))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Kolorado)
     Return
     End
 };
@@ -112,9 +112,9 @@ Vec3f FlightPath3[] = {
 EvtScript EVS_ControlCamera = {
     Call(UseSettingsFrom, CAM_DEFAULT, 400, 150, 200)
     Call(SetPanTarget, CAM_DEFAULT, 400, 150, 200)
-    Call(SetCamDistance, CAM_DEFAULT, Float(390.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(15.0), Float(-9.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(2.0))
+    Call(SetCamDistance, CAM_DEFAULT, 390.0)
+    Call(SetCamPitch, CAM_DEFAULT, 15.0, -9.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 2.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Label(10)
         Wait(1)
@@ -122,9 +122,9 @@ EvtScript EVS_ControlCamera = {
             Goto(10)
         EndIf
     Call(SetPanTarget, CAM_DEFAULT, 300, 150, 170)
-    Call(SetCamDistance, CAM_DEFAULT, Float(450.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(15.0), Float(-7.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(1.3))
+    Call(SetCamDistance, CAM_DEFAULT, 450.0)
+    Call(SetCamPitch, CAM_DEFAULT, 15.0, -7.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 1.3)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Label(20)
         Wait(1)
@@ -132,9 +132,9 @@ EvtScript EVS_ControlCamera = {
             Goto(20)
         EndIf
     Call(SetPanTarget, CAM_DEFAULT, 368, 310, 170)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(0.8))
+    Call(SetCamSpeed, CAM_DEFAULT, 0.8)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Return
     End
 };
@@ -169,12 +169,12 @@ EvtScript EVS_Scene_Misstar = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcFlagBits, NPC_Kolorado, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Exec(EVS_ControlCamera)
-    Call(SetNpcJumpscale, NPC_SELF, Float(3.0))
+    Call(SetNpcJumpscale, NPC_SELF, 3.0)
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     Call(NpcJump0, NPC_SELF, LVar0, LVar1, LVar2, 10)
     Wait(5)
     Call(InterpNpcYaw, NPC_SELF, 90, 0)
-    Call(LoadPath, 35, Ref(FlightPath1), ARRAY_COUNT(FlightPath1), EASING_LINEAR)
+    Call(LoadPath, 35, FlightPath1, ARRAY_COUNT(FlightPath1), EASING_LINEAR)
     Label(10)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_SELF, LVar1, LVar2, LVar3)
@@ -197,7 +197,7 @@ EvtScript EVS_Scene_Misstar = {
         Call(NpcJump0, NPC_PARTNER, 245, 191, 171, 8)
     EndThread
     Call(InterpNpcYaw, NPC_SELF, 270, 0)
-    Call(LoadPath, 40, Ref(FlightPath2), ARRAY_COUNT(FlightPath2), EASING_LINEAR)
+    Call(LoadPath, 40, FlightPath2, ARRAY_COUNT(FlightPath2), EASING_LINEAR)
     Label(20)
         Call(GetNextPathPos)
         Set(LVar4, LVar1)
@@ -214,7 +214,7 @@ EvtScript EVS_Scene_Misstar = {
         Call(FadeOutAmbientSounds)
     EndThread
     Call(InterpNpcYaw, NPC_SELF, 90, 0)
-    Call(LoadPath, 70, Ref(FlightPath3), ARRAY_COUNT(FlightPath3), EASING_LINEAR)
+    Call(LoadPath, 70, FlightPath3, ARRAY_COUNT(FlightPath3), EASING_LINEAR)
     Label(21)
         Call(GetNextPathPos)
         Set(LVar4, LVar1)
@@ -235,7 +235,7 @@ EvtScript EVS_Scene_Misstar = {
             BreakLoop
         EndIf
     EndLoop
-    Call(GotoMap, Ref("kzn_23"), kzn_23_ENTRY_0)
+    Call(GotoMap, "kzn_23", kzn_23_ENTRY_0)
     Wait(100)
     Return
     End
@@ -249,7 +249,7 @@ EvtScript EVS_NpcInit_Misstar = {
     Set(AF_KZN23_GrabbedKolorado, false)
     Set(AF_KZN23_GrabbedPlayer, false)
     Set(AF_KZN22_FlewAway, false)
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_Scene_Misstar))
+    Call(BindNpcIdle, NPC_SELF, EVS_Scene_Misstar)
     Return
     End
 };

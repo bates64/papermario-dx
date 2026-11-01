@@ -155,13 +155,13 @@ EvtScript EVS_NpcInteract_ToadGuard_02 = {
                 Set(LVar3, 50)
             EndIf
             Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
-            Call(SetNpcSpeed, NPC_SELF, Float(2.0))
+            Call(SetNpcSpeed, NPC_SELF, 2.0)
             Call(NpcMoveTo, NPC_SELF, LVar3, -245, 0)
             Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
             Call(SetNpcAnimation, NPC_ToadGuard_02, ANIM_ToadGuard_Yellow_Idle)
             Call(InterpNpcYaw, NPC_SELF, 180, 5)
             Set(AF_KKJ01_MarioLetIntoBedroom, true)
-            BindTrigger(Ref(EVS_ExitDoors_kkj_14_0), TRIGGER_WALL_PRESS_A, COLLIDER_ttn2, 1, 0)
+            BindTrigger(EVS_ExitDoors_kkj_14_0, TRIGGER_WALL_PRESS_A, COLLIDER_ttn2, 1, 0)
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_ToadGuard_Yellow_Talk, ANIM_ToadGuard_Yellow_Idle, 16, MSG_Intro_0041)
     EndSwitch
@@ -212,39 +212,39 @@ EvtScript EVS_NpcInteract_Koopa = {
 };
 
 EvtScript EVS_NpcInit_ToadMinister = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_ToadMinister))
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ToadMinister))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_ToadMinister)
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_ToadMinister)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Toad_01 = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Toad_01))
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_01))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Toad_01)
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad_01)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Toad_02 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_02))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad_02)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Toad_03 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_03))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad_03)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Toadette = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toadette))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toadette)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_ToadGuard_01 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ToadGuard_01))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_ToadGuard_01)
     Return
     End
 };
@@ -256,34 +256,34 @@ EvtScript EVS_NpcInit_ToadGuard_02 = {
     Else
         Call(SetNpcPos, NPC_SELF, 0, 0, -260)
     EndIf
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_ToadGuard_02))
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ToadGuard_02))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_ToadGuard_02)
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_ToadGuard_02)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Dryite = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Dryite))
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Dryite))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Dryite)
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Dryite)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Mouser = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Mouser))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Mouser)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_MayorPenguin = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_MayorPenguin))
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_MayorPenguin))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_MayorPenguin)
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_MayorPenguin)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Koopa = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Koopa))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Koopa)
     Return
     End
 };

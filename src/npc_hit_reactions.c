@@ -86,7 +86,7 @@ EvtScript EVS_NpcSpinAndFall = {
     Call(GetSelfVar, 0, LVar0)
     IfEq(LVar0, 0)
         Call(SetSelfVar, 0, 1)
-        Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_DoNothing))
+        Call(BindNpcAI, NPC_SELF, EVS_NpcAI_DoNothing)
         Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY | NPC_FLAG_IGNORE_CAMERA_FOR_YAW, true)
         Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLYING | NPC_FLAG_JUMPING, false)
         Call(SetNpcAnimation, NPC_SELF, LVar2)

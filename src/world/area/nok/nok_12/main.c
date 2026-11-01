@@ -31,7 +31,7 @@ EvtScript EVS_ExitWalk_nok_13_0 = EVT_EXIT_WALK(60, nok_12_ENTRY_1, "nok_13", no
 EvtScript EVS_UpdateEnounterStages = {
     Label(0)
         IfGe(GB_StoryProgress, STORY_CH1_MADE_FIRST_BRIDGE)
-            Call(UpdateEnounterStages, -380, -170, -100, 999, Ref("nok_01"), Ref("nok_03"))
+            Call(UpdateEnounterStages, -380, -170, -100, 999, "nok_01", "nok_03")
         EndIf
         Wait(1)
         Goto(0)
@@ -83,14 +83,14 @@ EvtScript EVS_SetupTexPan = {
 };
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_nok_11_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_nok_13_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deili2, 1, 0)
+    BindTrigger(EVS_ExitWalk_nok_11_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
+    BindTrigger(EVS_ExitWalk_nok_13_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deili2, 1, 0)
     Return
     End
 };
 
 EvtScript EVS_EnterMap = {
-    Set(LVar0, Ref(EVS_BindExitTriggers))
+    Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     Return
     End
@@ -103,11 +103,11 @@ EvtScript EVS_Main = {
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Call(GetDemoState, LVar0)
     IfEq(LVar0, DEMO_STATE_NONE)
-        Call(MakeNpcs, false, Ref(DefaultNPCs))
+        Call(MakeNpcs, false, DefaultNPCs)
     Else
         Call(GetEntryID, LVar0)
         IfEq(LVar0, nok_12_ENTRY_2)
-            Call(MakeNpcs, false, Ref(DemoNPCs))
+            Call(MakeNpcs, false, DemoNPCs)
         EndIf
     EndIf
     ExecWait(EVS_MakeEntities)

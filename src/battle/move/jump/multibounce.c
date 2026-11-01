@@ -32,7 +32,7 @@ EvtScript EVS_UseMove = {
 EvtScript EVS_UseMove_Basic = {
     Call(LoadActionCommand, ACTION_COMMAND_JUMP)
     Call(InitActionCommand)
-    Call(SetActionDifficultyTable, Ref(DifficultyTable))
+    Call(SetActionDifficultyTable, DifficultyTable)
     ExecWait(EVS_JumpSupport_Approach)
     ExecWait(EVS_JumpSupport_CalcJumpTime)
     Call(StartActionCommand, LVarA, AC_DIFFICULTY_1)
@@ -183,7 +183,7 @@ EvtScript EVS_UseMove_Basic = {
 EvtScript EVS_UseMove_Super = {
     Call(LoadActionCommand, ACTION_COMMAND_JUMP)
     Call(InitActionCommand)
-    Call(SetActionDifficultyTable, Ref(DifficultyTable))
+    Call(SetActionDifficultyTable, DifficultyTable)
     ExecWait(EVS_JumpSupport_Approach)
     ExecWait(EVS_JumpSupport_CalcJumpTime)
     Call(StartActionCommand, LVarA, AC_DIFFICULTY_1)
@@ -339,7 +339,7 @@ EvtScript EVS_UseMove_Super = {
 EvtScript EVS_UseMove_Ultra = {
     Call(LoadActionCommand, ACTION_COMMAND_JUMP)
     Call(InitActionCommand)
-    Call(SetActionDifficultyTable, Ref(DifficultyTable))
+    Call(SetActionDifficultyTable, DifficultyTable)
     ExecWait(EVS_JumpSupport_Approach)
     ExecWait(EVS_JumpSupport_CalcJumpTime)
     Call(StartActionCommand, LVarA, AC_DIFFICULTY_1)

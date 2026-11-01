@@ -21,7 +21,7 @@ MobileAISettings AISettings_Pokey_Wander = {
 
 EvtScript EVS_NpcAI_Pokey_Wander = {
     Call(SetPokeyInstigatorValue)
-    Call(BasicAI_Main, Ref(AISettings_Pokey_Wander))
+    Call(BasicAI_Main, AISettings_Pokey_Wander)
     Return
     End
 };

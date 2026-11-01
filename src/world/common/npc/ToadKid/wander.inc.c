@@ -10,7 +10,7 @@ MobileAISettings AISettings_ToadKid_Wander = {
 };
 
 EvtScript EVS_NpcAI_ToadKid_Wander = {
-    Call(BasicAI_Main, Ref(AISettings_ToadKid_Wander))
+    Call(BasicAI_Main, AISettings_ToadKid_Wander)
     Return
     End
 };

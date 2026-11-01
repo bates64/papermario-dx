@@ -5,9 +5,9 @@ EvtScript EVS_ExitWalk_omo_17_3 = EVT_EXIT_WALK(60, omo_06_ENTRY_1, "omo_17", om
 EvtScript EVS_ExitWalk_omo_07_0 = EVT_EXIT_WALK(60, omo_06_ENTRY_4, "omo_07", omo_07_ENTRY_0);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_omo_17_2), TRIGGER_FLOOR_ABOVE, COLLIDER_deili3, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_omo_17_3), TRIGGER_FLOOR_ABOVE, COLLIDER_deilit5, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_omo_07_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
+    BindTrigger(EVS_ExitWalk_omo_17_2, TRIGGER_FLOOR_ABOVE, COLLIDER_deili3, 1, 0)
+    BindTrigger(EVS_ExitWalk_omo_17_3, TRIGGER_FLOOR_ABOVE, COLLIDER_deilit5, 1, 0)
+    BindTrigger(EVS_ExitWalk_omo_07_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
     Return
     End
 };
@@ -25,7 +25,7 @@ EvtScript EVS_EnterMap = {
             Exec(EVS_BindExitTriggers)
             Wait(3)
         CaseDefault
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
             Wait(1)
     EndSwitch
@@ -50,7 +50,7 @@ EvtScript EVS_Main = {
         Call(SetModelTexVariant, MODEL_o, LVar0)
         Call(SetModelTexVariant, MODEL_n, LVar0)
 #endif
-        Call(MakeNpcs, true, Ref(DefaultNPCs))
+        Call(MakeNpcs, true, DefaultNPCs)
         ExecWait(EVS_MakeEntities)
         ExecWait(EVS_SetupGizmos)
         ExecWait(EVS_SetupMusic)

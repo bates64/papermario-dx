@@ -15,7 +15,7 @@ MobileAISettings AISettings_Duplighost_Wander = {
 };
 
 EvtScript EVS_NpcAI_Duplighost_Wander = {
-    Call(BasicAI_Main, Ref(AISettings_Duplighost_Wander))
+    Call(BasicAI_Main, AISettings_Duplighost_Wander)
     Return
     End
 };

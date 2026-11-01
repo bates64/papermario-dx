@@ -3,7 +3,7 @@
 EvtScript EVS_ExitWalk_omo_08_0 = EVT_EXIT_WALK(60, omo_09_ENTRY_0, "omo_08", omo_08_ENTRY_0);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_omo_08_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
+    BindTrigger(EVS_ExitWalk_omo_08_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
     Return
     End
 };
@@ -24,22 +24,22 @@ EvtScript EVS_Main = {
     Call(SetModelTexVariant, MODEL_s2, LVar0)
 #endif
     IfEq(GF_OMO09_SpawnedPeachChoice3, false)
-        Call(MakeNpcs, true, Ref(KammySceneNPCs))
+        Call(MakeNpcs, true, KammySceneNPCs)
         Call(EnableNpcShadow, NPC_Pokey, false)
         Call(EnableNpcShadow, NPC_Koopatrol, false)
     Else
         IfEq(GF_OMO09_Item_SuperSoda, false)
             Switch(GB_OMO_PeachChoice3)
                 CaseEq(0)
-                    Call(MakeNpcs, true, Ref(PokeyAmbushNPCs))
+                    Call(MakeNpcs, true, PokeyAmbushNPCs)
                 CaseEq(1)
-                    Call(MakeNpcs, true, Ref(KoopatrolAmbushNPCs))
+                    Call(MakeNpcs, true, KoopatrolAmbushNPCs)
                 CaseEq(2)
-                    Call(MakeNpcs, true, Ref(DefaultNPCs))
+                    Call(MakeNpcs, true, DefaultNPCs)
                     Call(MakeItemEntity, ITEM_SUPER_SODA, 1900, 150, 0, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_OMO09_Item_SuperSoda)
             EndSwitch
         Else
-            Call(MakeNpcs, true, Ref(DefaultNPCs))
+            Call(MakeNpcs, true, DefaultNPCs)
         EndIf
     EndIf
     ExecWait(EVS_MakeEntities)
@@ -51,7 +51,7 @@ EvtScript EVS_Main = {
         Exec(EVS_Scene_KammySetAmbush)
         Wait(2)
     Else
-        Set(LVar0, Ref(EVS_BindExitTriggers))
+        Set(LVar0, EVS_BindExitTriggers)
         Exec(EnterWalk)
         Wait(1)
     EndIf

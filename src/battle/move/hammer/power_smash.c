@@ -35,10 +35,10 @@ EvtScript EVS_UseMove = {
 EvtScript EVS_802A3188 = {
     Call(StartRumble, BTL_RUMBLE_PLAYER_HEAVY)
     Thread
-        Call(ShakeCam, CAM_BATTLE, 0, 2, Float(0.5))
-        Call(ShakeCam, CAM_BATTLE, 0, 2, Float(1.5))
-        Call(ShakeCam, CAM_BATTLE, 0, 2, Float(0.5))
-        Call(ShakeCam, CAM_BATTLE, 0, 2, Float(0.2))
+        Call(ShakeCam, CAM_BATTLE, 0, 2, 0.5)
+        Call(ShakeCam, CAM_BATTLE, 0, 2, 1.5)
+        Call(ShakeCam, CAM_BATTLE, 0, 2, 0.5)
+        Call(ShakeCam, CAM_BATTLE, 0, 2, 0.2)
     EndThread
     Return
     End

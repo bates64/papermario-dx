@@ -4,8 +4,8 @@ EvtScript EVS_ExitWalk_sam_04_2 = EVT_EXIT_WALK(60, sam_07_ENTRY_0, "sam_04", sa
 EvtScript EVS_ExitWalk_sam_08_0 = EVT_EXIT_WALK(60, sam_07_ENTRY_1, "sam_08", sam_08_ENTRY_0);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_sam_04_2), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_sam_08_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitWalk_sam_04_2, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitWalk_sam_08_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     Return
     End
 };
@@ -17,7 +17,7 @@ EvtScript EVS_EnterMap = {
         Exec(EVS_BindExitTriggers)
         Return
     EndIf
-    Set(LVar0, Ref(EVS_BindExitTriggers))
+    Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     Return
     End
@@ -28,7 +28,7 @@ EvtScript EVS_Main = {
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Set(GF_MAP_ShiverMountain, true)
-    Call(MakeNpcs, false, Ref(DefaultNPCs))
+    Call(MakeNpcs, false, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     ExecWait(EVS_SetupMusic)
     ExecWait(EVS_SetupPit)

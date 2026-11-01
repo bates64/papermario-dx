@@ -10,7 +10,7 @@ MobileAISettings AISettings_KoopaBros = {
 };
 
 EvtScript EVS_NpcAI_KoopaBros = {
-    Call(BasicAI_Main, Ref(AISettings_KoopaBros))
+    Call(BasicAI_Main, AISettings_KoopaBros)
     Return
     End
 };

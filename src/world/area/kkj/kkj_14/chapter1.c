@@ -5,7 +5,7 @@ EvtScript EVS_Scene_Chapter1 = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Thread
-        Call(AdjustCam, CAM_DEFAULT, Float(0.5 / DT), 20, 300, Float(17.0), Float(-11.0))
+        Call(AdjustCam, CAM_DEFAULT, 0.5 / DT, 20, 300, 17.0, -11.0)
     EndThread
     Call(DisablePartnerAI, false)
     Call(SetNpcPos, NPC_PARTNER, -200, 93, -17)

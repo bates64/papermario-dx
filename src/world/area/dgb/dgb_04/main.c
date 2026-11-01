@@ -31,11 +31,11 @@ EvtScript EVS_Main = {
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     IfLt(GB_StoryProgress, STORY_CH3_STAR_SPIRIT_RESCUED)
-        Call(MakeNpcs, true, Ref(DefaultNPCs))
+        Call(MakeNpcs, true, DefaultNPCs)
     EndIf
     ExecWait(EVS_MakeEntities)
-    BindTrigger(Ref(EVS_ExitDoor_dgb_06_0), TRIGGER_WALL_PRESS_A, COLLIDER_deilittse, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoors_dgb_03_0), TRIGGER_WALL_PRESS_A, COLLIDER_deilittne, 1, 0)
+    BindTrigger(EVS_ExitDoor_dgb_06_0, TRIGGER_WALL_PRESS_A, COLLIDER_deilittse, 1, 0)
+    BindTrigger(EVS_ExitDoors_dgb_03_0, TRIGGER_WALL_PRESS_A, COLLIDER_deilittne, 1, 0)
     Exec(EVS_SetupMusic)
     Exec(EVS_EnterMap)
     Return

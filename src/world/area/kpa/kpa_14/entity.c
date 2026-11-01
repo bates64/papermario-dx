@@ -24,18 +24,18 @@ EvtScript EVS_UnlockPrompt_Door = {
     Wait(5)
     Call(CloseChoicePopup)
     Unbind
-    BindTrigger(Ref(EVS_ExitDoor_kpa_01_0), TRIGGER_WALL_PRESS_A, COLLIDER_deilitte, 1, 0)
+    BindTrigger(EVS_ExitDoor_kpa_01_0, TRIGGER_WALL_PRESS_A, COLLIDER_deilitte, 1, 0)
     Return
     End
 };
 
 EvtScript EVS_MakeEntities = {
     IfEq(GF_KPA14_UnlockedDoor, false)
-        Call(MakeEntity, Ref(Entity_Padlock), 1995, 40, -162, 270, MAKE_ENTITY_END)
+        Call(MakeEntity, Entity_Padlock, 1995, 40, -162, 270, MAKE_ENTITY_END)
         Set(MV_EntityID_Padlock, LVar0)
-        BindPadlock(Ref(EVS_UnlockPrompt_Door), TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), Ref(KeyList_BowsersCastle), 0, 1)
+        BindPadlock(EVS_UnlockPrompt_Door, TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), KeyList_BowsersCastle, 0, 1)
     Else
-        BindTrigger(Ref(EVS_ExitDoor_kpa_01_0), TRIGGER_WALL_PRESS_A, COLLIDER_deilitte, 1, 0)
+        BindTrigger(EVS_ExitDoor_kpa_01_0, TRIGGER_WALL_PRESS_A, COLLIDER_deilitte, 1, 0)
     EndIf
     Call(MakeItemEntity, ITEM_MYSTERY, 350, 30, -150, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_KPA14_Item_Mystery)
     Call(MakeItemEntity, ITEM_THUNDER_RAGE, 800, 30, -150, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_KPA14_Item_ThunderRage)

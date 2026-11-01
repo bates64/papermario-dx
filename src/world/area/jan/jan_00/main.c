@@ -14,8 +14,8 @@ EvtScript EVS_ExitWalk_jan_01_0 = EVT_EXIT_WALK(60, jan_00_ENTRY_1, "jan_01", ja
 EvtScript EVS_ExitWalk_jan_08_0 = EVT_EXIT_WALK(60, jan_00_ENTRY_2, "jan_08", jan_08_ENTRY_0);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_jan_01_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilise, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_jan_08_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deiline, 1, 0)
+    BindTrigger(EVS_ExitWalk_jan_01_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilise, 1, 0)
+    BindTrigger(EVS_ExitWalk_jan_08_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deiline, 1, 0)
     Return
     End
 };
@@ -25,7 +25,7 @@ EvtScript EVS_Main = {
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(GF_MAP_JadeJungle, true)
-    Call(MakeNpcs, false, Ref(DefaultNPCs))
+    Call(MakeNpcs, false, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     // waves
     Call(SetTexPanner, MODEL_o135, TEX_PANNER_1)
@@ -54,7 +54,7 @@ EvtScript EVS_Main = {
     IfEq(LVar0, jan_00_ENTRY_0)
         Exec(EVS_BindExitTriggers)
     Else
-        Set(LVar0, Ref(EVS_BindExitTriggers))
+        Set(LVar0, EVS_BindExitTriggers)
         Exec(EnterWalk)
     EndIf
     Call(SpawnSunEffect, FX_SUN_FROM_LEFT)

@@ -166,21 +166,21 @@ EvtScript EVS_NpcInteract_Boo_05_Mourning = {
 
 EvtScript EVS_NpcInit_Boo_01 = {
     IfLt(GB_StoryProgress, STORY_CH3_SAW_TUBBA_EAT_BOO)
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Boo_01))
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Boo_01)
     EndIf
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Boo_01))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Boo_01)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Boo_02 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Boo_02))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Boo_02)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Boo_03 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Boo_03))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Boo_03)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_SAW_TUBBA_EAT_BOO)
             Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
@@ -200,7 +200,7 @@ EvtScript EVS_NpcInit_Boo_03 = {
 };
 
 EvtScript EVS_NpcInit_Boo_04 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Boo_04))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Boo_04)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_SAW_TUBBA_EAT_BOO)
             Call(RemoveNpc, NPC_SELF)
@@ -219,9 +219,9 @@ EvtScript EVS_NpcInit_Boo_04 = {
 
 EvtScript EVS_NpcInit_Boo_05 = {
     IfLt(GB_StoryProgress, STORY_CH3_SAW_TUBBA_EAT_BOO)
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Boo_01))
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Boo_01)
     EndIf
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Boo_05))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Boo_05)
     Return
     End
 };
@@ -315,7 +315,7 @@ NpcData NpcData_Boo_01[] = {
 EvtScript EVS_TubbaWalking = {
     Loop(LVar0)
         Call(PlaySoundAtNpc, NPC_Tubba, SOUND_HEAVY_NPC_STEP_C, SOUND_SPACE_DEFAULT)
-        Call(ShakeCam, CAM_DEFAULT, 0, 10, Float(0.5))
+        Call(ShakeCam, CAM_DEFAULT, 0, 10, 0.5)
         Wait(5)
     EndLoop
     Return
@@ -340,16 +340,16 @@ EvtScript EVS_Scene_TubbaRaid = {
     Sub(LVar5, LVar2)
     Call(NpcMoveTo, NPC_Boo_03, LVar3, LVar5, 30)
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_CONSTRAIN_BETWEEN_POINTS, true)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(5.0 / DT))
+    Call(SetCamSpeed, CAM_DEFAULT, 5.0 / DT)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamDistance, CAM_DEFAULT, 350)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(SpeakToPlayer, NPC_Boo_03, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_00A0)
     Call(PlaySoundAt, SOUND_HEAVY_NPC_STEP_C, SOUND_SPACE_DEFAULT, 450, 200, 160)
-    Call(ShakeCam, CAM_DEFAULT, 0, 20, Float(0.8))
+    Call(ShakeCam, CAM_DEFAULT, 0, 20, 0.8)
     Call(PlaySoundAtNpc, NPC_Boo_01, SOUND_EMOTE_IDEA, SOUND_SPACE_DEFAULT)
     Call(PlaySoundAtNpc, NPC_Boo_02, SOUND_EMOTE_IDEA, SOUND_SPACE_DEFAULT)
     Call(PlaySoundAtNpc, NPC_Boo_03, SOUND_EMOTE_IDEA, SOUND_SPACE_DEFAULT)
@@ -365,7 +365,7 @@ EvtScript EVS_Scene_TubbaRaid = {
     Call(InterpNpcYaw, NPC_Boo_05, 90, 1)
     Wait(20 * DT)
     Call(PlaySound, SOUND_BOO_APPEAR_A)
-    SetF(LVar0, Float(240.0))
+    SetF(LVar0, 240.0)
     Loop(20 * DT)
         SubF(LVar0, Float(240.0 / (s32) (20 * DT)))
         Call(SetNpcImgFXParams, NPC_Boo_01, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
@@ -380,7 +380,7 @@ EvtScript EVS_Scene_TubbaRaid = {
     Call(EnableNpcShadow, NPC_Boo_02, false)
     Call(EnableNpcShadow, NPC_Boo_05, false)
     Call(PlaySound, SOUND_BOO_VANISH_A)
-    SetF(LVar0, Float(0.0))
+    SetF(LVar0, 0.0)
     Loop(20 * DT)
         AddF(LVar0, Float(240.0 / (s32) (20 * DT)))
         Call(SetNpcImgFXParams, NPC_Boo_01, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
@@ -418,17 +418,17 @@ EvtScript EVS_Scene_TubbaRaid = {
     Wait(60 * DT)
     Call(SetMusic, 0, SONG_TUBBAS_MANOR, BGM_VARIATION_1, VOL_LEVEL_FULL)
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_CONSTRAIN_BETWEEN_POINTS, true)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-11.5))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
+    Call(SetCamPitch, CAM_DEFAULT, 17.0, -11.5)
     Call(SetCamDistance, CAM_DEFAULT, 450)
     Call(SetCamPosA, CAM_DEFAULT, -40, 206)
     Call(SetCamPosB, CAM_DEFAULT, 530, 206)
     Call(SetCamPosC, CAM_DEFAULT, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, 426, 190, 194)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(SetNpcFlagBits, NPC_Tubba, NPC_FLAG_GRAVITY, true)
-    Call(SetNpcSpeed, NPC_Tubba, Float(2.5 / DT))
+    Call(SetNpcSpeed, NPC_Tubba, 2.5 / DT)
     Call(SetNpcPos, NPC_Tubba, 675, 200, 180)
     Call(NpcFaceNpc, NPC_Boo_01, NPC_Tubba, 1)
     Call(NpcFaceNpc, NPC_Boo_02, NPC_Tubba, 1)
@@ -440,7 +440,7 @@ EvtScript EVS_Scene_TubbaRaid = {
     Thread
         Call(PlaySound, SOUND_BOO_APPEAR_A)
         Wait(20 * DT)
-        SetF(LVar0, Float(240.0))
+        SetF(LVar0, 240.0)
         Loop(20 * DT)
             SubF(LVar0, Float(240.0 / (s32) (20 * DT)))
             Call(SetNpcImgFXParams, NPC_Boo_01, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
@@ -456,8 +456,8 @@ EvtScript EVS_Scene_TubbaRaid = {
     Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Walk)
     Call(NpcMoveTo, NPC_Tubba, 550, 196, 0)
     Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Idle)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(4.0 / DT))
-    Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-11.5))
+    Call(SetCamSpeed, CAM_DEFAULT, 4.0 / DT)
+    Call(SetCamPitch, CAM_DEFAULT, 17.0, -11.5)
     Call(SetCamDistance, CAM_DEFAULT, 375)
     Call(SetCamPosA, CAM_DEFAULT, -40, 206)
     Call(SetCamPosB, CAM_DEFAULT, 530, 206)
@@ -476,15 +476,15 @@ EvtScript EVS_Scene_TubbaRaid = {
         Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Idle)
         Set(MV_TubbaApproachDone, true)
     EndThread
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-11.5))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
+    Call(SetCamPitch, CAM_DEFAULT, 17.0, -11.5)
     Call(SetCamDistance, CAM_DEFAULT, 375)
     Call(SetCamPosA, CAM_DEFAULT, -40, 206)
     Call(SetCamPosB, CAM_DEFAULT, 530, 206)
     Call(SetCamPosC, CAM_DEFAULT, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, 240, 169, 206)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(SpeakToPlayer, NPC_Boo_03, ANIM_Boo_Tan_Flail, ANIM_Boo_Tan_Flail, 0, MSG_CH3_00A4)
     Wait(15 * DT)
     Loop(0)
@@ -498,7 +498,7 @@ EvtScript EVS_Scene_TubbaRaid = {
     Call(SpeakToPlayer, NPC_Boo_03, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 5, MSG_CH3_00A5)
     Call(SetNpcAnimation, NPC_Boo_03, ANIM_Boo_Tan_Cower)
     Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Reach)
-    Call(SetNpcJumpscale, NPC_Boo_03, Float(0.0))
+    Call(SetNpcJumpscale, NPC_Boo_03, 0.0)
     Call(NpcJump1, NPC_Boo_03, 265, 206, 212, 3 * DT)
     Wait(20 * DT)
     Call(SpeakToPlayer, NPC_Tubba, ANIM_WorldTubba_Reach, ANIM_WorldTubba_Reach, 5, MSG_CH3_00A6)
@@ -506,8 +506,8 @@ EvtScript EVS_Scene_TubbaRaid = {
     Call(SetNpcAnimation, NPC_Boo_03, ANIM_Boo_Tan_Flail)
     Call(EnableNpcShadow, NPC_Boo_03, false)
     Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_OpenMouth)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(5.0 / DT))
-    Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-17.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 5.0 / DT)
+    Call(SetCamPitch, CAM_DEFAULT, 17.0, -17.0)
     Call(SetCamDistance, CAM_DEFAULT, 250)
     Call(SetCamPosA, CAM_DEFAULT, -40, 206)
     Call(SetCamPosB, CAM_DEFAULT, 530, 206)
@@ -522,15 +522,15 @@ EvtScript EVS_Scene_TubbaRaid = {
     Call(SetNpcPos, NPC_Boo_03, NPC_DISPOSE_LOCATION)
     Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Devour)
     Wait(80 * DT)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-11.5))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
+    Call(SetCamPitch, CAM_DEFAULT, 17.0, -11.5)
     Call(SetCamDistance, CAM_DEFAULT, 375)
     Call(SetCamPosA, CAM_DEFAULT, -40, 206)
     Call(SetCamPosB, CAM_DEFAULT, 530, 206)
     Call(SetCamPosC, CAM_DEFAULT, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, 240, 169, 206)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Idle)
     Wait(15 * DT)
     Call(SpeakToPlayer, NPC_Tubba, ANIM_WorldTubba_Burp, ANIM_WorldTubba_Idle, 5, MSG_CH3_00A7)
@@ -560,7 +560,7 @@ EvtScript EVS_Scene_TubbaRaid = {
     Call(EnableNpcShadow, NPC_Boo_02, true)
     Call(EnableNpcShadow, NPC_Boo_05, true)
     Call(PlaySound, SOUND_BOO_VANISH_A)
-    SetF(LVar0, Float(0.0))
+    SetF(LVar0, 0.0)
     Loop(20 * DT)
         AddF(LVar0, Float(250.0 / (s32) (20 * DT)))
         Call(SetNpcImgFXParams, NPC_Boo_01, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
@@ -573,12 +573,12 @@ EvtScript EVS_Scene_TubbaRaid = {
     Call(SetNpcImgFXParams, NPC_Boo_05, IMGFX_CLEAR, 0, 0, 0, 0)
     Wait(10 * DT)
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(3.0 / DT))
+    Call(SetCamSpeed, CAM_DEFAULT, 3.0 / DT)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(SpeakToPlayer, NPC_Boo_05, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 5, MSG_CH3_00A8)
     Call(DisablePlayerInput, false)
@@ -604,9 +604,9 @@ EvtScript EVS_SetupTubbaRaid = {
         EndLoop
         Call(InterruptUsePartner)
         ExecWait(EVS_Scene_TubbaRaid)
-        Call(BindNpcInteract, NPC_Boo_01, Ref(EVS_NpcInteract_Boo_01_Mourning))
-        Call(BindNpcInteract, NPC_Boo_02, Ref(EVS_NpcInteract_Boo_02_Mourning))
-        Call(BindNpcInteract, NPC_Boo_05, Ref(EVS_NpcInteract_Boo_05_Mourning))
+        Call(BindNpcInteract, NPC_Boo_01, EVS_NpcInteract_Boo_01_Mourning)
+        Call(BindNpcInteract, NPC_Boo_02, EVS_NpcInteract_Boo_02_Mourning)
+        Call(BindNpcInteract, NPC_Boo_05, EVS_NpcInteract_Boo_05_Mourning)
         Set(GB_StoryProgress, STORY_CH3_SAW_TUBBA_EAT_BOO)
         Exec(EVS_SetupMusic)
     EndIf
@@ -653,14 +653,14 @@ EvtScript EVS_NpcIdle_Boo_06 = {
     Loop(0)
         Call(RandInt, 5, LVar5)
         SetF(LVar6, LVar5)
-        MulF(LVar6, Float(0.1))
-        AddF(LVar6, Float(0.8))
+        MulF(LVar6, 0.1)
+        AddF(LVar6, 0.8)
         Call(SetNpcSpeed, NPC_SELF, LVar6)
         Call(NpcMoveTo, NPC_SELF, LVar3, LVar2, 0)
         Call(RandInt, 5, LVar5)
         SetF(LVar6, LVar5)
-        MulF(LVar6, Float(0.1))
-        AddF(LVar6, Float(0.8))
+        MulF(LVar6, 0.1)
+        AddF(LVar6, 0.8)
         Call(SetNpcSpeed, NPC_SELF, LVar6)
         Call(NpcMoveTo, NPC_SELF, LVar4, LVar2, 0)
     EndLoop
@@ -669,28 +669,28 @@ EvtScript EVS_NpcIdle_Boo_06 = {
 };
 
 EvtScript EVS_NpcInit_Boo_06 = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Boo_06))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Boo_06)
     Call(EnableNpcShadow, NPC_SELF, false)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Boo_07 = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Boo_06))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Boo_06)
     Call(EnableNpcShadow, NPC_SELF, false)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Boo_08 = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Boo_06))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Boo_06)
     Call(EnableNpcShadow, NPC_SELF, false)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Boo_09 = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Boo_06))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Boo_06)
     Call(EnableNpcShadow, NPC_SELF, false)
     Return
     End

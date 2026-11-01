@@ -119,9 +119,9 @@ s32 FlyingAnims[] = {
 };
 
 EvtScript EVS_Init = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
     Call(SetActorVar, ACTOR_SELF, AVAR_IsFlying, 0)
     Return
     End
@@ -137,12 +137,12 @@ EvtScript EVS_ReturnHome = {
     Switch(LVar0)
         CaseEq(0)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Swooper_Gray_Idle)
-            Call(SetActorSpeed, ACTOR_SELF, Float(8.0))
+            Call(SetActorSpeed, ACTOR_SELF, 8.0)
             Call(SetGoalToHome, ACTOR_SELF)
             Call(AddGoalPos, ACTOR_SELF, 0, -24, 0)
             Call(FlyToGoal, ACTOR_SELF, 0, 1, EASING_SIN_OUT)
             Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_UPSIDE_DOWN, true)
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(CeilingAnims))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, CeilingAnims)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Swooper_Gray_IdleHang)
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Add(LVar1, 24)
@@ -150,7 +150,7 @@ EvtScript EVS_ReturnHome = {
             Call(HPBarToHome, ACTOR_SELF)
         CaseEq(1)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Swooper_Gray_Idle)
-            Call(SetActorSpeed, ACTOR_SELF, Float(8.0))
+            Call(SetActorSpeed, ACTOR_SELF, 8.0)
             Call(SetGoalToHome, ACTOR_SELF)
             Call(FlyToGoal, ACTOR_SELF, 0, 1, EASING_SIN_OUT)
     EndSwitch
@@ -261,12 +261,12 @@ EvtScript EVS_FallFromCeiling = {
     Call(GetActorVar, ACTOR_SELF, AVAR_IN_SnapToIndexPos, LVarA)
     IfEq(LVarA, -1)
         Call(SetHomePos, ACTOR_SELF, LVar0, 45, LVar2)
-        Call(SetActorJumpGravity, ACTOR_SELF, Float(0.8))
+        Call(SetActorJumpGravity, ACTOR_SELF, 0.8)
         Call(SetGoalToHome, ACTOR_SELF)
         Call(JumpToGoal, ACTOR_SELF, 15, false, false, false)
         Call(JumpToGoal, ACTOR_SELF, 10, false, false, false)
     Else
-        Call(SetActorJumpGravity, ACTOR_SELF, Float(0.8))
+        Call(SetActorJumpGravity, ACTOR_SELF, 0.8)
         Call(SetGoalPos, ACTOR_SELF, LVar0, 45, LVar2)
         Call(JumpToGoal, ACTOR_SELF, 15, false, false, false)
         Call(GetIndexFromPos, ACTOR_SELF, LVarA)
@@ -275,14 +275,14 @@ EvtScript EVS_FallFromCeiling = {
         Call(SetGoalToIndex, ACTOR_SELF, LVarA)
         Call(GetGoalPos, ACTOR_SELF, LVarA, LVarB, LVarC)
         Call(SetHomePos, ACTOR_SELF, LVarA, LVarB, LVarC)
-        Call(SetActorJumpGravity, ACTOR_SELF, Float(0.8))
+        Call(SetActorJumpGravity, ACTOR_SELF, 0.8)
         Call(SetGoalToHome, ACTOR_SELF)
         Call(JumpToGoal, ACTOR_SELF, 10, false, false, false)
     EndIf
     Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, 0, -10)
     Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, 0, 22)
     Call(SetAbsoluteStatusOffsets, -10, 20, 10, 20)
-    Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(FlyingAnims))
+    Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, FlyingAnims)
     Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_FLYING, true)
     Call(HPBarToHome, ACTOR_SELF)
     Call(SetActorVar, ACTOR_SELF, AVAR_IsFlying, 1)
@@ -405,7 +405,7 @@ EvtScript EVS_HandleEvent = {
             Return
         CaseEq(EVENT_BEGIN_FIRST_STRIKE)
             Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_UPSIDE_DOWN, false)
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(FlyingAnims))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, FlyingAnims)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Swooper_Gray_Idle)
             Call(SetActorPos, ACTOR_SELF, 20, 0, 0)
             Call(HPBarToCurrent, ACTOR_SELF)
@@ -440,7 +440,7 @@ EvtScript EVS_Flying_TakeTurn = {
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Swooper_Gray_Idle)
         Call(SetGoalToTarget, ACTOR_SELF)
         Call(AddGoalPos, ACTOR_SELF, 50, 10, 0)
-        Call(SetActorSpeed, ACTOR_SELF, Float(8.0))
+        Call(SetActorSpeed, ACTOR_SELF, 8.0)
         Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Call(SetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Else
@@ -450,7 +450,7 @@ EvtScript EVS_Flying_TakeTurn = {
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Swooper_Gray_Idle)
         Call(SetGoalToTarget, ACTOR_SELF)
         Call(AddGoalPos, ACTOR_SELF, 50, 10, 0)
-        Call(SetActorSpeed, ACTOR_SELF, Float(8.0))
+        Call(SetActorSpeed, ACTOR_SELF, 8.0)
         Call(FlyToGoal, ACTOR_SELF, 0, -4, EASING_LINEAR)
     EndIf
     Call(EnemyTestTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_IGNORE_DEFENSE, 0, 2, BS_FLAGS1_INCLUDE_POWER_UPS)
@@ -459,8 +459,8 @@ EvtScript EVS_Flying_TakeTurn = {
         CaseOrEq(HIT_RESULT_LUCKY)
             Set(LVarA, LVar0)
             Wait(10)
-            Call(SetActorSpeed, ACTOR_SELF, Float(5.0))
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(1.8))
+            Call(SetActorSpeed, ACTOR_SELF, 5.0)
+            Call(SetActorJumpGravity, ACTOR_SELF, 1.8)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Swooper_Gray_Fly)
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -469,12 +469,12 @@ EvtScript EVS_Flying_TakeTurn = {
             Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Sub(LVar0, 50)
             Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-            Call(SetActorSpeed, ACTOR_SELF, Float(8.0))
+            Call(SetActorSpeed, ACTOR_SELF, 8.0)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Swooper_Gray_Fly)
             Call(FlyToGoal, ACTOR_SELF, 0, -10, EASING_LINEAR)
-            Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, Float(10.0))
+            Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, 10.0)
             Wait(15)
-            Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, Float(1.0))
+            Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, 1.0)
             IfEq(LVarA, HIT_RESULT_LUCKY)
                 Call(EnemyTestTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_TRIGGER_LUCKY, 0, 0, 0)
             EndIf
@@ -498,15 +498,15 @@ EvtScript EVS_Flying_TakeTurn = {
             EndIf
     EndSwitch
     Wait(10)
-    Call(SetActorSpeed, ACTOR_SELF, Float(5.0))
-    Call(SetActorJumpGravity, ACTOR_SELF, Float(1.8))
+    Call(SetActorSpeed, ACTOR_SELF, 5.0)
+    Call(SetActorJumpGravity, ACTOR_SELF, 1.8)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Swooper_Gray_Fly)
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(JumpToGoal, ACTOR_SELF, 10, false, false, false)
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(AddGoalPos, ACTOR_SELF, -4, -8, -15)
-    Call(SetActorSpeed, ACTOR_SELF, Float(8.0))
+    Call(SetActorSpeed, ACTOR_SELF, 8.0)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Swooper_Gray_Fly)
     Call(FlyToGoal, ACTOR_SELF, 0, -10, EASING_LINEAR)
     IfEq(LFlag0, true)
@@ -521,39 +521,39 @@ EvtScript EVS_Flying_TakeTurn = {
             Wait(21)
             Loop(2)
                 Call(PlaySoundAtActor, ACTOR_SELF, SOUND_LEECH)
-                Call(SetActorScale, ACTOR_SELF, Float(1.0), Float(1.0), Float(1.0))
+                Call(SetActorScale, ACTOR_SELF, 1.0, 1.0, 1.0)
                 Wait(1)
-                Call(SetActorScale, ACTOR_SELF, Float(0.9), Float(1.2), Float(1.0))
+                Call(SetActorScale, ACTOR_SELF, 0.9, 1.2, 1.0)
                 Wait(1)
-                Call(SetActorScale, ACTOR_SELF, Float(0.8), Float(1.3), Float(1.0))
+                Call(SetActorScale, ACTOR_SELF, 0.8, 1.3, 1.0)
                 Wait(1)
-                Call(SetActorScale, ACTOR_SELF, Float(0.7), Float(1.4), Float(1.0))
+                Call(SetActorScale, ACTOR_SELF, 0.7, 1.4, 1.0)
                 Wait(1)
-                Call(SetActorScale, ACTOR_SELF, Float(0.7), Float(1.5), Float(1.0))
+                Call(SetActorScale, ACTOR_SELF, 0.7, 1.5, 1.0)
                 Wait(1)
-                Call(SetActorScale, ACTOR_SELF, Float(0.7), Float(1.4), Float(1.0))
+                Call(SetActorScale, ACTOR_SELF, 0.7, 1.4, 1.0)
                 Wait(1)
-                Call(SetActorScale, ACTOR_SELF, Float(0.8), Float(1.3), Float(1.0))
+                Call(SetActorScale, ACTOR_SELF, 0.8, 1.3, 1.0)
                 Wait(1)
-                Call(SetActorScale, ACTOR_SELF, Float(0.9), Float(1.2), Float(1.0))
+                Call(SetActorScale, ACTOR_SELF, 0.9, 1.2, 1.0)
                 Wait(1)
-                Call(SetActorScale, ACTOR_SELF, Float(1.0), Float(1.0), Float(1.0))
+                Call(SetActorScale, ACTOR_SELF, 1.0, 1.0, 1.0)
                 Wait(1)
             EndLoop
             Wait(5)
-            Call(SetActorScale, ACTOR_SELF, Float(1.0), Float(1.0), Float(1.0))
+            Call(SetActorScale, ACTOR_SELF, 1.0, 1.0, 1.0)
             Wait(1)
-            Call(SetActorScale, ACTOR_SELF, Float(0.9), Float(1.2), Float(1.0))
+            Call(SetActorScale, ACTOR_SELF, 0.9, 1.2, 1.0)
             Wait(1)
-            Call(SetActorScale, ACTOR_SELF, Float(0.8), Float(1.3), Float(1.0))
+            Call(SetActorScale, ACTOR_SELF, 0.8, 1.3, 1.0)
             Wait(1)
-            Call(SetActorScale, ACTOR_SELF, Float(0.7), Float(1.4), Float(1.0))
+            Call(SetActorScale, ACTOR_SELF, 0.7, 1.4, 1.0)
             Wait(1)
-            Call(SetActorScale, ACTOR_SELF, Float(0.7), Float(1.5), Float(1.0))
+            Call(SetActorScale, ACTOR_SELF, 0.7, 1.5, 1.0)
             Wait(2)
-            Call(SetActorScale, ACTOR_SELF, Float(0.6), Float(1.6), Float(1.0))
+            Call(SetActorScale, ACTOR_SELF, 0.6, 1.6, 1.0)
             Wait(10)
-            Call(SetActorScale, ACTOR_SELF, Float(1.0), Float(1.0), Float(1.0))
+            Call(SetActorScale, ACTOR_SELF, 1.0, 1.0, 1.0)
             Wait(2)
             Call(EnemyDamageTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_IGNORE_DEFENSE, 0, 0, DMG_LEECH, BS_FLAGS1_NICE_HIT)
             Wait(30)
@@ -587,7 +587,7 @@ EvtScript EVS_Flying_TakeTurn = {
             Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB1_Leeching)
             Loop(2)
                 Call(PlaySoundAtActor, ACTOR_SELF, SOUND_LEECH)
-                Call(SetActorScale, ACTOR_SELF, Float(1.0), Float(1.0), Float(1.0))
+                Call(SetActorScale, ACTOR_SELF, 1.0, 1.0, 1.0)
                 Set(LFlag0, false)
                 Loop(1)
                     Call(GetMashActionQuality, LVar1)
@@ -601,7 +601,7 @@ EvtScript EVS_Flying_TakeTurn = {
                     Call(UseIdleAnimation, ACTOR_PLAYER, true)
                     BreakLoop
                 EndIf
-                Call(SetActorScale, ACTOR_SELF, Float(0.9), Float(1.2), Float(1.0))
+                Call(SetActorScale, ACTOR_SELF, 0.9, 1.2, 1.0)
                 Set(LFlag0, false)
                 Loop(1)
                     Call(GetMashActionQuality, LVar1)
@@ -615,7 +615,7 @@ EvtScript EVS_Flying_TakeTurn = {
                     Call(UseIdleAnimation, ACTOR_PLAYER, true)
                     BreakLoop
                 EndIf
-                Call(SetActorScale, ACTOR_SELF, Float(0.8), Float(1.3), Float(1.0))
+                Call(SetActorScale, ACTOR_SELF, 0.8, 1.3, 1.0)
                 Set(LFlag0, false)
                 Loop(1)
                     Call(GetMashActionQuality, LVar1)
@@ -629,7 +629,7 @@ EvtScript EVS_Flying_TakeTurn = {
                     Call(UseIdleAnimation, ACTOR_PLAYER, true)
                     BreakLoop
                 EndIf
-                Call(SetActorScale, ACTOR_SELF, Float(0.7), Float(1.4), Float(1.0))
+                Call(SetActorScale, ACTOR_SELF, 0.7, 1.4, 1.0)
                 Set(LFlag0, false)
                 Loop(1)
                     Call(GetMashActionQuality, LVar1)
@@ -643,7 +643,7 @@ EvtScript EVS_Flying_TakeTurn = {
                     Call(UseIdleAnimation, ACTOR_PLAYER, true)
                     BreakLoop
                 EndIf
-                Call(SetActorScale, ACTOR_SELF, Float(0.7), Float(1.5), Float(1.0))
+                Call(SetActorScale, ACTOR_SELF, 0.7, 1.5, 1.0)
                 Set(LFlag0, false)
                 Loop(1)
                     Call(GetMashActionQuality, LVar1)
@@ -657,7 +657,7 @@ EvtScript EVS_Flying_TakeTurn = {
                     Call(UseIdleAnimation, ACTOR_PLAYER, true)
                     BreakLoop
                 EndIf
-                Call(SetActorScale, ACTOR_SELF, Float(0.7), Float(1.4), Float(1.0))
+                Call(SetActorScale, ACTOR_SELF, 0.7, 1.4, 1.0)
                 Set(LFlag0, false)
                 Loop(1)
                     Call(GetMashActionQuality, LVar1)
@@ -671,7 +671,7 @@ EvtScript EVS_Flying_TakeTurn = {
                     Call(UseIdleAnimation, ACTOR_PLAYER, true)
                     BreakLoop
                 EndIf
-                Call(SetActorScale, ACTOR_SELF, Float(0.8), Float(1.3), Float(1.0))
+                Call(SetActorScale, ACTOR_SELF, 0.8, 1.3, 1.0)
                 Set(LFlag0, false)
                 Loop(1)
                     Call(GetMashActionQuality, LVar1)
@@ -685,7 +685,7 @@ EvtScript EVS_Flying_TakeTurn = {
                     Call(UseIdleAnimation, ACTOR_PLAYER, true)
                     BreakLoop
                 EndIf
-                Call(SetActorScale, ACTOR_SELF, Float(0.9), Float(1.2), Float(1.0))
+                Call(SetActorScale, ACTOR_SELF, 0.9, 1.2, 1.0)
                 Set(LFlag0, false)
                 Loop(1)
                     Call(GetMashActionQuality, LVar1)
@@ -699,7 +699,7 @@ EvtScript EVS_Flying_TakeTurn = {
                     Call(UseIdleAnimation, ACTOR_PLAYER, true)
                     BreakLoop
                 EndIf
-                Call(SetActorScale, ACTOR_SELF, Float(1.0), Float(1.0), Float(1.0))
+                Call(SetActorScale, ACTOR_SELF, 1.0, 1.0, 1.0)
                 Set(LFlag0, false)
                 Loop(1)
                     Call(GetMashActionQuality, LVar1)
@@ -731,7 +731,7 @@ EvtScript EVS_Flying_TakeTurn = {
                 BreakLoop
             EndIf
             Call(PlaySoundAtActor, ACTOR_SELF, SOUND_LEECH)
-            Call(SetActorScale, ACTOR_SELF, Float(1.0), Float(1.0), Float(1.0))
+            Call(SetActorScale, ACTOR_SELF, 1.0, 1.0, 1.0)
             Set(LFlag0, false)
             Loop(1)
                 Call(GetMashActionQuality, LVar1)
@@ -745,7 +745,7 @@ EvtScript EVS_Flying_TakeTurn = {
                 Call(UseIdleAnimation, ACTOR_PLAYER, true)
                 BreakLoop
             EndIf
-            Call(SetActorScale, ACTOR_SELF, Float(0.9), Float(1.2), Float(1.0))
+            Call(SetActorScale, ACTOR_SELF, 0.9, 1.2, 1.0)
             Set(LFlag0, false)
             Loop(1)
                 Call(GetMashActionQuality, LVar1)
@@ -759,7 +759,7 @@ EvtScript EVS_Flying_TakeTurn = {
                 Call(UseIdleAnimation, ACTOR_PLAYER, true)
                 BreakLoop
             EndIf
-            Call(SetActorScale, ACTOR_SELF, Float(0.8), Float(1.3), Float(1.0))
+            Call(SetActorScale, ACTOR_SELF, 0.8, 1.3, 1.0)
             Set(LFlag0, false)
             Loop(1)
                 Call(GetMashActionQuality, LVar1)
@@ -773,7 +773,7 @@ EvtScript EVS_Flying_TakeTurn = {
                 Call(UseIdleAnimation, ACTOR_PLAYER, true)
                 BreakLoop
             EndIf
-            Call(SetActorScale, ACTOR_SELF, Float(0.7), Float(1.4), Float(1.0))
+            Call(SetActorScale, ACTOR_SELF, 0.7, 1.4, 1.0)
             Set(LFlag0, false)
             Loop(1)
                 Call(GetMashActionQuality, LVar1)
@@ -787,7 +787,7 @@ EvtScript EVS_Flying_TakeTurn = {
                 Call(UseIdleAnimation, ACTOR_PLAYER, true)
                 BreakLoop
             EndIf
-            Call(SetActorScale, ACTOR_SELF, Float(0.7), Float(1.5), Float(1.0))
+            Call(SetActorScale, ACTOR_SELF, 0.7, 1.5, 1.0)
             Set(LFlag0, false)
             Loop(2)
                 Call(GetMashActionQuality, LVar1)
@@ -801,7 +801,7 @@ EvtScript EVS_Flying_TakeTurn = {
                 Call(UseIdleAnimation, ACTOR_PLAYER, true)
                 BreakLoop
             EndIf
-            Call(SetActorScale, ACTOR_SELF, Float(0.6), Float(1.6), Float(1.0))
+            Call(SetActorScale, ACTOR_SELF, 0.6, 1.6, 1.0)
             Set(LFlag0, false)
             Loop(10)
                 Call(GetMashActionQuality, LVar1)
@@ -815,7 +815,7 @@ EvtScript EVS_Flying_TakeTurn = {
                 Call(UseIdleAnimation, ACTOR_PLAYER, true)
                 BreakLoop
             EndIf
-            Call(SetActorScale, ACTOR_SELF, Float(1.0), Float(1.0), Float(1.0))
+            Call(SetActorScale, ACTOR_SELF, 1.0, 1.0, 1.0)
             Set(LFlag0, false)
             Loop(2)
                 Call(GetMashActionQuality, LVar1)
@@ -875,12 +875,12 @@ EvtScript EVS_Flying_TakeTurn = {
             EndIf
         EndLoop
         Call(InterruptLeechActionCommand)
-        Call(SetActorScale, ACTOR_SELF, Float(1.0), Float(1.0), Float(1.0))
+        Call(SetActorScale, ACTOR_SELF, 1.0, 1.0, 1.0)
     EndIf
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(AddGoalPos, ACTOR_SELF, 50, 10, 0)
-    Call(SetActorSpeed, ACTOR_SELF, Float(8.0))
+    Call(SetActorSpeed, ACTOR_SELF, 8.0)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Swooper_Gray_Idle)
     Call(FlyToGoal, ACTOR_SELF, 0, -10, EASING_LINEAR)
     Wait(10)
@@ -915,18 +915,18 @@ EvtScript EVS_TakeTurn = {
         CaseOrEq(HIT_RESULT_LUCKY)
             Set(LVarA, LVar0)
             Wait(10)
-            Call(SetActorSpeed, ACTOR_SELF, Float(5.0))
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(1.8))
+            Call(SetActorSpeed, ACTOR_SELF, 5.0)
+            Call(SetActorJumpGravity, ACTOR_SELF, 1.8)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Swooper_Gray_Fly)
             Call(SetGoalToTarget, ACTOR_SELF)
             Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(AddGoalPos, ACTOR_SELF, -50, 0, 0)
-            Call(SetActorSpeed, ACTOR_SELF, Float(8.0))
+            Call(SetActorSpeed, ACTOR_SELF, 8.0)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Swooper_Gray_Fly)
             Call(FlyToGoal, ACTOR_SELF, 0, -40, EASING_LINEAR)
-            Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, Float(10.0))
+            Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, 10.0)
             Wait(15)
-            Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, Float(1.0))
+            Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, 1.0)
             IfEq(LVarA, HIT_RESULT_LUCKY)
                 Call(EnemyTestTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_TRIGGER_LUCKY, 0, 0, 0)
             EndIf
@@ -950,12 +950,12 @@ EvtScript EVS_TakeTurn = {
             EndIf
     EndSwitch
     Wait(10)
-    Call(SetActorSpeed, ACTOR_SELF, Float(5.0))
-    Call(SetActorJumpGravity, ACTOR_SELF, Float(1.8))
+    Call(SetActorSpeed, ACTOR_SELF, 5.0)
+    Call(SetActorJumpGravity, ACTOR_SELF, 1.8)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Swooper_Gray_Fly)
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(AddGoalPos, ACTOR_SELF, -4, -8, -15)
-    Call(SetActorSpeed, ACTOR_SELF, Float(8.0))
+    Call(SetActorSpeed, ACTOR_SELF, 8.0)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Swooper_Gray_Fly)
     Call(FlyToGoal, ACTOR_SELF, 0, -40, EASING_LINEAR)
     IfEq(LFlag0, true)
@@ -970,40 +970,40 @@ EvtScript EVS_TakeTurn = {
             Wait(21)
             Loop(2)
                 Call(PlaySoundAtActor, ACTOR_SELF, SOUND_LEECH)
-                Call(SetActorScale, ACTOR_SELF, Float(1.0), Float(1.0), Float(1.0))
+                Call(SetActorScale, ACTOR_SELF, 1.0, 1.0, 1.0)
                 Wait(1)
-                Call(SetActorScale, ACTOR_SELF, Float(0.9), Float(1.2), Float(1.0))
+                Call(SetActorScale, ACTOR_SELF, 0.9, 1.2, 1.0)
                 Wait(1)
-                Call(SetActorScale, ACTOR_SELF, Float(0.8), Float(1.3), Float(1.0))
+                Call(SetActorScale, ACTOR_SELF, 0.8, 1.3, 1.0)
                 Wait(1)
-                Call(SetActorScale, ACTOR_SELF, Float(0.7), Float(1.4), Float(1.0))
+                Call(SetActorScale, ACTOR_SELF, 0.7, 1.4, 1.0)
                 Wait(1)
-                Call(SetActorScale, ACTOR_SELF, Float(0.7), Float(1.5), Float(1.0))
+                Call(SetActorScale, ACTOR_SELF, 0.7, 1.5, 1.0)
                 Wait(1)
-                Call(SetActorScale, ACTOR_SELF, Float(0.7), Float(1.4), Float(1.0))
+                Call(SetActorScale, ACTOR_SELF, 0.7, 1.4, 1.0)
                 Wait(1)
-                Call(SetActorScale, ACTOR_SELF, Float(0.8), Float(1.3), Float(1.0))
+                Call(SetActorScale, ACTOR_SELF, 0.8, 1.3, 1.0)
                 Wait(1)
-                Call(SetActorScale, ACTOR_SELF, Float(0.9), Float(1.2), Float(1.0))
+                Call(SetActorScale, ACTOR_SELF, 0.9, 1.2, 1.0)
                 Wait(1)
-                Call(SetActorScale, ACTOR_SELF, Float(1.0), Float(1.0), Float(1.0))
+                Call(SetActorScale, ACTOR_SELF, 1.0, 1.0, 1.0)
                 Wait(1)
             EndLoop
             Wait(5)
             Call(PlaySoundAtActor, ACTOR_SELF, SOUND_LEECH)
-            Call(SetActorScale, ACTOR_SELF, Float(1.0), Float(1.0), Float(1.0))
+            Call(SetActorScale, ACTOR_SELF, 1.0, 1.0, 1.0)
             Wait(1)
-            Call(SetActorScale, ACTOR_SELF, Float(0.9), Float(1.2), Float(1.0))
+            Call(SetActorScale, ACTOR_SELF, 0.9, 1.2, 1.0)
             Wait(1)
-            Call(SetActorScale, ACTOR_SELF, Float(0.8), Float(1.3), Float(1.0))
+            Call(SetActorScale, ACTOR_SELF, 0.8, 1.3, 1.0)
             Wait(1)
-            Call(SetActorScale, ACTOR_SELF, Float(0.7), Float(1.4), Float(1.0))
+            Call(SetActorScale, ACTOR_SELF, 0.7, 1.4, 1.0)
             Wait(1)
-            Call(SetActorScale, ACTOR_SELF, Float(0.7), Float(1.5), Float(1.0))
+            Call(SetActorScale, ACTOR_SELF, 0.7, 1.5, 1.0)
             Wait(2)
-            Call(SetActorScale, ACTOR_SELF, Float(0.6), Float(1.6), Float(1.0))
+            Call(SetActorScale, ACTOR_SELF, 0.6, 1.6, 1.0)
             Wait(10)
-            Call(SetActorScale, ACTOR_SELF, Float(1.0), Float(1.0), Float(1.0))
+            Call(SetActorScale, ACTOR_SELF, 1.0, 1.0, 1.0)
             Wait(2)
             Call(EnemyDamageTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_IGNORE_DEFENSE, 0, 0, 2, BS_FLAGS1_NICE_HIT)
             Wait(30)
@@ -1036,7 +1036,7 @@ EvtScript EVS_TakeTurn = {
             Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB1_Leeching)
             Call(UseIdleAnimation, ACTOR_PLAYER, false)
             Call(PlaySoundAtActor, ACTOR_SELF, SOUND_LEECH)
-            Call(SetActorScale, ACTOR_SELF, Float(1.0), Float(1.0), Float(1.0))
+            Call(SetActorScale, ACTOR_SELF, 1.0, 1.0, 1.0)
             Set(LFlag0, false)
             Loop(1)
                 Call(GetMashActionQuality, LVar1)
@@ -1050,7 +1050,7 @@ EvtScript EVS_TakeTurn = {
                 Call(UseIdleAnimation, ACTOR_PLAYER, true)
                 BreakLoop
             EndIf
-            Call(SetActorScale, ACTOR_SELF, Float(0.9), Float(1.2), Float(1.0))
+            Call(SetActorScale, ACTOR_SELF, 0.9, 1.2, 1.0)
             Set(LFlag0, false)
             Loop(1)
                 Call(GetMashActionQuality, LVar1)
@@ -1064,7 +1064,7 @@ EvtScript EVS_TakeTurn = {
                 Call(UseIdleAnimation, ACTOR_PLAYER, true)
                 BreakLoop
             EndIf
-            Call(SetActorScale, ACTOR_SELF, Float(0.8), Float(1.3), Float(1.0))
+            Call(SetActorScale, ACTOR_SELF, 0.8, 1.3, 1.0)
             Set(LFlag0, false)
             Loop(1)
                 Call(GetMashActionQuality, LVar1)
@@ -1078,7 +1078,7 @@ EvtScript EVS_TakeTurn = {
                 Call(UseIdleAnimation, ACTOR_PLAYER, true)
                 BreakLoop
             EndIf
-            Call(SetActorScale, ACTOR_SELF, Float(0.7), Float(1.4), Float(1.0))
+            Call(SetActorScale, ACTOR_SELF, 0.7, 1.4, 1.0)
             Set(LFlag0, false)
             Loop(1)
                 Call(GetMashActionQuality, LVar1)
@@ -1092,7 +1092,7 @@ EvtScript EVS_TakeTurn = {
                 Call(UseIdleAnimation, ACTOR_PLAYER, true)
                 BreakLoop
             EndIf
-            Call(SetActorScale, ACTOR_SELF, Float(0.7), Float(1.5), Float(1.0))
+            Call(SetActorScale, ACTOR_SELF, 0.7, 1.5, 1.0)
             Set(LFlag0, false)
             Loop(2)
                 Call(GetMashActionQuality, LVar1)
@@ -1106,7 +1106,7 @@ EvtScript EVS_TakeTurn = {
                 Call(UseIdleAnimation, ACTOR_PLAYER, true)
                 BreakLoop
             EndIf
-            Call(SetActorScale, ACTOR_SELF, Float(0.6), Float(1.6), Float(1.0))
+            Call(SetActorScale, ACTOR_SELF, 0.6, 1.6, 1.0)
             Set(LFlag0, false)
             Loop(10)
                 Call(GetMashActionQuality, LVar1)
@@ -1120,7 +1120,7 @@ EvtScript EVS_TakeTurn = {
                 Call(UseIdleAnimation, ACTOR_PLAYER, true)
                 BreakLoop
             EndIf
-            Call(SetActorScale, ACTOR_SELF, Float(1.0), Float(1.0), Float(1.0))
+            Call(SetActorScale, ACTOR_SELF, 1.0, 1.0, 1.0)
             Set(LFlag0, false)
             Loop(2)
                 Call(GetMashActionQuality, LVar1)
@@ -1180,12 +1180,12 @@ EvtScript EVS_TakeTurn = {
             EndIf
         EndLoop
         Call(InterruptLeechActionCommand)
-        Call(SetActorScale, ACTOR_SELF, Float(1.0), Float(1.0), Float(1.0))
+        Call(SetActorScale, ACTOR_SELF, 1.0, 1.0, 1.0)
     EndIf
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(AddGoalPos, ACTOR_SELF, 50, 10, 0)
-    Call(SetActorSpeed, ACTOR_SELF, Float(8.0))
+    Call(SetActorSpeed, ACTOR_SELF, 8.0)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Swooper_Gray_Idle)
     Call(FlyToGoal, ACTOR_SELF, 0, -10, EASING_LINEAR)
     Wait(10)

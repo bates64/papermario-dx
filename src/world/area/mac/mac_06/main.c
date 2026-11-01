@@ -35,7 +35,7 @@ EvtScript EVS_AnimateWaves = {
         IfGe(LVarC, 60)
             Set(LVarC, 0)
         EndIf
-        Call(GetWaveAmplitude, LVarC, LVar0, Float(-1.0), Float(1.0), 30, 0, 0)
+        Call(GetWaveAmplitude, LVarC, LVar0, -1.0, 1.0, 30, 0, 0)
         Call(ScaleGroup, MODEL_g34, 1, LVar0, 1)
         Add(LVarC, 1)
         Wait(1)
@@ -48,7 +48,7 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_TOAD_TOWN)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Call(MakeNpcs, false, Ref(DefaultNPCs))
+    Call(MakeNpcs, false, DefaultNPCs)
     Exec(EVS_FlyingGull)
     Exec(EVS_SetupWhale)
     Call(SetMusic, 0, SONG_RIDING_THE_WHALE, 0, VOL_LEVEL_FULL)

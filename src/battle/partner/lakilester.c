@@ -173,10 +173,10 @@ ActorBlueprint blueprint = {
 };
 
 EvtScript EVS_Init = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
-    Call(BindHandlePhase, ACTOR_SELF, Ref(EVS_HandlePhase))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
+    Call(BindHandlePhase, ACTOR_SELF, EVS_HandlePhase)
     Return
     End
 };
@@ -290,7 +290,7 @@ EvtScript EVS_RunAway = {
 EvtScript EVS_PartnerRunAwayFail = {
     Call(UseIdleAnimation, ACTOR_PARTNER, false)
     Call(SetGoalToHome, ACTOR_PARTNER)
-    Call(SetActorSpeed, ACTOR_PARTNER, Float(6.0))
+    Call(SetActorSpeed, ACTOR_PARTNER, 6.0)
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleLakilester_Run)
     Call(SetActorYaw, ACTOR_PARTNER, 0)
     Call(RunToGoal, ACTOR_PARTNER, 0)
@@ -866,7 +866,7 @@ EvtScript EVS_Move_SpinyFlip = {
     Add(LVar0, 8)
     Add(LVar1, 40)
     Add(LVar2, 5)
-    PlayEffect(EFFECT_ENERGY_IN_OUT, 0, LVar0, LVar1, LVar2, Float(1.0), 80 * DT)
+    PlayEffect(EFFECT_ENERGY_IN_OUT, 0, LVar0, LVar1, LVar2, 1.0, 80 * DT)
     Call(SetActorVar, ACTOR_PARTNER, AVAR_Unk_0, 1)
     Thread
         Loop(40 * DT)
@@ -897,7 +897,7 @@ EvtScript EVS_Move_SpinyFlip = {
     Switch(LVarF)
         CaseEq(-1)
             Call(SetAnimation, ACTOR_SELF, PRT_2, ANIM_BattleLakilester_SpinySpin)
-            Call(SetPartJumpGravity, ACTOR_PARTNER, 2, Float(1.5))
+            Call(SetPartJumpGravity, ACTOR_PARTNER, 2, 1.5)
             Set(LVar0, LVar7)
             Set(LVar1, LVar8)
             Set(LVar2, LVar9)
@@ -905,7 +905,7 @@ EvtScript EVS_Move_SpinyFlip = {
             Call(LandJumpPart, ACTOR_PARTNER, 2)
         CaseEq(0)
             Call(SetAnimation, ACTOR_SELF, PRT_2, ANIM_BattleLakilester_SpinySpin)
-            Call(SetPartJumpGravity, ACTOR_PARTNER, 2, Float(1.5))
+            Call(SetPartJumpGravity, ACTOR_PARTNER, 2, 1.5)
             Set(LVar0, LVar7)
             Set(LVar1, LVar8)
             Set(LVar2, LVar9)
@@ -914,13 +914,13 @@ EvtScript EVS_Move_SpinyFlip = {
         CaseDefault
             Call(SetAnimation, ACTOR_SELF, PRT_2, ANIM_BattleLakilester_SpinySpin)
             Call(GetGoalPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
-            Call(SetPartJumpGravity, ACTOR_PARTNER, 2, Float(1.5))
+            Call(SetPartJumpGravity, ACTOR_PARTNER, 2, 1.5)
             Call(JumpPartTo, ACTOR_PARTNER, 2, LVar0, LVar1, LVar2, 20)
     EndSwitch
     Thread
         Add(LVar0, 50)
         Set(LVar1, 0)
-        Call(SetPartJumpGravity, ACTOR_PARTNER, 2, Float(1.5))
+        Call(SetPartJumpGravity, ACTOR_PARTNER, 2, 1.5)
         Call(JumpPartTo, ACTOR_PARTNER, 2, LVar0, LVar1, LVar2, 15)
         Call(SetPartFlagBits, ACTOR_PARTNER, 2, ACTOR_PART_FLAG_INVISIBLE, true)
     EndThread
@@ -1150,8 +1150,8 @@ EvtScript EVS_CloudNine_PlayerOK = {
     Add(LVar0, -12)
     Add(LVar1, 13)
     Add(LVar2, -5)
-    Call(SetActorSpeed, ACTOR_PLAYER, Float(4.0))
-    Call(SetActorJumpGravity, ACTOR_PLAYER, Float(1.0))
+    Call(SetActorSpeed, ACTOR_PLAYER, 4.0)
+    Call(SetActorJumpGravity, ACTOR_PLAYER, 1.0)
     Call(SetJumpAnimations, ACTOR_PLAYER, 0, ANIM_Mario1_Jump, ANIM_Mario1_Fall, ANIM_Mario1_FightingStance)
     Call(SetGoalPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Call(PlayerHopToGoal, 18, 0, 0)
@@ -1188,7 +1188,7 @@ EvtScript EVS_CloudNine_PlayerOK = {
             Call(RandInt, 30, LVar6)
             Sub(LVar6, 15)
             Add(LVar1, LVar6)
-            PlayEffect(EFFECT_FLOATING_CLOUD_PUFF, 0, LVar0, LVar1, LVar2, Float(1.0), 20)
+            PlayEffect(EFFECT_FLOATING_CLOUD_PUFF, 0, LVar0, LVar1, LVar2, 1.0, 20)
             Wait(1)
         EndLoop
     EndThread
@@ -1202,7 +1202,7 @@ EvtScript EVS_CloudNine_PlayerOK = {
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
     Thread
         Call(SetGoalToHome, ACTOR_PLAYER)
-        Call(SetActorSpeed, ACTOR_PLAYER, Float(8.0))
+        Call(SetActorSpeed, ACTOR_PLAYER, 8.0)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Run)
         Call(PlayerRunToGoal, 0)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
@@ -1301,7 +1301,7 @@ EvtScript EVS_CloudNine_PlayerImmobile = {
             Call(RandInt, 30, LVar6)
             Sub(LVar6, 15)
             Add(LVar1, LVar6)
-            PlayEffect(EFFECT_FLOATING_CLOUD_PUFF, 0, LVar0, LVar1, LVar2, Float(1.0), 20)
+            PlayEffect(EFFECT_FLOATING_CLOUD_PUFF, 0, LVar0, LVar1, LVar2, 1.0, 20)
             Wait(1)
         EndLoop
     EndThread
@@ -1312,7 +1312,7 @@ EvtScript EVS_CloudNine_PlayerImmobile = {
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleLakilester_Walk)
     Thread
         Call(SetGoalToHome, ACTOR_PLAYER)
-        Call(SetActorSpeed, ACTOR_PLAYER, Float(8.0))
+        Call(SetActorSpeed, ACTOR_PLAYER, 8.0)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Run)
         Call(PlayerRunToGoal, 0)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)

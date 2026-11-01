@@ -32,12 +32,12 @@ EvtScript EVS_Scene_Intro = {
     Call(DisablePlayerInput, true)
     Exec(EVS_OpenAndCloseFrontDoor_Intro)
     Thread
-        Call(SetNpcSpeed, NPC_Luigi, Float(4.0))
+        Call(SetNpcSpeed, NPC_Luigi, 4.0)
         Call(SetNpcAnimation, NPC_Luigi, ANIM_Luigi_RunBack)
         Call(NpcMoveTo, NPC_Luigi, 20, 320, 0)
         Call(SetNpcAnimation, NPC_Luigi, ANIM_Luigi_Idle)
     EndThread
-    Call(func_802D1270, 80, 300, Float(4.0 / DT))
+    Call(func_802D1270, 80, 300, 4.0 / DT)
     Call(InterpPlayerYaw, 270, 5)
     Wait(30 * DT)
     Call(SpeakToPlayer, NPC_Luigi, ANIM_Luigi_Talk, ANIM_Luigi_Idle, 0, MSG_Intro_0024)

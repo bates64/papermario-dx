@@ -9,7 +9,7 @@ GuardAISettings AISettings_BillBlaster = {
 };
 
 EvtScript EVS_NpcAI_BillBlaster = {
-    Call(BillBlasterAI_Main, Ref(AISettings_BillBlaster))
+    Call(BillBlasterAI_Main, AISettings_BillBlaster)
     Return
     End
 };
@@ -23,7 +23,7 @@ EvtScript EVS_NpcAI_BulletBill = {
     Call(EnemyEnableFirstStrike, true)
     Call(SetSelfVar, AI_VAR_BULLET_STATUS, BULLET_STATUS_IDLE)
     Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
-    Call(BulletBillAI_Main, Ref(AISettings_BulletBill))
+    Call(BulletBillAI_Main, AISettings_BulletBill)
     Return
     End
 };
@@ -33,7 +33,7 @@ GuardAISettings AISettings_BombshellBlaster = {
 };
 
 EvtScript EVS_NpcAI_BombshellBlaster = {
-    Call(BillBlasterAI_Main, Ref(AISettings_BombshellBlaster))
+    Call(BillBlasterAI_Main, AISettings_BombshellBlaster)
     Return
     End
 };
@@ -47,7 +47,7 @@ EvtScript EVS_NpcAI_BombshellBill = {
     Call(EnemyEnableFirstStrike, true)
     Call(SetSelfVar, AI_VAR_BULLET_STATUS, BULLET_STATUS_IDLE)
     Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
-    Call(BulletBillAI_Main, Ref(AISettings_BombshellBill))
+    Call(BulletBillAI_Main, AISettings_BombshellBill)
     Return
     End
 };
@@ -75,7 +75,7 @@ EvtScript EVS_NpcDefeat_BulletBill = {
             Call(DoNpcDefeat)
             Call(SetSelfVar, AI_VAR_BULLET_STATUS, BULLET_STATUS_IDLE)
             Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
-            Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_BulletBill))
+            Call(BindNpcAI, NPC_SELF, EVS_NpcAI_BulletBill)
         CaseEq(OUTCOME_PLAYER_FLED)
             Call(OnPlayerFled, false)
         CaseEq(OUTCOME_ENEMY_FLED)

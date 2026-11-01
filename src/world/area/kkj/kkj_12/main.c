@@ -16,13 +16,13 @@ EvtScript EVS_ExitDoors_kkj_13_0 =
     EVT_EXIT_DOUBLE_DOOR(kkj_12_ENTRY_1, "kkj_13", kkj_13_ENTRY_0, COLLIDER_deilit2, MODEL_door4, MODEL_door3);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitDoors_kkj_11_1), TRIGGER_WALL_PRESS_A, COLLIDER_deilit1, 1, 0)
+    BindTrigger(EVS_ExitDoors_kkj_11_1, TRIGGER_WALL_PRESS_A, COLLIDER_deilit1, 1, 0)
     IfEq(GB_StoryProgress, STORY_CH6_BEGAN_PEACH_MISSION)
         IfEq(GF_KKJ12_TrickedGuard, false)
             Return
         EndIf
     EndIf
-    BindTrigger(Ref(EVS_ExitDoors_kkj_13_0), TRIGGER_WALL_PRESS_A, COLLIDER_deilit2, 1, 0)
+    BindTrigger(EVS_ExitDoors_kkj_13_0, TRIGGER_WALL_PRESS_A, COLLIDER_deilit2, 1, 0)
     Return
     End
 };
@@ -49,7 +49,7 @@ EvtScript EVS_Main = {
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     IfEq(GB_StoryProgress, STORY_CH6_BEGAN_PEACH_MISSION)
         Call(SetAvailableDisguise, PEACH_DISGUISE_KOOPATROL)
-        Call(MakeNpcs, false, Ref(DefaultNPCs))
+        Call(MakeNpcs, false, DefaultNPCs)
     Else
         Call(EnableModel, MODEL_o694, false)
         Call(EnableModel, MODEL_o695, false)

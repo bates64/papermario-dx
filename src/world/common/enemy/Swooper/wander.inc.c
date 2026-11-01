@@ -17,7 +17,7 @@ MobileAISettings AISettings_Swooper_Wander = {
 };
 
 EvtScript EVS_NpcAI_Swooper_Wander = {
-    Call(SwooperAI_Main, Ref(AISettings_Swooper_Wander))
+    Call(SwooperAI_Main, AISettings_Swooper_Wander)
     Return
     End
 };
@@ -36,7 +36,7 @@ MobileAISettings AISettings_Swoopula_Wander = {
 };
 
 EvtScript EVS_NpcAI_Swoopula_Wander = {
-    Call(SwooperAI_Main, Ref(AISettings_Swoopula_Wander))
+    Call(SwooperAI_Main, AISettings_Swoopula_Wander)
     Return
     End
 };

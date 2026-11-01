@@ -347,9 +347,9 @@ EvtScript EVS_NpcInit_Postmaster = {
     Call(SetNpcCollisionSize, NPC_SELF, 36, 42)
     Switch(GB_StoryProgress)
         CaseGe(STORY_EPILOGUE)
-            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Postmaster_Epilogue))
+            Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Postmaster_Epilogue)
         CaseDefault
-            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Postmaster))
+            Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Postmaster)
     EndSwitch
     IfGe(GB_StoryProgress, STORY_CH3_BOW_JOINED_PARTY)
         Set(GF_MAC01_UnlockedLetter_01, true)
@@ -425,7 +425,7 @@ AnimID LimitAnims_Parakarry[] = {
 
 EvtScript EVS_NpcInit_Parakarry = {
     Call(SetNpcCollisionSize, NPC_SELF, 37, 26)
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Parakarry))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Parakarry)
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldParakarry_Idle)
     Return
     End

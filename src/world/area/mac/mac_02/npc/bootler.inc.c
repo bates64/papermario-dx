@@ -1,12 +1,12 @@
 #include "../mac_02.h"
 
 EvtScript EVS_Bootler_Vanish = {
-    IfEq(LVar0, Float(0.0))
+    IfEq(LVar0, 0.0)
         Call(PlaySoundAtNpc, NPC_Bootler, SOUND_BOO_VANISH_A, SOUND_SPACE_DEFAULT)
-        SetF(LVar1, Float(24.0))
+        SetF(LVar1, 24.0)
     Else
         Call(PlaySoundAtNpc, NPC_Bootler, SOUND_BOO_APPEAR_A, SOUND_SPACE_DEFAULT)
-        SetF(LVar1, Float(-24.0))
+        SetF(LVar1, -24.0)
     EndIf
     Loop(10)
         AddF(LVar0, LVar1)
@@ -39,19 +39,19 @@ EvtScript EVS_NpcIdle_Bootler = {
     Thread
         Call(SetNpcPos, NPC_SELF, 430, 60, -40)
         Call(SetNpcAnimation, NPC_Bootler, ANIM_Bootler_Walk)
-        Call(SetNpcSpeed, NPC_SELF, Float(3.0 / DT))
+        Call(SetNpcSpeed, NPC_SELF, 3.0 / DT)
         Call(PlaySoundAtNpc, NPC_SELF, SOUND_BOOTLER_HIDE, SOUND_SPACE_DEFAULT)
         Call(NpcMoveTo, NPC_SELF, 580, -40, 0)
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndThread
     Call(UseSettingsFrom, CAM_DEFAULT, 430, 1, 35)
     Call(SetPanTarget, CAM_DEFAULT, 430, 1, 35)
-    Call(SetCamDistance, CAM_DEFAULT, Float(275.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(18.5), Float(-10.5))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(4.0 / DT))
+    Call(SetCamDistance, CAM_DEFAULT, 275.0)
+    Call(SetCamPitch, CAM_DEFAULT, 18.5, -10.5)
+    Call(SetCamSpeed, CAM_DEFAULT, 4.0 / DT)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-    Call(SetPlayerSpeed, Float(4.0 / DT))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
+    Call(SetPlayerSpeed, 4.0 / DT)
     Call(PlayerMoveTo, 430, -40, 0)
     Call(InterpPlayerYaw, 315, 0)
     Call(DisablePartnerAI, false)
@@ -67,7 +67,7 @@ EvtScript EVS_NpcIdle_Bootler = {
     EndIf
     Call(ContinueSpeech, NPC_FiceT, ANIM_FiceT_Afraid, ANIM_FiceT_Afraid, 0, LVar1)
     Wait(20 * DT)
-    SetF(LVar0, Float(0.0))
+    SetF(LVar0, 0.0)
     Call(SetNpcAnimation, NPC_Bootler, ANIM_Bootler_Spook)
     Call(SetNpcImgFXParams, NPC_SELF, IMGFX_SET_ALPHA, 0, 0, 0, 0)
     Call(SetNpcYaw, NPC_SELF, 270)
@@ -82,7 +82,7 @@ EvtScript EVS_NpcIdle_Bootler = {
     Call(PlaySoundAtPlayer, SOUND_EMOTE_QUESTION, SOUND_SPACE_DEFAULT)
     Call(ShowEmote, 0, EMOTE_QUESTION, 0, 30, EMOTER_PLAYER, 0, 0, 0, 0)
     Wait(30 * DT)
-    Call(SetNpcScale, NPC_Bootler, Float(2.0), Float(2.0), Float(2.0))
+    Call(SetNpcScale, NPC_Bootler, 2.0, 2.0, 2.0)
     Call(SetNpcYaw, NPC_SELF, 90)
     Call(SetNpcPos, NPC_SELF, 360, 20, 30)
     ExecWait(EVS_Bootler_Vanish)
@@ -95,7 +95,7 @@ EvtScript EVS_NpcIdle_Bootler = {
     Call(ShowEmote, 0, EMOTE_QUESTION, 0, 30, EMOTER_PLAYER, 0, 0, 0, 0)
     Wait(30 * DT)
     Call(SetNpcAnimation, NPC_Bootler, ANIM_Bootler_Walk)
-    Call(SetNpcScale, NPC_Bootler, Float(1.0), Float(1.0), Float(1.0))
+    Call(SetNpcScale, NPC_Bootler, 1.0, 1.0, 1.0)
     Call(SetNpcPos, NPC_SELF, 480, 70, 10)
     ExecWait(EVS_Bootler_Vanish)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_BOOTLER_HIDE, SOUND_SPACE_DEFAULT)
@@ -114,7 +114,7 @@ EvtScript EVS_NpcIdle_Bootler = {
     Call(SpeakToPlayer, NPC_FiceT, ANIM_FiceT_Afraid, ANIM_FiceT_Afraid, 0, MSG_MAC_Bridge_0029)
     Exec(EVS_SetupMusicTriggers)
     Set(GB_StoryProgress, STORY_CH3_SAW_BOO_ENTER_FOREST)
-    Call(ResetCam, CAM_DEFAULT, Float(4.0 / DT))
+    Call(ResetCam, CAM_DEFAULT, 4.0 / DT)
     Call(DisablePlayerInput, false)
     Return
     End
@@ -123,7 +123,7 @@ EvtScript EVS_NpcIdle_Bootler = {
 EvtScript EVS_NpcInit_Bootler = {
     IfEq(GB_StoryProgress, STORY_CH2_STAR_SPIRIT_DEPARTED)
         Call(EnableNpcShadow, NPC_SELF, false)
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Bootler))
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Bootler)
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf

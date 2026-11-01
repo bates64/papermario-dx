@@ -43,29 +43,29 @@ EvtScript EVS_Scene_SunReturns = {
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamDistance, CAM_DEFAULT, 1050)
-    Call(SetCamPitch, CAM_DEFAULT, Float(10.0), Float(4.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamPitch, CAM_DEFAULT, 10.0, 4.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(SetCamDistance, CAM_DEFAULT, 300)
-    Call(SetCamPitch, CAM_DEFAULT, Float(15.0), Float(-10.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(6.5))
+    Call(SetCamPitch, CAM_DEFAULT, 15.0, -10.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 6.5)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(SpeakToPlayer, NPC_Sun_01, ANIM_Sun_TalkJoy, ANIM_Sun_TalkJoy, SPEECH_FLAG_FIXED_ORIGIN | 5, MSG_CH6_00C3)
     Call(SetNpcAnimation, NPC_Sun_01, ANIM_Sun_TalkJoy)
     Thread
         Call(SetCamDistance, CAM_DEFAULT, 1000)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(5.0))
+        Call(SetCamSpeed, CAM_DEFAULT, 5.0)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
-        Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+        Call(WaitForCam, CAM_DEFAULT, 1.0)
     EndThread
     Wait(15)
-    Call(SetNpcJumpscale, NPC_Sun_01, Float(0.0))
+    Call(SetNpcJumpscale, NPC_Sun_01, 0.0)
     Call(GetNpcPos, NPC_Sun_01, LVar0, LVar1, LVar2)
     Add(LVar1, 400)
     Call(NpcJump0, NPC_Sun_01, LVar0, LVar1, LVar2, 40)
-    Call(GotoMap, Ref("flo_00"), flo_00_ENTRY_9)
+    Call(GotoMap, "flo_00", flo_00_ENTRY_9)
     Wait(70)
     Return
     End
@@ -113,7 +113,7 @@ EvtScript EVS_Sun_DescendFromSky = {
         Wait(15)
         Call(PlayerFaceNpc, NPC_Sun_01, false)
     EndThread
-    Call(SetNpcJumpscale, NPC_Sun_01, Float(0.0))
+    Call(SetNpcJumpscale, NPC_Sun_01, 0.0)
     Call(GetNpcPos, NPC_Sun_01, LVar0, LVar1, LVar2)
     Sub(LVar1, 400)
     Call(NpcJump0, NPC_Sun_01, LVar0, 275, LVar2, 30)
@@ -169,11 +169,11 @@ EvtScript EVS_NpcInit_Sun_01 = {
     Call(EnableNpcShadow, NPC_Sun_01, false)
     IfLt(GB_StoryProgress, STORY_CH6_DESTROYED_PUFF_PUFF_MACHINE)
         Call(SetNpcPos, NPC_Sun_01, 0, 270, 0)
-        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Sun_01))
+        Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Sun_01)
         Exec(EVS_Sun_AnimateBobbing)
     Else
         Call(SetNpcPos, NPC_Sun_01, 0, 450, 0)
-        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Sun_01))
+        Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Sun_01)
         Set(AF_FLO_MetTheSun, false)
         Exec(EVS_Sun_DescendFromSky)
     EndIf
@@ -192,7 +192,7 @@ EvtScript EVS_NpcInit_Sun_02 = {
         Call(SetNpcPos, NPC_Sun_02, 0, 270, -5)
     Else
         Call(SetNpcPos, NPC_Sun_02, 0, 450, -5)
-        Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_Sun_02))
+        Call(BindNpcAux, NPC_SELF, EVS_NpcAux_Sun_02)
     EndIf
     Return
     End

@@ -8,10 +8,10 @@ EvtScript EVS_SetDoorRot_Shop = {
 
 EvtScript EVS_SetWallRot_Shop = {
     Set(LVar1, LVar0)
-    MulF(LVar1, Float(-1.328125))
+    MulF(LVar1, -1.328125)
     Call(RotateGroup, MODEL_g109, LVar1, 0, 0, 1)
     Set(LVar1, LVar0)
-    MulF(LVar1, Float(1.0))
+    MulF(LVar1, 1.0)
     Call(RotateGroup, MODEL_g110, LVar1, 0, 0, 1)
     Return
     End
@@ -70,27 +70,27 @@ EvtScript EVS_SetupRooms = {
     // shop
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_1, ROOM_LARGE_DOOR_RIGHT_HINGE_OPENS_IN),
-        Ref(EVS_SetDoorRot_Shop),
-        Ref(EVS_SetWallRot_Shop),
+        EVS_SetDoorRot_Shop,
+        EVS_SetWallRot_Shop,
         nullptr,
-        Ref(EVS_RoomListener_Shop),
+        EVS_RoomListener_Shop,
         COLLIDER_o156,
         COLLIDER_o161,
         MODEL_g41,
-        Ref(InteriorNPCs_Shop))
+        InteriorNPCs_Shop)
     Set(LVar0, ROOM_UPDATE_EXIT_END)
     Exec(EVS_RoomListener_Shop)
     // toad house
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_LARGE_DOOR_RIGHT_HINGE_OPENS_OUT),
-        Ref(EVS_SetDoorRot_ToadHouse),
-        Ref(EVS_SetWallRot_ToadHouse),
+        EVS_SetDoorRot_ToadHouse,
+        EVS_SetWallRot_ToadHouse,
         nullptr,
-        Ref(EVS_RoomListener_ToadHouse),
+        EVS_RoomListener_ToadHouse,
         COLLIDER_o199,
         COLLIDER_o200,
         MODEL_o2,
-        Ref(InteriorNPCs_ToadHouse))
+        InteriorNPCs_ToadHouse)
     Return
     End
 };

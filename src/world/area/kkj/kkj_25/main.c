@@ -4,7 +4,7 @@ EvtScript EVS_ExitDoors_kkj_24_1 =
     EVT_EXIT_DOUBLE_DOOR(kkj_25_ENTRY_0, "kkj_24", kkj_24_ENTRY_1, COLLIDER_ttw, MODEL_o84, MODEL_o85);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitDoors_kkj_24_1), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
+    BindTrigger(EVS_ExitDoors_kkj_24_1, TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
     Return
     End
 };
@@ -38,11 +38,11 @@ EvtScript EVS_EnterMap = {
                 Call(SetPlayerPos, -605, 0, 0)
                 Call(DisablePlayerInput, false)
                 Call(SetZoneEnabled, ZONE_o15, false)
-                Call(ResetCam, CAM_DEFAULT, Float(90.0))
+                Call(ResetCam, CAM_DEFAULT, 90.0)
                 Set(GF_KKJ25_Visited, true)
             Else
                 Call(SetZoneEnabled, ZONE_o15, false)
-                Call(ResetCam, CAM_DEFAULT, Float(90.0))
+                Call(ResetCam, CAM_DEFAULT, 90.0)
             EndIf
             Set(LVar0, 0)
             Set(LVar2, MODEL_o84)
@@ -97,16 +97,16 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_PEACHS_CASTLE)
     Call(SetSpriteShading, SHADING_KKJ_25)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(0.75))
+    Call(SetCamSpeed, CAM_DEFAULT, 0.75)
     IfEq(GF_KKJ25_Defeated_Bowser, false)
         IfEq(GF_KKJ25_Defeated_Kammy, false)
-            Call(MakeNpcs, false, Ref(InitialNpcs))
+            Call(MakeNpcs, false, InitialNpcs)
         Else
-            Call(MakeNpcs, false, Ref(MidpointNpcs))
+            Call(MakeNpcs, false, MidpointNpcs)
             Call(EnableGroup, MODEL_g30, false)
         EndIf
     Else
-        Call(MakeNpcs, false, Ref(FinaleNpcs))
+        Call(MakeNpcs, false, FinaleNpcs)
         Call(EnableGroup, MODEL_g30, false)
     EndIf
     ExecWait(EVS_MakeEntities)

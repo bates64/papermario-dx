@@ -120,7 +120,7 @@ EvtScript EVS_NpcInteract_TrainToad_01 = {
 };
 
 EvtScript EVS_NpcInit_TrainToad_01 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_TrainToad_01))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_TrainToad_01)
     Return
     End
 };
@@ -174,7 +174,7 @@ EvtScript EVS_NpcInteract_Toad_01 = {
 };
 
 EvtScript EVS_NpcInit_Toad_01 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_01))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad_01)
     Return
     End
 };
@@ -228,7 +228,7 @@ EvtScript EVS_NpcInteract_Toadette_01 = {
 };
 
 EvtScript EVS_NpcInit_Toadette_01 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toadette_01))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toadette_01)
     Return
     End
 };
@@ -282,7 +282,7 @@ EvtScript EVS_NpcInteract_Toad_02 = {
 };
 
 EvtScript EVS_NpcInit_Toad_02 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_02))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad_02)
     Return
     End
 };
@@ -370,14 +370,14 @@ EvtScript EVS_NpcInteract_ToadKid_02 = {
 
 EvtScript EVS_NpcInteract_ToadKid_01 = {
     ExecWait(EVS_NpcInteract_ToadKid_02)
-    Set(LVar0, Ref(LetterDelivery_ToadKid1A))
+    Set(LVar0, LetterDelivery_ToadKid1A)
     ExecWait(EVS_TryLetterDelivery)
     IfEq(LVar0, DELIVERY_ACCEPTED)
         Call(SpeakToPlayer, NPC_ToadKid_02, ANIM_ToadKid_Yellow_Talk, ANIM_ToadKid_Yellow_Idle, 0, MSG_MAC_Station_004D)
         EVT_GIVE_REWARD(LVar1)
     EndIf
     EVT_RETURN_IF_DELIVERED()
-    Set(LVar0, Ref(LetterDelivery_ToadKid1B))
+    Set(LVar0, LetterDelivery_ToadKid1B)
     ExecWait(EVS_TryLetterDelivery)
     IfEq(LVar0, DELIVERY_ACCEPTED)
         Call(SpeakToPlayer, NPC_ToadKid_02, ANIM_ToadKid_Yellow_Talk, ANIM_ToadKid_Yellow_Idle, 0, MSG_MAC_Station_0052)
@@ -388,13 +388,13 @@ EvtScript EVS_NpcInteract_ToadKid_01 = {
 };
 
 EvtScript EVS_NpcInit_ToadKid_01 = {
-    Call(BindNpcInteract, NPC_ToadKid_01, Ref(EVS_NpcInteract_ToadKid_01))
+    Call(BindNpcInteract, NPC_ToadKid_01, EVS_NpcInteract_ToadKid_01)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_ToadKid_02 = {
-    Call(BindNpcInteract, NPC_ToadKid_02, Ref(EVS_NpcInteract_ToadKid_02))
+    Call(BindNpcInteract, NPC_ToadKid_02, EVS_NpcInteract_ToadKid_02)
     Return
     End
 };
@@ -418,7 +418,7 @@ EvtScript EVS_NpcInteract_Toadette_02 = {
 
 EvtScript EVS_NpcInit_Toadette_02 = {
     IfLt(GB_StoryProgress, STORY_CH2_ARRIVED_AT_DRY_DRY_OUTPOST)
-        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toadette_02))
+        Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toadette_02)
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -474,7 +474,7 @@ EvtScript EVS_NpcInteract_Toad_03 = {
 };
 
 EvtScript EVS_NpcInit_Toad_03 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_03))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad_03)
     Return
     End
 };
@@ -492,7 +492,7 @@ EvtScript EVS_NpcIdle_ShyGuy = {
     Call(SetNpcPos, NPC_SELF, -100, 0, -25)
     Call(InterpNpcYaw, NPC_SELF, 270, 1)
     Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Run)
-    Call(SetNpcJumpscale, NPC_SELF, Float(1.0))
+    Call(SetNpcJumpscale, NPC_SELF, 1.0)
     Loop(0)
         Call(NpcMoveTo, NPC_SELF, -250, -25, 30)
         Call(InterpNpcYaw, NPC_SELF, 90, 1)
@@ -512,7 +512,7 @@ EvtScript EVS_NpcAI_ShyGuy = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Hurt)
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     Call(NpcJump0, NPC_SELF, LVar0, 0, LVar2, 10)
-    Call(SetNpcSpeed, NPC_SELF, Float(8.0))
+    Call(SetNpcSpeed, NPC_SELF, 8.0)
     Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Run)
     Call(InterpNpcYaw, NPC_SELF, 90, 1)
     ExecGetTID(EVS_PlayShyGuyRunSounds, LVarA)
@@ -525,7 +525,7 @@ EvtScript EVS_NpcAI_ShyGuy = {
     Call(ShowSweat, NPC_SELF, 1, 45, EMOTER_NPC, 0, 0, 0, 0, 20)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_SHY_GUY_RUN_AWAY, SOUND_SPACE_DEFAULT)
     ExecGetTID(EVS_PlayShyGuyRunSounds, LVarA)
-    Call(SetNpcSpeed, NPC_SELF, Float(8.0))
+    Call(SetNpcSpeed, NPC_SELF, 8.0)
     Call(NpcMoveTo, NPC_SELF, 30, -200, 0)
     Call(ShowSweat, NPC_SELF, 1, -45, EMOTER_NPC, 0, 0, 0, 0, 20)
     Call(NpcMoveTo, NPC_SELF, -30, -400, 0)
@@ -558,7 +558,7 @@ EvtScript EVS_NpcHit_ShyGuy = {
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_HIT_PLAYER_NORMAL, SOUND_SPACE_DEFAULT)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_SHY_GUY_OUCH, SOUND_SPACE_DEFAULT)
     Set(GF_MAC03_ShyGuyChasedOff, true)
-    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_ShyGuy))
+    Call(BindNpcAI, NPC_SELF, EVS_NpcAI_ShyGuy)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER, true)
     Return
     End
@@ -574,8 +574,8 @@ EvtScript EVS_NpcInit_ShyGuy = {
             EndIf
             IfEq(GF_MAC03_ShyGuyChasedOff, false)
                 Set(GF_MAC03_ShyGuyBlockingTracks, true)
-                Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_ShyGuy))
-                Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_ShyGuy))
+                Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_ShyGuy)
+                Call(BindNpcHit, NPC_SELF, EVS_NpcHit_ShyGuy)
                 Return
             EndIf
     EndSwitch
@@ -604,7 +604,7 @@ EvtScript EVS_NpcIdle_Toad_14 = {
 EvtScript EVS_NpcInit_Toad_14 = {
     Call(EnableNpcShadow, NPC_SELF, false)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, true)
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Toad_14))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Toad_14)
     Return
     End
 };

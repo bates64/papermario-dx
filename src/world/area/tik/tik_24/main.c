@@ -4,8 +4,8 @@ EvtScript EVS_ExitWalk_tik_25_0 = EVT_EXIT_WALK(60, tik_24_ENTRY_0, "tik_25", ti
 EvtScript EVS_ExitWalk_tik_23_0 = EVT_EXIT_WALK(60, tik_24_ENTRY_1, "tik_23", tik_23_ENTRY_0);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_tik_25_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_tik_23_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitWalk_tik_25_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitWalk_tik_23_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     Return
     End
 };
@@ -14,7 +14,7 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_TOAD_TOWN_TUNNELS)
     Call(SetSpriteShading, SHADING_TIK_24)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Call(MakeNpcs, true, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     Exec(EVS_SetupDrips)
     Call(SetTexPanner, MODEL_nagare, TEX_PANNER_1)
@@ -43,7 +43,7 @@ EvtScript EVS_Main = {
     EndThread
     Exec(EVS_SetupMusic)
     Call(PlaySound, SOUND_LOOP_TIK24_WATER)
-    Set(LVar0, Ref(EVS_BindExitTriggers))
+    Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     Wait(1)
     Return

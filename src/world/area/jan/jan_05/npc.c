@@ -24,7 +24,7 @@ EvtScript EVS_NpcIdle_JungleFuzzy = {
     Wait(20)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, false)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLYING, true)
-    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_JungleFuzzy_Wander))
+    Call(BindNpcAI, NPC_SELF, EVS_NpcAI_JungleFuzzy_Wander)
     Return
     End
 };
@@ -34,7 +34,7 @@ EvtScript EVS_NpcInit_JungleFuzzy = {
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, false)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLYING, true)
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_JungleFuzzy))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_JungleFuzzy)
     Return
     End
 };
@@ -64,7 +64,7 @@ EvtScript EVS_OnShakeTree_Yoshi = {
     Call(SetNpcVar, NPC_YoshiKid, 0, 9)
     Thread
         Call(PlaySoundAtNpc, NPC_YoshiKid, SOUND_FALL_QUICK, SOUND_SPACE_DEFAULT)
-        Call(SetNpcJumpscale, NPC_YoshiKid, Float(1.0))
+        Call(SetNpcJumpscale, NPC_YoshiKid, 1.0)
         Call(NpcJump0, NPC_YoshiKid, -308, 0, -248, 30)
     EndThread
     Call(EnableNpcShadow, NPC_YoshiKid, true)
@@ -117,7 +117,7 @@ EvtScript EVS_NpcIdle_YoshiKid = {
         Call(ShowMessageAtScreenPos, MSG_CH5_00B8, 160, 40)
         Call(DisablePlayerInput, false)
     EndIf
-    BindTrigger(Ref(EVS_OnShakeTree_Yoshi), TRIGGER_WALL_HAMMER, COLLIDER_o87, 1, 0)
+    BindTrigger(EVS_OnShakeTree_Yoshi, TRIGGER_WALL_HAMMER, COLLIDER_o87, 1, 0)
     ExecGetTID(EVS_YoshiKid_WatchPlayerProximinity, LVar9)
     Loop(0)
         Wait(1)
@@ -159,11 +159,11 @@ EvtScript EVS_NpcIdle_YoshiKid = {
     Add(LVar0, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, 0, -248)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, 0, -248)
-    Call(SetCamDistance, CAM_DEFAULT, Float(350.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-7.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(4.0))
+    Call(SetCamDistance, CAM_DEFAULT, 350.0)
+    Call(SetCamPitch, CAM_DEFAULT, 17.0, -7.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 4.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Wait(15)
     Call(GetCurrentPartnerID, LVar0)
     IfEq(LVar0, PARTNER_SUSHIE)
@@ -174,9 +174,9 @@ EvtScript EVS_NpcIdle_YoshiKid = {
     Call(EndSpeech, NPC_SELF, ANIM_YoshiKid_Purple_Talk, ANIM_YoshiKid_Purple_Idle, 0)
     Thread
         Call(SetNpcAnimation, NPC_SELF, ANIM_YoshiKid_Purple_Run)
-        Call(SetNpcSpeed, NPC_SELF, Float(5.0))
+        Call(SetNpcSpeed, NPC_SELF, 5.0)
         Call(NpcMoveTo, NPC_SELF, -315, -135, 0)
-        Call(SetNpcJumpscale, NPC_SELF, Float(0.5))
+        Call(SetNpcJumpscale, NPC_SELF, 0.5)
         Call(NpcJump0, NPC_SELF, -325, 0, 215, 25)
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndThread
@@ -197,7 +197,7 @@ EvtScript EVS_NpcIdle_YoshiKid = {
     Else
         Wait(30)
     EndIf
-    Call(ResetCam, CAM_DEFAULT, Float(4.0))
+    Call(ResetCam, CAM_DEFAULT, 4.0)
     Call(DisablePlayerInput, false)
     Call(RemoveNpc, NPC_SELF)
     Return
@@ -210,7 +210,7 @@ EvtScript EVS_NpcInit_YoshiKid = {
             Call(SetNpcPos, NPC_SELF, -308, 110, -300)
             Call(EnableNpcShadow, NPC_SELF, false)
             Call(SetNpcAnimation, NPC_SELF, ANIM_YoshiKid_Purple_Sleep)
-            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_YoshiKid))
+            Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_YoshiKid)
             Exec(EVS_YoshiKid_PlaySounds)
             Return
         EndIf

@@ -24,7 +24,7 @@ EvtScript EVS_Main = {
     ExecWait(EVS_MakeEntities)
     Exec(EVS_SetupSpikes)
     Exec(EVS_SetupMusic)
-    BindTrigger(Ref(EVS_ExitDoor_dgb_09_2), TRIGGER_WALL_PRESS_A, COLLIDER_deilits, 1, 0)
+    BindTrigger(EVS_ExitDoor_dgb_09_2, TRIGGER_WALL_PRESS_A, COLLIDER_deilits, 1, 0)
     Exec(EVS_EnterMap)
     Return
     End

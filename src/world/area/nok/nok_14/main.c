@@ -74,8 +74,8 @@ EvtScript EVS_SetupTexPan = {
 };
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_nok_13_2), TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_nok_15_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deili2, 1, 0)
+    BindTrigger(EVS_ExitWalk_nok_13_2, TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
+    BindTrigger(EVS_ExitWalk_nok_15_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deili2, 1, 0)
     Return
     End
 };
@@ -83,7 +83,7 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_UpdateEnounterStages = {
     Label(0)
         IfGe(GB_StoryProgress, STORY_CH1_MADE_SECOND_BRIDGE)
-            Call(UpdateEnounterStages, -115, 110, -110, 999, Ref("nok_01"), Ref("nok_03"))
+            Call(UpdateEnounterStages, -115, 110, -110, 999, "nok_01", "nok_03")
         EndIf
         Wait(1)
         Goto(0)
@@ -95,7 +95,7 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_PLEASANT_PATH)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Call(MakeNpcs, false, Ref(DefaultNPCs))
+    Call(MakeNpcs, false, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     Exec(EVS_SetupTexPan)
     Exec(EVS_SetupBridge)
@@ -103,7 +103,7 @@ EvtScript EVS_Main = {
     Exec(EVS_SetupMusic)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilit, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilit2, COLLIDER_FLAGS_UPPER_MASK)
-    Set(LVar0, Ref(EVS_BindExitTriggers))
+    Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     Wait(1)
     Return

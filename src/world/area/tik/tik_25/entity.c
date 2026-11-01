@@ -109,24 +109,24 @@ EvtScript EVS_OnBreakBlock_SpringL = {
 };
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Ref(Entity_GiantChest), -270, -90, 0, 90, ITEM_ULTRA_BOOTS, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_GiantChest, -270, -90, 0, 90, ITEM_ULTRA_BOOTS, MAKE_ENTITY_END)
     Call(AssignChestFlag, GF_TIK25_GiantChest)
     Exec(EVS_SetupGiantChest_UltraBoots)
-    Call(MakeEntity, Ref(Entity_BrickBlock), 210, -75, -20, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(EVS_OnBreakBlock_SpringR))
+    Call(MakeEntity, Entity_BrickBlock, 210, -75, -20, 0, MAKE_ENTITY_END)
+    Call(AssignScript, EVS_OnBreakBlock_SpringR)
     IfEq(GF_TIK25_SpringBrickA, false)
-        Call(MakeEntity, Ref(Entity_SimpleSpring), 210, -50, -20, 0, 100, MAKE_ENTITY_END)
+        Call(MakeEntity, Entity_SimpleSpring, 210, -50, -20, 0, 100, MAKE_ENTITY_END)
         Set(MV_EntityID_SpringR, LVar0)
     Else
-        Call(MakeEntity, Ref(Entity_SimpleSpring), 150, -135, -20, 0, 100, MAKE_ENTITY_END)
+        Call(MakeEntity, Entity_SimpleSpring, 150, -135, -20, 0, 100, MAKE_ENTITY_END)
     EndIf
-    Call(MakeEntity, Ref(Entity_BrickBlock), -120, -45, -20, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(EVS_OnBreakBlock_SpringL))
+    Call(MakeEntity, Entity_BrickBlock, -120, -45, -20, 0, MAKE_ENTITY_END)
+    Call(AssignScript, EVS_OnBreakBlock_SpringL)
     IfEq(GF_TIK25_SpringBrickB, false)
-        Call(MakeEntity, Ref(Entity_SimpleSpring), -120, -20, -20, 0, 100, MAKE_ENTITY_END)
+        Call(MakeEntity, Entity_SimpleSpring, -120, -20, -20, 0, 100, MAKE_ENTITY_END)
         Set(MV_EntityID_SpringL, LVar0)
     Else
-        Call(MakeEntity, Ref(Entity_SimpleSpring), -60, -135, -20, 0, 100, MAKE_ENTITY_END)
+        Call(MakeEntity, Entity_SimpleSpring, -60, -135, -20, 0, 100, MAKE_ENTITY_END)
     EndIf
     Return
     End

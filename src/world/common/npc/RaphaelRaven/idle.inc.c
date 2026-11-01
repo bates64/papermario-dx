@@ -2,7 +2,7 @@
 #include "idle.h"
 
 EvtScript EVS_NpcCreate_RaphaelRaven_Idle = {
-    Call(SetNpcScale, NPC_SELF, Float(1.5), Float(1.5), Float(1.5))
+    Call(SetNpcScale, NPC_SELF, 1.5, 1.5, 1.5)
     Return
     End
 };

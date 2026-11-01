@@ -74,7 +74,7 @@ EvtScript EVS_Starship_Update = {
         Loop(0)
             Call(UpdateLerp)
             SetF(LVar2, LVar0)
-            MulF(LVar2, Float(0.1))
+            MulF(LVar2, 0.1)
             AddF(LVar2, MV_Starship_PosY)
             Call(TranslateGroup, MODEL_g279, 0, LVar2, 0)
             Call(TranslateGroup, MODEL_g277, 0, LVar2, 0)
@@ -88,7 +88,7 @@ EvtScript EVS_Starship_Update = {
         Loop(0)
             Call(UpdateLerp)
             SetF(LVar2, LVar0)
-            MulF(LVar2, Float(0.1))
+            MulF(LVar2, 0.1)
             AddF(LVar2, MV_Starship_PosY)
             Call(TranslateGroup, MODEL_g279, 0, LVar2, 0)
             Call(TranslateGroup, MODEL_g277, 0, LVar2, 0)
@@ -142,7 +142,7 @@ EvtScript EVS_SetupLightBeam = {
         Call(EnableModel, MODEL_o8, false)
     Else
         Call(SetModelCustomGfx, MODEL_o8, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
-        Call(SetCustomGfxBuilders, CUSTOM_GFX_0, Ref(setup_gfx_light_beam), nullptr)
+        Call(SetCustomGfxBuilders, CUSTOM_GFX_0, setup_gfx_light_beam, nullptr)
         Call(EnableModel, MODEL_o8, true)
         Call(SetLightBeamAlpha, 127)
         Call(EnableGroup, MODEL_g277, true)
@@ -150,7 +150,7 @@ EvtScript EVS_SetupLightBeam = {
         Call(EnableModel, MODEL_o397, false)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o616, COLLIDER_FLAGS_UPPER_MASK)
         Call(SetZoneEnabled, ZONE_o622, false)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(2.5))
+        Call(SetCamSpeed, CAM_DEFAULT, 2.5)
     EndIf
     Return
     End
@@ -160,7 +160,7 @@ EvtScript EVS_Starship_Summon = {
     Call(DisablePlayerInput, true)
     Thread
         Call(SetModelTintMode, APPLY_TINT_BG, nullptr, ENV_TINT_REMAP)
-        Call(SetModelTintMode, APPLY_TINT_GROUPS, Ref(MostSolidGeometry), ENV_TINT_REMAP)
+        Call(SetModelTintMode, APPLY_TINT_GROUPS, MostSolidGeometry, ENV_TINT_REMAP)
         Call(SetWorldColorParams, 255, 255, 255, 0, 0, 0, 0)
         Wait(1)
         Call(SetWorldColorParams, 102, 102, 102, 0, 0, 0, 60)
@@ -181,7 +181,7 @@ EvtScript EVS_Starship_Summon = {
     PlayEffect(EFFECT_LIGHT_RAYS, 2, 0, 250, 0, 10, LVar9)
     Wait(20)
     Call(SetModelCustomGfx, MODEL_o646, CUSTOM_GFX_1, ENV_TINT_UNCHANGED)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(setup_gfx_starship_shimmer), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_1, setup_gfx_starship_shimmer, nullptr)
     Call(EnableGroup, MODEL_g279, true)
     Thread
         Call(MakeLerp, 0, 200, 75, EASING_QUADRATIC_IN)
@@ -196,7 +196,7 @@ EvtScript EVS_Starship_Summon = {
     EndThread
     Wait(60)
     Call(SetModelCustomGfx, MODEL_o8, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_0, Ref(setup_gfx_light_beam), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_0, setup_gfx_light_beam, nullptr)
     Call(EnableModel, MODEL_o8, true)
     Call(MakeLerp, 0, 127, 60, EASING_COS_IN_OUT)
     Loop(0)

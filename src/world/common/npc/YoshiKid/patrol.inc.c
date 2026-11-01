@@ -12,7 +12,7 @@ MobileAISettings AISettings_YoshiKid_Patrol = {
 };
 
 EvtScript EVS_NpcAI_YoshiKid_Patrol = {
-    Call(PatrolNoAttackAI_Main, Ref(AISettings_YoshiKid_Patrol))
+    Call(PatrolNoAttackAI_Main, AISettings_YoshiKid_Patrol)
     Return
     End
 };

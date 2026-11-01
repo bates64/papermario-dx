@@ -20,11 +20,11 @@ EvtScript EVS_SetupMusicTriggers = {
     Call(SetMusic, 0, SONG_TOAD_TOWN, 0, VOL_LEVEL_FULL)
     Call(EnableMusicProximityMix, 0)
     Thread
-        Call(MonitorMusicProximityTrigger, Ref(MusicMixTrigger1))
+        Call(MonitorMusicProximityTrigger, MusicMixTrigger1)
     EndThread
     IfGe(GB_StoryProgress, STORY_CH0_RETURNED_TO_TOAD_TOWN)
         Thread
-            Call(MonitorMusicProximityTrigger, Ref(MusicMixTrigger2))
+            Call(MonitorMusicProximityTrigger, MusicMixTrigger2)
         EndThread
     EndIf
     Return

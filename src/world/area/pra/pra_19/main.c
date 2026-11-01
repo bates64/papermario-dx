@@ -12,11 +12,11 @@ EvtScript EVS_ExitDoor_pra_35_1 = {
     Call(DisablePlayerInput, true)
     Set(LVar0, pra_19_ENTRY_0)
     Set(LVar1, COLLIDER_deilittsw)
-    Set(LVar2, Ref(DoorModelsL))
-    Set(LVar3, Ref(DoorModelsR))
+    Set(LVar2, DoorModelsL)
+    Set(LVar3, DoorModelsR)
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, Ref("pra_35"), pra_35_ENTRY_1)
+    Call(GotoMap, "pra_35", pra_35_ENTRY_1)
     Wait(100)
     Return
     End
@@ -25,9 +25,9 @@ EvtScript EVS_ExitDoor_pra_35_1 = {
 EvtScript EVS_ExitWalk_pra_20_0 = EVT_EXIT_WALK(60, pra_19_ENTRY_1, "pra_20", pra_20_ENTRY_0);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitDoor_pra_35_1), TRIGGER_WALL_PRESS_A, COLLIDER_deilittsw, 1, 0)
+    BindTrigger(EVS_ExitDoor_pra_35_1, TRIGGER_WALL_PRESS_A, COLLIDER_deilittsw, 1, 0)
     IfGe(GB_StoryProgress, STORY_CH7_DEFEATED_KOOPER_DUPLIGHOSTS)
-        BindTrigger(Ref(EVS_ExitWalk_pra_20_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilise, 1, 0)
+        BindTrigger(EVS_ExitWalk_pra_20_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilise, 1, 0)
     EndIf
     Return
     End
@@ -37,12 +37,12 @@ EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(pra_19_ENTRY_0)
-            Set(LVar2, Ref(DoorModelsL))
-            Set(LVar3, Ref(DoorModelsR))
+            Set(LVar2, DoorModelsL)
+            Set(LVar3, DoorModelsR)
             ExecWait(BaseEnterDoor)
             Exec(EVS_BindExitTriggers)
         CaseEq(pra_19_ENTRY_1)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
     EndSwitch
     Return
@@ -53,7 +53,7 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_CRYSTAL_PALACE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(24, 24, 40)
-    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Call(MakeNpcs, true, DefaultNPCs)
     Exec(EVS_SetupMusic)
     IfGe(GB_StoryProgress, STORY_CH7_DEFEATED_KOOPER_DUPLIGHOSTS)
         Call(EnableModel, MODEL_o1024, false)

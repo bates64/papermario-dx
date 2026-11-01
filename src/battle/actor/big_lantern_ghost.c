@@ -280,10 +280,10 @@ API_CALLABLE(update_effect) {
 }
 
 EvtScript EVS_Init = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
-    Call(BindHandlePhase, ACTOR_SELF, Ref(EVS_HandlePhase))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
+    Call(BindHandlePhase, ACTOR_SELF, EVS_HandlePhase)
     Call(SetActorVar, ACTOR_SELF, VAR_EXTINGUISHED_ONCE, 0)
     Call(SetActorVar, ACTOR_SELF, VAR_6, 10)
     Call(SetActorVar, ACTOR_SELF, VAR_LANTERN_BRIGHTNESS, 2)
@@ -291,7 +291,7 @@ EvtScript EVS_Init = {
     Call(SetActorVar, ACTOR_SELF, VAR_SPEAK_FLAGS, 0)
     Call(SetActorVar, ACTOR_SELF, VAR_MOVE_ID, MOVE_HEAVY_JUMP)
     Call(SetActorVar, ACTOR_SELF, VAR_LIGHT_BEAM_COUNTER, 0)
-    PlayEffect(EFFECT_BULB_GLOW, 1, LVar0, LVar1, LVar2, Float(1.0), LVar0)
+    PlayEffect(EFFECT_BULB_GLOW, 1, LVar0, LVar1, LVar2, 1.0, LVar0)
     Call(SetActorVar, ACTOR_SELF, VAR_EFFECT, LVar0)
     Call(init_overlay)
     Exec(updateEffectThread)
@@ -540,7 +540,7 @@ EvtScript attackHeavyJump = {
     Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Add(LVar0, 50)
     Set(LVar1, 0)
-    Call(SetActorSpeed, ACTOR_SELF, Float(3.0))
+    Call(SetActorSpeed, ACTOR_SELF, 3.0)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BigLanternGhost_Walk)
     Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(RunToGoal, ACTOR_SELF, 0, false)
@@ -556,7 +556,7 @@ EvtScript attackHeavyJump = {
                 Wait(10)
                 Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BigLanternGhost_Fall)
             EndThread
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(1.0))
+            Call(SetActorJumpGravity, ACTOR_SELF, 1.0)
             Call(SetGoalToTarget, ACTOR_SELF)
             Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Sub(LVar0, 20)
@@ -566,7 +566,7 @@ EvtScript attackHeavyJump = {
             Call(PlaySoundAtActor, ACTOR_SELF, SOUND_LANTERN_GHOST_STEP)
             Call(ResetActorSounds, ACTOR_SELF, ACTOR_SOUND_JUMP)
             Sub(LVar0, 15)
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(1.0))
+            Call(SetActorJumpGravity, ACTOR_SELF, 1.0)
             Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(JumpToGoal, ACTOR_SELF, 12, false, true, false)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BigLanternGhost_Idle)
@@ -590,7 +590,7 @@ EvtScript attackHeavyJump = {
         Wait(7)
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BigLanternGhost_Fall)
     EndThread
-    Call(SetActorJumpGravity, ACTOR_SELF, Float(1.0))
+    Call(SetActorJumpGravity, ACTOR_SELF, 1.0)
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(JumpToGoal, ACTOR_SELF, 16, false, true, false)
     Wait(2)
@@ -614,7 +614,7 @@ EvtScript attackHeavyJump = {
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Add(LVar0, 40)
             Set(LVar1, 0)
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(1.0))
+            Call(SetActorJumpGravity, ACTOR_SELF, 1.0)
             Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(JumpToGoal, ACTOR_SELF, 12, false, true, false)
             Call(PlaySoundAtActor, ACTOR_SELF, SOUND_LANTERN_GHOST_STEP)
@@ -650,7 +650,7 @@ EvtScript attackLightBeam = {
     Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Add(LVar0, 80)
     Set(LVar1, 0)
-    Call(SetActorSpeed, ACTOR_SELF, Float(3.0))
+    Call(SetActorSpeed, ACTOR_SELF, 3.0)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BigLanternGhost_Walk)
     Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(RunToGoal, ACTOR_SELF, 0, false)
@@ -672,13 +672,13 @@ EvtScript attackLightBeam = {
     Add(LVar2, 2)
     Thread
         Wait(1)
-        PlayEffect(EFFECT_LIGHT_RAYS, 2, LVar0, LVar1, LVar2, Float(1.0), LVarB)
+        PlayEffect(EFFECT_LIGHT_RAYS, 2, LVar0, LVar1, LVar2, 1.0, LVarB)
         Wait(30)
         Call(RemoveEffect, LVarB)
     EndThread
     Thread
         Wait(1)
-        PlayEffect(EFFECT_RADIATING_ENERGY_ORB, 1, LVar0, LVar1, LVar2, Float(1.5), 30)
+        PlayEffect(EFFECT_RADIATING_ENERGY_ORB, 1, LVar0, LVar1, LVar2, 1.5, 30)
     EndThread
     Wait(5)
     Call(EnemyTestTarget, ACTOR_SELF, LVarA, 0, 0, 1, BS_FLAGS1_INCLUDE_POWER_UPS)

@@ -526,10 +526,10 @@ ActorBlueprint blueprint = {
 };
 
 EvtScript EVS_Init = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
-    Call(BindHandlePhase, ACTOR_SELF, Ref(EVS_HandlePhase))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
+    Call(BindHandlePhase, ACTOR_SELF, EVS_HandlePhase)
     Return
     End
 };
@@ -665,7 +665,7 @@ EvtScript EVS_PartnerRunAwayFail = {
     Call(WattFXSetEffect, 1)
     Call(UseIdleAnimation, ACTOR_PARTNER, false)
     Call(SetGoalToHome, ACTOR_PARTNER)
-    Call(SetActorSpeed, ACTOR_PARTNER, Float(6.0))
+    Call(SetActorSpeed, ACTOR_PARTNER, 6.0)
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleWatt_Run)
     Call(SetActorYaw, ACTOR_PARTNER, 0)
     Call(RunToGoal, ACTOR_PARTNER, 0)
@@ -993,7 +993,7 @@ EvtScript EVS_Attack_PowerShock = {
     Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
     Add(LVar1, 15)
     Add(LVar2, 5)
-    PlayEffect(EFFECT_SNAKING_STATIC, 0, LVar0, LVar1, LVar2, Float(1.0), 75 * DT)
+    PlayEffect(EFFECT_SNAKING_STATIC, 0, LVar0, LVar1, LVar2, 1.0, 75 * DT)
     Call(UnkBackgroundFunc3)
     Set(LVar9, 0)
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleWatt_StrainBigger)
@@ -1009,15 +1009,15 @@ EvtScript EVS_Attack_PowerShock = {
     Call(SetActorPaletteEffect, ACTOR_SELF, PRT_MAIN, ACTOR_PAL_ADJUST_WATT_IDLE)
     Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_WATT_POWER_SHOCK)
     Thread
-        SetF(LVar0, Float(1.0))
+        SetF(LVar0, 1.0)
         Loop(3)
-            AddF(LVar0, Float(0.4))
+            AddF(LVar0, 0.4)
             Call(SetActorScale, ACTOR_PARTNER, LVar0, LVar0, LVar0)
             Wait(1)
         EndLoop
         Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
         Add(LVar1, 8)
-        PlayEffect(EFFECT_ENERGY_IN_OUT, 6, LVar0, LVar1, LVar2, Float(1.8), 30)
+        PlayEffect(EFFECT_ENERGY_IN_OUT, 6, LVar0, LVar1, LVar2, 1.8, 30)
     EndThread
     Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
     Add(LVar1, 20)
@@ -1041,9 +1041,9 @@ EvtScript EVS_Attack_PowerShock = {
     Call(WattFXSetEffect, 0)
     Thread
         Call(SetActorRotationOffset, ACTOR_SELF, 0, 20, 0)
-        SetF(LVar0, Float(2.2))
+        SetF(LVar0, 2.2)
         Loop(12)
-            SubF(LVar0, Float(0.1))
+            SubF(LVar0, 0.1)
             Call(SetActorScale, ACTOR_PARTNER, LVar0, LVar0, LVar0)
             Wait(1)
         EndLoop
@@ -1137,8 +1137,8 @@ EvtScript EVS_TurboCharge_HealthyPlayer = {
     Call(MoveBattleCamOver, 5)
     Thread
         Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_LONG_PLAYER_JUMP)
-        Call(SetActorJumpGravity, ACTOR_PLAYER, Float(1.0))
-        Call(SetActorSpeed, ACTOR_PLAYER, Float(1.0))
+        Call(SetActorJumpGravity, ACTOR_PLAYER, 1.0)
+        Call(SetActorSpeed, ACTOR_PLAYER, 1.0)
         Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
         Call(SetJumpAnimations, ACTOR_PLAYER, 0, ANIM_Mario1_Jump, ANIM_Mario1_Fall, ANIM_Mario1_Land)
         Call(SetGoalPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
@@ -1159,7 +1159,7 @@ EvtScript EVS_TurboCharge_HealthyPlayer = {
         Add(LVar0, 15)
         Add(LVar1, 35)
         Add(LVarF, 0)
-        PlayEffect(EFFECT_STAT_CHANGE, LVarF, LVar0, LVar1, LVar2, Float(1.5), 60)
+        PlayEffect(EFFECT_STAT_CHANGE, LVarF, LVar0, LVar1, LVar2, 1.5, 60)
         Wait(4)
     EndIf
     IfEq(LVar0, 0)
@@ -1230,7 +1230,7 @@ EvtScript EVS_TurboCharge_ImmobilePlayer = {
         Add(LVar0, 15)
         Add(LVar1, 35)
         Add(LVarF, 0)
-        PlayEffect(EFFECT_STAT_CHANGE, LVarF, LVar0, LVar1, LVar2, Float(1.5), 60)
+        PlayEffect(EFFECT_STAT_CHANGE, LVarF, LVar0, LVar1, LVar2, 1.5, 60)
         Wait(4)
     EndIf
     IfEq(LVar0, 0)
@@ -1287,10 +1287,10 @@ EvtScript EVS_Attack_MegaShock = {
     Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
     Add(LVar1, 15)
     Add(LVar2, 5)
-    PlayEffect(EFFECT_SNAKING_STATIC, 0, LVar0, LVar1, LVar2, Float(1.0), 90 * DT)
+    PlayEffect(EFFECT_SNAKING_STATIC, 0, LVar0, LVar1, LVar2, 1.0, 90 * DT)
     Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
     Add(LVar1, 12)
-    PlayEffect(EFFECT_RADIAL_SHIMMER, 8, LVar0, LVar1, LVar2, Float(1.3), 90 * DT)
+    PlayEffect(EFFECT_RADIAL_SHIMMER, 8, LVar0, LVar1, LVar2, 1.3, 90 * DT)
     Call(AddBattleCamDist, -100)
     Call(MoveBattleCamOver, 90 * DT)
     Call(SetBattleCamTargetingModes, BTL_CAM_YADJ_NONE, BTL_CAM_XADJ_NONE, true)

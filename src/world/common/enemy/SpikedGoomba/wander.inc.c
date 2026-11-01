@@ -15,7 +15,7 @@ MobileAISettings AISettings_SpikedGoomba_Wander = {
 };
 
 EvtScript EVS_NpcAI_SpikedGoomba_Wander = {
-    Call(BasicAI_Main, Ref(AISettings_SpikedGoomba_Wander))
+    Call(BasicAI_Main, AISettings_SpikedGoomba_Wander)
     Return
     End
 };

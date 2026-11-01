@@ -29,7 +29,7 @@ EvtScript EVS_AnimateWaves = {
         IfGe(LVarC, 60)
             Set(LVarC, 0)
         EndIf
-        Call(WaveScaleInterp, LVarC, LVar0, Float(-1.0), Float(1.0), 30, false, 0)
+        Call(WaveScaleInterp, LVarC, LVar0, -1.0, 1.0, 30, false, 0)
         Call(ScaleModel, MODEL_kaimen, 1, LVar0, 1)
         Add(LVarC, 1)
         Wait(1)
@@ -72,15 +72,15 @@ EvtScript EVS_ExitWalk_kgr_01_0 = {
     Call(UseExitHeading, 60, mac_05_ENTRY_3)
     Exec(ExitWalk)
     Set(GB_StoryProgress, STORY_CH5_ENTERED_WHALE)
-    Call(GotoMap, Ref("kgr_01"), kgr_01_ENTRY_0)
+    Call(GotoMap, "kgr_01", kgr_01_ENTRY_0)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_mac_04_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiline, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_kgr_01_0), TRIGGER_FLOOR_TOUCH, COLLIDER_deilit9, 1, 0)
+    BindTrigger(EVS_ExitWalk_mac_04_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiline, 1, 0)
+    BindTrigger(EVS_ExitWalk_kgr_01_0, TRIGGER_FLOOR_TOUCH, COLLIDER_deilit9, 1, 0)
     Return
     End
 };
@@ -95,7 +95,7 @@ EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(mac_05_ENTRY_0)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
         CaseEq(mac_05_ENTRY_1)
             Exec(EVS_Scene_ArriveByWhale)
@@ -130,7 +130,7 @@ EvtScript EVS_EnterMap = {
             Call(EnablePartnerAI)
             Call(DisablePlayerPhysics, false)
             Call(DisablePlayerInput, false)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             ExecWait(EnterWalk)
             Call(SetNpcPos, NPC_Whale, -220, 10, 372)
             Call(SetEnemyFlagBits, NPC_Whale, ENEMY_FLAG_CANT_INTERACT, false)
@@ -145,24 +145,24 @@ EvtScript EVS_Main = {
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH4_STAR_SPIRIT_DEPARTED)
-            Set(LVar0, Ref(NpcSetA))
+            Set(LVar0, NpcSetA)
         CaseLt(STORY_CH5_REACHED_LAVA_LAVA_ISLAND)
-            Set(LVar0, Ref(NpcSetB))
+            Set(LVar0, NpcSetB)
         CaseLt(STORY_CH5_RETURNED_TO_TOAD_TOWN)
             Call(GetEntryID, LVar1)
             IfEq(LVar1, mac_05_ENTRY_1)
                 IfEq(GF_MAC01_Defeated_JrTroopa4, false)
-                    Set(LVar0, Ref(NpcSetC))
+                    Set(LVar0, NpcSetC)
                 Else
-                    Set(LVar0, Ref(NpcSetB))
+                    Set(LVar0, NpcSetB)
                 EndIf
             Else
-                Set(LVar0, Ref(NpcSetA))
+                Set(LVar0, NpcSetA)
             EndIf
         CaseLt(STORY_CH6_BEGAN_PEACH_MISSION)
-            Set(LVar0, Ref(NpcSetA))
+            Set(LVar0, NpcSetA)
         CaseDefault
-            Set(LVar0, Ref(NpcSetA))
+            Set(LVar0, NpcSetA)
     EndSwitch
     Call(MakeNpcs, false, LVar0)
     ExecWait(EVS_MakeEntities)

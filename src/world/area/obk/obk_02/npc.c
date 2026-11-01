@@ -7,7 +7,7 @@
 EvtScript EVS_NpcInit_TrafficBoo1 = {
     Call(SetNpcVar, NPC_SELF, NPC_VAR_TRAFFIC_BOO_START_Y, 80)
     Call(SetNpcVar, NPC_SELF, NPC_VAR_TRAFFIC_BOO_START_Z, -300)
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_TrafficBoo))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_TrafficBoo)
     Return
     End
 };
@@ -15,7 +15,7 @@ EvtScript EVS_NpcInit_TrafficBoo1 = {
 EvtScript EVS_NpcInit_TrafficBoo2 = {
     Call(SetNpcVar, NPC_SELF, NPC_VAR_TRAFFIC_BOO_START_Y, 80)
     Call(SetNpcVar, NPC_SELF, NPC_VAR_TRAFFIC_BOO_START_Z, -300)
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_TrafficBoo))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_TrafficBoo)
     Return
     End
 };

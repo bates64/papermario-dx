@@ -7,7 +7,7 @@
 EvtScript EVS_GoompaRemark = {
     Call(DisablePlayerInput, true)
     Wait(10 * DT)
-    Call(SetPlayerSpeed, Float(3.0 / DT))
+    Call(SetPlayerSpeed, 3.0 / DT)
     Call(PlayerMoveTo, -60, -19, 0)
     Call(DisablePartnerAI, false)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_Goompa_Talk, ANIM_Goompa_Idle, 0, MSG_CH0_00B7)
@@ -51,11 +51,11 @@ EvtScript EVS_NpcIdle_SpikedGoomba = {
         EndIf
     Call(SetNpcAux, NPC_SELF, nullptr)
     Call(ShowEmote, NPC_SELF, EMOTE_EXCLAMATION, -30, 12, EMOTER_NPC, 0, 0, 0, 0)
-    Call(SetNpcJumpscale, NPC_SELF, Float(1.0))
-    Call(SetNpcSpeed, NPC_SELF, Float(5.0))
+    Call(SetNpcJumpscale, NPC_SELF, 1.0)
+    Call(SetNpcSpeed, NPC_SELF, 5.0)
     Call(NpcJump0, NPC_SELF, 685, 100, -35, 0)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_BEGIN_WITH_CHASING, true)
-    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_SpikedGoomba_Wander))
+    Call(BindNpcAI, NPC_SELF, EVS_NpcAI_SpikedGoomba_Wander)
     Return
     End
 };
@@ -107,8 +107,8 @@ NpcData NpcData_Goomba_02 = {
 };
 
 EvtScript EVS_NpcInit_SpikedGoomba = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_SpikedGoomba))
-    Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_SpikedGoomba))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_SpikedGoomba)
+    Call(BindNpcAux, NPC_SELF, EVS_NpcAux_SpikedGoomba)
     Return
     End
 };

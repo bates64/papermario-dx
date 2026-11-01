@@ -42,7 +42,7 @@ EvtScript EVS_NpcInteract_Bubulb = {
 };
 
 EvtScript EVS_NpcInit_Bubulb = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bubulb))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Bubulb)
     IfEq(GF_MIM04_Gift_MagicalSeed3, false)
         Call(SetNpcCollisionSize, NPC_SELF, 25, 25)
         Call(SetNpcAnimation, NPC_SELF, ANIM_Bubulb_Green_BuriedIdle)

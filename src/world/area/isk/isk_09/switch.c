@@ -17,13 +17,13 @@ API_CALLABLE(WaitForPlayerTouchingGround) {
 
 EvtScript EVS_SetupSwitches = {
     Call(ParentColliderToModel, COLLIDER_o2096, MODEL_g332)
-    BindTrigger(Ref(EVS_OnTouch_BlueSwitchCenter), TRIGGER_FLOOR_TOUCH, COLLIDER_o2096, 1, 0)
+    BindTrigger(EVS_OnTouch_BlueSwitchCenter, TRIGGER_FLOOR_TOUCH, COLLIDER_o2096, 1, 0)
     Call(ParentColliderToModel, COLLIDER_o2099, MODEL_g334)
-    BindTrigger(Ref(EVS_OnTouch_BlueSwitchMidLeft), TRIGGER_FLOOR_TOUCH, COLLIDER_o2099, 1, 0)
+    BindTrigger(EVS_OnTouch_BlueSwitchMidLeft, TRIGGER_FLOOR_TOUCH, COLLIDER_o2099, 1, 0)
     Call(ParentColliderToModel, COLLIDER_o2102, MODEL_g335)
-    BindTrigger(Ref(EVS_OnTouch_BlueSwitchTopLeft), TRIGGER_FLOOR_TOUCH, COLLIDER_o2102, 1, 0)
+    BindTrigger(EVS_OnTouch_BlueSwitchTopLeft, TRIGGER_FLOOR_TOUCH, COLLIDER_o2102, 1, 0)
     Call(ParentColliderToModel, COLLIDER_o2105, MODEL_g336)
-    BindTrigger(Ref(EVS_OnTouch_RedSwitch), TRIGGER_FLOOR_TOUCH, COLLIDER_o2105, 1, 0)
+    BindTrigger(EVS_OnTouch_RedSwitch, TRIGGER_FLOOR_TOUCH, COLLIDER_o2105, 1, 0)
     Return
     End
 };

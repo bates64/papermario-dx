@@ -37,7 +37,7 @@ EvtScript EVS_NpcAI_MontyMole_StoneThrower = {
     Call(RandInt, 15, LVar0)
     Add(LVar0, 15)
     Wait(LVar0)
-    Call(MontyMoleAI_Main, Ref(AISettings_MontyMole_StoneThrower))
+    Call(MontyMoleAI_Main, AISettings_MontyMole_StoneThrower)
     Return
     End
 };
@@ -64,7 +64,7 @@ EvtScript EVS_NpcAI_MontyMole_Stone = {
     Call(SetSelfVar, AI_VAR_MISSILE_FLAGS, 0)
     Call(SetSelfVar, AI_VAR_MISSILE_SPAWN_Y, 17)
     Call(SetSelfVar, AI_VAR_MISSILE_SPAWN_R, 17)
-    Call(MissileAI_Main, Ref(AISettings_MontyMole_Stone))
+    Call(MissileAI_Main, AISettings_MontyMole_Stone)
     Return
     End
 };
@@ -79,7 +79,7 @@ EvtScript EVS_NpcHit_MontyMole_Stone = {
     IfEq(LVar0, 0)
         Return
     EndIf
-    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcHit_MontyMole_Stone_DoNothing))
+    Call(BindNpcAI, NPC_SELF, EVS_NpcHit_MontyMole_Stone_DoNothing)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(GetOwnerEncounterTrigger, LVar0)
     Switch(LVar0)
@@ -100,7 +100,7 @@ EvtScript EVS_NpcHit_MontyMole_Stone = {
         CaseDefault
             Call(SetBattleAsScripted)
     EndSwitch
-    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_MontyMole_Stone))
+    Call(BindNpcAI, NPC_SELF, EVS_NpcAI_MontyMole_Stone)
     Return
     End
 };

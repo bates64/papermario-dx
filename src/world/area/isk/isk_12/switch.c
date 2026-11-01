@@ -17,7 +17,7 @@ EvtScript EVS_OnTouch_DrainSwitch = {
     IfLt(LVar1, -470)
         Thread
             Call(DisablePartnerAI, false)
-            Call(SetNpcJumpscale, NPC_PARTNER, Float(2.5))
+            Call(SetNpcJumpscale, NPC_PARTNER, 2.5)
             Call(NpcJump0, NPC_PARTNER, 529, -470, 82, 10)
             Wait(10)
             Call(EnablePartnerAI)
@@ -72,7 +72,7 @@ EvtScript EVS_OnTouch_StaircaseSwitch = {
             Goto(20)
         EndIf
         Call(PlaySoundAt, SOUND_ISK_STAIRS_EMERGE_THUD, SOUND_SPACE_DEFAULT, 449, -822, 148)
-        Call(ShakeCam, CAM_DEFAULT, 0, 3, Float(0.1))
+        Call(ShakeCam, CAM_DEFAULT, 0, 3, 0.1)
     EndThread
     Wait(50)
     Thread
@@ -86,7 +86,7 @@ EvtScript EVS_OnTouch_StaircaseSwitch = {
             Goto(22)
         EndIf
         Call(PlaySoundAt, SOUND_ISK_STAIRS_EMERGE_THUD, SOUND_SPACE_DEFAULT, 460, -806, 108)
-        Call(ShakeCam, CAM_DEFAULT, 0, 3, Float(0.1))
+        Call(ShakeCam, CAM_DEFAULT, 0, 3, 0.1)
     EndThread
     Wait(30)
     Thread
@@ -100,7 +100,7 @@ EvtScript EVS_OnTouch_StaircaseSwitch = {
             Goto(24)
         EndIf
         Call(PlaySoundAt, SOUND_ISK_STAIRS_EMERGE_THUD, SOUND_SPACE_DEFAULT, 432, -825, 189)
-        Call(ShakeCam, CAM_DEFAULT, 0, 3, Float(0.1))
+        Call(ShakeCam, CAM_DEFAULT, 0, 3, 0.1)
     EndThread
     Wait(30)
     Thread
@@ -114,7 +114,7 @@ EvtScript EVS_OnTouch_StaircaseSwitch = {
             Goto(26)
         EndIf
         Call(PlaySoundAt, SOUND_ISK_STAIRS_EMERGE_THUD, SOUND_SPACE_DEFAULT, 451, -812, 137)
-        Call(ShakeCam, CAM_DEFAULT, 0, 10, Float(0.3))
+        Call(ShakeCam, CAM_DEFAULT, 0, 10, 0.3)
     EndThread
     Wait(50)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o2080, COLLIDER_FLAGS_UPPER_MASK)
@@ -130,7 +130,7 @@ EvtScript EVS_SetupSwitches = {
     Call(ParentColliderToModel, COLLIDER_o2059, MODEL_g367)
     Call(ParentColliderToModel, COLLIDER_o2090, MODEL_B2)
     IfEq(AF_ISK12_SandSwitchActivated, false)
-        BindTrigger(Ref(EVS_OnTouch_DrainSwitch), TRIGGER_FLOOR_TOUCH, COLLIDER_o2059, 1, 0)
+        BindTrigger(EVS_OnTouch_DrainSwitch, TRIGGER_FLOOR_TOUCH, COLLIDER_o2059, 1, 0)
     Else
         Call(TranslateModel, MODEL_g367, 0, -14, 0)
         Call(UpdateColliderTransform, COLLIDER_o2056)
@@ -167,7 +167,7 @@ EvtScript EVS_SetupSwitches = {
                 Wait(3)
                 Call(DisablePlayerInput, false)
             EndIf
-            BindTrigger(Ref(EVS_OnTouch_StaircaseSwitch), TRIGGER_FLOOR_TOUCH, COLLIDER_o2090, 1, 0)
+            BindTrigger(EVS_OnTouch_StaircaseSwitch, TRIGGER_FLOOR_TOUCH, COLLIDER_o2090, 1, 0)
         EndThread
     EndIf
     Return

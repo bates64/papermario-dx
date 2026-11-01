@@ -341,7 +341,7 @@ EvtScript EVS_NpcHit_KeepAwayBoo8 = {
 };
 
 EvtScript EVS_NpcInit_HiddenBoo = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_HiddenBoo))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_HiddenBoo)
     IfGe(GB_StoryProgress, STORY_CH3_GOT_RECORD)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -350,8 +350,8 @@ EvtScript EVS_NpcInit_HiddenBoo = {
 };
 
 EvtScript EVS_NpcInit_KeepAwayBoo1 = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_KeepAwayBoo))
-    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_KeepAwayBoo1))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_KeepAwayBoo)
+    Call(BindNpcHit, NPC_SELF, EVS_NpcHit_KeepAwayBoo1)
     IfGe(GB_StoryProgress, STORY_CH3_GOT_RECORD)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -360,8 +360,8 @@ EvtScript EVS_NpcInit_KeepAwayBoo1 = {
 };
 
 EvtScript EVS_NpcInit_KeepAwayBoo2 = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_KeepAwayBoo))
-    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_KeepAwayBoo2))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_KeepAwayBoo)
+    Call(BindNpcHit, NPC_SELF, EVS_NpcHit_KeepAwayBoo2)
     IfGe(GB_StoryProgress, STORY_CH3_GOT_RECORD)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -370,8 +370,8 @@ EvtScript EVS_NpcInit_KeepAwayBoo2 = {
 };
 
 EvtScript EVS_NpcInit_KeepAwayBoo3 = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_KeepAwayBoo))
-    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_KeepAwayBoo3))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_KeepAwayBoo)
+    Call(BindNpcHit, NPC_SELF, EVS_NpcHit_KeepAwayBoo3)
     IfGe(GB_StoryProgress, STORY_CH3_GOT_RECORD)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -380,8 +380,8 @@ EvtScript EVS_NpcInit_KeepAwayBoo3 = {
 };
 
 EvtScript EVS_NpcInit_KeepAwayBoo4 = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_KeepAwayBoo))
-    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_KeepAwayBoo4))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_KeepAwayBoo)
+    Call(BindNpcHit, NPC_SELF, EVS_NpcHit_KeepAwayBoo4)
     IfGe(GB_StoryProgress, STORY_CH3_GOT_RECORD)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -390,8 +390,8 @@ EvtScript EVS_NpcInit_KeepAwayBoo4 = {
 };
 
 EvtScript EVS_NpcInit_KeepAwayBoo5 = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_KeepAwayBoo))
-    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_KeepAwayBoo5))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_KeepAwayBoo)
+    Call(BindNpcHit, NPC_SELF, EVS_NpcHit_KeepAwayBoo5)
     IfGe(GB_StoryProgress, STORY_CH3_GOT_RECORD)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -400,8 +400,8 @@ EvtScript EVS_NpcInit_KeepAwayBoo5 = {
 };
 
 EvtScript EVS_NpcInit_KeepAwayBoo6 = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_KeepAwayBoo))
-    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_KeepAwayBoo6))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_KeepAwayBoo)
+    Call(BindNpcHit, NPC_SELF, EVS_NpcHit_KeepAwayBoo6)
     IfGe(GB_StoryProgress, STORY_CH3_GOT_RECORD)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -410,8 +410,8 @@ EvtScript EVS_NpcInit_KeepAwayBoo6 = {
 };
 
 EvtScript EVS_NpcInit_KeepAwayBoo7 = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_KeepAwayBoo))
-    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_KeepAwayBoo7))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_KeepAwayBoo)
+    Call(BindNpcHit, NPC_SELF, EVS_NpcHit_KeepAwayBoo7)
     IfGe(GB_StoryProgress, STORY_CH3_GOT_RECORD)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -420,8 +420,8 @@ EvtScript EVS_NpcInit_KeepAwayBoo7 = {
 };
 
 EvtScript EVS_NpcInit_KeepAwayBoo8 = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_KeepAwayBoo))
-    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_KeepAwayBoo8))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_KeepAwayBoo)
+    Call(BindNpcHit, NPC_SELF, EVS_NpcHit_KeepAwayBoo8)
     IfGe(GB_StoryProgress, STORY_CH3_GOT_RECORD)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -533,7 +533,7 @@ NpcData NpcData_KeepAwayBoo8 = {
 EvtScript EVS_NpcInit_TrafficBoo1 = {
     Call(SetNpcVar, NPC_SELF, NPC_VAR_TRAFFIC_BOO_START_Y, 40)
     Call(SetNpcVar, NPC_SELF, NPC_VAR_TRAFFIC_BOO_START_Z, -430)
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_TrafficBoo))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_TrafficBoo)
     Return
     End
 };
@@ -541,7 +541,7 @@ EvtScript EVS_NpcInit_TrafficBoo1 = {
 EvtScript EVS_NpcInit_TrafficBoo2 = {
     Call(SetNpcVar, NPC_SELF, NPC_VAR_TRAFFIC_BOO_START_Y, 40)
     Call(SetNpcVar, NPC_SELF, NPC_VAR_TRAFFIC_BOO_START_Z, -430)
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_TrafficBoo))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_TrafficBoo)
     Return
     End
 };

@@ -46,7 +46,7 @@ EvtScript EVS_OnShakeTree1 = {
             EndLoop
             Call(SetNpcPos, NPC_Dummy, NPC_DISPOSE_LOCATION)
         EndThread
-        Call(SetNpcJumpscale, NPC_Dummy, Float(0.8))
+        Call(SetNpcJumpscale, NPC_Dummy, 0.8)
         Call(NpcJump0, NPC_Dummy, 370, 10, 20, 15)
         Call(PlaySoundAt, SOUND_OBJECT_LAND, SOUND_SPACE_DEFAULT, 370, 10, 20)
         Call(PlaySoundAt, SOUND_SPRING, SOUND_SPACE_DEFAULT, 370, 10, 20)
@@ -75,7 +75,7 @@ EvtScript EVS_UseSpring = {
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_LAUNCH)
     ExecGetTID(EVS_Spring_TetherCameraToPlayer, LVarA)
-    Call(SetPlayerJumpscale, Float(1.2))
+    Call(SetPlayerJumpscale, 1.2)
     Call(PlayerJump, 456, 142, 99, 30)
     KillThread(LVarA)
     Call(SetPlayerActionState, ACTION_STATE_IDLE)
@@ -88,18 +88,18 @@ EvtScript EVS_UseSpring = {
 EvtScript EVS_OpenChest_HammerThrow = EVT_OPEN_CHEST(ITEM_HAMMER_THROW, GF_KMR10_Chest_HammerThrow);
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Ref(Entity_YellowBlock), -190, 75, 220, 0, ITEM_SLEEPY_SHEEP, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_YellowBlock, -190, 75, 220, 0, ITEM_SLEEPY_SHEEP, MAKE_ENTITY_END)
     Call(AssignBlockFlag, GF_KMR10_ItemBlock_SleepySheep)
-    Call(MakeEntity, Ref(Entity_Chest), 633, 142, 119, 0, 0, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_Chest, 633, 142, 119, 0, 0, MAKE_ENTITY_END)
     Call(AssignChestFlag, GF_KMR10_Chest_HammerThrow)
-    Call(AssignScript, Ref(EVS_OpenChest_HammerThrow))
+    Call(AssignScript, EVS_OpenChest_HammerThrow)
     IfEq(GF_KMR10_KnockedSpringOutOfTree, false)
-        Call(MakeEntity, Ref(Entity_ScriptSpring), 370, 115, -20, 0, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(EVS_UseSpring))
+        Call(MakeEntity, Entity_ScriptSpring, 370, 115, -20, 0, MAKE_ENTITY_END)
+        Call(AssignScript, EVS_UseSpring)
         Set(MV_EntityID_Spring, LVar0)
     Else
-        Call(MakeEntity, Ref(Entity_ScriptSpring), 370, 10, 20, 0, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(EVS_UseSpring))
+        Call(MakeEntity, Entity_ScriptSpring, 370, 10, 20, 0, MAKE_ENTITY_END)
+        Call(AssignScript, EVS_UseSpring)
     EndIf
     Return
     End

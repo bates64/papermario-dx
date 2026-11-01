@@ -58,7 +58,7 @@ EvtScript EVS_NpcInteract_TradingToad = {
 
 EvtScript EVS_NpcInit_TradingToad = {
     IfNe(GF_TradingEvent1_Active, false)
-        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_TradingToad))
+        Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_TradingToad)
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf

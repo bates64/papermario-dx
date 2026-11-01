@@ -14,7 +14,7 @@ EvtScript EVS_NpcInteract_Goompapa_Epilogue = {
 };
 
 EvtScript EVS_NpcInit_Goompapa_Epilogue = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Goompapa_Epilogue))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Goompapa_Epilogue)
     Return
     End
 };
@@ -26,7 +26,7 @@ EvtScript EVS_NpcInteract_Goomama_Epilogue = {
 };
 
 EvtScript EVS_NpcInit_Goomama_Epilogue = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Goomama_Epilogue))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Goomama_Epilogue)
     Return
     End
 };
@@ -38,7 +38,7 @@ EvtScript EVS_NpcInteract_Gooma_Epilogue = {
 };
 
 EvtScript EVS_NpcInit_Gooma_Epilogue = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Gooma_Epilogue))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Gooma_Epilogue)
     Return
     End
 };
@@ -52,7 +52,7 @@ EvtScript EVS_NpcInteract_ChuckQuizmo_Epilogue = {
 EvtScript EVS_NpcInit_ChuckQuizmo_Epilogue = {
     Call(SetNpcPos, NPC_ChuckQuizmo, 460, 20, -130)
     Call(SetNpcYaw, NPC_ChuckQuizmo, 90)
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ChuckQuizmo_Epilogue))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_ChuckQuizmo_Epilogue)
     Return
     End
 };
@@ -65,7 +65,7 @@ EvtScript EVS_NpcInteract_VannaT_Epilogue = {
 
 EvtScript EVS_NpcInit_VannaT_Epilogue = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_VannaT_Happy)
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_VannaT_Epilogue))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_VannaT_Epilogue)
     Return
     End
 };
@@ -78,7 +78,7 @@ EvtScript EVS_NpcInteract_Chan_Epilogue = {
 
 EvtScript EVS_NpcInit_Chan_Epilogue = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_tt, COLLIDER_FLAGS_UPPER_MASK)
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Chan_Epilogue))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Chan_Epilogue)
     Return
     End
 };
@@ -90,7 +90,7 @@ EvtScript EVS_NpcInteract_Lee_Epilogue = {
 };
 
 EvtScript EVS_NpcInit_Lee_Epilogue = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Lee_Epilogue))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Lee_Epilogue)
     Return
     End
 };
@@ -102,7 +102,7 @@ EvtScript EVS_NpcInteract_TheMaster_Epilogue = {
 };
 
 EvtScript EVS_NpcInit_TheMaster_Epilogue = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_TheMaster_Epilogue))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_TheMaster_Epilogue)
     Return
     End
 };
@@ -121,7 +121,7 @@ EvtScript EVS_NpcInit_Toad_01_Epilogue = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_mono5, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_mono6, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_dummy, COLLIDER_FLAGS_UPPER_MASK)
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_01_Epilogue))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad_01_Epilogue)
     Return
     End
 };
@@ -133,7 +133,7 @@ EvtScript EVS_NpcInteract_HarryT_Epilogue = {
 };
 
 EvtScript EVS_NpcInit_HarryT_Epilogue = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_HarryT_Epilogue))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_HarryT_Epilogue)
     Return
     End
 };

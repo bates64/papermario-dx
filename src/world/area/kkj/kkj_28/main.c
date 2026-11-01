@@ -17,7 +17,7 @@ EvtScript EVS_Main = {
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Call(EnableGroup, MODEL_g40, false)
     Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
-    BindTrigger(Ref(EVS_ExitDoor_kkj_10_2), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
+    BindTrigger(EVS_ExitDoor_kkj_10_2, TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
     Exec(EVS_EnterMap)
     Return
     End

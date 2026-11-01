@@ -20,19 +20,19 @@ EvtScript EVS_Scene_ToadTownGreeting = {
     Call(DisablePlayerInput, true)
     Call(UseSettingsFrom, CAM_DEFAULT, -225, 0, -300)
     Call(SetPanTarget, CAM_DEFAULT, -225, 0, -300)
-    Call(SetCamDistance, CAM_DEFAULT, Float(800.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamDistance, CAM_DEFAULT, 800.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Thread
         Wait(35 * DT)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(2.1 / DT))
+        Call(SetCamSpeed, CAM_DEFAULT, 2.1 / DT)
         Call(UseSettingsFrom, CAM_DEFAULT, -225, 0, -300)
-        Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
+        Call(SetCamDistance, CAM_DEFAULT, 300.0)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
-        Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+        Call(WaitForCam, CAM_DEFAULT, 1.0)
         Wait(10 * DT)
         Call(InterpNpcYaw, NPC_Toad_04, 230, 0)
-        Call(SetNpcJumpscale, NPC_Toad_04, Float(1.5))
+        Call(SetNpcJumpscale, NPC_Toad_04, 1.5)
         Call(GetNpcPos, NPC_Toad_04, LVar0, LVar1, LVar2)
         Call(NpcJump0, NPC_Toad_04, LVar0, LVar1, LVar2, 5 * DT)
         Wait(10 * DT)
@@ -50,10 +50,10 @@ EvtScript EVS_Scene_ToadTownGreeting = {
     EndThread
     Call(SpeakToPlayer, NPC_Toad_04, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_MAC_Gate_007E)
     Call(DisablePlayerInput, false)
-    Call(SetCamDistance, CAM_DEFAULT, Float(400.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(4.0 / DT))
+    Call(SetCamDistance, CAM_DEFAULT, 400.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 4.0 / DT)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Return
     End
@@ -113,7 +113,7 @@ EvtScript EVS_Scene_CantLeaveTown = {
     Wait(5)
     Call(SpeakToPlayer, NPC_Toad_04, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_Outro_002D)
     Wait(10)
-    Call(SetPlayerSpeed, Float(4.0))
+    Call(SetPlayerSpeed, 4.0)
     Call(PlayerMoveTo, -220, -250, 0)
     Call(DisablePlayerInput, false)
     Return
@@ -121,7 +121,7 @@ EvtScript EVS_Scene_CantLeaveTown = {
 };
 
 EvtScript EVS_BlockExitToGoomaRoad = {
-    BindTrigger(Ref(EVS_Scene_CantLeaveTown), TRIGGER_FLOOR_TOUCH, COLLIDER_o484, 1, 0)
+    BindTrigger(EVS_Scene_CantLeaveTown, TRIGGER_FLOOR_TOUCH, COLLIDER_o484, 1, 0)
     Return
     End
 };
@@ -372,7 +372,7 @@ EvtScript EVS_NpcInteract_Toadette = {
 
 EvtScript EVS_NpcInteract_MissT = {
     ExecWait(EVS_NpcInteract_Toadette)
-    Set(LVar0, Ref(LetterDelivery_MissT))
+    Set(LVar0, LetterDelivery_MissT)
     ExecWait(EVS_TryLetterDelivery)
     Return
     End
@@ -490,7 +490,7 @@ EvtScript EVS_NpcInteract_Toad_09 = {
 };
 
 EvtScript EVS_NpcInit_Toad_04 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_04))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad_04)
     IfLt(GB_StoryProgress, STORY_EPILOGUE)
         Return
     EndIf
@@ -503,47 +503,47 @@ EvtScript EVS_NpcInit_Toad_04 = {
 };
 
 EvtScript EVS_NpcInit_Toad_05 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_05))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad_05)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Toad_06 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_06))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad_06)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_FickleLover = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Lovers))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Lovers)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_ShamelessLover = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Lovers))
-    Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_ShamelessLover))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Lovers)
+    Call(BindNpcAux, NPC_SELF, EVS_NpcAux_ShamelessLover)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_KrisT = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toadette))
-    Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_KrisT))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toadette)
+    Call(BindNpcAux, NPC_SELF, EVS_NpcAux_KrisT)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_MissT = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_MissT))
-    Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_MissT))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_MissT)
+    Call(BindNpcAux, NPC_SELF, EVS_NpcAux_MissT)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_FelissaT = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toadette))
-    Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_FelissaT))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toadette)
+    Call(BindNpcAux, NPC_SELF, EVS_NpcAux_FelissaT)
     Return
     End
 };
@@ -552,13 +552,13 @@ EvtScript EVS_NpcInit_DojoSpectator = {
     IfGe(GB_StoryProgress, STORY_EPILOGUE)
         Call(SetNpcPos, NPC_DojoSpectator, 350, 20, -100)
     EndIf
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_08))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad_08)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_DojoFan = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_09))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad_09)
     Return
     End
 };

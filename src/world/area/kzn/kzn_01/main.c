@@ -32,7 +32,7 @@ EvtScript EVS_Main = {
     IfLt(GB_StoryProgress, STORY_CH5_ENTERED_MT_LAVA_LAVA)
         Set(GB_StoryProgress, STORY_CH5_ENTERED_MT_LAVA_LAVA)
     EndIf
-    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Call(MakeNpcs, true, DefaultNPCs)
     Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     Wait(1)

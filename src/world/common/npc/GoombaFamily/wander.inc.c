@@ -10,7 +10,7 @@ MobileAISettings AISettings_GoombaFamily_Wander = {
 };
 
 EvtScript EVS_NpcAI_GoombaFamily_Wander = {
-    Call(BasicAI_Main, Ref(AISettings_GoombaFamily_Wander))
+    Call(BasicAI_Main, AISettings_GoombaFamily_Wander)
     Return
     End
 };

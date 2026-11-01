@@ -27,7 +27,7 @@ EvtScript EVS_NpcIdle_Kolorado = {
         EndIf
     EndLoop
     Wait(30)
-    Call(AdjustCam, CAM_DEFAULT, Float(5.0), 100, 350, Float(15.0), Float(-7.0))
+    Call(AdjustCam, CAM_DEFAULT, 5.0, 100, 350, 15.0, -7.0)
     Call(InterpNpcYaw, NPC_SELF, 270, 0)
     Wait(10)
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_00EE)
@@ -39,13 +39,13 @@ EvtScript EVS_NpcIdle_Kolorado = {
         Wait(1)
         Sub(LVar0, 1)
     EndLoop
-    Call(SetNpcSpeed, NPC_SELF, Float(3.0))
+    Call(SetNpcSpeed, NPC_SELF, 3.0)
     Call(NpcMoveTo, NPC_SELF, -740, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, -650, 20, 0)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(1.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 1.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Thrown)
-    Call(SetNpcJumpscale, NPC_SELF, Float(1.0))
+    Call(SetNpcJumpscale, NPC_SELF, 1.0)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_NPC_JUMP, SOUND_SPACE_DEFAULT)
     Call(NpcJump0, NPC_SELF, -655, 20, 0, 20)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Yell)
@@ -89,7 +89,7 @@ EvtScript EVS_NpcIdle_Kolorado = {
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_TOUCH_LAVA, SOUND_SPACE_DEFAULT)
     Call(NpcJump0, NPC_SELF, -700, 150, 0, 35)
     Thread
-        Call(ResetCam, CAM_DEFAULT, Float(5.0))
+        Call(ResetCam, CAM_DEFAULT, 5.0)
     EndThread
     Call(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Idle)
     Call(NpcJump0, NPC_SELF, -775, 20, -40, 40)
@@ -137,7 +137,7 @@ EvtScript EVS_NpcInteract_Kolorado = {
     Call(NpcJump0, NPC_SELF, LVar0, LVar1, LVar2, 7)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Idle)
     Call(CloseMessage)
-    Set(LVar0, Ref(LetterDelivery_Kolorado))
+    Set(LVar0, LetterDelivery_Kolorado)
     ExecWait(EVS_TryLetterDelivery)
     Return
     End
@@ -146,12 +146,12 @@ EvtScript EVS_NpcInteract_Kolorado = {
 EvtScript EVS_NpcInit_Kolorado = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_KOLORADO_FELL_IN_LAVA)
-            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Kolorado))
-            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Kolorado))
+            Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Kolorado)
+            Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Kolorado)
         CaseLt(STORY_CH5_LAVA_STREAM_BLOCKED)
             IfEq(GF_KZN06_Visited, false)
                 Call(SetNpcPos, NPC_SELF, -760, 20, -40)
-                Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Kolorado))
+                Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Kolorado)
             Else
                 Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
             EndIf

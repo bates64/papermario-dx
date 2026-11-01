@@ -8,7 +8,7 @@ EvtScript EVS_NpcIdle_SpikedGloomba = {
         CaseEq(tik_04_ENTRY_0)
             Call(SetNpcPos, NPC_SELF, 280, -10, 0)
         CaseEq(tik_04_ENTRY_1)
-            Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_SpikedGloomba_Wander))
+            Call(BindNpcAI, NPC_SELF, EVS_NpcAI_SpikedGloomba_Wander)
             Return
         CaseEq(tik_04_ENTRY_2)
             Call(SetNpcPos, NPC_SELF, 280, -10, 0)
@@ -33,13 +33,13 @@ EvtScript EVS_NpcIdle_SpikedGloomba = {
         Call(NpcMoveTo, NPC_SELF, 60, 0, 0)
     EndIf
     Call(SetNpcAnimation, NPC_SELF, ANIM_SpikedGoomba_Dark_Idle)
-    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_SpikedGloomba_Wander))
+    Call(BindNpcAI, NPC_SELF, EVS_NpcAI_SpikedGloomba_Wander)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_SpikedGloomba = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_SpikedGloomba))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_SpikedGloomba)
     Return
     End
 };

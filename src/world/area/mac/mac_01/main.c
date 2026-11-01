@@ -9,11 +9,11 @@ EvtScript EVS_ExitWalk_nok_11_0 = {
     IfEq(GF_StartedChapter1, false)
         Set(GF_StartedChapter1, true)
         Call(FadeOutMusic, 0, 1500)
-        Call(GotoMapSpecial, Ref("kmr_22"), kmr_22_ENTRY_1, TRANSITION_BEGIN_OR_END_CHAPTER)
+        Call(GotoMapSpecial, "kmr_22", kmr_22_ENTRY_1, TRANSITION_BEGIN_OR_END_CHAPTER)
         Wait(100)
         Return
     EndIf
-    Call(GotoMap, Ref("nok_11"), nok_11_ENTRY_0)
+    Call(GotoMap, "nok_11", nok_11_ENTRY_0)
     Wait(100)
     Return
     End
@@ -37,15 +37,15 @@ EvtScript EVS_ExitDoors_osr_01_0 = {
     Call(UseDoorSounds, DOOR_SOUNDS_LARGE)
     Set(LVar0, 2)
     Set(LVar1, 5)
-    Set(LVar2, Ref(Models_CastleGateL))
-    Set(LVar3, Ref(Models_CastleGateR))
+    Set(LVar2, Models_CastleGateL)
+    Set(LVar3, Models_CastleGateR)
     Exec(BaseExitDoor)
     Wait(17)
     Switch(GB_StoryProgress)
         CaseRange(STORY_CH0_WAKE_UP, STORY_CH8_REACHED_PEACHS_CASTLE)
-            Call(GotoMap, Ref("osr_01"), osr_01_ENTRY_0)
+            Call(GotoMap, "osr_01", osr_01_ENTRY_0)
         CaseDefault
-            Call(GotoMap, Ref("osr_00"), osr_00_ENTRY_0)
+            Call(GotoMap, "osr_00", osr_00_ENTRY_0)
     EndSwitch
     Wait(100)
     Return
@@ -55,14 +55,14 @@ EvtScript EVS_ExitDoors_osr_01_0 = {
 EvtScript EVS_ExitWalk_mac_02_2 = EVT_EXIT_WALK(60, mac_01_ENTRY_3, "mac_02", mac_02_ENTRY_2);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_mac_00_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoors_osr_01_0), TRIGGER_WALL_PRESS_A, COLLIDER_deilitn, 1, 0)
+    BindTrigger(EVS_ExitWalk_mac_00_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitDoors_osr_01_0, TRIGGER_WALL_PRESS_A, COLLIDER_deilitn, 1, 0)
     IfGe(GB_StoryProgress, STORY_EPILOGUE)
         Return
     EndIf
-    BindTrigger(Ref(EVS_ExitWalk_nok_11_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_mac_02_2), TRIGGER_FLOOR_ABOVE, COLLIDER_deilis, 1, 0)
-    BindTrigger(Ref(EVS_ExitFlowerGate), TRIGGER_WALL_PRESS_A, COLLIDER_deilitf, 1, 0)
+    BindTrigger(EVS_ExitWalk_nok_11_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitWalk_mac_02_2, TRIGGER_FLOOR_ABOVE, COLLIDER_deilis, 1, 0)
+    BindTrigger(EVS_ExitFlowerGate, TRIGGER_WALL_PRESS_A, COLLIDER_deilitf, 1, 0)
     Return
     End
 };
@@ -82,7 +82,7 @@ EvtScript EVS_EnterMap = {
             Call(RotateGroup, MODEL_east_gate, 80, 0, 1, 0)
             Call(RotateGroup, MODEL_west_gate, 80, 0, -1, 0)
             Call(UseDoorSounds, DOOR_SOUNDS_LARGE)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             ExecWait(EnterWalk)
             Call(MakeLerp, 80, 0, 10, EASING_LINEAR)
             Loop(0)
@@ -103,7 +103,7 @@ EvtScript EVS_EnterMap = {
             ExecWait(EVS_EnterFlowerGate)
             Exec(EVS_BindExitTriggers)
         CaseDefault
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
     EndSwitch
     Return
@@ -136,21 +136,21 @@ EvtScript EVS_Main = {
     EndIf
     Switch(GB_StoryProgress)
         CaseEq(STORY_INTRO)
-            Call(MakeNpcs, false, Ref(IntroNPCs))
+            Call(MakeNpcs, false, IntroNPCs)
         CaseGe(STORY_EPILOGUE)
-            Call(MakeNpcs, false, Ref(EpilogueNPCs))
+            Call(MakeNpcs, false, EpilogueNPCs)
         CaseLt(STORY_CH1_MERLON_REVEALED_KOOPA_BROS)
-            Call(MakeNpcs, false, Ref(Chapter0NPCs))
+            Call(MakeNpcs, false, Chapter0NPCs)
         CaseLt(STORY_CH1_STAR_SPIRIT_DEPARTED)
-            Call(MakeNpcs, false, Ref(Chapter1NPCs))
+            Call(MakeNpcs, false, Chapter1NPCs)
         CaseEq(STORY_CH1_DEFEATED_JR_TROOPA)
-            Call(MakeNpcs, false, Ref(TwinkMeetingNPCs))
+            Call(MakeNpcs, false, TwinkMeetingNPCs)
         CaseRange(STORY_CH3_STAR_SPIRIT_DEPARTED, STORY_CH4_STAR_SPIRIT_RESCUED)
-            Call(MakeNpcs, false, Ref(Chapter4NPCs))
+            Call(MakeNpcs, false, Chapter4NPCs)
         CaseEq(STORY_CH6_RETURNED_TO_TOAD_TOWN)
-            Call(MakeNpcs, false, Ref(NinjiMeetingNPCs))
+            Call(MakeNpcs, false, NinjiMeetingNPCs)
         CaseDefault
-            Call(MakeNpcs, false, Ref(DefaultNPCs))
+            Call(MakeNpcs, false, DefaultNPCs)
     EndSwitch
     IfGe(GB_StoryProgress, STORY_CH1_MERLON_REVEALED_KOOPA_BROS)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_tt, COLLIDER_FLAGS_UPPER_MASK)
@@ -174,10 +174,10 @@ EvtScript EVS_Main = {
         TEX_PAN_PARAMS_INIT(   0,    0,    0,    0)
         Exec(EVS_UpdateTexturePan)
     EndThread
-    BindTrigger(Ref(EVS_Merlon_GiveHint), TRIGGER_WALL_PRESS_A, COLLIDER_o335, 1, 0)
+    BindTrigger(EVS_Merlon_GiveHint, TRIGGER_WALL_PRESS_A, COLLIDER_o335, 1, 0)
     Exec(EVS_SetupQuickChangeTrigger)
     Exec(EVS_SetupFoliage)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(2.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 2.0)
     Return
     End
 };

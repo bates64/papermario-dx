@@ -108,7 +108,7 @@ EvtScript EVS_NpcDefeat_Duplighost = {
     Call(RemoveNpc, NPC_Follower)
     Call(RemoveNpc, NPC_Guardian)
     Set(GF_KPA53_Defeated_PeachImposter, true)
-    BindTrigger(Ref(EVS_ExitDoors_kpa_83_0), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
+    BindTrigger(EVS_ExitDoors_kpa_83_0, TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
     Call(DisablePlayerInput, false)
     Call(DoNpcDefeat)
     Return
@@ -120,9 +120,9 @@ EvtScript EVS_NpcInit_Duplighost = {
         IfEq(GF_KPA53_Met_PeachImposter, true)
             Call(SetNpcPos, NPC_SELF, -120, 0, -30)
             Call(SetNpcYaw, NPC_SELF, 270)
-            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcAI_Duplighost_Flee))
+            Call(BindNpcIdle, NPC_SELF, EVS_NpcAI_Duplighost_Flee)
         EndIf
-        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Duplighost))
+        Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_Duplighost)
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -230,7 +230,7 @@ EvtScript EVS_NpcHit_Guardian = {
                     Else
                         Call(SpeakToPlayer, NPC_Follower, ANIM_Peach2_Talk, ANIM_Peach2_TalkIdle, 0, MSG_CH8_002C)
                         Call(SetSelfEnemyFlagBits, ENEMY_FLAG_CANT_INTERACT, true)
-                        Call(BindNpcAI, NPC_Duplighost, Ref(EVS_NpcAI_Duplighost_Caught))
+                        Call(BindNpcAI, NPC_Duplighost, EVS_NpcAI_Duplighost_Caught)
                     EndIf
             EndSwitch
             Call(SetNpcAnimation, NPC_Follower, ANIM_Peach2_LowerArms)
@@ -279,11 +279,11 @@ EvtScript EVS_NpcIdle_Follower = {
                     Call(SetNpcPos, NPC_Guardian, 765, 0, -30)
                     Call(SetNpcPos, NPC_Duplighost, 150, 0, -30)
                     Call(SetNpcYaw, NPC_Duplighost, 270)
-                    Call(BindNpcAI, NPC_Duplighost, Ref(EVS_NpcAI_Duplighost_Flee))
+                    Call(BindNpcAI, NPC_Duplighost, EVS_NpcAI_Duplighost_Flee)
                     Call(SetSelfVar, 0, 0)
-                    Call(BindNpcInteract, NPC_Follower, Ref(EVS_NpcInteract_Follower))
+                    Call(BindNpcInteract, NPC_Follower, EVS_NpcInteract_Follower)
                     Call(SetNpcVar, NPC_Guardian, 0, 0)
-                    Call(BindNpcHit, NPC_Guardian, Ref(EVS_NpcHit_Guardian))
+                    Call(BindNpcHit, NPC_Guardian, EVS_NpcHit_Guardian)
                     Set(LVarF, 2)
                 EndIf
                 IfGe(LVar1, 765)
@@ -306,11 +306,11 @@ EvtScript EVS_NpcInit_Follower = {
     IfEq(GF_KPA53_Defeated_PeachImposter, false)
         Call(SetNpcPos, NPC_SELF, 765, 0, -30)
         IfEq(GF_KPA53_Met_PeachImposter, false)
-            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Follower_FirstTime))
+            Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Follower_FirstTime)
         Else
-            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Follower))
+            Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Follower)
         EndIf
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Follower))
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Follower)
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -324,9 +324,9 @@ EvtScript EVS_NpcInit_Guardian = {
         Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, true)
         Call(EnableNpcShadow, NPC_SELF, false)
         IfEq(GF_KPA53_Met_PeachImposter, false)
-            Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_Guardian_FirstTime))
+            Call(BindNpcHit, NPC_SELF, EVS_NpcHit_Guardian_FirstTime)
         Else
-            Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_Guardian))
+            Call(BindNpcHit, NPC_SELF, EVS_NpcHit_Guardian)
         EndIf
     Else
         Call(RemoveNpc, NPC_SELF)

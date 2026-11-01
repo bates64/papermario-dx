@@ -2,10 +2,10 @@
 #include "effects.h"
 
 EvtScript EVS_SetupFlames = {
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, -358, -323, 358, Float(0.3), LVar0)
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, -459, -323, 214, Float(0.3), LVar0)
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, -358, -453, 358, Float(0.3), LVar0)
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, -459, -453, 214, Float(0.3), LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, -358, -323, 358, 0.3, LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, -459, -323, 214, 0.3, LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, -358, -453, 358, 0.3, LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, -459, -453, 214, 0.3, LVar0)
     Return
     End
 };
@@ -48,7 +48,7 @@ EvtScript EVS_HideDestroyedWall = {
 EvtScript EVS_SetupBombableWall = {
     IfEq(GF_ISK_BombedWallFrom08, false)
         IfEq(GF_ISK_BombedWallFrom10, false)
-            BindTrigger(Ref(EVS_OnBlast_Wall), TRIGGER_POINT_BOMB, Ref(BombPos_Wall), 1, 0)
+            BindTrigger(EVS_OnBlast_Wall, TRIGGER_POINT_BOMB, BombPos_Wall, 1, 0)
             ExecWait(EVS_HideDestroyedWall)
         Else
             Call(EnableModel, MODEL_g293, false)

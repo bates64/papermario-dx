@@ -25,14 +25,14 @@ API_CALLABLE(ForceDisguiseLoss) {
 
 EvtScript EVS_GetApproachPeachPos = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(1.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 1.0)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Thread
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Add(LVar0, 26)
         Add(LVar2, 2)
         Call(SetNpcAnimation, NPC_Koopatrol_01, ANIM_WorldKoopatrol_Run)
-        Call(SetNpcSpeed, NPC_Koopatrol_01, Float(5.0))
+        Call(SetNpcSpeed, NPC_Koopatrol_01, 5.0)
         Call(NpcMoveTo, NPC_Koopatrol_01, LVar0, LVar2, 0)
         Call(SetNpcAnimation, NPC_Koopatrol_01, ANIM_WorldKoopatrol_Idle)
         Call(NpcFacePlayer, NPC_Koopatrol_01, 5)
@@ -43,7 +43,7 @@ EvtScript EVS_GetApproachPeachPos = {
         Sub(LVar0, 26)
         Sub(LVar2, 2)
         Call(SetNpcAnimation, NPC_Koopatrol_02, ANIM_WorldKoopatrol_Run)
-        Call(SetNpcSpeed, NPC_Koopatrol_02, Float(5.0))
+        Call(SetNpcSpeed, NPC_Koopatrol_02, 5.0)
         Call(NpcMoveTo, NPC_Koopatrol_02, LVar0, LVar2, 0)
         Call(SetNpcAnimation, NPC_Koopatrol_02, ANIM_WorldKoopatrol_Idle)
         Call(NpcFacePlayer, NPC_Koopatrol_02, 5)
@@ -111,18 +111,18 @@ EvtScript EVS_CarryPeachAway = {
     EndThread
     Thread
         Call(SetNpcAnimation, NPC_Koopatrol_02, ANIM_WorldKoopatrol_CarryFast)
-        Call(SetNpcSpeed, NPC_Koopatrol_02, Float(5.0))
+        Call(SetNpcSpeed, NPC_Koopatrol_02, 5.0)
         Call(NpcMoveTo, NPC_Koopatrol_02, 684, -52, 0)
     EndThread
     Thread
         Call(SetNpcAnimation, NPC_Koopatrol_01, ANIM_WorldKoopatrol_CarryFast)
-        Call(SetNpcSpeed, NPC_Koopatrol_01, Float(5.0))
+        Call(SetNpcSpeed, NPC_Koopatrol_01, 5.0)
         Call(NpcMoveTo, NPC_Koopatrol_01, 716, -48, 0)
     EndThread
     Call(GetNpcPos, NPC_Kammy, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(0.5))
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 0.5)
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Return
     End
 };
@@ -195,7 +195,7 @@ EvtScript EVS_Scene_KammyUnmasksPeach = {
     Call(SetNpcPos, NPC_Kammy, -50, 0, -50)
     Exec(EVS_OpenAndCloseTowerDoors)
     Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Walk)
-    Call(SetNpcSpeed, NPC_Kammy, Float(2.0 / DT))
+    Call(SetNpcSpeed, NPC_Kammy, 2.0 / DT)
     Call(NpcMoveTo, NPC_Kammy, 30, -50, 0)
     Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Idle)
     Thread
@@ -211,9 +211,9 @@ EvtScript EVS_Scene_KammyUnmasksPeach = {
     EndThread
     Thread
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
-        Call(func_802D1270, 190, LVar2, Float(4.0 / DT))
-        Call(func_802D1270, 195, -80, Float(4.0 / DT))
-        Call(func_802D1270, 190, -80, Float(4.0 / DT))
+        Call(func_802D1270, 190, LVar2, 4.0 / DT)
+        Call(func_802D1270, 195, -80, 4.0 / DT)
+        Call(func_802D1270, 190, -80, 4.0 / DT)
         Loop(0)
             Wait(1)
             Call(GetNpcPos, NPC_Kammy, LVar0, LVar1, LVar2)
@@ -226,7 +226,7 @@ EvtScript EVS_Scene_KammyUnmasksPeach = {
     Thread
         Call(GetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
         Call(NpcJump0, NPC_PARTNER, LVar0, -10, -130, 20 * DT)
-        Call(SetNpcSpeed, NPC_PARTNER, Float(4.0 / DT))
+        Call(SetNpcSpeed, NPC_PARTNER, 4.0 / DT)
         Call(NpcFlyTo, NPC_PARTNER, 210, -10, -130, 0, 0, EASING_LINEAR)
         Call(InterpNpcYaw, NPC_PARTNER, 270, 5)
         Loop(0)
@@ -241,17 +241,17 @@ EvtScript EVS_Scene_KammyUnmasksPeach = {
     Wait(30 * DT)
     Call(UseSettingsFrom, CAM_DEFAULT, 0, 0, -50)
     Call(SetPanTarget, CAM_DEFAULT, 0, 0, -50)
-    Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-9.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(5.0 / DT))
+    Call(SetCamDistance, CAM_DEFAULT, 300.0)
+    Call(SetCamPitch, CAM_DEFAULT, 17.0, -9.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 5.0 / DT)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Wait(10 * DT)
     Call(SpeakToPlayer, NPC_Kammy, ANIM_WorldKammy_Talk, ANIM_WorldKammy_Idle, 5, MSG_Peach_014F)
     Call(SpeakToNpc, NPC_Koopatrol_01, ANIM_WorldKoopatrol_Talk, ANIM_WorldKoopatrol_Idle, 0, NPC_Kammy, MSG_Peach_0150)
     Call(SetNpcVar, NPC_Kammy, 0, 1)
     Thread
-        Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+        Call(SetCamSpeed, CAM_DEFAULT, 90.0)
         Loop(0)
             Call(GetNpcPos, NPC_Kammy, LVar0, LVar1, LVar2)
             Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -269,11 +269,11 @@ EvtScript EVS_Scene_KammyUnmasksPeach = {
     Wait(10 * DT)
     Call(InterpNpcYaw, NPC_Kammy, 270, 5)
     Call(SetPanTarget, CAM_DEFAULT, 230, 0, -50)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(3.0 / DT))
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 3.0 / DT)
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(SpeakToPlayer, NPC_Kammy, ANIM_WorldKammy_Talk, ANIM_WorldKammy_Idle, 5, MSG_Peach_0151)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
-    Call(SetPlayerJumpscale, Float(1.0))
+    Call(SetPlayerJumpscale, 1.0)
     Call(PlayerJump1, LVar0, LVar1, LVar2, 10 * DT)
     Wait(30 * DT)
     Call(SpeakToPlayer, NPC_Kammy, ANIM_WorldKammy_Talk, ANIM_WorldKammy_Idle, 5, MSG_Peach_0152)
@@ -336,7 +336,7 @@ EvtScript EVS_Scene_KammyUnmasksPeach = {
     Call(SpeakToPlayer, NPC_PLAYER, ANIM_Peach2_Carried, ANIM_Peach2_Carried, 5, MSG_Peach_0158)
     ExecWait(EVS_CarryPeachAway)
     Wait(20 * DT)
-    Call(SetNpcSpeed, NPC_PARTNER, Float(6.0))
+    Call(SetNpcSpeed, NPC_PARTNER, 6.0)
     Call(NpcFlyTo, NPC_PARTNER, 460, -10, -130, 0, 0, EASING_LINEAR)
     Wait(60 * DT)
     Call(FadeOutMusic, 0, 1000 * DT)

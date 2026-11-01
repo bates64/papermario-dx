@@ -796,8 +796,8 @@ EvtScript EVS_ManageMinigame = {
             IfGe(LVar0, 2)
                 Call(GetPanelPos, LVarA)
                 Call(TranslateModel, LVar1, LVar5, LVar6, LVar7)
-                Call(RotateModel, LVar1, LVar8, Float(0.0), Float(1.0), Float(0.0))
-                Call(ScaleModel, LVar1, LVar9, LVar9, Float(1.0))
+                Call(RotateModel, LVar1, LVar8, 0.0, 1.0, 0.0)
+                Call(ScaleModel, LVar1, LVar9, LVar9, 1.0)
             EndIf
             Add(LVarA, 1)
         EndLoop
@@ -964,7 +964,7 @@ EvtScript EVS_NpcInteract_Toad = {
             Call(HideCoinCounter)
             Wait(12)
             Exec(EVS_DestroyMinigame)
-            Call(GotoMap, Ref("mgm_00"), mgm_00_ENTRY_1)
+            Call(GotoMap, "mgm_00", mgm_00_ENTRY_1)
             Wait(100)
             Return
         EndIf
@@ -974,7 +974,7 @@ EvtScript EVS_NpcInteract_Toad = {
             Wait(5)
             Call(ContinueSpeech, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_MGM_0032)
             Exec(EVS_DestroyMinigame)
-            Call(GotoMap, Ref("mgm_00"), mgm_00_ENTRY_1)
+            Call(GotoMap, "mgm_00", mgm_00_ENTRY_1)
             Wait(100)
             Return
         EndIf
@@ -1033,7 +1033,7 @@ EvtScript EVS_NpcInit_Toad = {
     Call(SetNpcVar, NPC_Toad, 2, -1)
     Call(SetNpcVar, NPC_Toad, 1, 0)
     Call(SetNpcVar, NPC_Toad, 6, 0)
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad)
     Return
     End
 };

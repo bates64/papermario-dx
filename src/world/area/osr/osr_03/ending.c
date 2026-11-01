@@ -61,7 +61,7 @@ API_CALLABLE(BigExplosionRumble) {
 }
 
 EvtScript EVS_UpdateCamShaking = {
-    Call(ShakeCam, CAM_DEFAULT, 0, 210, Float(2.0))
+    Call(ShakeCam, CAM_DEFAULT, 0, 210, 2.0)
     Call(MakeLerp, 200, 50, 65, EASING_LINEAR)
     Loop(0)
         Call(UpdateLerp)
@@ -90,11 +90,11 @@ EvtScript EVS_PlayExplosionFX = {
     Set(LVar4, 20)
     Set(LVar5, 110)
     Loop(0)
-        UseBuf(Ref(ExplosionPositions))
+        UseBuf(ExplosionPositions)
         Loop(8)
             Call(PlaySoundWithVolume, SOUND_SEQ_FINALE_EXPLOSION, LVar5)
             BufRead3(LVar0, LVar1, LVar2)
-            PlayEffect(EFFECT_RING_BLAST, 0, LVar0, LVar1, LVar2, Float(6.0), 30)
+            PlayEffect(EFFECT_RING_BLAST, 0, LVar0, LVar1, LVar2, 6.0, 30)
             Wait(LVar4)
         EndLoop
         Add(LVar5, -10)
@@ -126,16 +126,16 @@ EvtScript EVS_Scene_CastleDestruction = {
     Call(UseSettingsFrom, CAM_DEFAULT, 0, 0, 0)
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_LOOK_AT_POINT, true)
     Call(SetPanTarget, CAM_DEFAULT, -60, 0, 0)
-    Call(SetCamPitch, CAM_DEFAULT, Float(-20.0), Float(-4.0))
+    Call(SetCamPitch, CAM_DEFAULT, -20.0, -4.0)
     Call(SetCamPosA, CAM_DEFAULT, 0, -40)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(20)
     Call(SetPanTarget, CAM_DEFAULT, 0, 0, 0)
-    Call(SetCamPitch, CAM_DEFAULT, Float(-13.0), Float(15.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(0.3))
+    Call(SetCamPitch, CAM_DEFAULT, -13.0, 15.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 0.3)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Thread
         Loop(6)
             Call(RandInt, 20, LVar0)
@@ -172,7 +172,7 @@ EvtScript EVS_Scene_CastleDestruction = {
     PlayEffect(EFFECT_LIGHT_RAYS, 2, 0, -430, 1920, 15, LVar9)
     Wait(30)
     Thread
-        Call(BigExplosionRumble, 30, Float(2.0))
+        Call(BigExplosionRumble, 30, 2.0)
         Call(MakeLerp, 200, 100, 15, EASING_LINEAR)
         Loop(0)
             Call(UpdateLerp)
@@ -183,7 +183,7 @@ EvtScript EVS_Scene_CastleDestruction = {
             EndIf
         EndLoop
     EndThread
-    Call(GotoMapSpecial, Ref("hos_10"), hos_10_ENTRY_1, TRANSITION_SLOW_FADE_TO_WHITE)
+    Call(GotoMapSpecial, "hos_10", hos_10_ENTRY_1, TRANSITION_SLOW_FADE_TO_WHITE)
     Wait(100)
     Return
     End

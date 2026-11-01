@@ -36,7 +36,7 @@ EvtScript EVS_SetupHoles = {
     Call(DisablePlayerPhysics, true)
 #endif
     Call(InterruptUsePartner)
-    Call(GotoMap, Ref("dgb_11"), LVar0)
+    Call(GotoMap, "dgb_11", LVar0)
     Wait(100)
     Return
     End

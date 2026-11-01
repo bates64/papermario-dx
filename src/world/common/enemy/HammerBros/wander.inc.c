@@ -39,7 +39,7 @@ EvtScript EVS_NpcAI_HammerBros = {
     Call(SetSelfVar, AI_VAR_RANGED_PRE_TIME, 3)
     Call(SetSelfVar, AI_VAR_RANGED_POST_TIME, 3)
     Call(SetSelfVar, AI_VAR_RANGED_AMMO_COUNT, 6)
-    Call(RangedAttackAI_Main, Ref(AISettings_HammerBros))
+    Call(RangedAttackAI_Main, AISettings_HammerBros)
     Return
     End
 };
@@ -64,7 +64,7 @@ EvtScript EVS_NpcAI_HammerBros_Hammer = {
     Call(SetSelfVar, AI_VAR_MISSILE_STATUS, MISSILE_STATUS_IDLE)
     Call(SetSelfVar, AI_VAR_MISSILE_FLAGS, AI_MISSILE_FLAG_SPINNING | AI_MISSILE_FLAG_CENTERED)
     Call(SetSelfVar, AI_VAR_MISSILE_SPAWN_Y, 20)
-    Call(MissileAI_Main, Ref(AISettings_HammerBros_Hammer))
+    Call(MissileAI_Main, AISettings_HammerBros_Hammer)
     Return
     End
 };
@@ -79,7 +79,7 @@ EvtScript EVS_NpcHit_HammerBros_Hammer = {
     IfEq(LVar0, 0)
         Return
     EndIf
-    Call(BindNpcAI, NPC_SELF, Ref(EVS_NoAI_HammerBros_Hammer))
+    Call(BindNpcAI, NPC_SELF, EVS_NoAI_HammerBros_Hammer)
     Call(GetOwnerEncounterTrigger, LVar0)
     Switch(LVar0)
         CaseOrEq(ENCOUNTER_TRIGGER_HAMMER)
@@ -101,7 +101,7 @@ EvtScript EVS_NpcHit_HammerBros_Hammer = {
         CaseDefault
             Call(SetBattleAsScripted)
     EndSwitch
-    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_HammerBros_Hammer))
+    Call(BindNpcAI, NPC_SELF, EVS_NpcAI_HammerBros_Hammer)
     Return
     End
 };

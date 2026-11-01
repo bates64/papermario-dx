@@ -347,7 +347,7 @@ EvtScript EVS_NpcInteract_RussT = {
     IfGe(GB_StoryProgress, STORY_CH3_STAR_SPIRIT_DEPARTED)
         IfEq(GF_MAC00_DictionaryReturned, false)
             ExecWait(EVS_ItemPrompt_Dictionary)
-            Set(LVar0, Ref(LetterDelivery_RussT))
+            Set(LVar0, LetterDelivery_RussT)
             ExecWait(EVS_TryLetterDelivery)
             Return
         EndIf
@@ -357,7 +357,7 @@ EvtScript EVS_NpcInteract_RussT = {
         EndIf
     EndIf
     ExecWait(EVS_RussT_GetHint)
-    Set(LVar0, Ref(LetterDelivery_RussT))
+    Set(LVar0, LetterDelivery_RussT)
     ExecWait(EVS_TryLetterDelivery)
     Return
     End
@@ -365,7 +365,7 @@ EvtScript EVS_NpcInteract_RussT = {
 
 EvtScript EVS_NpcInit_RussT = {
     Call(ResetRussHintsGiven)
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_RussT))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_RussT)
     Return
     End
 };

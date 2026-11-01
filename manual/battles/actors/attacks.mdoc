@@ -72,7 +72,7 @@ EvtScript EVS_TakeTurn = {
         ACTOR_SELF, PRT_MAIN, ANIM_Goomba_Run)
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(AddGoalPos, ACTOR_SELF, 50, 0, 0)
-    Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
+    Call(SetActorSpeed, ACTOR_SELF, 6.0)
     Call(RunToGoal, ACTOR_SELF, 0, false)
     // test if the attack hits
     Call(EnemyTestTarget,
@@ -87,7 +87,7 @@ EvtScript EVS_TakeTurn = {
             Call(SetAnimation,
                 ACTOR_SELF, PRT_MAIN, ANIM_Goomba_Run)
             Call(SetGoalToHome, ACTOR_SELF)
-            Call(SetActorSpeed, ACTOR_SELF, Float(8.0))
+            Call(SetActorSpeed, ACTOR_SELF, 8.0)
             Call(RunToGoal,
                 ACTOR_SELF, 0, false)
             Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
@@ -107,7 +107,7 @@ EvtScript EVS_TakeTurn = {
     Call(SetAnimation,
         ACTOR_SELF, PRT_MAIN, ANIM_Goomba_Run)
     Call(SetGoalToHome, ACTOR_SELF)
-    Call(SetActorSpeed, ACTOR_SELF, Float(8.0))
+    Call(SetActorSpeed, ACTOR_SELF, 8.0)
     Call(RunToGoal, ACTOR_SELF, 0, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
     Call(UseIdleAnimation, ACTOR_SELF, true)

@@ -176,10 +176,10 @@ API_CALLABLE(SpawnImpactDustFX) {
 }
 
 EvtScript EVS_Init = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
-    Call(BindHandlePhase, ACTOR_SELF, Ref(EVS_HandlePhase))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
+    Call(BindHandlePhase, ACTOR_SELF, EVS_HandlePhase)
     ExecGetTID(EVS_ShakeScreenWhileWalking, LVar0)
     Call(SetActorVar, ACTOR_SELF, AVAR_ScreenShakingScriptID, LVar0)
     Call(SetActorVar, ACTOR_SELF, AVAR_Unused_0, 0)
@@ -206,11 +206,11 @@ EvtScript EVS_Idle = {
         Call(SetGoalToHome, ACTOR_SELF)
         Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Add(LVar0, 5)
-        Call(SetActorIdleSpeed, ACTOR_SELF, Float(1.0))
-        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(ShuffleAnims))
+        Call(SetActorIdleSpeed, ACTOR_SELF, 1.0)
+        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, ShuffleAnims)
         Call(SetIdleGoal, ACTOR_SELF, LVar0, LVar1, LVar2)
         Call(IdleRunToGoal, ACTOR_SELF, 0)
-        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(DefaultAnims))
+        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, DefaultAnims)
         Wait(20)
         Label(2)
             Call(GetStatusFlags, ACTOR_SELF, LVar0)
@@ -220,11 +220,11 @@ EvtScript EVS_Idle = {
             EndIf
         Call(SetGoalToHome, ACTOR_SELF)
         Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-        Call(SetActorIdleSpeed, ACTOR_SELF, Float(1.0))
-        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(ShuffleAnims))
+        Call(SetActorIdleSpeed, ACTOR_SELF, 1.0)
+        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, ShuffleAnims)
         Call(SetIdleGoal, ACTOR_SELF, LVar0, LVar1, LVar2)
         Call(IdleRunToGoal, ACTOR_SELF, 0)
-        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(DefaultAnims))
+        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, DefaultAnims)
         Wait(80)
         Goto(0)
     Return
@@ -237,7 +237,7 @@ EvtScript EVS_Lee_ShockKnockback = {
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Set(LVar1, 0)
     Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-    Call(SetActorJumpGravity, ACTOR_SELF, Float(1.4))
+    Call(SetActorJumpGravity, ACTOR_SELF, 1.4)
     Call(AddGoalPos, ACTOR_SELF, 30, 0, 0)
     Call(JumpToGoal, ACTOR_SELF, 15, false, true, false)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_HEAVY_NPC_STEP_B)
@@ -338,7 +338,7 @@ EvtScript EVS_HandleEvent = {
             Wait(20)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_GoombaKing_Run)
             Call(SetGoalToHome, ACTOR_SELF)
-            Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
+            Call(SetActorSpeed, ACTOR_SELF, 6.0)
             Call(RunToGoal, ACTOR_SELF, 0, false)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_GoombaKing_Idle)
         CaseEq(EVENT_END_FIRST_STRIKE)
@@ -408,7 +408,7 @@ EvtScript EVS_Attack_SpinSwipe = {
         Call(SetGoalToTarget, ACTOR_SELF)
         Call(AddGoalPos, ACTOR_SELF, 12, 0, 0)
     EndIf
-    Call(SetActorSpeed, ACTOR_SELF, Float(2.0))
+    Call(SetActorSpeed, ACTOR_SELF, 2.0)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_GoombaKing_Run)
     Call(RunToGoal, ACTOR_SELF, 0, false)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_GoombaKing_Idle)
@@ -445,7 +445,7 @@ EvtScript EVS_Attack_SpinSwipe = {
             Call(MoveBattleCamOver, 20)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_GoombaKing_Idle)
             Call(SetGoalToHome, ACTOR_SELF)
-            Call(SetActorSpeed, ACTOR_SELF, Float(4.0))
+            Call(SetActorSpeed, ACTOR_SELF, 4.0)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_GoombaKing_Run)
             Call(RunToGoal, ACTOR_SELF, 0, false)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_GoombaKing_Idle)
@@ -468,7 +468,7 @@ EvtScript EVS_Attack_SpinSwipe = {
             Wait(20)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_GoombaKing_Idle)
             Call(SetGoalToHome, ACTOR_SELF)
-            Call(SetActorSpeed, ACTOR_SELF, Float(3.0))
+            Call(SetActorSpeed, ACTOR_SELF, 3.0)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_GoombaKing_Run)
             Call(RunToGoal, ACTOR_SELF, 0, false)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_GoombaKing_Idle)
@@ -486,7 +486,7 @@ EvtScript EVS_Attack_GroundStomp = {
     Wait(15)
     Call(SetBattleCamTargetingModes, BTL_CAM_YADJ_NONE, BTL_CAM_XADJ_AVG, false)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_GoombaKing_Angry)
-    Call(SetActorJumpGravity, ACTOR_SELF, Float(0.8))
+    Call(SetActorJumpGravity, ACTOR_SELF, 0.8)
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(JumpToGoal, ACTOR_SELF, 20, false, true, false)
@@ -498,7 +498,7 @@ EvtScript EVS_Attack_GroundStomp = {
         Call(StartRumble, BTL_RUMBLE_PLAYER_MAX)
         Call(GetStatusFlags, ACTOR_SELF, LVar0)
         IfNotFlag(LVar0, STATUS_FLAG_SHRINK)
-            Call(ShakeCam, CAM_BATTLE, 0, 10, Float(4.0))
+            Call(ShakeCam, CAM_BATTLE, 0, 10, 4.0)
         EndIf
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_GoombaKing_Idle)
         PlayEffect(EFFECT_DROP_LEAVES, 0, -80, 125, 0, 100)
@@ -515,7 +515,7 @@ EvtScript EVS_Attack_GroundStomp = {
             EndThread
             Thread
                 Wait(10)
-                Call(SetPartJumpGravity, ACTOR_TREE, PRT_TREE_NUT_1, Float(1.5))
+                Call(SetPartJumpGravity, ACTOR_TREE, PRT_TREE_NUT_1, 1.5)
                 Call(GetPartOffset, ACTOR_TREE, PRT_TREE_NUT_1, LVar0, LVar1, LVar2)
                 Call(FallPartTo, ACTOR_TREE, PRT_TREE_NUT_1, LVar0, 10, LVar2, 14)
                 Sub(LVar0, 12)
@@ -535,7 +535,7 @@ EvtScript EVS_Attack_GroundStomp = {
             EndThread
             Thread
                 Wait(3)
-                Call(SetPartJumpGravity, ACTOR_TREE, PRT_TREE_NUT_2, Float(1.5))
+                Call(SetPartJumpGravity, ACTOR_TREE, PRT_TREE_NUT_2, 1.5)
                 Call(GetPartOffset, ACTOR_TREE, PRT_TREE_NUT_2, LVar0, LVar1, LVar2)
                 Call(FallPartTo, ACTOR_TREE, PRT_TREE_NUT_2, LVar0, 10, LVar2, 15)
                 Sub(LVar0, 12)
@@ -555,7 +555,7 @@ EvtScript EVS_Attack_GroundStomp = {
             EndThread
             Thread
                 Wait(15)
-                Call(SetPartJumpGravity, ACTOR_TREE, PRT_TREE_NUT_3, Float(1.5))
+                Call(SetPartJumpGravity, ACTOR_TREE, PRT_TREE_NUT_3, 1.5)
                 Call(GetPartOffset, ACTOR_TREE, PRT_TREE_NUT_3, LVar0, LVar1, LVar2)
                 Call(FallPartTo, ACTOR_TREE, PRT_TREE_NUT_3, LVar0, 10, LVar2, 17)
                 Add(LVar0, 12)
@@ -584,7 +584,7 @@ EvtScript EVS_Attack_GroundStomp = {
     EndThread
     Thread
         Wait(10)
-        Call(SetPartJumpGravity, ACTOR_TREE, PRT_TREE_NUT_1, Float(1.5))
+        Call(SetPartJumpGravity, ACTOR_TREE, PRT_TREE_NUT_1, 1.5)
         Call(GetPartOffset, ACTOR_TREE, PRT_TREE_NUT_1, LVar0, LVar1, LVar2)
         Call(FallPartTo, ACTOR_TREE, PRT_TREE_NUT_1, LVar0, 35, LVar2, 14)
         Sub(LVar0, 12)
@@ -604,7 +604,7 @@ EvtScript EVS_Attack_GroundStomp = {
     EndThread
     Thread
         Wait(3)
-        Call(SetPartJumpGravity, ACTOR_TREE, PRT_TREE_NUT_2, Float(1.5))
+        Call(SetPartJumpGravity, ACTOR_TREE, PRT_TREE_NUT_2, 1.5)
         Call(GetPartOffset, ACTOR_TREE, PRT_TREE_NUT_2, LVar0, LVar1, LVar2)
         Call(FallPartTo, ACTOR_TREE, PRT_TREE_NUT_2, LVar0, 10, LVar2, 15)
         Sub(LVar0, 12)
@@ -624,7 +624,7 @@ EvtScript EVS_Attack_GroundStomp = {
     EndThread
     Thread
         Wait(15)
-        Call(SetPartJumpGravity, ACTOR_TREE, PRT_TREE_NUT_3, Float(1.5))
+        Call(SetPartJumpGravity, ACTOR_TREE, PRT_TREE_NUT_3, 1.5)
         Call(GetPartOffset, ACTOR_TREE, PRT_TREE_NUT_3, LVar0, LVar1, LVar2)
         Call(FallPartTo, ACTOR_TREE, PRT_TREE_NUT_3, LVar0, 10, LVar2, 17)
         Add(LVar0, 12)
@@ -728,12 +728,12 @@ EvtScript EVS_ShakeScreenWhileWalking = {
             IfEq(LVar0, false)
                 Call(GetStatusFlags, ACTOR_SELF, LVar0)
                 IfNotFlag(LVar0, STATUS_FLAG_SHRINK)
-                    Call(ShakeCam, CAM_BATTLE, 0, 2, Float(0.2))
+                    Call(ShakeCam, CAM_BATTLE, 0, 2, 0.2)
                 EndIf
             Else
                 Call(GetStatusFlags, ACTOR_SELF, LVar0)
                 IfNotFlag(LVar0, STATUS_FLAG_SHRINK)
-                    Call(ShakeCam, CAM_BATTLE, 0, 2, Float(0.7))
+                    Call(ShakeCam, CAM_BATTLE, 0, 2, 0.7)
                 EndIf
             EndIf
         EndIf

@@ -17,7 +17,7 @@ MobileAISettings AISettings_Bobomb = {
 };
 
 EvtScript EVS_NpcAI_Bobomb_Wander = {
-    Call(BasicAI_Main, Ref(AISettings_Bobomb))
+    Call(BasicAI_Main, AISettings_Bobomb)
     Return
     End
 };

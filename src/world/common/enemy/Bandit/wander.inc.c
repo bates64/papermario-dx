@@ -67,7 +67,7 @@ MobileAISettings AISettings_Bandit_Wander = {
 };
 
 EvtScript EVS_NpcAI_Bandit_Wander = {
-    Call(BasicAI_Main, Ref(AISettings_Bandit_Wander))
+    Call(BasicAI_Main, AISettings_Bandit_Wander)
     Return
     End
 };
@@ -86,7 +86,7 @@ EvtScript EVS_NpcDefeat_Bandit = {
             Call(SetNpcAnimation, NPC_SELF, ANIM_Bandit_IdleHolding)
             Call(GetSelfNpcID, LVar0)
             Exec(EVS_Bandit_CreateStolenCoin)
-            Call(SetNpcJumpscale, NPC_SELF, Float(1.0))
+            Call(SetNpcJumpscale, NPC_SELF, 1.0)
             Call(GetPlayerPos, LVar7, LVar8, LVar9)
             Add(LVar7, 20)
             Call(NpcJump0, NPC_SELF, LVar7, 0, LVar9, 6)
@@ -97,7 +97,7 @@ EvtScript EVS_NpcDefeat_Bandit = {
             Call(InterpNpcYaw, NPC_SELF, LVar0, 5)
             Call(SetNpcAnimation, NPC_SELF, ANIM_Bandit_RunHolding)
             Wait(10)
-            Call(SetNpcSpeed, NPC_SELF, Float(16.0))
+            Call(SetNpcSpeed, NPC_SELF, 16.0)
             Add(LVar7, 200)
             Call(NpcMoveTo, NPC_SELF, LVar7, LVar9, 0)
             Set(HAS_COIN_FLAG, false)

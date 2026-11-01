@@ -54,13 +54,13 @@ EvtScript EVS_JumpSupport_Approach = {
     Call(InitTargetIterator)
     Call(SetGoalToTarget, ACTOR_PLAYER)
     Call(GetGoalPos, ACTOR_PLAYER, LVar3, LVar4, LVar5)
-    Sub(LVar3, Float(70.0))
+    Sub(LVar3, 70.0)
     IfLt(LVar0, LVar3)
         Set(LVar3, LVar0)
     EndIf
     Call(SetGoalPos, ACTOR_PLAYER, LVar3, LVar4, LVar5)
     Call(UseBattleCamPreset, BTL_CAM_PLAYER_ATTACK_APPROACH)
-    Call(SetActorSpeed, ACTOR_PLAYER, Float(5.0))
+    Call(SetActorSpeed, ACTOR_PLAYER, 5.0)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Run)
     Call(CancelablePlayerRunToGoal, 0, LVar0)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
@@ -84,7 +84,7 @@ EvtScript EVS_JumpSupport_CalcJumpTime = {
     EndIf
     // 15 + (abs(goalX - actorX) - 20) / 10.588
     Sub(LVar6, 20)
-    DivF(LVar6, Float(10.588))
+    DivF(LVar6, 10.588)
     AddF(LVar6, 15)
     Set(LVarA, LVar6)
     Return
@@ -105,7 +105,7 @@ EvtScript EVS_JumpSupport_CalcJumpTime_Alt1 = {
     EndIf
     // 15 + (abs(goalX - actorX) - 20) / 22.5
     Sub(LVar6, 20)
-    DivF(LVar6, Float(22.5))
+    DivF(LVar6, 22.5)
     AddF(LVar6, 15)
     Set(LVarA, LVar6)
     Return
@@ -126,7 +126,7 @@ EvtScript EVS_JumpSupport_CalcJumpTime_Alt2 = {
     EndIf
     // 22 + (abs(goalX - actorX) - 20) / 18.0
     Sub(LVar6, 20)
-    DivF(LVar6, Float(18.0))
+    DivF(LVar6, 18.0)
     AddF(LVar6, 22)
     Set(LVarA, LVar6)
     Return
@@ -145,7 +145,7 @@ EvtScript EVS_JumpSupport_Rebound = {
     Add(LVar0, 40)
     Call(SetGoalPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Call(SetJumpAnimations, ACTOR_PLAYER, 0, ANIM_Mario1_Jump, ANIM_Mario1_Fall, ANIM_Mario1_Land)
-    Call(SetActorJumpGravity, ACTOR_PLAYER, Float(1.3))
+    Call(SetActorJumpGravity, ACTOR_PLAYER, 1.3)
     Call(CalcJumpReboundTime)
     Call(PlayerHopToGoal, LVar0, 0, 0)
     // small second jump 20 units back
@@ -158,7 +158,7 @@ EvtScript EVS_JumpSupport_Rebound = {
     // walk home
     Call(EnablePlayerBlur, ACTOR_BLUR_RESET)
     Call(SetGoalToHome, ACTOR_PLAYER)
-    Call(SetActorSpeed, ACTOR_PLAYER, Float(8.0))
+    Call(SetActorSpeed, ACTOR_PLAYER, 8.0)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Run)
     Call(PlayerRunToGoal, 0)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
@@ -178,7 +178,7 @@ EvtScript EVS_JumpSupport_WeakRebound = {
     Set(LVar1, 0)
     Call(SetGoalPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Call(SetJumpAnimations, ACTOR_PLAYER, 0, ANIM_Mario1_Jump, ANIM_Mario1_Fall, ANIM_Mario1_Land)
-    Call(SetActorJumpGravity, ACTOR_PLAYER, Float(0.8))
+    Call(SetActorJumpGravity, ACTOR_PLAYER, 0.8)
     Call(CalcJumpReboundTime)
     Call(PlayerHopToGoal, LVar0, 0, 0)
     // small second jump 30 units back
@@ -191,7 +191,7 @@ EvtScript EVS_JumpSupport_WeakRebound = {
     // walk home
     Call(EnablePlayerBlur, ACTOR_BLUR_RESET)
     Call(SetGoalToHome, ACTOR_PLAYER)
-    Call(SetActorSpeed, ACTOR_PLAYER, Float(8.0))
+    Call(SetActorSpeed, ACTOR_PLAYER, 8.0)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Run)
     Call(PlayerRunToGoal, 0)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
@@ -210,7 +210,7 @@ EvtScript EVS_JumpSupport_NoFollowUp = {
     Set(LVar1, 0)
     Call(SetGoalPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Call(SetJumpAnimations, ACTOR_PLAYER, 0, ANIM_Mario1_Jump, ANIM_Mario1_Fall, ANIM_Mario1_Land)
-    Call(SetActorJumpGravity, ACTOR_PLAYER, Float(1.0))
+    Call(SetActorJumpGravity, ACTOR_PLAYER, 1.0)
     Call(CalcJumpReboundTime)
     Call(PlayerHopToGoal, LVar0, 0, 0)
     // small second jump 20 units back
@@ -223,7 +223,7 @@ EvtScript EVS_JumpSupport_NoFollowUp = {
     // walk home
     Call(EnablePlayerBlur, ACTOR_BLUR_RESET)
     Call(SetGoalToHome, ACTOR_PLAYER)
-    Call(SetActorSpeed, ACTOR_PLAYER, Float(8.0))
+    Call(SetActorSpeed, ACTOR_PLAYER, 8.0)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Run)
     Call(PlayerRunToGoal, 0)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
@@ -243,7 +243,7 @@ EvtScript EVS_JumpSupport_UnusedRebound = {
     Set(LVar1, 0)
     Call(SetGoalPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Call(SetJumpAnimations, ACTOR_PLAYER, 0, ANIM_Mario1_Jump, ANIM_Mario1_Fall, ANIM_Mario1_Land)
-    Call(SetActorJumpGravity, ACTOR_PLAYER, Float(0.8))
+    Call(SetActorJumpGravity, ACTOR_PLAYER, 0.8)
     Call(CalcJumpReboundTime)
     Call(PlayerHopToGoal, LVar0, 0, 0)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Land)
@@ -256,7 +256,7 @@ EvtScript EVS_JumpSupport_UnusedRebound = {
     // walk home
     Call(EnablePlayerBlur, ACTOR_BLUR_RESET)
     Call(SetGoalToHome, ACTOR_PLAYER)
-    Call(SetActorSpeed, ACTOR_PLAYER, Float(8.0))
+    Call(SetActorSpeed, ACTOR_PLAYER, 8.0)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Run)
     Call(PlayerRunToGoal, 0)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
@@ -278,25 +278,25 @@ EvtScript EVS_JumpSupport_BouncingRebound = {
     Add(LVar0, 60)
     Set(LVar1, 0)
     Call(SetGoalPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
-    Call(SetActorJumpGravity, ACTOR_PLAYER, Float(1.0))
+    Call(SetActorJumpGravity, ACTOR_PLAYER, 1.0)
     Call(SetJumpAnimations, ACTOR_PLAYER, 0, ANIM_Mario1_Hurt, ANIM_Mario1_Hurt, ANIM_Mario1_Land)
     Call(CalcJumpReboundTime)
     Call(PlayerHopToGoal, LVar0, 0, 0)
     ChildThread
-        Call(ShakeCam, CAM_BATTLE, 0, 4, Float(1.0))
+        Call(ShakeCam, CAM_BATTLE, 0, 4, 1.0)
     EndChildThread
     // small second jump 30 units back
     Call(AddGoalPos, ACTOR_PLAYER, -30, 0, 0)
     Call(PlayerHopToGoal, 8, 0, 2)
     ChildThread
-        Call(ShakeCam, CAM_BATTLE, 0, 4, Float(1.0))
+        Call(ShakeCam, CAM_BATTLE, 0, 4, 1.0)
     EndChildThread
     // small third jump 20 units back
     Call(AddGoalPos, ACTOR_PLAYER, -20, 0, 0)
     Call(SetGoalPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Call(PlayerHopToGoal, 6, 0, 2)
     ChildThread
-        Call(ShakeCam, CAM_BATTLE, 0, 4, Float(1.0))
+        Call(ShakeCam, CAM_BATTLE, 0, 4, 1.0)
     EndChildThread
     // final small jump to home position (10 units)
     Call(SetGoalToHome, ACTOR_PLAYER)
@@ -312,7 +312,7 @@ EvtScript EVS_JumpSupport_Miss = {
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_SpinFall)
     Wait(2)
     ChildThread
-        Call(ShakeCam, CAM_BATTLE, 0, 5, Float(1.0))
+        Call(ShakeCam, CAM_BATTLE, 0, 5, 1.0)
     EndChildThread
     Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_TRIP)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_GetUp)
@@ -326,7 +326,7 @@ EvtScript EVS_JumpSupport_Miss = {
     Call(EnablePlayerBlur, ACTOR_BLUR_RESET)
     Call(PlayerYieldTurn)
     Call(SetGoalToHome, ACTOR_PLAYER)
-    Call(SetActorSpeed, ACTOR_PLAYER, Float(8.0))
+    Call(SetActorSpeed, ACTOR_PLAYER, 8.0)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Run)
     Call(PlayerRunToGoal, 0)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
@@ -382,7 +382,7 @@ EvtScript EVS_JumpSupport_UnusedUltra = {
     Call(InitActionCommand)
     ExecWait(EVS_JumpSupport_Approach)
     ExecWait(EVS_JumpSupport_CalcJumpTime_Alt2)
-    Call(SetActionDifficultyTable, Ref(D_802A10F0))
+    Call(SetActionDifficultyTable, D_802A10F0)
     Set(LVarB, LVarA)
     Sub(LVarB, 4)
     Add(LVarB, -3)

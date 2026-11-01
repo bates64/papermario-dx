@@ -10,7 +10,7 @@ MobileAISettings AISettings_Dryite_Wander = {
 };
 
 EvtScript EVS_NpcAI_Dryite_Wander = {
-    Call(BasicAI_Main, Ref(AISettings_Dryite_Wander))
+    Call(BasicAI_Main, AISettings_Dryite_Wander)
     Return
     End
 };

@@ -2,10 +2,10 @@
 
 EvtScript EVS_SetDoorRot_PostOffice = {
     SetF(LVar1, LVar0)
-    DivF(LVar1, Float(45.0))
+    DivF(LVar1, 45.0)
     Call(TranslateModel, MODEL_o189, LVar1, 0, 0)
     SetF(LVar1, LVar0)
-    MulF(LVar1, Float(0.95))
+    MulF(LVar1, 0.95)
     Call(RotateModel, MODEL_o189, LVar1, 0, -1, 0)
     Return
     End
@@ -92,7 +92,7 @@ s16 Models_ToadHouseWalls_Unused[] = {
 
 EvtScript EVS_SetWallRot_ToadHouse = {
     Set(LVar1, LVar0)
-    MulF(LVar1, Float(1.0))
+    MulF(LVar1, 1.0)
     Call(RotateModel, MODEL_kk11, LVar1, 1, 0, 0)
     Call(RotateModel, MODEL_kk12, LVar1, 1, 0, 0)
     Call(RotateModel, MODEL_kk13, LVar1, 1, 0, 0)
@@ -179,9 +179,9 @@ EvtScript EVS_SpinRoof = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Set(LVar0, 0)
     Label(0)
-        AddF(LVar0, Float(3.0))
+        AddF(LVar0, 3.0)
         IfGt(LVar0, 360)
-            SubF(LVar0, Float(360.0))
+            SubF(LVar0, 360.0)
         EndIf
         Call(RotateGroup, MODEL_yane, LVar0, 0, 1, 0)
         Call(RotateGroup, MODEL_off_yane, LVar0, 0, 1, 0)
@@ -214,36 +214,36 @@ EvtScript EVS_SetupRooms = {
     // post office
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
-        Ref(EVS_SetDoorRot_PostOffice),
-        Ref(EVS_SetWallRot_PostOffice),
-        Ref(EVS_DropDoor_PostOffice),
-        Ref(EVS_RoomListener_PostOffice),
+        EVS_SetDoorRot_PostOffice,
+        EVS_SetWallRot_PostOffice,
+        EVS_DropDoor_PostOffice,
+        EVS_RoomListener_PostOffice,
         COLLIDER_deilit1,
         COLLIDER_deilit1u,
         MODEL_post_office,
-        Ref(InsideNPCs_PostOffice))
+        InsideNPCs_PostOffice)
     // toad house
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
-        Ref(EVS_SetDoorRot_ToadHouse),
-        Ref(EVS_SetWallRot_ToadHouse),
+        EVS_SetDoorRot_ToadHouse,
+        EVS_SetWallRot_ToadHouse,
         nullptr,
-        Ref(EVS_RoomListener_ToadHouse),
+        EVS_RoomListener_ToadHouse,
         COLLIDER_deilit2,
         COLLIDER_deilit2u,
         MODEL_kinopi,
-        Ref(InsideNPCs_ToadHouse))
+        InsideNPCs_ToadHouse)
     // merlon's house
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
-        Ref(EVS_SetDoorRot_MerlonHouse),
-        Ref(EVS_SetWallRot_MerlonHouse),
+        EVS_SetDoorRot_MerlonHouse,
+        EVS_SetWallRot_MerlonHouse,
         nullptr,
-        Ref(EVS_RoomListener_MerlonHouse),
+        EVS_RoomListener_MerlonHouse,
         COLLIDER_deilitd,
         COLLIDER_deilitud,
         MODEL_de_aru,
-        Ref(InsideNPCs_MerlonHouse))
+        InsideNPCs_MerlonHouse)
     // initial visibility
     Exec(EVS_SpinRoof)
     Set(LVar0, ROOM_UPDATE_EXIT_END)

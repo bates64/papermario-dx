@@ -44,7 +44,7 @@ EvtScript EVS_Scene_ShowInvitation = {
     Call(DisablePlayerInput, true)
     Call(UseSettingsFrom, CAM_DEFAULT, 0, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, 0, 0, 0)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(SetCamDistance, CAM_DEFAULT, 775)
     Call(SetCamPitch, CAM_DEFAULT, 20, -19)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
@@ -57,7 +57,7 @@ EvtScript EVS_Scene_ShowInvitation = {
     Wait(12 * DT)
     Call(ShowMessageAtScreenPos, MSG_Intro_0023, 160, 40)
     Wait(3)
-    Call(GotoMapSpecial, Ref("kmr_20"), kmr_20_ENTRY_1, TRANSITION_SLOW_FADE_TO_WHITE)
+    Call(GotoMapSpecial, "kmr_20", kmr_20_ENTRY_1, TRANSITION_SLOW_FADE_TO_WHITE)
     Wait(40 * DT)
     Return
     End
@@ -67,10 +67,10 @@ EvtScript EVS_Scene_ApproachParty = {
     Call(DisablePlayerInput, true)
     Call(UseSettingsFrom, CAM_DEFAULT, 0, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, 0, 0, 0)
-    Call(SetCamDistance, CAM_DEFAULT, Float(675.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(3.5), Float(-6.0))
-    Call(SetCamPosA, CAM_DEFAULT, Float(60.0), 0)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamDistance, CAM_DEFAULT, 675.0)
+    Call(SetCamPitch, CAM_DEFAULT, 3.5, -6.0)
+    Call(SetCamPosA, CAM_DEFAULT, 60.0, 0)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Thread
         Call(PlayerMoveTo, 0, -250, 150 * DT)
@@ -82,7 +82,7 @@ EvtScript EVS_Scene_ApproachParty = {
         Call(SetNpcAnimation, NPC_Luigi, ANIM_Luigi_IdleBack)
     EndThread
     Wait(100 * DT)
-    Call(GotoMap, Ref("kkj_00"), kkj_00_ENTRY_5)
+    Call(GotoMap, "kkj_00", kkj_00_ENTRY_5)
     Wait(100 * DT)
     Call(DisablePlayerInput, false)
     Return

@@ -44,13 +44,13 @@ EvtScript EVS_NpcIdle_JrTroopa = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(mim_07_ENTRY_0)
-            UseBuf(Ref(JrTroopa_TriggerPos_South))
+            UseBuf(JrTroopa_TriggerPos_South)
         CaseEq(mim_07_ENTRY_1)
-            UseBuf(Ref(JrTroopa_TriggerPos_South))
+            UseBuf(JrTroopa_TriggerPos_South)
         CaseEq(mim_07_ENTRY_2)
-            UseBuf(Ref(JrTroopa_TriggerPos_North))
+            UseBuf(JrTroopa_TriggerPos_North)
         CaseEq(mim_07_ENTRY_3)
-            UseBuf(Ref(JrTroopa_TriggerPos_East))
+            UseBuf(JrTroopa_TriggerPos_East)
     EndSwitch
     BufRead2(LVar1, LVar2)
     Call(AwaitPlayerApproach, LVar1, LVar2, 80)
@@ -73,21 +73,21 @@ EvtScript EVS_NpcIdle_JrTroopa = {
     Switch(LVar0)
         CaseEq(mim_07_ENTRY_0)
             IfLt(LVar1, 0)
-                UseBuf(Ref(JrTroopaPath_SouthFromWest))
+                UseBuf(JrTroopaPath_SouthFromWest)
             Else
-                UseBuf(Ref(JrTroopaPath_SouthFromEast))
+                UseBuf(JrTroopaPath_SouthFromEast)
             EndIf
         CaseEq(mim_07_ENTRY_2)
             IfLt(LVar1, 0)
-                UseBuf(Ref(JrTroopaPath_NorthFromWest))
+                UseBuf(JrTroopaPath_NorthFromWest)
             Else
-                UseBuf(Ref(JrTroopaPath_NorthFromEast))
+                UseBuf(JrTroopaPath_NorthFromEast)
             EndIf
         CaseEq(mim_07_ENTRY_3)
             IfLt(LVar3, 0)
-                UseBuf(Ref(JrTroopaPath_EastFromSouth))
+                UseBuf(JrTroopaPath_EastFromSouth)
             Else
-                UseBuf(Ref(JrTroopaPath_EastFromNorth))
+                UseBuf(JrTroopaPath_EastFromNorth)
             EndIf
     EndSwitch
     BufRead4(LVar2, LVar3, LVar4, LVar5)
@@ -103,9 +103,9 @@ EvtScript EVS_NpcIdle_JrTroopa = {
         Div(LVar2, 2)
         Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
         Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(4.0 / DT))
-        Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
-        Call(SetCamPitch, CAM_DEFAULT, Float(20.0), Float(-6.0))
+        Call(SetCamSpeed, CAM_DEFAULT, 4.0 / DT)
+        Call(SetCamDistance, CAM_DEFAULT, 300.0)
+        Call(SetCamPitch, CAM_DEFAULT, 20.0, -6.0)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
     EndThread
     Call(SetNpcAnimation, NPC_SELF, ANIM_JrTroopa_Run)
@@ -149,7 +149,7 @@ EvtScript EVS_NpcDefeat_JrTroopa = {
     Call(NpcMoveTo, NPC_SELF, LVar0, LVar1, 15)
     Set(GF_MIM10_Defeated_JrTroopa, true)
     ExecWait(EVS_PlayForestMusic)
-    Call(ResetCam, CAM_DEFAULT, Float(4.0 / DT))
+    Call(ResetCam, CAM_DEFAULT, 4.0 / DT)
     Call(RemoveNpc, NPC_SELF)
     Return
     End
@@ -158,8 +158,8 @@ EvtScript EVS_NpcDefeat_JrTroopa = {
 EvtScript EVS_NpcInit_JrTroopa = {
     IfGe(GB_StoryProgress, STORY_CH3_GOT_SUPER_BOOTS)
         IfEq(GF_MIM10_Defeated_JrTroopa, false)
-            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_JrTroopa))
-            Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_JrTroopa))
+            Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_JrTroopa)
+            Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_JrTroopa)
             Return
         EndIf
     EndIf

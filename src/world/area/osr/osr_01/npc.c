@@ -10,15 +10,15 @@ EvtScript EVS_Scene_Wishing = {
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(UseSettingsFrom, CAM_DEFAULT, 0, 0, 400)
     Call(SetPanTarget, CAM_DEFAULT, 0, 0, 400)
-    Call(SetCamDistance, CAM_DEFAULT, Float(400.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(3.0), Float(-10.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamDistance, CAM_DEFAULT, 400.0)
+    Call(SetCamPitch, CAM_DEFAULT, 3.0, -10.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Wait(30)
     Call(SpeakToPlayer, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_HOS_006F)
     Wait(10)
-    Call(GotoMap, Ref("mac_04"), mac_04_ENTRY_4)
+    Call(GotoMap, "mac_04", mac_04_ENTRY_4)
     Wait(100)
     Return
     End
@@ -78,7 +78,7 @@ EvtScript EVS_NpcInteract_Toad = {
             Set(LVar0, MSG_OSR_000F)
     EndSwitch
     Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, LVar0)
-    Set(LVar0, Ref(LetterDelivery_MussT))
+    Set(LVar0, LetterDelivery_MussT)
     ExecWait(EVS_TryLetterDelivery)
     Return
     End
@@ -91,7 +91,7 @@ EvtScript EVS_NpcInit_Toad = {
             Call(SetNpcPos, NPC_SELF, 0, 0, 400)
             Call(SetNpcYaw, NPC_SELF, 90)
         CaseDefault
-            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad))
+            Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad)
     EndSwitch
     Return
     End

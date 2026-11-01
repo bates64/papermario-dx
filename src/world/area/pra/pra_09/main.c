@@ -15,7 +15,7 @@ EvtScript EVS_ExitDoors_pra_03_2 = {
     Set(LVar5, MODEL_o846)
     Exec(ExitSplitDoubleDoor)
     Wait(17)
-    Call(GotoMap, Ref("pra_03"), pra_03_ENTRY_2)
+    Call(GotoMap, "pra_03", pra_03_ENTRY_2)
     Wait(100)
     Return
     End
@@ -24,9 +24,9 @@ EvtScript EVS_ExitDoors_pra_03_2 = {
 EvtScript EVS_ExitWalk_pra_11_0 = EVT_EXIT_WALK(60, pra_09_ENTRY_1, "pra_11", pra_11_ENTRY_0);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitDoors_pra_03_2), TRIGGER_WALL_PRESS_A, COLLIDER_deilittsw, 1, 0)
+    BindTrigger(EVS_ExitDoors_pra_03_2, TRIGGER_WALL_PRESS_A, COLLIDER_deilittsw, 1, 0)
     IfGe(GB_StoryProgress, STORY_CH7_DEFEATED_BOMBETTE_DUPLIGHOSTS)
-        BindTrigger(Ref(EVS_ExitWalk_pra_11_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilise, 1, 0)
+        BindTrigger(EVS_ExitWalk_pra_11_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilise, 1, 0)
     EndIf
     Return
     End
@@ -43,7 +43,7 @@ EvtScript EVS_EnterMap = {
             ExecWait(EnterSplitDoubleDoor)
             Exec(EVS_BindExitTriggers)
         CaseEq(pra_09_ENTRY_1)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
     EndSwitch
     Return
@@ -71,9 +71,9 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_CRYSTAL_PALACE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(24, 24, 40)
-    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Call(MakeNpcs, true, DefaultNPCs)
     IfEq(GF_PRA09_BombedWall, false)
-        BindTrigger(Ref(EVS_BlastWall), TRIGGER_POINT_BOMB, Ref(BombPos_Wall), 1, 0)
+        BindTrigger(EVS_BlastWall, TRIGGER_POINT_BOMB, BombPos_Wall, 1, 0)
         Call(EnableModel, MODEL_o952, false)
     Else
         Call(EnableModel, MODEL_g260, false)

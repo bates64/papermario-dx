@@ -14,13 +14,13 @@ API_CALLABLE(SetPlayerSpriteFacingAngle) {
 EvtScript EVS_FocusCam_LookAtDoor = {
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
     Call(SetCamSpeed, CAM_DEFAULT, LVar6)
-    Call(SetCamPitch, CAM_DEFAULT, Float(15.0), Float(-10.0))
-    Call(SetCamDistance, CAM_DEFAULT, Float(500.0))
-    Call(SetCamPosA, CAM_DEFAULT, Float(88.0), Float(256.6))
-    Call(SetCamPosB, CAM_DEFAULT, Float(195.0), Float(142.0))
-    Call(SetCamPosC, CAM_DEFAULT, Float(0.0), Float(0.0))
+    Call(SetCamPitch, CAM_DEFAULT, 15.0, -10.0)
+    Call(SetCamDistance, CAM_DEFAULT, 500.0)
+    Call(SetCamPosA, CAM_DEFAULT, 88.0, 256.6)
+    Call(SetCamPosB, CAM_DEFAULT, 195.0, 142.0)
+    Call(SetCamPosC, CAM_DEFAULT, 0.0, 0.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Return
     End
 };
@@ -28,10 +28,10 @@ EvtScript EVS_FocusCam_LookAtDoor = {
 EvtScript EVS_FocusCam_AfterBattle = {
     Call(UseSettingsFrom, CAM_DEFAULT, LVar3, LVar4, LVar5)
     Call(SetCamSpeed, CAM_DEFAULT, LVar6)
-    Call(SetCamPitch, CAM_DEFAULT, Float(22.5), Float(-13.0))
-    Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
+    Call(SetCamPitch, CAM_DEFAULT, 22.5, -13.0)
+    Call(SetCamDistance, CAM_DEFAULT, 300.0)
     Call(SetPanTarget, CAM_DEFAULT, LVar3, LVar4, LVar5)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Return
     End
 };
@@ -39,10 +39,10 @@ EvtScript EVS_FocusCam_AfterBattle = {
 EvtScript EVS_FocusCam_InFrontOfDoor = {
     Call(UseSettingsFrom, CAM_DEFAULT, LVar3, LVar4, LVar5)
     Call(SetCamSpeed, CAM_DEFAULT, LVar6)
-    Call(SetCamPitch, CAM_DEFAULT, Float(22.5), Float(-11.5))
-    Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
+    Call(SetCamPitch, CAM_DEFAULT, 22.5, -11.5)
+    Call(SetCamDistance, CAM_DEFAULT, 300.0)
     Call(SetPanTarget, CAM_DEFAULT, LVar3, LVar4, LVar5)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Return
     End
 };
@@ -50,10 +50,10 @@ EvtScript EVS_FocusCam_InFrontOfDoor = {
 EvtScript EVS_FocusCam_MidRoom = {
     Call(UseSettingsFrom, CAM_DEFAULT, LVar3, LVar4, LVar5)
     Call(SetCamSpeed, CAM_DEFAULT, LVar6)
-    Call(SetCamPitch, CAM_DEFAULT, Float(22.5), Float(-10.0))
-    Call(SetCamDistance, CAM_DEFAULT, Float(350.0))
+    Call(SetCamPitch, CAM_DEFAULT, 22.5, -10.0)
+    Call(SetCamDistance, CAM_DEFAULT, 350.0)
     Call(SetPanTarget, CAM_DEFAULT, LVar3, LVar4, LVar5)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Return
     End
 };
@@ -61,10 +61,10 @@ EvtScript EVS_FocusCam_MidRoom = {
 EvtScript EVS_FocusCam_JrTroopa = {
     Call(UseSettingsFrom, CAM_DEFAULT, LVar3, LVar4, LVar5)
     Call(SetCamSpeed, CAM_DEFAULT, LVar6)
-    Call(SetCamPitch, CAM_DEFAULT, Float(22.5), Float(-13.0))
-    Call(SetCamDistance, CAM_DEFAULT, Float(175.0))
+    Call(SetCamPitch, CAM_DEFAULT, 22.5, -13.0)
+    Call(SetCamDistance, CAM_DEFAULT, 175.0)
     Call(SetPanTarget, CAM_DEFAULT, LVar3, LVar4, LVar5)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Return
     End
 };
@@ -72,19 +72,19 @@ EvtScript EVS_FocusCam_JrTroopa = {
 EvtScript EVS_KoopaBros_Hop = {
     Switch(LVar0)
         CaseEq(NPC_KoopaBrosRed)
-            Call(SetNpcJumpscale, NPC_KoopaBrosRed, Float(1.0))
+            Call(SetNpcJumpscale, NPC_KoopaBrosRed, 1.0)
             Call(GetNpcPos, NPC_KoopaBrosRed, LVar1, LVar2, LVar3)
             Call(NpcJump0, NPC_KoopaBrosRed, LVar1, LVar2, LVar3, 10)
         CaseEq(NPC_KoopaBrosBlk)
-            Call(SetNpcJumpscale, NPC_KoopaBrosBlk, Float(1.0))
+            Call(SetNpcJumpscale, NPC_KoopaBrosBlk, 1.0)
             Call(GetNpcPos, NPC_KoopaBrosBlk, LVar1, LVar2, LVar3)
             Call(NpcJump0, NPC_KoopaBrosBlk, LVar1, LVar2, LVar3, 10)
         CaseEq(NPC_KoopaBrosYlw)
-            Call(SetNpcJumpscale, NPC_KoopaBrosYlw, Float(1.0))
+            Call(SetNpcJumpscale, NPC_KoopaBrosYlw, 1.0)
             Call(GetNpcPos, NPC_KoopaBrosYlw, LVar1, LVar2, LVar3)
             Call(NpcJump0, NPC_KoopaBrosYlw, LVar1, LVar2, LVar3, 10)
         CaseEq(NPC_KoopaBrosGrn)
-            Call(SetNpcJumpscale, NPC_KoopaBrosGrn, Float(1.0))
+            Call(SetNpcJumpscale, NPC_KoopaBrosGrn, 1.0)
             Call(GetNpcPos, NPC_KoopaBrosGrn, LVar1, LVar2, LVar3)
             Call(NpcJump0, NPC_KoopaBrosGrn, LVar1, LVar2, LVar3, 10)
     EndSwitch
@@ -110,30 +110,30 @@ EvtScript EVS_KoopaBros_SpinAround = {
 EvtScript EVS_KoopaBros_FlingAway = {
     Thread
         Call(PlaySoundAtNpc, LVar0, SOUND_HIT_NORMAL, SOUND_SPACE_DEFAULT)
-        Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(0.6))
+        Call(ShakeCam, CAM_DEFAULT, 0, 5, 0.6)
     EndThread
     Switch(LVar0)
         CaseEq(NPC_KoopaBrosRed)
             Call(SetNpcAnimation, NPC_KoopaBrosRed, ANIM_KoopaBros_Red_Shock)
-            Call(SetNpcJumpscale, NPC_KoopaBrosRed, Float(0.7))
+            Call(SetNpcJumpscale, NPC_KoopaBrosRed, 0.7)
             Call(NpcJump0, NPC_KoopaBrosRed, -50, 200, 170, 40)
             Call(SetNpcFlagBits, NPC_KoopaBrosRed, NPC_FLAG_GRAVITY, false)
             Call(SetNpcPos, NPC_KoopaBrosRed, NPC_DISPOSE_LOCATION)
         CaseEq(NPC_KoopaBrosBlk)
             Call(SetNpcAnimation, NPC_KoopaBrosBlk, ANIM_KoopaBros_Black_Shock)
-            Call(SetNpcJumpscale, NPC_KoopaBrosBlk, Float(0.7))
+            Call(SetNpcJumpscale, NPC_KoopaBrosBlk, 0.7)
             Call(NpcJump0, NPC_KoopaBrosBlk, 0, 200, 127, 40)
             Call(SetNpcFlagBits, NPC_KoopaBrosRed, NPC_FLAG_GRAVITY, false)
             Call(SetNpcPos, NPC_KoopaBrosBlk, NPC_DISPOSE_LOCATION)
         CaseEq(NPC_KoopaBrosYlw)
             Call(SetNpcAnimation, NPC_KoopaBrosYlw, ANIM_KoopaBros_Yellow_Shock)
-            Call(SetNpcJumpscale, NPC_KoopaBrosYlw, Float(0.7))
+            Call(SetNpcJumpscale, NPC_KoopaBrosYlw, 0.7)
             Call(NpcJump0, NPC_KoopaBrosYlw, 100, 200, 200, 40)
             Call(SetNpcFlagBits, NPC_KoopaBrosYlw, NPC_FLAG_GRAVITY, false)
             Call(SetNpcPos, NPC_KoopaBrosYlw, NPC_DISPOSE_LOCATION)
         CaseEq(NPC_KoopaBrosGrn)
             Call(SetNpcAnimation, NPC_KoopaBrosGrn, ANIM_KoopaBros_Green_Shock)
-            Call(SetNpcJumpscale, NPC_KoopaBrosGrn, Float(0.7))
+            Call(SetNpcJumpscale, NPC_KoopaBrosGrn, 0.7)
             Call(NpcJump0, NPC_KoopaBrosGrn, 150, 200, 150, 40)
             Call(SetNpcFlagBits, NPC_KoopaBrosGrn, NPC_FLAG_GRAVITY, false)
             Call(SetNpcPos, NPC_KoopaBrosGrn, NPC_DISPOSE_LOCATION)
@@ -145,10 +145,10 @@ EvtScript EVS_KoopaBros_FlingAway = {
 EvtScript EVS_NpcIdle_Door = {
     Call(DisablePlayerInput, true)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
-    Call(SetPlayerSpeed, Float(3.0 / DT))
+    Call(SetPlayerSpeed, 3.0 / DT)
     Call(PlayerMoveTo, -150, LVar2, 0)
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_CONSTRAIN_BETWEEN_POINTS, false)
-    Set(LVar6, Float(3.0 / DT))
+    Set(LVar6, 3.0 / DT)
     ExecWait(EVS_FocusCam_LookAtDoor)
     Set(MF_DoneIntroMessage, false)
     Thread
@@ -177,14 +177,14 @@ EvtScript EVS_NpcIdle_Door = {
     Set(LVar3, 65)
     Set(LVar4, 0)
     Set(LVar5, 150)
-    Set(LVar6, Float(90.0))
+    Set(LVar6, 90.0)
     ExecWait(EVS_FocusCam_InFrontOfDoor)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o166, COLLIDER_FLAGS_UPPER_MASK)
     Thread
         Call(SetNpcPos, NPC_KoopaBrosRed, 220, 180, 160)
         Call(SetNpcAnimation, NPC_KoopaBrosRed, ANIM_KoopaBros_Red_Midair)
         Call(EnableNpcBlur, NPC_KoopaBrosRed, true)
-        Call(SetNpcJumpscale, NPC_KoopaBrosRed, Float(1.0))
+        Call(SetNpcJumpscale, NPC_KoopaBrosRed, 1.0)
         Call(SetNpcFlagBits, NPC_KoopaBrosRed, NPC_FLAG_GRAVITY, true)
         Call(SetNpcFlagBits, NPC_KoopaBrosRed, NPC_FLAG_FLYING, false)
         Call(NpcMoveTo, NPC_KoopaBrosRed, 20, 160, 20)
@@ -199,7 +199,7 @@ EvtScript EVS_NpcIdle_Door = {
         Call(SetNpcPos, NPC_KoopaBrosBlk, 248, 180, 185)
         Call(SetNpcAnimation, NPC_KoopaBrosBlk, ANIM_KoopaBros_Black_Midair)
         Call(EnableNpcBlur, NPC_KoopaBrosBlk, true)
-        Call(SetNpcJumpscale, NPC_KoopaBrosBlk, Float(1.0))
+        Call(SetNpcJumpscale, NPC_KoopaBrosBlk, 1.0)
         Call(SetNpcFlagBits, NPC_KoopaBrosBlk, NPC_FLAG_GRAVITY, true)
         Call(SetNpcFlagBits, NPC_KoopaBrosBlk, NPC_FLAG_FLYING, false)
         Call(NpcMoveTo, NPC_KoopaBrosBlk, 48, 185, 20)
@@ -214,7 +214,7 @@ EvtScript EVS_NpcIdle_Door = {
         Call(SetNpcPos, NPC_KoopaBrosYlw, 260, 180, 110)
         Call(SetNpcAnimation, NPC_KoopaBrosYlw, ANIM_KoopaBros_Yellow_Midair)
         Call(EnableNpcBlur, NPC_KoopaBrosYlw, true)
-        Call(SetNpcJumpscale, NPC_KoopaBrosYlw, Float(1.0))
+        Call(SetNpcJumpscale, NPC_KoopaBrosYlw, 1.0)
         Call(SetNpcFlagBits, NPC_KoopaBrosYlw, NPC_FLAG_GRAVITY, true)
         Call(SetNpcFlagBits, NPC_KoopaBrosYlw, NPC_FLAG_FLYING, false)
         Call(NpcMoveTo, NPC_KoopaBrosYlw, 60, 110, 20)
@@ -229,7 +229,7 @@ EvtScript EVS_NpcIdle_Door = {
         Call(SetNpcPos, NPC_KoopaBrosGrn, 288, 180, 155)
         Call(SetNpcAnimation, NPC_KoopaBrosGrn, ANIM_KoopaBros_Green_Midair)
         Call(EnableNpcBlur, NPC_KoopaBrosGrn, true)
-        Call(SetNpcJumpscale, NPC_KoopaBrosGrn, Float(1.0))
+        Call(SetNpcJumpscale, NPC_KoopaBrosGrn, 1.0)
         Call(SetNpcFlagBits, NPC_KoopaBrosGrn, NPC_FLAG_GRAVITY, true)
         Call(SetNpcFlagBits, NPC_KoopaBrosGrn, NPC_FLAG_FLYING, false)
         Call(NpcMoveTo, NPC_KoopaBrosGrn, 88, 155, 20)
@@ -282,14 +282,14 @@ EvtScript EVS_NpcIdle_Door = {
     Call(SetNpcAnimation, NPC_KoopaBrosYlw, ANIM_KoopaBros_Yellow_ThumbsUp)
     Call(SetNpcAnimation, NPC_KoopaBrosGrn, ANIM_KoopaBros_Green_ThumbsUp)
     Thread
-        Call(SetPlayerSpeed, Float(3.0 / DT))
+        Call(SetPlayerSpeed, 3.0 / DT)
         Call(PlayerMoveTo, -50, 150, 0)
     EndThread
     Call(SpeakToPlayer, NPC_KoopaBrosRed, ANIM_KoopaBros_Red_ThumbsUp, ANIM_KoopaBros_Red_ThumbsUp, 0, MSG_CH8_0054)
     Set(LVar3, 0)
     Set(LVar4, 0)
     Set(LVar5, 150)
-    Set(LVar6, Float(3.0 / DT))
+    Set(LVar6, 3.0 / DT)
     ExecWait(EVS_FocusCam_MidRoom)
     Call(SetNpcAnimation, NPC_KoopaBrosRed, ANIM_KoopaBros_Red_Idle)
     Call(SetNpcAnimation, NPC_KoopaBrosBlk, ANIM_KoopaBros_Black_Idle)
@@ -302,13 +302,13 @@ EvtScript EVS_NpcIdle_Door = {
     Else
         Call(ContinueSpeech, NPC_KoopaBrosRed, ANIM_KoopaBros_Red_Talk, ANIM_KoopaBros_Red_Idle, 0, MSG_CH8_0057)
     EndIf
-    Set(LVar6, Float(3.0 / DT))
+    Set(LVar6, 3.0 / DT)
     ExecWait(EVS_FocusCam_LookAtDoor)
     Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Red_Idle, ANIM_Toad_Red_Idle, 0, MSG_CH8_0058)
     Set(LVar3, 0)
     Set(LVar4, 0)
     Set(LVar5, 150)
-    Set(LVar6, Float(90.0))
+    Set(LVar6, 90.0)
     ExecWait(EVS_FocusCam_MidRoom)
     Call(SpeakToPlayer, NPC_KoopaBrosRed, ANIM_KoopaBros_Red_Talk, ANIM_KoopaBros_Red_Idle, 0, MSG_CH8_0059)
     Call(SetMusic, 0, SONG_JR_TROOPA_THEME, BGM_VARIATION_1, VOL_LEVEL_FULL)
@@ -317,7 +317,7 @@ EvtScript EVS_NpcIdle_Door = {
     Wait(10)
     Call(SetNpcPos, NPC_JrTroopa, -150, 0, 140)
     Call(SetNpcAnimation, NPC_JrTroopa, ANIM_JrTroopa_ChargeArmsUp)
-    Call(SetNpcSpeed, NPC_JrTroopa, Float(8.0))
+    Call(SetNpcSpeed, NPC_JrTroopa, 8.0)
     Thread
         Call(SetPlayerAnimation, ANIM_Mario1_Flail)
         Loop(0)
@@ -395,18 +395,18 @@ EvtScript EVS_NpcIdle_Door = {
     Set(LVar3, 100)
     Set(LVar4, 0)
     Set(LVar5, 150)
-    Set(LVar6, Float(3.0 / DT))
+    Set(LVar6, 3.0 / DT)
     ExecWait(EVS_FocusCam_JrTroopa)
     Call(SpeakToPlayer, NPC_JrTroopa, ANIM_JrTroopa_Talk, ANIM_JrTroopa_Idle, 0, MSG_CH8_005C)
     Set(LVar3, 0)
     Set(LVar4, 0)
     Set(LVar5, 150)
-    Set(LVar6, Float(3.0 / DT))
+    Set(LVar6, 3.0 / DT)
     ExecWait(EVS_FocusCam_AfterBattle)
     Call(SetNpcAnimation, NPC_JrTroopa, ANIM_JrTroopa_ChargeArmsUp)
     Thread
         Wait(5)
-        Call(SetNpcSpeed, NPC_JrTroopa, Float(5.0))
+        Call(SetNpcSpeed, NPC_JrTroopa, 5.0)
         Call(NpcMoveTo, NPC_JrTroopa, -30, 140, 0)
     EndThread
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -419,13 +419,13 @@ EvtScript EVS_NpcIdle_Door = {
         Set(LVar3, 0)
         Set(LVar4, 0)
         Set(LVar5, 150)
-        Set(LVar6, Float(3.0 / DT))
+        Set(LVar6, 3.0 / DT)
         ExecWait(EVS_FocusCam_AfterBattle)
         Call(ShowMessageAtScreenPos, MSG_CH8_0062, 160, 40)
         Set(MV_Sync_AfterBattleCamMovement, 1)
     EndThread
     Call(SetNpcAnimation, NPC_JrTroopa, ANIM_JrTroopa_ChargeArmsUp)
-    Call(SetNpcSpeed, NPC_JrTroopa, Float(8.0))
+    Call(SetNpcSpeed, NPC_JrTroopa, 8.0)
     Call(NpcMoveTo, NPC_JrTroopa, -50, 140, 0)
     Call(InterpPlayerYaw, 270, 0)
     Call(NpcMoveTo, NPC_JrTroopa, -200, 140, 0)
@@ -437,7 +437,7 @@ EvtScript EVS_NpcIdle_Door = {
         EndIf
         Wait(1)
     EndLoop
-    Set(LVar6, Float(3.0 / DT))
+    Set(LVar6, 3.0 / DT)
     ExecWait(EVS_FocusCam_LookAtDoor)
     Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Red_Idle, ANIM_Toad_Red_Idle, 0, MSG_CH8_0063)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
@@ -454,7 +454,7 @@ EvtScript EVS_NpcDefeat_Door = {
             Set(LVar3, 100)
             Set(LVar4, 0)
             Set(LVar5, 150)
-            Set(LVar6, Float(90.0))
+            Set(LVar6, 90.0)
             ExecWait(EVS_FocusCam_JrTroopa)
             Call(SetNpcAnimation, NPC_JrTroopa, ANIM_JrTroopa_Dizzy)
             Call(SetNpcPos, NPC_JrTroopa, 100, 0, 140)
@@ -466,8 +466,8 @@ EvtScript EVS_NpcDefeat_Door = {
 
 EvtScript EVS_NpcInit_Door = {
     IfEq(GB_KPA83_BowserDoorState, 0)
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Door))
-        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Door))
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Door)
+        Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_Door)
         Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
         Call(SetNpcPos, NPC_SELF, 184, 20, 150)
         Call(EnableNpcShadow, NPC_SELF, false)

@@ -35,10 +35,10 @@ EvtScript EVS_Scene_Arrival = {
     Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 30, 16, 4096)
     Call(UseSettingsFrom, CAM_DEFAULT, 0, -70, 0)
     Call(SetPanTarget, CAM_DEFAULT, 0, -70, 0)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(PlaySound, SOUND_STARSHIP_FLY_AWAY)
-    Call(LoadPath, 45, Ref(FlightPath_Arrival), ARRAY_COUNT(FlightPath_Arrival), EASING_LINEAR)
+    Call(LoadPath, 45, FlightPath_Arrival, ARRAY_COUNT(FlightPath_Arrival), EASING_LINEAR)
     Label(90)
         Call(GetNextPathPos)
         Set(MV_Starship_PosX, LVar1)
@@ -53,11 +53,11 @@ EvtScript EVS_Scene_Arrival = {
         Wait(15)
         Set(GF_StartedChapter8, true)
         Call(FadeOutMusic, 0, 1500)
-        Call(GotoMapSpecial, Ref("kmr_22"), kmr_22_ENTRY_8, TRANSITION_BEGIN_OR_END_CHAPTER)
+        Call(GotoMapSpecial, "kmr_22", kmr_22_ENTRY_8, TRANSITION_BEGIN_OR_END_CHAPTER)
         Wait(100)
         Return
     EndIf
-    Call(GotoMap, Ref("kpa_63"), kpa_63_ENTRY_1)
+    Call(GotoMap, "kpa_63", kpa_63_ENTRY_1)
     Wait(100)
     Return
     End
@@ -85,11 +85,11 @@ EvtScript EVS_Scene_Departure = {
     Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 30, 16, 4096)
     Call(UseSettingsFrom, CAM_DEFAULT, 0, -70, 0)
     Call(SetPanTarget, CAM_DEFAULT, 0, -70, 0)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Thread
         Call(PlaySound, SOUND_STARSHIP_FLY_TOWARD)
-        Call(LoadPath, 45, Ref(FlightPath_Departure), ARRAY_COUNT(FlightPath_Departure), EASING_LINEAR)
+        Call(LoadPath, 45, FlightPath_Departure, ARRAY_COUNT(FlightPath_Departure), EASING_LINEAR)
         Label(90)
             Call(GetNextPathPos)
             Set(MV_Starship_PosX, LVar1)
@@ -101,7 +101,7 @@ EvtScript EVS_Scene_Departure = {
             EndIf
     EndThread
     Wait(40)
-    Call(GotoMap, Ref("hos_20"), hos_20_ENTRY_2)
+    Call(GotoMap, "hos_20", hos_20_ENTRY_2)
     Wait(100)
     Return
     End

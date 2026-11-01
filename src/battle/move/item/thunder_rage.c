@@ -59,7 +59,7 @@ EvtScript EVS_UseItem = {
         Call(SpawnLightningFX)
         Wait(5)
         Call(StartRumble, BTL_RUMBLE_PLAYER_EXTREME)
-        Call(ShakeCam, CAM_BATTLE, 0, 5, Float(1.0))
+        Call(ShakeCam, CAM_BATTLE, 0, 5, 1.0)
         Call(SetGoalToTarget, ACTOR_SELF)
         Call(GetItemPower, ITEM_THUNDER_RAGE, LVar0, LVar1)
         Call(ItemDamageEnemy, LVar0, DAMAGE_TYPE_SHOCK | DAMAGE_TYPE_IGNORE_DEFENSE | DAMAGE_TYPE_NO_CONTACT | DAMAGE_TYPE_MULTIPLE_POPUPS, 0, LVar0, BS_FLAGS1_TRIGGER_EVENTS)

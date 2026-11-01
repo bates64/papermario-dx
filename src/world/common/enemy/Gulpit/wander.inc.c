@@ -23,7 +23,7 @@ EvtScript EVS_NpcAI_Gulpit_Wander = {
     Call(SetSelfVar, AI_VAR_MELEE_PRE_TIME, 5)
     Call(SetSelfVar, AI_VAR_MELEE_SWING_TIME, 13)
     Call(SetSelfVar, AI_VAR_MELEE_POST_TIME, 30)
-    Call(WanderMeleeAI_Main, Ref(AISettings_Gulpit_Wander))
+    Call(WanderMeleeAI_Main, AISettings_Gulpit_Wander)
     Return
     End
 };

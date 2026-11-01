@@ -40,7 +40,7 @@ EvtScript EVS_OpenSarcophagus = {
         Label(10)
             Call(UpdateLerp)
             Set(LVar2, LVar0)
-            MulF(LVar2, Float(1.1))
+            MulF(LVar2, 1.1)
             Call(TranslateModel, LVar3, LVar2, 0, 13)
             Call(RotateModel, LVar3, LVar0, 0, 1, 0)
             Add(LVar0, 1)
@@ -50,7 +50,7 @@ EvtScript EVS_OpenSarcophagus = {
             EndIf
         Wait(3)
     Else
-        Call(TranslateModel, LVar3, Float(38.5), 0, 13)
+        Call(TranslateModel, LVar3, 38.5, 0, 13)
         Call(RotateModel, LVar3, 35, 0, 1, 0)
     EndIf
     Return

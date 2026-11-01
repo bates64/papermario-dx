@@ -9,10 +9,10 @@ EvtScript EVS_FocusCamOnLock = {
             Call(AwaitPlayerApproach, 320, 0, 40)
             Call(UseSettingsFrom, CAM_DEFAULT, 220, 0, 0)
             Call(SetPanTarget, CAM_DEFAULT, 300, 0, 0)
-            Call(SetCamDistance, CAM_DEFAULT, Float(350.0))
+            Call(SetCamDistance, CAM_DEFAULT, 350.0)
             Call(GetCamPosA, CAM_DEFAULT, LVar0, LVar1)
-            Call(SetCamPosA, CAM_DEFAULT, Float(-64.0), LVar1)
-            Call(SetCamSpeed, CAM_DEFAULT, Float(3.0))
+            Call(SetCamPosA, CAM_DEFAULT, -64.0, LVar1)
+            Call(SetCamSpeed, CAM_DEFAULT, 3.0)
             Call(PanToTarget, CAM_DEFAULT, 0, true)
             Call(AwaitPlayerLeave, 320, 0, 60)
             Call(PanToTarget, CAM_DEFAULT, 0, false)
@@ -52,19 +52,19 @@ EvtScript EVS_UnlockDoors = {
 };
 
 EvtScript EVS_BindLockTrigger = {
-    BindTrigger(Ref(EVS_ExitDoors_trd_02_0), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
+    BindTrigger(EVS_ExitDoors_trd_02_0, TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
     Return
     End
 };
 
 EvtScript EVS_MakeEntities = {
     IfEq(GF_TRD01_UnlockedDoor, false)
-        Call(MakeEntity, Ref(Entity_Padlock), 315, 8, 0, -80, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(EVS_BindLockTrigger))
+        Call(MakeEntity, Entity_Padlock, 315, 8, 0, -80, MAKE_ENTITY_END)
+        Call(AssignScript, EVS_BindLockTrigger)
         Set(MV_EntityID_Padlock, LVar0)
     EndIf
     IfLt(GB_StoryProgress, STORY_CH1_RAISED_SUBMERGED_STAIRS)
-        Call(MakeEntity, Ref(Entity_BlueSwitch), 0, 220, 255, 0, MAKE_ENTITY_END)
+        Call(MakeEntity, Entity_BlueSwitch, 0, 220, 255, 0, MAKE_ENTITY_END)
         Call(AssignSwitchFlag, EVT_INDEX_OF_AREA_FLAG(AF_TRD01_RaiseStairs))
     EndIf
     Call(MakeItemEntity, ITEM_SMASH_CHARGE, -268, 656, -40, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_TRD01_Item_SmashCharge)

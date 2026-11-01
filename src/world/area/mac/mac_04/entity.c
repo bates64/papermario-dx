@@ -57,7 +57,7 @@ void appendGfx_shrunk_player(void* data) {
 }
 
 EvtScript EVS_ShrinkPlayer = {
-    SetF(MV_PlayerShrinkScale, Float(1.0))
+    SetF(MV_PlayerShrinkScale, 1.0)
     Call(SetPlayerFlagBits, PS_FLAG_TIME_STOPPED, true)
     Call(CreateShrinkingWorker)
     Thread
@@ -78,7 +78,7 @@ EvtScript EVS_ShrinkPlayer = {
 };
 
 EvtScript EVS_UnshrinkPlayer = {
-    SetF(MV_PlayerShrinkScale, Float(0.2))
+    SetF(MV_PlayerShrinkScale, 0.2)
     Call(SetPlayerFlagBits, PS_FLAG_TIME_STOPPED, true)
     Call(CreateShrinkingWorker)
     Thread
@@ -139,18 +139,18 @@ EvtScript EVS_EnterToybox = {
     EndThread
     Thread
         Call(PlaySoundAtPlayer, SOUND_TRANSPORTER_IN, SOUND_SPACE_DEFAULT)
-        Call(SetPlayerJumpscale, Float(0.35))
+        Call(SetPlayerJumpscale, 0.35)
         Call(PlayerJump, -450, 20, -160, 32)
     EndThread
     Wait(25)
     IfEq(GF_StartedChapter4, false)
         Set(GF_StartedChapter4, true)
         Call(FadeOutMusic, 0, 1500)
-        Call(GotoMapSpecial, Ref("kmr_22"), kmr_22_ENTRY_4, TRANSITION_BEGIN_OR_END_CHAPTER)
+        Call(GotoMapSpecial, "kmr_22", kmr_22_ENTRY_4, TRANSITION_BEGIN_OR_END_CHAPTER)
         Wait(100)
         Return
     EndIf
-    Call(GotoMap, Ref("omo_03"), omo_03_ENTRY_4)
+    Call(GotoMap, "omo_03", omo_03_ENTRY_4)
     Wait(100)
     Return
     End
@@ -181,7 +181,7 @@ EvtScript EVS_ExitToybox = {
     EndThread
     ExecGetTID(EVS_FocusCameraOnPlayer, LVarA)
     Call(PlaySoundAtPlayer, SOUND_TRANSPORTER_OUT, SOUND_SPACE_DEFAULT)
-    Call(SetPlayerJumpscale, Float(0.7))
+    Call(SetPlayerJumpscale, 0.7)
     Call(PlayerJump, -480, 45, -90, 25)
     ExecWait(EVS_FinishUnshrinking)
     KillThread(LVarA)
@@ -198,7 +198,7 @@ EvtScript EVS_BounceOffSpring = {
     Call(SetPlayerActionState, ACTION_STATE_JUMP)
     Wait(1)
     ExecGetTID(EVS_FocusCameraOnPlayer, LVarA)
-    Call(SetPlayerJumpscale, Float(0.7))
+    Call(SetPlayerJumpscale, 0.7)
     Call(PlayerJump, -430, 20, -45, 15)
     Set(AF_MAC_ExitingToybox, false)
     KillThread(LVarA)
@@ -277,11 +277,11 @@ EvtScript EVS_OnInspect_StreetSign = {
 
 EvtScript EVS_MakeEntities = {
     IfLt(GB_StoryProgress, STORY_CH4_RETURNED_STOREROOM_KEY)
-        Call(MakeEntity, Ref(Entity_Padlock), 155, 48, -480, 90, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(EVS_UnlockStoreroom))
+        Call(MakeEntity, Entity_Padlock, 155, 48, -480, 90, MAKE_ENTITY_END)
+        Call(AssignScript, EVS_UnlockStoreroom)
         Set(MV_StoreroomLockEntityID, LVar0)
         Call(SetEntityCullMode, 3)
-        BindPadlock(Ref(EVS_ItemPrompt_StoreroomKey), TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), Ref(StoreroomKeyList), 0, 1)
+        BindPadlock(EVS_ItemPrompt_StoreroomKey, TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), StoreroomKeyList, 0, 1)
     EndIf
     Call(MakeItemEntity, ITEM_VIS_GROUP(ITEM_TOY_TRAIN, VIS_GROUP_2), 50, 40, -430, ITEM_SPAWN_MODE_KEY, GF_MAC04_Item_ToyTrain)
     Thread
@@ -298,10 +298,10 @@ EvtScript EVS_MakeEntities = {
     Call(MakeItemEntity, ITEM_VIS_GROUP(ITEM_SNOWMAN_DOLL, VIS_GROUP_2), 50, 40, -310, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_MAC04_Item_SnowmanDoll)
     Call(MakeItemEntity, ITEM_VIS_GROUP(ITEM_VOLT_SHROOM, VIS_GROUP_2), 50, 40, -370, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_MAC04_Item_VoltShroom)
     Call(MakeItemEntity, ITEM_VIS_GROUP(ITEM_DIZZY_DIAL, VIS_GROUP_2), 50, 40, -490, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_MAC04_Item_DizzyDial)
-    Call(MakeEntity, Ref(Entity_ScriptSpring), -480, 20, -90, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(EVS_UseSpring_Toybox))
+    Call(MakeEntity, Entity_ScriptSpring, -480, 20, -90, 0, MAKE_ENTITY_END)
+    Call(AssignScript, EVS_UseSpring_Toybox)
     Call(SetEntityCullMode, 2)
-    BindTrigger(Ref(EVS_OnInspect_StreetSign), TRIGGER_WALL_PRESS_A, COLLIDER_sign, 1, 0)
+    BindTrigger(EVS_OnInspect_StreetSign, TRIGGER_WALL_PRESS_A, COLLIDER_sign, 1, 0)
     Return
     End
 };

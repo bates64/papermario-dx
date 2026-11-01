@@ -6,7 +6,7 @@ EvtScript EVS_ExitWalk_tik_09_1 = EVT_EXIT_WALK(60, tik_08_ENTRY_0, "tik_09", ti
 EvtScript EVS_ExitWalk_tik_20_0 = EVT_EXIT_WALK(60, tik_08_ENTRY_1, "tik_20", tik_20_ENTRY_0);
 
 EvtScript EVS_GotoMap_tik_06_2 = {
-    Call(GotoMap, Ref("tik_06"), tik_06_ENTRY_2)
+    Call(GotoMap, "tik_06", tik_06_ENTRY_2)
     Wait(100)
     Return
     End
@@ -15,10 +15,10 @@ EvtScript EVS_GotoMap_tik_06_2 = {
 EvtScript EVS_ExitPipe_tik_06_2 = EVT_EXIT_PIPE_HORIZONTAL(tik_06_ENTRY_3, COLLIDER_ttd, EVS_GotoMap_tik_06_2);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_tik_09_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_tik_20_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitWalk_tik_09_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitWalk_tik_20_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_ttd, COLLIDER_FLAGS_UPPER_MASK)
-    BindTrigger(Ref(EVS_ExitPipe_tik_06_2), TRIGGER_WALL_PUSH, COLLIDER_ttd, 1, 0)
+    BindTrigger(EVS_ExitPipe_tik_06_2, TRIGGER_WALL_PUSH, COLLIDER_ttd, 1, 0)
     Return
     End
 };
@@ -27,7 +27,7 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_TOAD_TOWN_TUNNELS)
     Call(SetSpriteShading, SHADING_TIK_08)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Call(MakeNpcs, true, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     Exec(EVS_SetupMusic)
     Call(PlaySound, SOUND_LOOP_TIK08_WATER)
@@ -77,7 +77,7 @@ EvtScript EVS_Main = {
         CaseEq(tik_08_ENTRY_3)
             EVT_ENTER_PIPE_HORIZONTAL(COLLIDER_ttd, EVS_BindExitTriggers)
         CaseDefault
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
     EndSwitch
     Wait(1)

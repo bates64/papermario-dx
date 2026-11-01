@@ -17,7 +17,7 @@ MobileAISettings AISettings_Magikoopa_Wander = {
 };
 
 EvtScript EVS_NpcAI_Magikoopa_Wander = {
-    Call(MagikoopaAI_Main, Ref(AISettings_Magikoopa_Wander))
+    Call(MagikoopaAI_Main, AISettings_Magikoopa_Wander)
     Return
     End
 };

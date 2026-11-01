@@ -199,7 +199,7 @@ EvtScript EVS_Interact_MagicChest_Mario = {
 };
 
 EvtScript EVS_SetupMagicChest = {
-    BindTrigger(Ref(EVS_Interact_MagicChest_Mario), TRIGGER_WALL_PRESS_A, COLLIDER_o207, 1, 0)
+    BindTrigger(EVS_Interact_MagicChest_Mario, TRIGGER_WALL_PRESS_A, COLLIDER_o207, 1, 0)
     Return
     End
 };

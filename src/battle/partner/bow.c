@@ -208,10 +208,10 @@ ActorBlueprint blueprint = {
 };
 
 EvtScript EVS_Init = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
-    Call(BindHandlePhase, ACTOR_SELF, Ref(EVS_HandlePhase))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
+    Call(BindHandlePhase, ACTOR_SELF, EVS_HandlePhase)
     Return
     End
 };
@@ -323,7 +323,7 @@ EvtScript EVS_RunAway = {
 EvtScript EVS_PartnerRunAwayFail = {
     Call(UseIdleAnimation, ACTOR_PARTNER, false)
     Call(SetGoalToHome, ACTOR_PARTNER)
-    Call(SetActorSpeed, ACTOR_PARTNER, Float(6.0))
+    Call(SetActorSpeed, ACTOR_PARTNER, 6.0)
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleBow_Run)
     Call(SetActorYaw, ACTOR_PARTNER, 0)
     Call(RunToGoal, ACTOR_PARTNER, 0)
@@ -506,9 +506,9 @@ EvtScript EVS_Attack_Smack = {
     Call(InitTargetIterator)
     Call(SetGoalToTarget, ACTOR_SELF)
     Loop(15)
-        Call(SetActorDispOffset, ACTOR_PARTNER, Float(0.5), 0, 0)
+        Call(SetActorDispOffset, ACTOR_PARTNER, 0.5, 0, 0)
         Wait(1)
-        Call(SetActorDispOffset, ACTOR_PARTNER, Float(-0.5), 0, 0)
+        Call(SetActorDispOffset, ACTOR_PARTNER, -0.5, 0, 0)
         Wait(1)
     EndLoop
     Call(GetPartnerActionQuality, LVarB)
@@ -538,7 +538,7 @@ EvtScript EVS_Attack_Smack = {
         IfGt(LVarE, LVarD)
             Goto(2)
         EndIf
-        Call(SetActorScale, ACTOR_PARTNER, Float(1.4), Float(1.4), Float(1.0))
+        Call(SetActorScale, ACTOR_PARTNER, 1.4, 1.4, 1.0)
         IfEq(LFlag0, false)
             Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleBow_SlapOnce)
             Set(LFlag0, true)
@@ -549,12 +549,12 @@ EvtScript EVS_Attack_Smack = {
             Call(SetDamageSource, DMG_SRC_NEXT_SLAP_RIGHT)
         EndIf
         Wait(2)
-        Call(SetActorScale, ACTOR_PARTNER, Float(1.0), Float(1.0), Float(1.0))
+        Call(SetActorScale, ACTOR_PARTNER, 1.0, 1.0, 1.0)
         Thread
-            Call(ShakeCam, CAM_BATTLE, 0, 2, Float(0.5))
-            Call(ShakeCam, CAM_BATTLE, 0, 2, Float(1.5))
-            Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.5))
-            Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.2))
+            Call(ShakeCam, CAM_BATTLE, 0, 2, 0.5)
+            Call(ShakeCam, CAM_BATTLE, 0, 2, 1.5)
+            Call(ShakeCam, CAM_BATTLE, 0, 1, 0.5)
+            Call(ShakeCam, CAM_BATTLE, 0, 1, 0.2)
         EndThread
         IfEq(LVarE, 1)
             Call(GetBowSize)
@@ -594,7 +594,7 @@ EvtScript EVS_Attack_Smack = {
         Call(AddBattleCamDist, 25)
         Call(MoveBattleCamOver, 5)
     EndIf
-    Call(SetActorScale, ACTOR_PARTNER, Float(1.4), Float(1.4), Float(1.0))
+    Call(SetActorScale, ACTOR_PARTNER, 1.4, 1.4, 1.0)
     IfEq(LFlag0, false)
         Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleBow_SlapOnce)
         Set(LFlag0, true)
@@ -605,7 +605,7 @@ EvtScript EVS_Attack_Smack = {
         Call(SetDamageSource, DMG_SRC_LAST_SLAP_RIGHT)
     EndIf
     Wait(2)
-    Call(SetActorScale, ACTOR_PARTNER, Float(1.0), Float(1.0), Float(1.0))
+    Call(SetActorScale, ACTOR_PARTNER, 1.0, 1.0, 1.0)
     Call(SetActorSounds, ACTOR_PARTNER, ACTOR_SOUND_HURT, SOUND_BOW_SMACK, 0)
     Call(GetPartnerActionQuality, LVar0)
     Switch(LVar0)
@@ -865,19 +865,19 @@ EvtScript EVS_Move_Spook = {
         EndLoop
     EndThread
     Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_BOW_SPOOK)
-    SetF(LVar0, Float(1.0))
+    SetF(LVar0, 1.0)
     Call(GetActionProgress, LVar2)
     Switch(LVar2)
         CaseLe(20)
-            SetF(LVar1, Float(0.3))
+            SetF(LVar1, 0.3)
         CaseLe(40)
-            SetF(LVar1, Float(0.4))
+            SetF(LVar1, 0.4)
         CaseLe(60)
-            SetF(LVar1, Float(0.5))
+            SetF(LVar1, 0.5)
         CaseLe(80)
-            SetF(LVar1, Float(0.6))
+            SetF(LVar1, 0.6)
         CaseDefault
-            SetF(LVar1, Float(0.7))
+            SetF(LVar1, 0.7)
     EndSwitch
     Loop(5)
         AddF(LVar0, LVar1)
@@ -888,12 +888,12 @@ EvtScript EVS_Move_Spook = {
     Thread
         Loop(5)
             Loop(3)
-                SubF(LVar0, Float(0.23))
+                SubF(LVar0, 0.23)
                 Call(SetActorScale, ACTOR_PARTNER, LVar0, LVar0, LVar0)
                 Wait(1)
             EndLoop
             Loop(3)
-                AddF(LVar0, Float(0.23))
+                AddF(LVar0, 0.23)
                 Call(SetActorScale, ACTOR_PARTNER, LVar0, LVar0, LVar0)
                 Wait(1)
             EndLoop
@@ -901,8 +901,8 @@ EvtScript EVS_Move_Spook = {
     EndThread
     Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
     Add(LVar1, 32)
-    PlayEffect(EFFECT_ENERGY_IN_OUT, 6, LVar0, LVar1, LVar2, Float(1.8), 45)
-    PlayEffect(EFFECT_ENERGY_IN_OUT, 6, LVar0, LVar1, LVar2, Float(1.0), 45)
+    PlayEffect(EFFECT_ENERGY_IN_OUT, 6, LVar0, LVar1, LVar2, 1.8, 45)
+    PlayEffect(EFFECT_ENERGY_IN_OUT, 6, LVar0, LVar1, LVar2, 1.0, 45)
     Wait(15)
     Call(InitTargetIterator)
     Call(GetActionProgress, LVarF)
@@ -945,15 +945,15 @@ EvtScript EVS_Move_Spook = {
     Call(GetActionProgress, LVar2)
     Switch(LVar2)
         CaseLe(20)
-            SetF(LVar1, Float(0.3))
+            SetF(LVar1, 0.3)
         CaseLe(40)
-            SetF(LVar1, Float(0.4))
+            SetF(LVar1, 0.4)
         CaseLe(60)
-            SetF(LVar1, Float(0.5))
+            SetF(LVar1, 0.5)
         CaseLe(80)
-            SetF(LVar1, Float(0.6))
+            SetF(LVar1, 0.6)
         CaseDefault
-            SetF(LVar1, Float(0.7))
+            SetF(LVar1, 0.7)
     EndSwitch
     SetF(LVar0, LVarE)
     Loop(5)
@@ -961,7 +961,7 @@ EvtScript EVS_Move_Spook = {
         Call(SetActorScale, ACTOR_PARTNER, LVar0, LVar0, LVar0)
         Wait(1)
     EndLoop
-    Call(SetActorScale, ACTOR_PARTNER, Float(1.0), Float(1.0), Float(1.0))
+    Call(SetActorScale, ACTOR_PARTNER, 1.0, 1.0, 1.0)
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleBow_Idle)
     ExecWait(EVS_ReturnHome_Spook)
     Return
@@ -1018,9 +1018,9 @@ EvtScript EVS_Attack_FanSmack = {
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleBow_CelebrateFast)
     Loop(30)
-        Call(SetActorDispOffset, ACTOR_PARTNER, Float(0.5), 0, 0)
+        Call(SetActorDispOffset, ACTOR_PARTNER, 0.5, 0, 0)
         Wait(1)
-        Call(SetActorDispOffset, ACTOR_PARTNER, Float(-0.5), 0, 0)
+        Call(SetActorDispOffset, ACTOR_PARTNER, -0.5, 0, 0)
         Wait(1)
     EndLoop
     Call(GetPartnerActionQuality, LVarB)
@@ -1055,7 +1055,7 @@ EvtScript EVS_Attack_FanSmack = {
         IfGt(LVarE, LVarD)
             Goto(2)
         EndIf
-        Call(SetActorScale, ACTOR_PARTNER, Float(1.4), Float(1.4), Float(1.0))
+        Call(SetActorScale, ACTOR_PARTNER, 1.4, 1.4, 1.0)
         IfEq(LFlag0, false)
             Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleBow_FanSmackOnce)
             Set(LFlag0, true)
@@ -1066,12 +1066,12 @@ EvtScript EVS_Attack_FanSmack = {
             Call(SetDamageSource, DMG_SRC_NEXT_FAN_SMACK_RIGHT)
         EndIf
         Wait(2)
-        Call(SetActorScale, ACTOR_PARTNER, Float(1.0), Float(1.0), Float(1.0))
+        Call(SetActorScale, ACTOR_PARTNER, 1.0, 1.0, 1.0)
         Thread
-            Call(ShakeCam, CAM_BATTLE, 0, 2, Float(0.5))
-            Call(ShakeCam, CAM_BATTLE, 0, 2, Float(1.5))
-            Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.5))
-            Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.2))
+            Call(ShakeCam, CAM_BATTLE, 0, 2, 0.5)
+            Call(ShakeCam, CAM_BATTLE, 0, 2, 1.5)
+            Call(ShakeCam, CAM_BATTLE, 0, 1, 0.5)
+            Call(ShakeCam, CAM_BATTLE, 0, 1, 0.2)
         EndThread
         IfEq(LVarE, 1)
             Call(GetBowSize)
@@ -1082,7 +1082,7 @@ EvtScript EVS_Attack_FanSmack = {
             Call(MoveBattleCamOver, 5)
         EndIf
         Call(GetGoalPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
-        PlayEffect(EFFECT_CONFETTI, 5, LVar0, LVar1, LVar2, Float(1.0), 20)
+        PlayEffect(EFFECT_CONFETTI, 5, LVar0, LVar1, LVar2, 1.0, 20)
         Call(SetActorSounds, ACTOR_PARTNER, ACTOR_SOUND_HURT, SOUND_BOW_FAN_SMACK, 0)
         IfEq(LVarE, 1)
             IfGt(LVarB, 99)
@@ -1121,10 +1121,10 @@ EvtScript EVS_Attack_FanSmack = {
         Goto(0)
     Label(2)
     Thread
-        Call(ShakeCam, CAM_BATTLE, 0, 2, Float(0.5))
-        Call(ShakeCam, CAM_BATTLE, 0, 2, Float(1.5))
-        Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.5))
-        Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.2))
+        Call(ShakeCam, CAM_BATTLE, 0, 2, 0.5)
+        Call(ShakeCam, CAM_BATTLE, 0, 2, 1.5)
+        Call(ShakeCam, CAM_BATTLE, 0, 1, 0.5)
+        Call(ShakeCam, CAM_BATTLE, 0, 1, 0.2)
     EndThread
     IfEq(LVarE, 1)
         Call(GetBowSize)
@@ -1134,7 +1134,7 @@ EvtScript EVS_Attack_FanSmack = {
         Call(AddBattleCamDist, 25)
         Call(MoveBattleCamOver, 5)
     EndIf
-    Call(SetActorScale, ACTOR_PARTNER, Float(1.4), Float(1.4), Float(1.0))
+    Call(SetActorScale, ACTOR_PARTNER, 1.4, 1.4, 1.0)
     IfEq(LFlag0, false)
         Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleBow_FanSmackOnce)
         Set(LFlag0, true)
@@ -1145,7 +1145,7 @@ EvtScript EVS_Attack_FanSmack = {
         Call(SetDamageSource, DMG_SRC_LAST_FAN_SMACK_RIGHT)
     EndIf
     Wait(2)
-    Call(SetActorScale, ACTOR_PARTNER, Float(1.0), Float(1.0), Float(1.0))
+    Call(SetActorScale, ACTOR_PARTNER, 1.0, 1.0, 1.0)
     Call(SetActorSounds, ACTOR_PARTNER, ACTOR_SOUND_HURT, SOUND_BOW_FAN_SMACK, 0)
     Call(GetPartnerActionQuality, LVar0)
     Switch(LVar0)

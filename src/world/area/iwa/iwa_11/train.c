@@ -24,16 +24,16 @@ EvtScript EVS_SpawnSmoke = {
     EndIf
     SetF(LVar1, 140)
     SetF(LVar2, 0)
-    SetF(LVar3, Float(1.0))
-    SetF(LVar4, Float(3.0))
+    SetF(LVar3, 1.0)
+    SetF(LVar4, 3.0)
     Add(LVarB, CLONED_MODEL(0))
     Call(EnableModel, LVarB, true)
     Loop(20)
         Call(TranslateModel, LVarB, LVar0, LVar1, LVar2)
         Call(ScaleModel, LVarB, LVar3, LVar3, 1)
         AddF(LVar1, LVar4)
-        AddF(LVar3, Float(0.046))
-        MulF(LVar4, Float(0.906))
+        AddF(LVar3, 0.046)
+        MulF(LVar4, 0.906)
         Wait(1)
     EndLoop
     Call(EnableModel, LVarB, false)
@@ -149,19 +149,19 @@ EvtScript EVS_AnimateTrain = {
             EndIf
         EndIf
         IfLe(LVarD, 20)
-            Call(CosInterpMinMax, LVarD, LVar0, Float(0.703), Float(1.0), 10, 0, 180)
-            Call(CosInterpMinMax, LVarD, LVar2, Float(0.0), Float(0.296), 10, 0, 180)
-            SetF(LVar1, Float(0.296))
+            Call(CosInterpMinMax, LVarD, LVar0, 0.703, 1.0, 10, 0, 180)
+            Call(CosInterpMinMax, LVarD, LVar2, 0.0, 0.296, 10, 0, 180)
+            SetF(LVar1, 0.296)
             SubF(LVar1, LVar2)
-            AddF(LVar1, Float(1.0))
+            AddF(LVar1, 1.0)
             Call(ScaleModel, MODEL_07, LVar1, LVar0, LVar1)
             Call(ScaleModel, MODEL_08, LVar1, LVar0, LVar1)
         Else
-            SetF(LVar0, Float(1.0))
-            SetF(LVar2, Float(0.296))
-            SetF(LVar1, Float(0.296))
+            SetF(LVar0, 1.0)
+            SetF(LVar2, 0.296)
+            SetF(LVar1, 0.296)
             SubF(LVar1, LVar2)
-            AddF(LVar1, Float(1.0))
+            AddF(LVar1, 1.0)
             Call(ScaleModel, MODEL_07, LVar1, LVar0, LVar1)
             Call(ScaleModel, MODEL_08, LVar1, LVar0, LVar1)
         EndIf
@@ -339,7 +339,7 @@ EvtScript EVS_TravelToToadTown = {
         EndLoop
     EndThread
     Wait(1200)
-    Call(GotoMap, Ref("mac_03"), mac_03_ENTRY_1)
+    Call(GotoMap, "mac_03", mac_03_ENTRY_1)
     Wait(100)
     Return
     End
@@ -372,11 +372,11 @@ EvtScript EVS_TravelToMtRugged = {
     IfEq(GF_StartedChapter2, false)
         Set(GF_StartedChapter2, true)
         Call(FadeOutMusic, 0, 1500)
-        Call(GotoMapSpecial, Ref("kmr_22"), kmr_22_ENTRY_2, TRANSITION_BEGIN_OR_END_CHAPTER)
+        Call(GotoMapSpecial, "kmr_22", kmr_22_ENTRY_2, TRANSITION_BEGIN_OR_END_CHAPTER)
         Wait(100)
         Return
     EndIf
-    Call(GotoMap, Ref("iwa_10"), iwa_10_ENTRY_0)
+    Call(GotoMap, "iwa_10", iwa_10_ENTRY_0)
     Wait(100)
     Return
     End

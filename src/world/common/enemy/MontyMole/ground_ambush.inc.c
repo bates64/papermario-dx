@@ -57,14 +57,14 @@ EvtScript EVS_NpcAI_MontyMole_GroundAmbush = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_MontyMole_PopOutStill)
     Call(GetNpcPos, NPC_SELF, LVar4, LVar5, LVar6)
     Add(LVar5, 30)
-    Call(SetNpcJumpscale, NPC_SELF, Float(1.0))
+    Call(SetNpcJumpscale, NPC_SELF, 1.0)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_MOLE_POP, SOUND_SPACE_DEFAULT)
     Call(NpcJump0, NPC_SELF, LVar4, LVar5, LVar6, 20)
     Call(SetNpcPos, LVar0, NPC_DISPOSE_LOCATION)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_DISABLE_AI, false)
     Call(NpcFacePlayer, NPC_SELF, 0)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_BEGIN_WITH_CHASING, true)
-    Call(BasicAI_Main, Ref(AISettings_MontyMole_GroundAmbush))
+    Call(BasicAI_Main, AISettings_MontyMole_GroundAmbush)
     Return
     End
 };

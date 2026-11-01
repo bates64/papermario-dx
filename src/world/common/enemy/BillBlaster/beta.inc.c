@@ -88,7 +88,7 @@ EvtScript EVS_BetaBlasterAI_AwaitPlayerAhead = {
 EvtScript EVS_NpcAI_BillBlaster_Beta = {
     Label(0)
         // wait until the player is within 400 units and 5 degrees of the firing angle
-        SetF(LVar0, Float(400.0))
+        SetF(LVar0, 400.0)
         Set(LVar1, 1)
         Call(GetNpcYaw, NPC_SELF, LVar2)
         Set(LVar3, 10)
@@ -100,7 +100,7 @@ EvtScript EVS_NpcAI_BillBlaster_Beta = {
         // calculate the muzzle position, but do not use it (?)
         Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
         Call(GetNpcYaw, NPC_SELF, LVar3)
-        Call(AddVectorPolar, LVar0, LVar2, Float(20.0), LVar3)
+        Call(AddVectorPolar, LVar0, LVar2, 20.0, LVar3)
         Add(LVar1, 12)
         Call(SetNpcAnimation, NPC_SELF, ANIM_BillBlaster_Idle)
         // signal the Bullet Bill at the next NPC ID

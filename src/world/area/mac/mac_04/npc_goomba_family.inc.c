@@ -47,13 +47,13 @@ EvtScript EVS_NpcInteract_Goombaria = {
 };
 
 EvtScript EVS_NpcInit_Goomama = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Goomama))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Goomama)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Goombaria = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Goombaria))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Goombaria)
     Return
     End
 };

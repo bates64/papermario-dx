@@ -5,7 +5,7 @@
 EvtScript EVS_ExitWalk_tik_01_1 = EVT_EXIT_WALK(60, tik_03_ENTRY_0, "tik_01", tik_01_ENTRY_1);
 
 EvtScript EVS_GotoMap_tik_04_2 = {
-    Call(GotoMap, Ref("tik_04"), tik_04_ENTRY_2)
+    Call(GotoMap, "tik_04", tik_04_ENTRY_2)
     Wait(100)
     Return
     End
@@ -14,8 +14,8 @@ EvtScript EVS_GotoMap_tik_04_2 = {
 EvtScript EVS_ExitPipe_tik_04_2 = EVT_EXIT_PIPE_HORIZONTAL(tik_03_ENTRY_1, COLLIDER_o46, EVS_GotoMap_tik_04_2);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_tik_01_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
-    BindTrigger(Ref(EVS_ExitPipe_tik_04_2), TRIGGER_WALL_PUSH, COLLIDER_o46, 1, 0)
+    BindTrigger(EVS_ExitWalk_tik_01_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitPipe_tik_04_2, TRIGGER_WALL_PUSH, COLLIDER_o46, 1, 0)
     Return
     End
 };
@@ -26,7 +26,7 @@ EvtScript EVS_EnterMap = {
         CaseEq(tik_03_ENTRY_1)
             EVT_ENTER_PIPE_HORIZONTAL(COLLIDER_o46, EVS_BindExitTriggers)
         CaseDefault
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
     EndSwitch
     Return
@@ -77,7 +77,7 @@ EvtScript EVS_Main = {
     Exec(EVS_SetupPlatforms)
     Call(GetDemoState, LVar0)
     IfNe(LVar0, DEMO_STATE_NONE)
-        BindTrigger(Ref(EVS_ExitPipe_tik_04_2), TRIGGER_WALL_PUSH, COLLIDER_o46, 1, 0)
+        BindTrigger(EVS_ExitPipe_tik_04_2, TRIGGER_WALL_PUSH, COLLIDER_o46, 1, 0)
         ExecWait(EVS_PlayDemoScene)
         Return
     EndIf

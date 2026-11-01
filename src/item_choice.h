@@ -53,7 +53,7 @@ typedef struct LetterDelivery {
 /// Returns the selected item ID in `LVar0`, `ITEM_CHOICE_NONE` if no matching item exists,
 /// or `ITEM_CHOICE_CANCELED` if the player closes the popup without choosing an item.
 #define EVT_CHOOSE_CONSUMABLE_FROM(itemList, recipientNpc) \
-    Set(LVar0, Ref(itemList)) \
+    Set(LVar0, itemList) \
     Set(LVar1, recipientNpc) \
     ExecWait(EVS_ChooseItem)
 
@@ -77,7 +77,7 @@ typedef struct LetterDelivery {
 /// Returns the selected item ID in `LVar0`, `ITEM_CHOICE_NONE` if no matching item exists,
 /// or `ITEM_CHOICE_CANCELED` if the player closes the popup without choosing an item.
 #define EVT_CHOOSE_KEY_ITEM_FROM(itemList, recipientNpc) \
-    Set(LVar0, Ref(itemList)) \
+    Set(LVar0, itemList) \
     Set(LVar1, recipientNpc) \
     ExecWait(EVS_ChooseKeyItem)
 

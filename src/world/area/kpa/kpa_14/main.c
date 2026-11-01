@@ -26,7 +26,7 @@ EvtScript EVS_ExitDoor_kpa_01_0 = {
     Set(LVar3, DOOR_SWING_OUT)
     Exec(ExitSingleDoor)
     Wait(17)
-    Call(GotoMap, Ref("kpa_01"), kpa_01_ENTRY_0)
+    Call(GotoMap, "kpa_01", kpa_01_ENTRY_0)
     Wait(100)
     Return
     End
@@ -35,8 +35,8 @@ EvtScript EVS_ExitDoor_kpa_01_0 = {
 EvtScript EVS_ExitWalk_kpa_16_0 = EVT_EXIT_WALK(60, kpa_14_ENTRY_2, "kpa_16", kpa_16_ENTRY_0);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_kpa_13_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_kpa_16_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilin, 1, 0)
+    BindTrigger(EVS_ExitWalk_kpa_13_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitWalk_kpa_16_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilin, 1, 0)
     Return
     End
 };
@@ -45,7 +45,7 @@ EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(kpa_14_ENTRY_0)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
             Wait(1)
         CaseEq(kpa_14_ENTRY_1)
@@ -56,7 +56,7 @@ EvtScript EVS_EnterMap = {
             Exec(EnterSingleDoor)
             Exec(EVS_BindExitTriggers)
         CaseEq(kpa_14_ENTRY_2)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
             Wait(1)
     EndSwitch
@@ -153,7 +153,7 @@ EvtScript EVS_SetupLavaFall = {
                             Wait(10)
                             Call(UseSettingsFrom, CAM_DEFAULT, LVar5, 30, -135)
                             Call(SetPanTarget, CAM_DEFAULT, LVar5, 30, -135)
-                            Call(SetCamSpeed, CAM_DEFAULT, Float(1.0))
+                            Call(SetCamSpeed, CAM_DEFAULT, 1.0)
                             Call(PanToTarget, CAM_DEFAULT, 0, true)
                             Call(MakeLerp, LVar0, LVar5, 30, EASING_LINEAR)
                             Loop(0)
@@ -247,10 +247,10 @@ EvtScript EVS_Main = {
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o858, SURFACE_TYPE_LAVA)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_deilin, SURFACE_TYPE_LAVA)
             Thread
-                Call(ResetFromLava, Ref(SafeFloorColliders))
+                Call(ResetFromLava, SafeFloorColliders)
             EndThread
-            BindTrigger(Ref(EVS_Touch_LeftOfLavaFall), TRIGGER_FLOOR_TOUCH, COLLIDER_o195, 1, 0)
-            BindTrigger(Ref(EVS_Touch_RightOfLavaFall), TRIGGER_FLOOR_TOUCH, COLLIDER_o198, 1, 0)
+            BindTrigger(EVS_Touch_LeftOfLavaFall, TRIGGER_FLOOR_TOUCH, COLLIDER_o195, 1, 0)
+            BindTrigger(EVS_Touch_RightOfLavaFall, TRIGGER_FLOOR_TOUCH, COLLIDER_o198, 1, 0)
             Exec(EVS_SetupLavaFall)
         EndThread
     Else

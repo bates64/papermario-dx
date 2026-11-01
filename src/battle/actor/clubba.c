@@ -97,9 +97,9 @@ OVL_DEF_ACTOR() = {
 };
 
 EvtScript EVS_Init = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
     Return
     End
 };
@@ -225,7 +225,7 @@ EvtScript EVS_TakeTurn = {
         Wait(15)
     Else
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleClubba_Run)
-        Call(SetActorSpeed, ACTOR_SELF, Float(4.0))
+        Call(SetActorSpeed, ACTOR_SELF, 4.0)
         Call(SetGoalToTarget, ACTOR_SELF)
         Call(GetStatusFlags, ACTOR_SELF, LVar0)
         IfNotFlag(LVar0, STATUS_FLAG_SHRINK)
@@ -275,7 +275,7 @@ EvtScript EVS_TakeTurn = {
         CaseOrEq(HIT_RESULT_HIT)
         CaseOrEq(HIT_RESULT_NO_DAMAGE)
             Thread
-                Call(ShakeCam, CAM_BATTLE, 0, 10, Float(1.5))
+                Call(ShakeCam, CAM_BATTLE, 0, 10, 1.5)
             EndThread
             Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
             Wait(19)

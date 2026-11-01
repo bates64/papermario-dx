@@ -16,14 +16,14 @@ EvtScript EVS_CapturePeach_Early = {
     Call(GetApproachPeachPos, NPC_SELF, 50, LVar3, LVar0, LVar2)
     IfNe(LVar3, 0)
         Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Run)
-        Call(SetNpcSpeed, NPC_SELF, Float(5.0))
+        Call(SetNpcSpeed, NPC_SELF, 5.0)
         Call(NpcMoveTo, NPC_SELF, LVar0, LVar2, 0)
         Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Idle)
     EndIf
     Call(SpeakToPlayer, NPC_SELF, ANIM_WorldKoopatrol_Talk, ANIM_WorldKoopatrol_Idle, 0, MSG_Peach_0175)
     Call(SetPlayerAnimation, ANIM_Peach2_ForwardSad)
     Wait(20)
-    Call(GotoMapSpecial, Ref("kkj_14"), kkj_14_ENTRY_B, TRANSITION_PEACH_CAPTURED)
+    Call(GotoMapSpecial, "kkj_14", kkj_14_ENTRY_B, TRANSITION_PEACH_CAPTURED)
     Wait(100)
     Call(DisablePlayerInput, false)
     Return
@@ -36,13 +36,13 @@ EvtScript EVS_NpcIdle_Koopatrol_02_Early = {
         Loop(0)
             Call(CheckPlayerInSight, LVar0, 85, 60, 38)
             IfEq(LVar0, 1)
-                Call(BindNpcAI, NPC_SELF, Ref(EVS_CapturePeach_Early))
+                Call(BindNpcAI, NPC_SELF, EVS_CapturePeach_Early)
                 Return
             EndIf
             Wait(1)
         EndLoop
     EndThread
-    Call(SetNpcSpeed, NPC_SELF, Float(1.7))
+    Call(SetNpcSpeed, NPC_SELF, 1.7)
     Loop(0)
         Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Idle)
         Wait(20)
@@ -65,13 +65,13 @@ EvtScript EVS_NpcIdle_Koopatrol_03_Early = {
         Loop(0)
             Call(CheckPlayerInSight, LVar0, 85, 60, 38)
             IfEq(LVar0, 1)
-                Call(BindNpcAI, NPC_SELF, Ref(EVS_CapturePeach_Early))
+                Call(BindNpcAI, NPC_SELF, EVS_CapturePeach_Early)
                 Return
             EndIf
             Wait(1)
         EndLoop
     EndThread
-    Call(SetNpcSpeed, NPC_SELF, Float(2.0))
+    Call(SetNpcSpeed, NPC_SELF, 2.0)
     Loop(0)
         Call(NpcMoveTo, NPC_SELF, -248, -80, 0)
         Call(NpcMoveTo, NPC_SELF, -84, -80, 0)
@@ -92,13 +92,13 @@ EvtScript EVS_NpcIdle_Koopatrol_04_Early = {
         Loop(0)
             Call(CheckPlayerInSight, LVar0, 85, 60, 38)
             IfEq(LVar0, 1)
-                Call(BindNpcAI, NPC_SELF, Ref(EVS_CapturePeach_Early))
+                Call(BindNpcAI, NPC_SELF, EVS_CapturePeach_Early)
                 Return
             EndIf
             Wait(1)
         EndLoop
     EndThread
-    Call(SetNpcSpeed, NPC_SELF, Float(1.7))
+    Call(SetNpcSpeed, NPC_SELF, 1.7)
     Loop(0)
         Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Idle)
         Wait(30)
@@ -139,7 +139,7 @@ EvtScript EVS_NpcInit_Koopatrol_01_Early = {
 
 EvtScript EVS_NpcInit_Koopatrol_02_Early = {
     Call(SetNpcPos, NPC_SELF, 180, 0, 50)
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Koopatrol_02_Early))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Koopatrol_02_Early)
     Return
     End
 };
@@ -148,14 +148,14 @@ EvtScript EVS_NpcInit_Koopatrol_03_Early = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLYING, false)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, true)
     Call(SetNpcPos, NPC_SELF, -250, 0, -15)
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Koopatrol_03_Early))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Koopatrol_03_Early)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Koopatrol_04_Early = {
     Call(SetNpcPos, NPC_SELF, -510, 0, 50)
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Koopatrol_04_Early))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Koopatrol_04_Early)
     Return
     End
 };

@@ -3,7 +3,7 @@
 EvtScript EVS_ExitWalk_obk_02_2 = EVT_EXIT_WALK(60, obk_06_ENTRY_1, "obk_02", obk_02_ENTRY_2);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_obk_02_2), TRIGGER_FLOOR_ABOVE, COLLIDER__deili, 1, 0)
+    BindTrigger(EVS_ExitWalk_obk_02_2, TRIGGER_FLOOR_ABOVE, COLLIDER__deili, 1, 0)
     Return
     End
 };
@@ -12,9 +12,9 @@ EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(obk_06_ENTRY_0)
-            BindTrigger(Ref(EVS_ExitWalk_obk_02_2), TRIGGER_FLOOR_TOUCH, COLLIDER__deili, 1, 0)
+            BindTrigger(EVS_ExitWalk_obk_02_2, TRIGGER_FLOOR_TOUCH, COLLIDER__deili, 1, 0)
         CaseEq(obk_06_ENTRY_1)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
     EndSwitch
     Return

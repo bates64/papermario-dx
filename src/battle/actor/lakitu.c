@@ -140,9 +140,9 @@ OVL_DEF_ACTOR() = {
 };
 
 EvtScript EVS_Init = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
     Call(SetActorVar, ACTOR_SELF, AVAR_SummonCount, 0)
     Return
     End
@@ -156,7 +156,7 @@ EvtScript EVS_Idle = {
 EvtScript EVS_ReturnHome = {
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Lakitu_FlyFast)
     Call(SetGoalToHome, ACTOR_SELF)
-    Call(SetActorSpeed, ACTOR_SELF, Float(7.0))
+    Call(SetActorSpeed, ACTOR_SELF, 7.0)
     Call(FlyToGoal, ACTOR_SELF, 0, 0, EASING_SIN_OUT)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Lakitu_Idle)
     Return
@@ -272,7 +272,7 @@ EvtScript EVS_Attack_SpinyToss = {
     Call(UseBattleCamPreset, BTL_CAM_ENEMY_APPROACH)
     Call(BattleCamTargetActor, ACTOR_SELF)
     Call(SetBattleCamTargetingModes, BTL_CAM_YADJ_TARGET, BTL_CAM_XADJ_AVG, false)
-    Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
+    Call(SetActorSpeed, ACTOR_SELF, 6.0)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Lakitu_FlyFast)
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(SetGoalPos, ACTOR_SELF, -20, LVar1, LVar2)
@@ -288,23 +288,23 @@ EvtScript EVS_Attack_SpinyToss = {
         Add(LVar0, -3)
         Add(LVar1, 16)
         Add(LVar2, 2)
-        PlayEffect(EFFECT_ENERGY_IN_OUT, 0, LVar0, LVar1, LVar2, Float(0.4), 10)
+        PlayEffect(EFFECT_ENERGY_IN_OUT, 0, LVar0, LVar1, LVar2, 0.4, 10)
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Add(LVar1, 12)
         Add(LVar2, 0)
         Call(SetPartPos, ACTOR_SELF, PRT_SPINY_BALL, LVar0, LVar1, LVar2)
-        Call(SetPartScale, ACTOR_SELF, PRT_SPINY_BALL, Float(0.4), Float(0.4), Float(0.4))
+        Call(SetPartScale, ACTOR_SELF, PRT_SPINY_BALL, 0.4, 0.4, 0.4)
     Else
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Add(LVar0, -8)
         Add(LVar1, 40)
         Add(LVar2, 5)
-        PlayEffect(EFFECT_ENERGY_IN_OUT, 0, LVar0, LVar1, LVar2, Float(1.0), 10)
+        PlayEffect(EFFECT_ENERGY_IN_OUT, 0, LVar0, LVar1, LVar2, 1.0, 10)
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Add(LVar1, 30)
         Add(LVar2, 2)
         Call(SetPartPos, ACTOR_SELF, PRT_SPINY_BALL, LVar0, LVar1, LVar2)
-        Call(SetPartScale, ACTOR_SELF, PRT_SPINY_BALL, Float(1.0), Float(1.0), Float(1.0))
+        Call(SetPartScale, ACTOR_SELF, PRT_SPINY_BALL, 1.0, 1.0, 1.0)
     EndIf
     Call(SetPartFlagBits, ACTOR_SELF, PRT_SPINY_BALL, ACTOR_PART_FLAG_INVISIBLE, false)
     Wait(10)
@@ -321,7 +321,7 @@ EvtScript EVS_Attack_SpinyToss = {
         CaseOrEq(HIT_RESULT_MISS)
         CaseOrEq(HIT_RESULT_LUCKY)
             Set(LVarA, LVar0)
-            Call(SetPartJumpGravity, ACTOR_SELF, PRT_SPINY_BALL, Float(1.0))
+            Call(SetPartJumpGravity, ACTOR_SELF, PRT_SPINY_BALL, 1.0)
             Call(SetGoalToTarget, ACTOR_SELF)
             Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Sub(LVar0, 40)
@@ -349,7 +349,7 @@ EvtScript EVS_Attack_SpinyToss = {
             Return
         EndCaseGroup
     EndSwitch
-    Call(SetPartJumpGravity, ACTOR_SELF, PRT_SPINY_BALL, Float(1.0))
+    Call(SetPartJumpGravity, ACTOR_SELF, PRT_SPINY_BALL, 1.0)
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(JumpPartTo, ACTOR_SELF, PRT_SPINY_BALL, LVar0, LVar1, LVar2, 20, true)
@@ -361,7 +361,7 @@ EvtScript EVS_Attack_SpinyToss = {
         CaseOrEq(HIT_RESULT_NO_DAMAGE)
             Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
             Thread
-                Call(SetPartJumpGravity, ACTOR_SELF, PRT_SPINY_BALL, Float(1.0))
+                Call(SetPartJumpGravity, ACTOR_SELF, PRT_SPINY_BALL, 1.0)
                 Call(SetGoalToTarget, ACTOR_SELF)
                 Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
                 Sub(LVar0, 40)
@@ -395,7 +395,7 @@ EvtScript EVS_Move_SummonSpiny = {
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
     Call(UseBattleCamPreset, BTL_CAM_ACTOR)
     Call(BattleCamTargetActor, ACTOR_SELF)
-    Call(SummonEnemy, Ref(SpinyFormation), false)
+    Call(SummonEnemy, SpinyFormation, false)
     Call(CopyStatusEffects, ACTOR_SELF, LVar0)
     Set(LVarB, LVar0)
     Call(SetAnimation, ACTOR_SELF, PRT_SPINY_BALL, ANIM_Lakitu_SpinyLargeStill)
@@ -408,25 +408,25 @@ EvtScript EVS_Move_SummonSpiny = {
         Add(LVar0, -3)
         Add(LVar1, 16)
         Add(LVar2, 2)
-        PlayEffect(EFFECT_ENERGY_IN_OUT, 0, LVar0, LVar1, LVar2, Float(0.4), 10)
+        PlayEffect(EFFECT_ENERGY_IN_OUT, 0, LVar0, LVar1, LVar2, 0.4, 10)
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Add(LVar1, 12)
         Add(LVar2, 0)
         Call(SetPartPos, ACTOR_SELF, PRT_SPINY_BALL, LVar0, LVar1, LVar2)
-        Call(SetPartScale, ACTOR_SELF, PRT_SPINY_BALL, Float(0.4), Float(0.4), Float(0.4))
-        Call(SetPartScale, ACTOR_SELF, PRT_SPINY, Float(0.4), Float(0.4), Float(0.4))
+        Call(SetPartScale, ACTOR_SELF, PRT_SPINY_BALL, 0.4, 0.4, 0.4)
+        Call(SetPartScale, ACTOR_SELF, PRT_SPINY, 0.4, 0.4, 0.4)
     Else
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Add(LVar0, -8)
         Add(LVar1, 40)
         Add(LVar2, 5)
-        PlayEffect(EFFECT_ENERGY_IN_OUT, 0, LVar0, LVar1, LVar2, Float(1.0), 10)
+        PlayEffect(EFFECT_ENERGY_IN_OUT, 0, LVar0, LVar1, LVar2, 1.0, 10)
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Add(LVar1, 30)
         Add(LVar2, 2)
         Call(SetPartPos, ACTOR_SELF, PRT_SPINY_BALL, LVar0, LVar1, LVar2)
-        Call(SetPartScale, ACTOR_SELF, PRT_SPINY_BALL, Float(1.0), Float(1.0), Float(1.0))
-        Call(SetPartScale, ACTOR_SELF, PRT_SPINY, Float(1.0), Float(1.0), Float(1.0))
+        Call(SetPartScale, ACTOR_SELF, PRT_SPINY_BALL, 1.0, 1.0, 1.0)
+        Call(SetPartScale, ACTOR_SELF, PRT_SPINY, 1.0, 1.0, 1.0)
     EndIf
     Call(SetPartFlagBits, ACTOR_SELF, PRT_SPINY_BALL, ACTOR_PART_FLAG_INVISIBLE, false)
     Wait(10)
@@ -439,7 +439,7 @@ EvtScript EVS_Move_SummonSpiny = {
     Call(PlaySoundAtPart, ACTOR_SELF, PRT_SPINY_BALL, SOUND_LAKITU_THROW_SPINY)
     Call(SetPartSounds, ACTOR_SELF, PRT_SPINY_BALL, ACTOR_SOUND_JUMP, SOUND_NONE, SOUND_NONE)
     Call(SetAnimation, ACTOR_SELF, PRT_SPINY_BALL, ANIM_Lakitu_SpinyLargeSpin)
-    Call(SetPartJumpGravity, ACTOR_SELF, PRT_SPINY_BALL, Float(1.6))
+    Call(SetPartJumpGravity, ACTOR_SELF, PRT_SPINY_BALL, 1.6)
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Sub(LVar0, 40)
     Call(JumpPartTo, ACTOR_SELF, PRT_SPINY_BALL, LVar0, 0, LVar2, 12, true)
@@ -469,12 +469,12 @@ EvtScript EVS_Move_SummonSpiny = {
         EndLoop
     EndThread
     Thread
-        Call(SetPartJumpGravity, ACTOR_SELF, PRT_SPINY, Float(1.3))
+        Call(SetPartJumpGravity, ACTOR_SELF, PRT_SPINY, 1.3)
         Call(JumpPartTo, ACTOR_SELF, PRT_SPINY, LVar0, 0, LVar2, 12, true)
     EndThread
     Wait(1)
     Call(ResetAllActorSounds, ACTOR_SELF)
-    Call(SetPartJumpGravity, ACTOR_SELF, PRT_SPINY_BALL, Float(1.3))
+    Call(SetPartJumpGravity, ACTOR_SELF, PRT_SPINY_BALL, 1.3)
     Call(JumpPartTo, ACTOR_SELF, PRT_SPINY_BALL, LVar0, 0, LVar2, 12, true)
     PlayEffect(EFFECT_LANDING_DUST, 1, LVar0, 0, LVar2, 0)
     Call(GetPartOffset, ACTOR_SELF, PRT_SPINY_BALL, LVar0, LVar1, LVar2)
@@ -492,7 +492,7 @@ EvtScript EVS_Move_SummonSpiny = {
     Else
         Call(SetActorYaw, LVarB, 180)
     EndIf
-    Call(SetActorSpeed, LVarB, Float(4.0))
+    Call(SetActorSpeed, LVarB, 4.0)
     Call(RunToGoal, LVarB, 0, false)
     Call(SetAnimation, LVarB, 1, ANIM_Spiny_Idle)
     Call(SetActorYaw, LVarB, 0)

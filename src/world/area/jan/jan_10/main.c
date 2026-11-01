@@ -3,7 +3,7 @@
 EvtScript EVS_ExitWalk_jan_09_2 = EVT_EXIT_WALK(60, jan_10_ENTRY_0, "jan_09", jan_09_ENTRY_2);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_jan_09_2), TRIGGER_FLOOR_ABOVE, COLLIDER_o100, 1, 0)
+    BindTrigger(EVS_ExitWalk_jan_09_2, TRIGGER_FLOOR_ABOVE, COLLIDER_o100, 1, 0)
     Return
     End
 };
@@ -12,7 +12,7 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_JADE_JUNGLE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Call(MakeNpcs, false, Ref(DefaultNPCs))
+    Call(MakeNpcs, false, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     Exec(EVS_SetupLogs)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o20, SURFACE_TYPE_DOCK_WALL)
@@ -21,7 +21,7 @@ EvtScript EVS_Main = {
     Exec(EVS_SetupTrees)
     Exec(EVS_SetupBushes)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilite, COLLIDER_FLAGS_UPPER_MASK)
-    Set(LVar0, Ref(EVS_BindExitTriggers))
+    Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     Exec(EVS_SetupMusic)
     Call(MakeTransformGroup, MODEL_g11)

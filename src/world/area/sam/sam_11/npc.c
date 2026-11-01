@@ -155,16 +155,16 @@ EvtScript EVS_NpcInteract_Herringway = {
             AddF(LVar0, LVar3)
             AddF(LVar1, LVar4)
             AddF(LVar2, LVar5)
-            DivF(LVar0, Float(2.0))
-            DivF(LVar1, Float(2.0))
-            DivF(LVar2, Float(2.0))
+            DivF(LVar0, 2.0)
+            DivF(LVar1, 2.0)
+            DivF(LVar2, 2.0)
             Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
             Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-            Call(SetCamPitch, CAM_DEFAULT, Float(15.0), Float(-9.0))
-            Call(SetCamDistance, CAM_DEFAULT, Float(250.0))
-            Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-            Call(SetCamPosA, CAM_DEFAULT, Float(-224.0), Float(-132.0))
-            Call(SetCamPosB, CAM_DEFAULT, Float(-127.0), Float(-314.0))
+            Call(SetCamPitch, CAM_DEFAULT, 15.0, -9.0)
+            Call(SetCamDistance, CAM_DEFAULT, 250.0)
+            Call(SetCamSpeed, CAM_DEFAULT, 90.0)
+            Call(SetCamPosA, CAM_DEFAULT, -224.0, -132.0)
+            Call(SetCamPosB, CAM_DEFAULT, -127.0, -314.0)
             Call(PanToTarget, CAM_DEFAULT, 0, true)
             Call(SetPlayerPos, -137, 150, -340)
             Call(PlayerFaceNpc, NPC_SELF, false)
@@ -190,7 +190,7 @@ EvtScript EVS_NpcInteract_Herringway = {
             EndThread
             Call(PanToTarget, CAM_DEFAULT, 0, false)
             Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
-            Call(SetNpcSpeed, NPC_SELF, Float(3.0 / DT))
+            Call(SetNpcSpeed, NPC_SELF, 3.0 / DT)
             Call(SetNpcAnimation, NPC_SELF, ANIM_Herringway_Walk)
             Call(NpcMoveTo, NPC_SELF, -235, -355, 0)
             Call(SetNpcAnimation, NPC_SELF, ANIM_Herringway_Idle)
@@ -198,7 +198,7 @@ EvtScript EVS_NpcInteract_Herringway = {
             Wait(20 * DT)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Herringway_Talk, ANIM_Herringway_Idle, 0, MSG_CH7_00D1)
             Wait(15 * DT)
-            Call(ShakeCam, CAM_DEFAULT, 0, 20, Float(0.5))
+            Call(ShakeCam, CAM_DEFAULT, 0, 20, 0.5)
             ExecWait(EVS_LowerStaircase)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Herringway_Talk, ANIM_Herringway_Idle, 0, MSG_CH7_00D2)
             Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, true)
@@ -430,8 +430,8 @@ EvtScript EVS_NpcInteract_Toadette_02 = {
 };
 
 EvtScript EVS_NpcInit_PenguinPatrol = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_PenguinPatrol))
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_PenguinPatrol))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_PenguinPatrol)
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_PenguinPatrol)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_MAYOR_MURDER_MYSTERY)
         CaseLt(STORY_CH7_MAYOR_MURDER_SOLVED)
@@ -443,8 +443,8 @@ EvtScript EVS_NpcInit_PenguinPatrol = {
 };
 
 EvtScript EVS_NpcInit_PenguinSentry = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_PenguinSentry))
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_PenguinSentry))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_PenguinSentry)
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_PenguinSentry)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_MAYOR_MURDER_SOLVED)
         CaseGe(STORY_CH7_MAYOR_MURDER_SOLVED)
@@ -455,8 +455,8 @@ EvtScript EVS_NpcInit_PenguinSentry = {
 };
 
 EvtScript EVS_NpcInit_Herringway = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Herringway))
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Herringway))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Herringway)
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Herringway)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_SPOKE_WITH_HERRINGWAY)
             Call(SetNpcPos, NPC_SELF, -110, 150, -323)
@@ -471,7 +471,7 @@ EvtScript EVS_NpcInit_Herringway = {
 };
 
 EvtScript EVS_NpcInit_Penguin_02 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Penguin_02))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Penguin_02)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_MAYOR_MURDER_MYSTERY)
         CaseDefault
@@ -484,7 +484,7 @@ EvtScript EVS_NpcInit_Penguin_02 = {
 };
 
 EvtScript EVS_NpcInit_Penguin_03 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Penguin_03))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Penguin_03)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_MAYOR_MURDER_MYSTERY)
         CaseDefault
@@ -497,26 +497,26 @@ EvtScript EVS_NpcInit_Penguin_03 = {
 };
 
 EvtScript EVS_NpcInit_Penguin_04 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Penguin_04))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Penguin_04)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Penguin_05 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Penguin_05))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Penguin_05)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Penguin_06 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Penguin_06))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Penguin_06)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Toadette_01 = {
     IfLt(GB_StoryProgress, STORY_CH7_STAR_SPIRIT_DEPARTED)
-        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toadette_01))
+        Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toadette_01)
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -526,7 +526,7 @@ EvtScript EVS_NpcInit_Toadette_01 = {
 
 EvtScript EVS_NpcInit_Toadette_02 = {
     IfLt(GB_StoryProgress, STORY_CH7_STAR_SPIRIT_DEPARTED)
-        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toadette_02))
+        Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toadette_02)
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -536,7 +536,7 @@ EvtScript EVS_NpcInit_Toadette_02 = {
 
 EvtScript EVS_NpcInit_Toadette_03 = {
     IfLt(GB_StoryProgress, STORY_CH7_STAR_SPIRIT_DEPARTED)
-        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toadette_03))
+        Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toadette_03)
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -764,10 +764,10 @@ EvtScript EVS_Scene_EpilogueDelivery = {
     Call(SetNpcPos, NPC_Kooper, 75, 0, -48)
     Call(SetNpcPos, NPC_Archeologist_01, 103, 0, -87)
     Call(SetNpcPos, NPC_Archeologist_02, 45, 0, -87)
-    Call(SetNpcSpeed, NPC_Kolorado, Float(2.0))
-    Call(SetNpcSpeed, NPC_Kooper, Float(2.0))
-    Call(SetNpcSpeed, NPC_Archeologist_01, Float(2.0))
-    Call(SetNpcSpeed, NPC_Archeologist_02, Float(2.0))
+    Call(SetNpcSpeed, NPC_Kolorado, 2.0)
+    Call(SetNpcSpeed, NPC_Kooper, 2.0)
+    Call(SetNpcSpeed, NPC_Archeologist_01, 2.0)
+    Call(SetNpcSpeed, NPC_Archeologist_02, 2.0)
     Thread
         Call(SetNpcAnimation, NPC_Kooper, ANIM_WorldKooper_Walk)
         Call(NpcMoveTo, NPC_Kooper, 148, -48, 0)
@@ -815,16 +815,16 @@ EvtScript EVS_Scene_EpilogueDelivery = {
         Wait(35)
         Call(InterpNpcYaw, NPC_Kolorado, 270, 0)
     EndThread
-    Call(SetNpcSpeed, NPC_Parakarry, Float(3.0))
+    Call(SetNpcSpeed, NPC_Parakarry, 3.0)
     Call(SetNpcPos, NPC_Parakarry, 140, 115, 26)
     Call(SpeakToPlayer, NPC_Parakarry, ANIM_WorldParakarry_Talk, ANIM_WorldParakarry_Idle, 5, MSG_Outro_0019)
     Thread
         Wait(20)
         Call(UseSettingsFrom, CAM_DEFAULT, 310, 0, 0)
         Call(SetPanTarget, CAM_DEFAULT, 310, 0, 0)
-        Call(SetCamDistance, CAM_DEFAULT, Float(-300.0))
-        Call(SetCamPitch, CAM_DEFAULT, Float(15.0), Float(-7.0))
-        Call(SetCamSpeed, CAM_DEFAULT, Float(2.0))
+        Call(SetCamDistance, CAM_DEFAULT, -300.0)
+        Call(SetCamPitch, CAM_DEFAULT, 15.0, -7.0)
+        Call(SetCamSpeed, CAM_DEFAULT, 2.0)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
     EndThread
     Call(SetNpcAnimation, NPC_Parakarry, ANIM_WorldParakarry_Walk)
@@ -871,7 +871,7 @@ EvtScript EVS_Scene_EpilogueDelivery = {
     Call(SetNpcAnimation, NPC_Kooper, ANIM_WorldKooper_CelebrateLoop)
     Call(InterpNpcYaw, NPC_Kooper, 270, 0)
     Wait(10)
-    Call(SetNpcSpeed, NPC_Kooper, Float(8.0))
+    Call(SetNpcSpeed, NPC_Kooper, 8.0)
     Call(NpcMoveTo, NPC_Kooper, 75, -48, 0)
     Call(SetNpcPos, NPC_Kooper, NPC_DISPOSE_LOCATION)
     Call(InterpNpcYaw, NPC_Parakarry, 90, 0)
@@ -884,20 +884,20 @@ EvtScript EVS_Scene_EpilogueDelivery = {
     Call(SpeakToPlayer, NPC_Parakarry, ANIM_WorldParakarry_Talk, ANIM_WorldParakarry_Idle, 5, MSG_Outro_001F)
     Wait(10)
     Call(SetNpcAnimation, NPC_Kolorado, ANIM_Kolorado_Panic)
-    Call(SetNpcJumpscale, NPC_Kolorado, Float(2.0))
+    Call(SetNpcJumpscale, NPC_Kolorado, 2.0)
     Call(GetNpcPos, NPC_Kolorado, LVar0, LVar1, LVar2)
     Call(NpcJump0, NPC_Kolorado, LVar0, LVar1, LVar2, 5)
     Call(SpeakToPlayer, NPC_Kolorado, ANIM_Kolorado_Shout, ANIM_Kolorado_Yell, 5, MSG_Outro_0020)
     Wait(10)
-    Call(SetNpcSpeed, NPC_Kolorado, Float(8.0))
+    Call(SetNpcSpeed, NPC_Kolorado, 8.0)
     Call(NpcMoveTo, NPC_Kolorado, 75, -48, 0)
     Call(SetNpcPos, NPC_Kolorado, NPC_DISPOSE_LOCATION)
     Thread
         Call(UseSettingsFrom, CAM_DEFAULT, 325, 0, 0)
         Call(SetPanTarget, CAM_DEFAULT, 325, 0, 0)
-        Call(SetCamDistance, CAM_DEFAULT, Float(-450.0))
-        Call(SetCamPitch, CAM_DEFAULT, Float(15.0), Float(-7.0))
-        Call(SetCamSpeed, CAM_DEFAULT, Float(4.0))
+        Call(SetCamDistance, CAM_DEFAULT, -450.0)
+        Call(SetCamPitch, CAM_DEFAULT, 15.0, -7.0)
+        Call(SetCamSpeed, CAM_DEFAULT, 4.0)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
     EndThread
     Thread
@@ -922,7 +922,7 @@ EvtScript EVS_Scene_EpilogueDelivery = {
         Call(InterpNpcYaw, NPC_Archeologist_01, 270, 0)
         Wait(30)
         Call(SetNpcAnimation, NPC_Archeologist_01, ANIM_Archeologist_Walk)
-        Call(SetNpcSpeed, NPC_Archeologist_01, Float(2.0))
+        Call(SetNpcSpeed, NPC_Archeologist_01, 2.0)
         Call(NpcMoveTo, NPC_Archeologist_01, 103, -87, 0)
     EndThread
     Wait(10)
@@ -942,12 +942,12 @@ EvtScript EVS_Scene_EpilogueDelivery = {
     Wait(30)
     Thread
         Call(SetNpcAnimation, NPC_Archeologist_02, ANIM_Archeologist_Walk)
-        Call(SetNpcSpeed, NPC_Archeologist_02, Float(2.0))
+        Call(SetNpcSpeed, NPC_Archeologist_02, 2.0)
         Call(NpcMoveTo, NPC_Archeologist_02, 45, -87, 0)
     EndThread
     Wait(30)
     Call(FadeOutMusic, 0, 1000)
-    Call(GotoMap, Ref("kmr_20"), kmr_20_ENTRY_3)
+    Call(GotoMap, "kmr_20", kmr_20_ENTRY_3)
     Wait(100)
     Return
     End
@@ -972,7 +972,7 @@ EvtScript EVS_NpcInit_Kolorado = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerPos, NPC_DISPOSE_LOCATION)
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_Scene_EpilogueDelivery))
+    Call(BindNpcIdle, NPC_SELF, EVS_Scene_EpilogueDelivery)
     Return
     End
 };

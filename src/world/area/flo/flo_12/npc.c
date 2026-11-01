@@ -13,16 +13,16 @@ EvtScript EVS_Scene_SunReturns = {
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamDistance, CAM_DEFAULT, 350)
-    Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-9.5))
+    Call(SetCamPitch, CAM_DEFAULT, 17.0, -9.5)
     Call(SetCamPosA, CAM_DEFAULT, 0, 0)
     Call(SetCamPosB, CAM_DEFAULT, 0, -50)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Wait(20)
     Call(SpeakToPlayer, NPC_Rosie, ANIM_Rosie_TalkHold, ANIM_Rosie_IdleHold, 5, MSG_CH6_00C7)
     Wait(10)
-    Call(GotoMap, Ref("flo_03"), flo_03_ENTRY_2)
+    Call(GotoMap, "flo_03", flo_03_ENTRY_2)
     Wait(100)
     Return
     End
@@ -59,7 +59,7 @@ EvtScript EVS_NpcInteract_Rosie = {
                     Exec(EVS_PlayerApproachRosie)
                     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
                     Add(LVar0, 30)
-                    Call(SetCamProperties, CAM_DEFAULT, Float(4.0), LVar0, LVar1, LVar2, 325, Float(19.0), Float(-9.5))
+                    Call(SetCamProperties, CAM_DEFAULT, 4.0, LVar0, LVar1, LVar2, 325, 19.0, -9.5)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Rosie_Talk, ANIM_Rosie_Idle, 5, MSG_CH6_008C)
                     Call(ShowChoice, MSG_Choice_0011)
                     Wait(10)
@@ -116,7 +116,7 @@ EvtScript EVS_NpcInteract_Rosie = {
                 Exec(EVS_PlayerApproachRosieAndItem)
                 Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
                 Add(LVar0, 30)
-                Call(SetCamProperties, CAM_DEFAULT, Float(4.0), LVar0, LVar1, LVar2, 325, Float(19.0), Float(-9.5))
+                Call(SetCamProperties, CAM_DEFAULT, 4.0, LVar0, LVar1, LVar2, 325, 19.0, -9.5)
             EndIf
             Call(SpeakToPlayer, NPC_SELF, ANIM_Rosie_TalkHold, ANIM_Rosie_IdleHold, 5, MSG_CH6_0094)
             EVT_CHOOSE_KEY_ITEM_ONLY(ITEM_CRYSTAL_BERRY, NPC_Rosie)
@@ -145,14 +145,14 @@ EvtScript EVS_NpcInteract_Rosie = {
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_Rosie_TalkHold, ANIM_Rosie_IdleHold, 5, MSG_CH6_0099)
     EndSwitch
-    Call(ResetCam, CAM_DEFAULT, Float(4.0))
+    Call(ResetCam, CAM_DEFAULT, 4.0)
     ExecWait(EVS_PopMusic)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Rosie = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Rosie))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Rosie)
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     Add(LVar0, 35)
     Call(SetNpcPos, NPC_Dummy, LVar0, LVar1, LVar2)

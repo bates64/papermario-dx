@@ -56,7 +56,7 @@ EvtScript EVS_SaveAndContinue_Prompt = {
             Wait(100)
         CaseEq(2)
     EndSwitch
-    Call(GotoMapSpecial, Ref("osr_03"), osr_03_ENTRY_4, TRANSITION_AFTER_SAVE_PROMPT)
+    Call(GotoMapSpecial, "osr_03", osr_03_ENTRY_4, TRANSITION_AFTER_SAVE_PROMPT)
     Wait(100)
     Return
     End
@@ -82,7 +82,7 @@ EvtScript EVS_Main = {
     Call(SetCamPosB, CAM_DEFAULT, 0, 0)
     Call(SetCamPosC, CAM_DEFAULT, 0, 65)
     Call(SetPanTarget, CAM_DEFAULT, 0, 0, 0)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)

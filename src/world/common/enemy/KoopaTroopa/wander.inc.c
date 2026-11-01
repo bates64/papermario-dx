@@ -21,7 +21,7 @@ EvtScript EVS_NpcAI_KoopaTroopa_Wander = {
     Call(SetSelfVar, AI_VAR_TACKLE_MIN_CHASE_TIME, 12)
     Call(SetSelfVar, AI_VAR_TACKLE_POST_DELAY, 10)
     Call(SetSelfVar, AI_VAR_TACKLE_TYPE, TACKLER_KOOPA_TROOPA)
-    Call(TackleWanderAI_Main, Ref(AISettings_KoopaTroopa_Wander))
+    Call(TackleWanderAI_Main, AISettings_KoopaTroopa_Wander)
     Return
     End
 };

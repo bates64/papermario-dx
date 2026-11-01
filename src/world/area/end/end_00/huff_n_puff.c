@@ -115,7 +115,7 @@ EvtScript EVS_GourmetGuy_Enter = {
         EndIf
     EndLoop
     Call(GetNpcPos, NPC_RuffPuff2, LVar0, LVar1, LVar2)
-    Call(SetNpcSpeed, NPC_GourmetGuy, Float(1.0))
+    Call(SetNpcSpeed, NPC_GourmetGuy, 1.0)
     Call(NpcMoveTo, NPC_GourmetGuy, LVar0, -20, 0)
     Call(SetNpcAnimation, NPC_GourmetGuy, ANIM_GourmetGuy_Idle)
     Call(AddScrollToNpcPos, NPC_GourmetGuy)
@@ -131,7 +131,7 @@ EvtScript EVS_HoldPosition_GourmetGuy = {
 
 EvtScript EVS_YoshiKids = {
     Wait(20 * DT)
-    Call(SetNpcJumpscale, NPC_YoshiKidGreen, Float(1.0))
+    Call(SetNpcJumpscale, NPC_YoshiKidGreen, 1.0)
     Call(NpcJump0, NPC_YoshiKidGreen, 680, 0, 0, 20 * DT)
     Call(NpcJump0, NPC_YoshiKidGreen, 740, 0, 0, 10 * DT)
     Call(SetNpcAnimation, NPC_YoshiKidGreen, ANIM_YoshiKid_Green_Idle)
@@ -333,9 +333,9 @@ EvtScript EVS_ParadePhase_HuffNPuff = {
         Call(SetNpcFlagBits, NPC_HuffNPuffArms, NPC_FLAG_TOUCHES_GROUND, false)
         Call(SetNpcFlagBits, NPC_RuffPuff1, NPC_FLAG_TOUCHES_GROUND, false)
         Call(SetNpcFlagBits, NPC_RuffPuff2, NPC_FLAG_TOUCHES_GROUND, false)
-        Call(SetNpcScale, NPC_HuffNPuffBody, Float(0.75), Float(0.75), 1)
-        Call(SetNpcScale, NPC_HuffNPuffFace, Float(0.75), Float(0.75), 1)
-        Call(SetNpcScale, NPC_HuffNPuffArms, Float(0.75), Float(0.75), 1)
+        Call(SetNpcScale, NPC_HuffNPuffBody, 0.75, 0.75, 1)
+        Call(SetNpcScale, NPC_HuffNPuffFace, 0.75, 0.75, 1)
+        Call(SetNpcScale, NPC_HuffNPuffArms, 0.75, 0.75, 1)
         Call(EnableNpcShadow, NPC_HuffNPuffFace, false)
         Call(EnableNpcShadow, NPC_HuffNPuffArms, false)
     EndThread

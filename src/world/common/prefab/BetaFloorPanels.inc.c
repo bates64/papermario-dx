@@ -58,7 +58,7 @@ EvtScript EVS_BetaBreakFloor_Setup = {
     BufRead1(LVar0) // callback event
     Set(ArrayVar(5), LVar0)
     Set(LVar0, LVarA)
-    BindTrigger(Ref(EVS_BetaBreakFloor_Touch), TRIGGER_FLOOR_TOUCH, ArrayVar(0), 1, 0)
+    BindTrigger(EVS_BetaBreakFloor_Touch, TRIGGER_FLOOR_TOUCH, ArrayVar(0), 1, 0)
     Return
     End
 };

@@ -22,11 +22,11 @@ EvtScript Entity_Chest_AdjustCam_ISK = {
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(UseSettingsFrom, CAM_DEFAULT, -195, -358, -555)
         Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-        Call(SetCamDistance, CAM_DEFAULT, Float(290.0))
-        Call(SetCamPitch, CAM_DEFAULT, Float(20.0), Float(-10.0))
-        Call(SetCamSpeed, CAM_DEFAULT, Float(8.0))
+        Call(SetCamDistance, CAM_DEFAULT, 290.0)
+        Call(SetCamPitch, CAM_DEFAULT, 20.0, -10.0)
+        Call(SetCamSpeed, CAM_DEFAULT, 8.0)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
-        Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+        Call(WaitForCam, CAM_DEFAULT, 1.0)
     EndThread
     Return
     End
@@ -42,7 +42,7 @@ EvtScript Entity_Chest_ResetCam_ISK = {
 
 EvtScript Entity_Chest_AdjustCam_TIK = {
     Thread
-        Call(AdjustCam, 0, Float(8.0), 0, Float(300.0), Float(17.5), Float(-9.5))
+        Call(AdjustCam, 0, 8.0, 0, 300.0, 17.5, -9.5)
     EndThread
     Return
     End
@@ -50,7 +50,7 @@ EvtScript Entity_Chest_AdjustCam_TIK = {
 
 EvtScript Entity_Chest_AdjustCam_KZN = {
     Thread
-        Call(AdjustCam, 0, Float(8.0), 0, Float(210.0), Float(21.0), Float(-16.0))
+        Call(AdjustCam, 0, 8.0, 0, 210.0, 21.0, -16.0)
     EndThread
     Return
     End

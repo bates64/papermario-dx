@@ -104,7 +104,7 @@ EvtScript EVS_TakeItemFromSocket = {
     PlayEffect(EFFECT_LANDING_DUST, 3, LVar0, 0, LVar2, 0)
     PlayEffect(EFFECT_LANDING_DUST, 3, LVar0, 0, LVar3, 0)
     PlayEffect(EFFECT_LANDING_DUST, 3, LVar0, 0, LVar4, 0)
-    Call(ShakeCam, CAM_DEFAULT, 0, 10, Float(1.0))
+    Call(ShakeCam, CAM_DEFAULT, 0, 10, 1.0)
     Return
     End
 };
@@ -309,7 +309,7 @@ EvtScript EVS_SetupSockets = {
         Set(MV_Socket3_ItemEntityID, LVar0)
     EndIf
     Call(CreateConsumableItemList)
-    BindPadlock(Ref(EVS_Interact_ItemSockets), TRIGGER_WALL_PRESS_A, COLLIDER_hako, LVar0, 0, 1)
+    BindPadlock(EVS_Interact_ItemSockets, TRIGGER_WALL_PRESS_A, COLLIDER_hako, LVar0, 0, 1)
     Return
     End
 };

@@ -24,7 +24,7 @@ EvtScript EVS_UseItem = {
     Set(LVar3, 20)
     Call(MultiplyByActorScale, LVar3)
     Add(LVar1, LVar3)
-    SetF(LVar3, Float(1.0))
+    SetF(LVar3, 1.0)
     Call(MultiplyByActorScale, LVar3)
     PlayEffect(EFFECT_SNAKING_STATIC, 0, LVar0, LVar1, LVar2, LVar3, 30)
     Call(PlaySound, SOUND_VOLT_SHROOM_APPLY)

@@ -29,15 +29,15 @@ EvtScript EVS_UnlockDoor = {
 };
 
 EvtScript EVS_BindLockTrigger = {
-    BindTrigger(Ref(EVS_ExitDoor_arn_08_0), TRIGGER_WALL_PRESS_A, COLLIDER_tt3, 1, 0)
+    BindTrigger(EVS_ExitDoor_arn_08_0, TRIGGER_WALL_PRESS_A, COLLIDER_tt3, 1, 0)
     Return
     End
 };
 
 EvtScript EVS_MakeEntities = {
     IfLt(GB_StoryProgress, STORY_CH3_UNLOCKED_WINDY_MILL)
-        Call(MakeEntity, Ref(Entity_Padlock), 10, 30, -155, 0, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(EVS_BindLockTrigger))
+        Call(MakeEntity, Entity_Padlock, 10, 30, -155, 0, MAKE_ENTITY_END)
+        Call(AssignScript, EVS_BindLockTrigger)
         Set(MV_EntityID_Padlock, LVar0)
     EndIf
     Return

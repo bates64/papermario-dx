@@ -3,7 +3,7 @@
 #include "world/common/entity/Pipe.inc.c"
 
 EvtScript EVS_GotoMap_mac_00_3 = {
-    Call(GotoMap, Ref("mac_00"), mac_00_ENTRY_3)
+    Call(GotoMap, "mac_00", mac_00_ENTRY_3)
     Wait(100)
     Return
     End
@@ -13,7 +13,7 @@ EvtScript EVS_ExitPipe_mac_00_3 = EVT_EXIT_PIPE_HORIZONTAL(tik_19_ENTRY_0, COLLI
 
 EvtScript EVS_BindExitTriggers = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_ttd, COLLIDER_FLAGS_UPPER_MASK)
-    BindTrigger(Ref(EVS_ExitPipe_mac_00_3), TRIGGER_WALL_PUSH, COLLIDER_ttd, 1, 0)
+    BindTrigger(EVS_ExitPipe_mac_00_3, TRIGGER_WALL_PUSH, COLLIDER_ttd, 1, 0)
     Return
     End
 };

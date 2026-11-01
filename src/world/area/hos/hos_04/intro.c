@@ -138,7 +138,7 @@ EvtScript EVS_ControlTwink = {
         Wait(100 * DT)
         Call(AnimateViewPitchPostHeist)
     EndThread
-    Call(LoadPath, 200 * DT, Ref(TwinkFlightPath), ARRAY_COUNT(TwinkFlightPath), EASING_LINEAR)
+    Call(LoadPath, 200 * DT, TwinkFlightPath, ARRAY_COUNT(TwinkFlightPath), EASING_LINEAR)
     Label(0)
     Call(GetNextPathPos)
     Call(SetNpcPos, NPC_Twink, LVar1, LVar2, LVar3)
@@ -163,9 +163,9 @@ EvtScript EVS_Intro_PostHeist = {
     Call(SetCamLeadPlayer, CAM_DEFAULT, false)
     Call(SetCamVfov, CAM_DEFAULT, 75)
     Call(SetPanTarget, CAM_DEFAULT, 0, 30, 0)
-    Call(LoadSettings, CAM_DEFAULT, Ref(CamSettings_PostHeist))
+    Call(LoadSettings, CAM_DEFAULT, CamSettings_PostHeist)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Thread
         Exec(EVS_ControlTwink)
     EndThread
@@ -180,9 +180,9 @@ EvtScript EVS_Intro_PreHeist_Unused = {
     Call(SetCamLeadPlayer, CAM_DEFAULT, false)
     Call(SetCamVfov, CAM_DEFAULT, 75)
     Call(SetPanTarget, CAM_DEFAULT, 0, 30, 0)
-    Call(LoadSettings, CAM_DEFAULT, Ref(CamSettings_PreHeist))
+    Call(LoadSettings, CAM_DEFAULT, CamSettings_PreHeist)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Thread
         Call(AnimateBoomLengthPreHeist)
     EndThread

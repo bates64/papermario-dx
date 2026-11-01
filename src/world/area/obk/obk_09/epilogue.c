@@ -10,8 +10,8 @@ EvtScript EVS_Scene_Epilogue = {
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerPos, NPC_DISPOSE_LOCATION)
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, true)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(15.0), Float(-8.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
+    Call(SetCamPitch, CAM_DEFAULT, 15.0, -8.0)
     Call(SetCamDistance, CAM_DEFAULT, 450)
     Call(SetCamPosA, CAM_DEFAULT, -280, 234)
     Call(SetCamPosB, CAM_DEFAULT, -135, 105)
@@ -52,7 +52,7 @@ EvtScript EVS_Scene_Epilogue = {
     Call(SetNpcAnimation, NPC_Bow, ANIM_WorldBow_CelebrateSlow)
     Wait(30)
     Call(FadeOutMusic, 0, 1000)
-    Call(GotoMap, Ref("omo_03"), omo_03_ENTRY_5)
+    Call(GotoMap, "omo_03", omo_03_ENTRY_5)
     Wait(100)
     Return
     End

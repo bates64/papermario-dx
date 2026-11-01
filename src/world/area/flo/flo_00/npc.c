@@ -22,16 +22,16 @@ EvtScript EVS_Scene_SunReturns = {
     Call(UseSettingsFrom, CAM_DEFAULT, 50, 0, -200)
     Call(SetPanTarget, CAM_DEFAULT, 50, 0, -200)
     Call(SetCamDistance, CAM_DEFAULT, 700)
-    Call(SetCamPitch, CAM_DEFAULT, Float(10.0), Float(-11.0))
+    Call(SetCamPitch, CAM_DEFAULT, 10.0, -11.0)
     Call(SetCamPosA, CAM_DEFAULT, -27, 0)
     Call(SetCamPosB, CAM_DEFAULT, 0, -50)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Wait(20)
     Call(ShowMessageAtWorldPos, MSG_CH6_00C4, 0, 50, -200)
     Wait(10)
-    Call(GotoMap, Ref("flo_07"), flo_07_ENTRY_1)
+    Call(GotoMap, "flo_07", flo_07_ENTRY_1)
     Wait(100)
     Return
     End
@@ -42,13 +42,13 @@ EvtScript EVS_Wisterwood_Introduction = {
     Call(UseSettingsFrom, CAM_DEFAULT, 0, 0, -170)
     Call(SetPanTarget, CAM_DEFAULT, 0, 0, -170)
     Call(SetCamDistance, CAM_DEFAULT, 300)
-    Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-8.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamPitch, CAM_DEFAULT, 17.0, -8.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(75 * DT)
     Call(ShowMessageAtScreenPos, MSG_CH6_0000, 160, 40)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
-    Call(SetPlayerJumpscale, Float(1.5))
+    Call(SetPlayerJumpscale, 1.5)
     Call(PlayerJump1, LVar0, LVar1, LVar2, 12 * DT)
     Wait(10 * DT)
     Call(DisablePartnerAI, false)
@@ -59,7 +59,7 @@ EvtScript EVS_Wisterwood_Introduction = {
     Call(InterpNpcYaw, NPC_PARTNER, 90, 0)
     Wait(15 * DT)
     Call(SetCamDistance, CAM_DEFAULT, 800)
-    Call(SetCamPitch, CAM_DEFAULT, Float(15.0), Float(-5.8))
+    Call(SetCamPitch, CAM_DEFAULT, 15.0, -5.8)
     Call(SetCamPosA, CAM_DEFAULT, -2, 0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(15 * DT)
@@ -70,32 +70,32 @@ EvtScript EVS_Wisterwood_Introduction = {
     Call(ContinueSpeech, NPC_Dummy_Wisterwood, -1, -1, 5, MSG_CH6_0002)
     Wait(10 * DT)
     Call(SetCamDistance, CAM_DEFAULT, 333)
-    Call(SetCamPitch, CAM_DEFAULT, Float(9.0), Float(-22.0))
+    Call(SetCamPitch, CAM_DEFAULT, 9.0, -22.0)
     Call(SetCamPosA, CAM_DEFAULT, -2, 0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(EnablePartnerAI)
     Call(SetPartnerForcedFollowMode, 1)
     Wait(10 * DT)
     Call(ShowMessageAtWorldPos, MSG_CH6_0003, 0, 70, -200)
-    Call(SetCamPitch, CAM_DEFAULT, Float(16.5), Float(-11.8))
+    Call(SetCamPitch, CAM_DEFAULT, 16.5, -11.8)
     Call(SetCamDistance, CAM_DEFAULT, 525)
     Call(SetCamPosA, CAM_DEFAULT, -14, 0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Wait(10 * DT)
     Call(SetPlayerAnimation, ANIM_MarioW2_SpeakUp)
     Wait(20 * DT)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Call(ShowMessageAtWorldPos, MSG_CH6_0004, 0, 50, -200)
-    Call(SetCamPitch, CAM_DEFAULT, Float(9.0), Float(-22.0))
+    Call(SetCamPitch, CAM_DEFAULT, 9.0, -22.0)
     Call(SetCamDistance, CAM_DEFAULT, 333)
     Call(SetCamPosA, CAM_DEFAULT, -2, 0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Wait(10 * DT)
     Call(ShowMessageAtWorldPos, MSG_CH6_0005, 0, 70, -200)
-    Call(ResetCam, CAM_DEFAULT, Float(90.0))
+    Call(ResetCam, CAM_DEFAULT, 90.0)
     Set(GB_StoryProgress, STORY_CH6_ARRIVED_AT_FLOWER_FIELDS)
     Call(SetPartnerForcedFollowMode, 0)
     Call(DisablePlayerInput, false)
@@ -177,17 +177,17 @@ EvtScript EVS_Interact_Wisterwood = {
 };
 
 EvtScript EVS_Wisterwood_Farewell = {
-    Call(AdjustCam, CAM_DEFAULT, Float(90.0), 0, 600, Float(21.0), Float(-12.0))
+    Call(AdjustCam, CAM_DEFAULT, 90.0, 0, 600, 21.0, -12.0)
     Wait(20 * DT)
     Call(ShowMessageAtWorldPos, MSG_CH6_000B, 0, 50, -200)
     Call(SetPanTarget, CAM_DEFAULT, 0, 0, -30)
     Call(SetCamDistance, CAM_DEFAULT, 250)
-    Call(SetCamPitch, CAM_DEFAULT, Float(25.0), Float(-25.0))
+    Call(SetCamPitch, CAM_DEFAULT, 25.0, -25.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Wait(10 * DT)
     Call(ShowMessageAtWorldPos, MSG_CH6_000C, 0, 50, -200)
-    Call(ResetCam, CAM_DEFAULT, Float(90.0))
+    Call(ResetCam, CAM_DEFAULT, 90.0)
     Return
     End
 };
@@ -312,35 +312,35 @@ EvtScript EVS_NpcInteract_Bubulb_04 = {
 
 EvtScript EVS_NpcInit_Bubulb_01 = {
     Set(AF_FLO00_ToggleDialogue_PinkBubulb, false)
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bubulb1))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Bubulb1)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Bubulb_02 = {
     Set(AF_FLO00_ToggleDialogue_PurpleBubulb, false)
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bubulb2))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Bubulb2)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Bubulb_03 = {
     Set(AF_FLO00_ToggleDialogue_GreenBubulb, false)
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bubulb_03))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Bubulb_03)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Bubulb_04 = {
     Set(AF_FLO00_ToggleDialogue_YellowBubulb, false)
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bubulb_04))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Bubulb_04)
     Return
     End
 };
 
 EvtScript EVS_NpcInteract_Tolielup = {
     IfEq(GF_FLO00_Met_Tolielup, false)
-        Call(AdjustCam, CAM_DEFAULT, Float(4.0), -30, 300, Float(20.0), Float(-9.5))
+        Call(AdjustCam, CAM_DEFAULT, 4.0, -30, 300, 20.0, -9.5)
         Set(GF_FLO00_Met_Tolielup, true)
     EndIf
     Switch(GB_StoryProgress)
@@ -403,13 +403,13 @@ EvtScript EVS_NpcInteract_Tolielup = {
             Call(SpeakToPlayer, NPC_SELF, ANIM_Tolielup_Talk, ANIM_Tolielup_Idle, 0, MSG_CH6_003A)
             Call(EndSpeech, NPC_SELF, ANIM_Tolielup_Laugh, ANIM_Tolielup_Laugh, 0)
     EndSwitch
-    Call(ResetCam, CAM_DEFAULT, Float(4.0))
+    Call(ResetCam, CAM_DEFAULT, 4.0)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Tolielup = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Tolielup))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Tolielup)
     Call(SetNpcCollisionSize, NPC_SELF, 65, 50)
     Return
     End
@@ -448,20 +448,20 @@ EvtScript EVS_Scene_RescuedKlevar = {
     Add(LVar0, -25)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamDistance, CAM_DEFAULT, Float(475.0))
+    Call(SetCamDistance, CAM_DEFAULT, 475.0)
     Call(SetCamPitch, CAM_DEFAULT, 18, -8)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(1)
     Call(WaitForPlayerInputEnabled)
     Call(DisablePlayerInput, true)
     Wait(40 * DT)
     Call(SpeakToPlayer, NPC_Klevar, ANIM_WorldKlevar_Talk, ANIM_WorldKlevar_Idle, SPEECH_FLAG_FIXED_ORIGIN, MSG_CH6_00D8)
-    Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
+    Call(SetCamDistance, CAM_DEFAULT, 300.0)
     Call(SetCamPitch, CAM_DEFAULT, 18, -9)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(4.0 / DT))
+    Call(SetCamSpeed, CAM_DEFAULT, 4.0 / DT)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(MakeLerp, 0, 360, 10 * DT, EASING_LINEAR)
     Loop(0)
         Call(UpdateLerp)
@@ -501,19 +501,19 @@ EvtScript EVS_Scene_RescuedKlevar = {
     Wait(10 * DT)
     Call(GetNpcPos, NPC_Klevar, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamDistance, CAM_DEFAULT, Float(250.0))
+    Call(SetCamDistance, CAM_DEFAULT, 250.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Wait(10 * DT)
     Call(SpeakToPlayer, NPC_Klevar, ANIM_WorldKlevar_Talk, ANIM_WorldKlevar_Idle, SPEECH_FLAG_FIXED_ORIGIN, MSG_CH6_00D9)
     Wait(10 * DT)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Add(LVar0, -25)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(4.0 / DT))
+    Call(SetCamDistance, CAM_DEFAULT, 300.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 4.0 / DT)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Wait(10 * DT)
     Call(SpeakToPlayer, NPC_Klevar, ANIM_WorldKlevar_Talk, ANIM_WorldKlevar_Idle, SPEECH_FLAG_FIXED_ORIGIN, MSG_CH6_00DA)
     Call(SetNpcFlagBits, NPC_Klevar, NPC_FLAG_IGNORE_CAMERA_FOR_YAW, true)
@@ -573,7 +573,7 @@ EvtScript EVS_NpcInit_Klevar = {
     IfNe(LVar1, 1)
         Call(GetEntryID, LVar0)
         IfEq(LVar0, flo_00_ENTRY_A)
-            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Klevar))
+            Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Klevar)
             Exec(EVS_Scene_RescuedKlevar)
         Else
             Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
@@ -606,7 +606,7 @@ EvtScript EVS_NpcInteract_Lakilulu = {
 
 EvtScript EVS_NpcInit_Lakilulu = {
     IfGe(GB_StoryProgress, STORY_CH6_BEGAN_PEACH_MISSION)
-        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Lakilulu))
+        Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Lakilulu)
         Call(SetNpcCollisionSize, NPC_SELF, 36, 28)
         Call(SetNpcPos, NPC_SELF, -200, 15, -300)
     Else

@@ -39,8 +39,8 @@ EvtScript EVS_Scene_MeetingGeneralGuy = {
     Wait(10 * DT)
     Call(UseSettingsFrom, CAM_DEFAULT, 250, -50, 10)
     Call(SetPanTarget, CAM_DEFAULT, 250, -50, 10)
-    Call(SetCamPosB, CAM_DEFAULT, Float(205.0), Float(11.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamPosB, CAM_DEFAULT, 205.0, 11.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(20 * DT)
     Call(SpeakToPlayer, NPC_GeneralGuy, ANIM_GeneralGuy_Whistle, ANIM_GeneralGuy_Idle, 0, MSG_CH4_0060)
@@ -48,7 +48,7 @@ EvtScript EVS_Scene_MeetingGeneralGuy = {
     Call(SpeakToPlayer, NPC_GeneralGuy, ANIM_GeneralGuy_Whistle, ANIM_GeneralGuy_Idle, 0, MSG_CH4_0061)
     Wait(20 * DT)
     Call(SpeakToPlayer, NPC_GeneralGuy, ANIM_GeneralGuy_Whistle, ANIM_GeneralGuy_Idle, 0, MSG_CH4_0062)
-    Call(SetPlayerSpeed, Float(3.0 / DT))
+    Call(SetPlayerSpeed, 3.0 / DT)
     Call(PlayerMoveTo, -200, 0, 0)
     Set(LVar0, NPC_ShyGuy_01)
     Loop(9)
@@ -76,20 +76,20 @@ EvtScript EVS_Scene_MeetingGeneralGuy = {
     EndThread
     // screen 'shaking' from charging army
     Loop(30)
-        Call(SetCamDistance, CAM_DEFAULT, Float(330.0))
+        Call(SetCamDistance, CAM_DEFAULT, 330.0)
         Wait(1)
-        Call(SetCamDistance, CAM_DEFAULT, Float(320.0))
+        Call(SetCamDistance, CAM_DEFAULT, 320.0)
         Wait(1)
     EndLoop
     Set(LVar0, NPC_ShyGuy_01)
-    UseBuf(Ref(BeginSurroundCrowdPositions))
+    UseBuf(BeginSurroundCrowdPositions)
     Loop(9)
         BufRead3(LVar1, LVar2, LVar3)
         Call(SetNpcSpeed, LVar0, LVar1)
         Call(SetNpcPos, LVar0, LVar2, 0, LVar3)
         Add(LVar0, 1)
     EndLoop
-    Call(ResetCam, CAM_DEFAULT, Float(90.0))
+    Call(ResetCam, CAM_DEFAULT, 90.0)
     Wait(20 * DT)
     // wait for battle to be over
     Label(5)
@@ -106,9 +106,9 @@ EvtScript EVS_Scene_MeetingGeneralGuy = {
     EndIf
     Call(InterpPlayerYaw, 90, 0)
     Call(SetPanTarget, CAM_DEFAULT, 150, 0, 0)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(2.5 / DT))
+    Call(SetCamSpeed, CAM_DEFAULT, 2.5 / DT)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(FadeOutMusic, 0, 3000 * DT)
     Exec(EVS_TrySpawningStarCard)
     Call(DisablePlayerInput, false)
@@ -246,12 +246,12 @@ EvtScript EVS_NpcIdle_ShyGuy = {
                 Thread
                     Call(GetSelfNpcID, LVar0)
                     Sub(LVar0, 0)
-                    UseBuf(Ref(FinalSurroundCrowdPositions))
+                    UseBuf(FinalSurroundCrowdPositions)
                     Loop(LVar0)
                         BufRead3(LVar1, LVar2, LVar3)
                     EndLoop
                     Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Run)
-                    Call(SetNpcSpeed, NPC_SELF, Float(3.0))
+                    Call(SetNpcSpeed, NPC_SELF, 3.0)
                     Call(NpcMoveTo, NPC_SELF, LVar1, LVar2, LVar3)
                 EndThread
                 Wait(60)
@@ -275,7 +275,7 @@ EvtScript EVS_BossDefeated_RunAway = {
     Call(GetSelfNpcID, LVar9)
     IfEq(LVar9, NPC_GeneralGuy)
         Call(PlaySound, SOUND_LOOP_SHY_GUY_CROWD_2)
-        UseBuf(Ref(GeneralGuyFleeScripts))
+        UseBuf(GeneralGuyFleeScripts)
         BufRead1(LVar1)
         UseBuf(LVar1)
         Call(SetNpcAnimation, LVar9, ANIM_GeneralGuy_Panic)
@@ -284,11 +284,11 @@ EvtScript EVS_BossDefeated_RunAway = {
             Switch(LVar2)
                 CaseEq(op_CS_MOVE)
                     BufRead2(LVar3, LVar4)
-                    Call(SetNpcSpeed, NPC_GeneralGuy, Float(8.0))
+                    Call(SetNpcSpeed, NPC_GeneralGuy, 8.0)
                     Call(NpcMoveTo, NPC_GeneralGuy, LVar3, LVar4, 0)
                 CaseEq(op_CS_JUMP)
                     BufRead3(LVar3, LVar4, LVar5)
-                    Call(SetNpcJumpscale, NPC_GeneralGuy, Float(1.0))
+                    Call(SetNpcJumpscale, NPC_GeneralGuy, 1.0)
                     Call(NpcJump0, NPC_GeneralGuy, LVar3, LVar4, LVar5, 10)
             EndSwitch
             IfEq(LVar2, op_CS_END)
@@ -300,7 +300,7 @@ EvtScript EVS_BossDefeated_RunAway = {
     Else
         Set(LVar0, LVar9)
         Sub(LVar0, 0)
-        UseBuf(Ref(CrowdFleeScripts))
+        UseBuf(CrowdFleeScripts)
         Loop(LVar0)
             BufRead1(LVar1)
         EndLoop
@@ -311,11 +311,11 @@ EvtScript EVS_BossDefeated_RunAway = {
                 CaseEq(op_CS_MOVE)
                     BufRead2(LVar3, LVar4)
                     Call(SetNpcAnimation, LVar9, ANIM_ShyGuy_Red_Dash)
-                    Call(SetNpcSpeed, LVar9, Float(8.0))
+                    Call(SetNpcSpeed, LVar9, 8.0)
                     Call(NpcMoveTo, LVar9, LVar3, LVar4, 0)
                 CaseEq(op_CS_JUMP)
                     BufRead3(LVar3, LVar4, LVar5)
-                    Call(SetNpcJumpscale, LVar9, Float(1.0))
+                    Call(SetNpcJumpscale, LVar9, 1.0)
                     Call(NpcJump0, LVar9, LVar3, LVar4, LVar5, 10)
                 CaseEq(op_CS_FALL)
                     Call(SetNpcRotationPivot, LVar9, 10)
@@ -337,7 +337,7 @@ EvtScript EVS_BossDefeated_RunAway = {
                     EndThread
                     Call(NpcJump0, LVar9, -220, 0, 63, 10)
                     Call(PlaySoundAtNpc, LVar9, SOUND_ACTOR_TRIP, SOUND_SPACE_DEFAULT)
-                    Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(1.0))
+                    Call(ShakeCam, CAM_DEFAULT, 0, 5, 1.0)
                     Wait(50)
                     Loop(2)
                         Call(PlaySoundAtNpc, LVar9, SOUND_ACTOR_TWITCH, SOUND_SPACE_DEFAULT)
@@ -375,7 +375,7 @@ EvtScript EVS_NpcDefeat_GeneralGuy = {
             Call(GetSelfNpcID, LVar0)
             IfEq(LVar0, NPC_GeneralGuy)
                 Call(SetEncounterStatusFlags, ENCOUNTER_FLAG_CANT_SKIP_WIN_DELAY, true)
-                UseBuf(Ref(FinalSurroundCrowdPositions))
+                UseBuf(FinalSurroundCrowdPositions)
                 Set(LVar0, NPC_ShyGuy_01)
                 Loop(9)
                     BufRead3(LVar1, LVar2, LVar3)
@@ -383,7 +383,7 @@ EvtScript EVS_NpcDefeat_GeneralGuy = {
                     Call(NpcFacePlayer, LVar0, 0)
                     Add(LVar0, 1)
                 EndLoop
-                UseBuf(Ref(PostBattleGeneralPosition))
+                UseBuf(PostBattleGeneralPosition)
                 BufRead3(LVar1, LVar2, LVar3)
                 Call(SetNpcPos, NPC_GeneralGuy, LVar1, LVar2, LVar3)
             EndIf
@@ -409,11 +409,11 @@ Vec3i InitialCrowdPositions[] = {
 
 EvtScript EVS_NpcInit_ShyGuy = {
     IfLt(GB_StoryProgress, STORY_CH4_DEFEATED_GENERAL_GUY)
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_ShyGuy))
-        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_GeneralGuy))
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_ShyGuy)
+        Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_GeneralGuy)
         Call(GetSelfNpcID, LVar0)
         Sub(LVar0, 0)
-        UseBuf(Ref(InitialCrowdPositions))
+        UseBuf(InitialCrowdPositions)
         Loop(LVar0)
             BufRead3(LVar1, LVar2, LVar3)
         EndLoop
@@ -429,7 +429,7 @@ EvtScript EVS_NpcInit_ShyGuy = {
 EvtScript EVS_NpcInit_GeneralGuy = {
     IfLt(GB_StoryProgress, STORY_CH4_DEFEATED_GENERAL_GUY)
         Exec(EVS_Scene_MeetingGeneralGuy)
-        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_GeneralGuy))
+        Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_GeneralGuy)
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf

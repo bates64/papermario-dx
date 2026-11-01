@@ -15,15 +15,15 @@ EvtScript EVS_ExitDoor_osr_02_0 = {
     Set(LVar3, DOOR_SWING_OUT)
     Exec(ExitSingleDoor)
     Wait(17)
-    Call(GotoMap, Ref("osr_02"), osr_02_ENTRY_0)
+    Call(GotoMap, "osr_02", osr_02_ENTRY_0)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitDoors_kpa_83_1), TRIGGER_WALL_PRESS_A, COLLIDER_deilittw, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoor_osr_02_0), TRIGGER_WALL_PRESS_A, COLLIDER_deilitte, 1, 0)
+    BindTrigger(EVS_ExitDoors_kpa_83_1, TRIGGER_WALL_PRESS_A, COLLIDER_deilittw, 1, 0)
+    BindTrigger(EVS_ExitDoor_osr_02_0, TRIGGER_WALL_PRESS_A, COLLIDER_deilitte, 1, 0)
     Return
     End
 };

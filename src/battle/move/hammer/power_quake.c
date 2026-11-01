@@ -57,14 +57,14 @@ EvtScript EVS_UseMove_Impl = {
         CaseGt(false)
             Call(StartRumble, BTL_RUMBLE_PLAYER_EXTREME)
             Thread
-                Call(ShakeCam, CAM_BATTLE, 0, 2, Float(0.24))
-                Call(ShakeCam, CAM_BATTLE, 0, 5, Float(1.2))
-                Call(ShakeCam, CAM_BATTLE, 0, 10, Float(2.4))
-                Call(ShakeCam, CAM_BATTLE, 0, 5, Float(1.2))
-                Call(ShakeCam, CAM_BATTLE, 0, 3, Float(0.84))
-                Call(ShakeCam, CAM_BATTLE, 0, 4, Float(0.48))
-                Call(ShakeCam, CAM_BATTLE, 0, 6, Float(0.12))
-                Call(ShakeCam, CAM_BATTLE, 0, 4, Float(0.06))
+                Call(ShakeCam, CAM_BATTLE, 0, 2, 0.24)
+                Call(ShakeCam, CAM_BATTLE, 0, 5, 1.2)
+                Call(ShakeCam, CAM_BATTLE, 0, 10, 2.4)
+                Call(ShakeCam, CAM_BATTLE, 0, 5, 1.2)
+                Call(ShakeCam, CAM_BATTLE, 0, 3, 0.84)
+                Call(ShakeCam, CAM_BATTLE, 0, 4, 0.48)
+                Call(ShakeCam, CAM_BATTLE, 0, 6, 0.12)
+                Call(ShakeCam, CAM_BATTLE, 0, 4, 0.06)
             EndThread
             Thread
                 Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
@@ -81,14 +81,14 @@ EvtScript EVS_UseMove_Impl = {
         CaseDefault
             Call(StartRumble, BTL_RUMBLE_PLAYER_EXTREME)
             Thread
-                Call(ShakeCam, CAM_BATTLE, 0, 2, Float(0.2))
-                Call(ShakeCam, CAM_BATTLE, 0, 5, Float(1.0))
-                Call(ShakeCam, CAM_BATTLE, 0, 10, Float(2.0))
-                Call(ShakeCam, CAM_BATTLE, 0, 5, Float(1.0))
-                Call(ShakeCam, CAM_BATTLE, 0, 3, Float(0.7))
-                Call(ShakeCam, CAM_BATTLE, 0, 4, Float(0.4))
-                Call(ShakeCam, CAM_BATTLE, 0, 6, Float(0.1))
-                Call(ShakeCam, CAM_BATTLE, 0, 4, Float(0.05))
+                Call(ShakeCam, CAM_BATTLE, 0, 2, 0.2)
+                Call(ShakeCam, CAM_BATTLE, 0, 5, 1.0)
+                Call(ShakeCam, CAM_BATTLE, 0, 10, 2.0)
+                Call(ShakeCam, CAM_BATTLE, 0, 5, 1.0)
+                Call(ShakeCam, CAM_BATTLE, 0, 3, 0.7)
+                Call(ShakeCam, CAM_BATTLE, 0, 4, 0.4)
+                Call(ShakeCam, CAM_BATTLE, 0, 6, 0.1)
+                Call(ShakeCam, CAM_BATTLE, 0, 4, 0.05)
             EndThread
             Thread
                 Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)

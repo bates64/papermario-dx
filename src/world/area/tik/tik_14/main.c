@@ -5,7 +5,7 @@
 EvtScript EVS_ExitWalk_tik_15_0 = EVT_EXIT_WALK(60, tik_14_ENTRY_1, "tik_15", tik_15_ENTRY_0);
 
 EvtScript EVS_GotoMap_tik_21_2 = {
-    Call(GotoMap, Ref("tik_21"), tik_21_ENTRY_2)
+    Call(GotoMap, "tik_21", tik_21_ENTRY_2)
     Wait(100)
     Return
     End
@@ -14,8 +14,8 @@ EvtScript EVS_GotoMap_tik_21_2 = {
 EvtScript EVS_ExitPipe_tik_21_2 = EVT_EXIT_PIPE_HORIZONTAL(tik_14_ENTRY_0, COLLIDER_o47, EVS_GotoMap_tik_21_2);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitPipe_tik_21_2), TRIGGER_WALL_PUSH, COLLIDER_o47, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_tik_15_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitPipe_tik_21_2, TRIGGER_WALL_PUSH, COLLIDER_o47, 1, 0)
+    BindTrigger(EVS_ExitWalk_tik_15_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o47, COLLIDER_FLAGS_UPPER_MASK)
     Return
     End
@@ -27,7 +27,7 @@ EvtScript EVS_EnterMap = {
         CaseEq(tik_14_ENTRY_0)
             EVT_ENTER_PIPE_HORIZONTAL(COLLIDER_o47, EVS_BindExitTriggers)
         CaseEq(tik_14_ENTRY_1)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
     EndSwitch
     Return

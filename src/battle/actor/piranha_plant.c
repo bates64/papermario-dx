@@ -107,9 +107,9 @@ OVL_DEF_ACTOR() = {
 };
 
 EvtScript EVS_Init = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
     Return
     End
 };
@@ -178,7 +178,7 @@ EvtScript EVS_HandleEvent = {
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_SmallPiranha_Hurt)
             ExecWait(EVS_Enemy_ShockHit)
-            Call(SetActorSpeed, ACTOR_SELF, Float(4.0))
+            Call(SetActorSpeed, ACTOR_SELF, 4.0)
             ExecWait(EVS_ReturnHome)
         CaseEq(EVENT_SHOCK_DEATH)
             SetConst(LVar0, PRT_MAIN)
@@ -303,7 +303,7 @@ EvtScript EVS_TakeTurn = {
         Add(LVar0, 20)
     EndIf
     Set(LVar1, 0)
-    Call(SetActorJumpGravity, ACTOR_SELF, Float(1.0))
+    Call(SetActorJumpGravity, ACTOR_SELF, 1.0)
     Call(SetActorSounds, ACTOR_SELF, ACTOR_SOUND_JUMP, SOUND_NONE, 0)
     Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(JumpToGoal, ACTOR_SELF, 20, false, false, false)
@@ -338,7 +338,7 @@ EvtScript EVS_TakeTurn = {
             Wait(15)
             Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
             Call(YieldTurn)
-            Call(SetActorSpeed, ACTOR_SELF, Float(4.0))
+            Call(SetActorSpeed, ACTOR_SELF, 4.0)
             ExecWait(EVS_ReturnHome)
             Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
             Call(UseIdleAnimation, ACTOR_SELF, true)
@@ -364,7 +364,7 @@ EvtScript EVS_TakeTurn = {
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_SmallPiranha_ResetSide)
             Wait(15)
             Call(YieldTurn)
-            Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
+            Call(SetActorSpeed, ACTOR_SELF, 6.0)
             ExecWait(EVS_ReturnHome)
         EndCaseGroup
     EndSwitch

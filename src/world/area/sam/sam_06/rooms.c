@@ -137,38 +137,38 @@ EvtScript EVS_SetupRooms = {
     Call(SetGroupVisibility, MODEL_kh_naiso, MODEL_GROUP_HIDDEN)
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
-        Ref(EVS_SetDoorRot_ToadHouse),
-        Ref(EVS_SetWallRot_ToadHouse),
+        EVS_SetDoorRot_ToadHouse,
+        EVS_SetWallRot_ToadHouse,
         nullptr,
-        Ref(EVS_RoomListener_ToadHouse),
+        EVS_RoomListener_ToadHouse,
         COLLIDER_kh_d1,
         COLLIDER_kh_d2,
         MODEL_kinohuse,
-        Ref(InteriorNPCs_ToadHouse))
+        InteriorNPCs_ToadHouse)
     // merle's house
     Call(SetGroupVisibility, MODEL_k_naiso, MODEL_GROUP_HIDDEN)
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
-        Ref(EVS_SetDoorRot_MerleHouse),
-        Ref(EVS_SetWallRot_MerleHouse),
+        EVS_SetDoorRot_MerleHouse,
+        EVS_SetWallRot_MerleHouse,
         nullptr,
-        Ref(EVS_RoomListener_MerleHouse),
+        EVS_RoomListener_MerleHouse,
         COLLIDER_k_d1,
         COLLIDER_k_d2,
         MODEL_k,
-        Ref(InteriorNPCs_MerleHouse))
+        InteriorNPCs_MerleHouse)
     // cooking house
     Call(SetGroupVisibility, MODEL_h_naiso, MODEL_GROUP_HIDDEN)
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
-        Ref(EVS_SetDoorRot_CookHouse),
-        Ref(EVS_SetWallRot_CookHouse),
+        EVS_SetDoorRot_CookHouse,
+        EVS_SetWallRot_CookHouse,
         nullptr,
-        Ref(EVS_RoomListener_CookHouse),
+        EVS_RoomListener_CookHouse,
         COLLIDER_h_doa1,
         COLLIDER_h_doa2,
         MODEL_hakun,
-        Ref(InteriorNPCs_CookHouse))
+        InteriorNPCs_CookHouse)
     Return
     End
 };

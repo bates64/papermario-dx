@@ -19,7 +19,7 @@ EvtScript EVS_ExitStarWarp = {
     Call(DisablePlayerPhysics, true)
     Call(DisablePartnerAI, false)
     ExecWait(EVS_DescendStarWarp)
-    Call(GotoMap, Ref("hos_01"), hos_01_ENTRY_1)
+    Call(GotoMap, "hos_01", hos_01_ENTRY_1)
     Wait(100)
     Return
     End
@@ -30,9 +30,9 @@ EvtScript EVS_ExitWalk_hos_03_0 = EVT_EXIT_WALK(60, hos_02_ENTRY_1, "hos_03", ho
 EvtScript EVS_BindExitTriggers = {
     Call(GetEntryID, LVar0)
     IfNe(LVar0, hos_02_ENTRY_0)
-        BindTrigger(Ref(EVS_ExitStarWarp), TRIGGER_FLOOR_TOUCH, COLLIDER_deiliw, 1, 0)
+        BindTrigger(EVS_ExitStarWarp, TRIGGER_FLOOR_TOUCH, COLLIDER_deiliw, 1, 0)
     EndIf
-    BindTrigger(Ref(EVS_ExitWalk_hos_03_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitWalk_hos_03_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     Return
     End
 };
@@ -44,10 +44,10 @@ EvtScript EVS_EnterStarWarp = {
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(UseSettingsFrom, CAM_DEFAULT, -1105, -171, 225)
     Call(SetPanTarget, CAM_DEFAULT, -1105, -171, 225)
-    Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamDistance, CAM_DEFAULT, 300.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Set(LVar2, 360)
     Call(MakeLerp, -400, -171, 60, EASING_QUADRATIC_OUT)
     Loop(0)
@@ -88,7 +88,7 @@ EvtScript EVS_EnterStarWarp = {
     Call(SetMusic, 0, SONG_STAR_WAY_OPENS, BGM_VARIATION_3, VOL_LEVEL_FULL)
     Call(DisablePlayerInput, false)
     Call(AwaitPlayerLeave, -1105, 225, 40)
-    BindTrigger(Ref(EVS_ExitStarWarp), TRIGGER_FLOOR_TOUCH, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitStarWarp, TRIGGER_FLOOR_TOUCH, COLLIDER_deiliw, 1, 0)
     Return
     End
 };
@@ -99,7 +99,7 @@ EvtScript EVS_Main = {
     Call(SetSurfaceWalkEffect, SURFACE_WALK_FX_SPARKLE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Set(GF_MAP_StarWay, true)
-    Call(MakeNpcs, false, Ref(DefaultNPCs))
+    Call(MakeNpcs, false, DefaultNPCs)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(hos_02_ENTRY_0)
@@ -109,7 +109,7 @@ EvtScript EVS_Main = {
             EndThread
         CaseEq(hos_02_ENTRY_1)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilite, COLLIDER_FLAGS_UPPER_MASK)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
     EndSwitch
     Exec(EVS_SetupModelFX)

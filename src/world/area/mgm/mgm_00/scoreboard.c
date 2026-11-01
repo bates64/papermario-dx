@@ -224,8 +224,8 @@ EvtScript EVS_OnInteract_SmashRecords = {
 };
 
 EvtScript EVS_BindInteractTriggers = {
-    BindTrigger(Ref(EVS_OnInteract_JumpRecords), TRIGGER_WALL_PRESS_A, COLLIDER_score1, 1, 0)
-    BindTrigger(Ref(EVS_OnInteract_SmashRecords), TRIGGER_WALL_PRESS_A, COLLIDER_score2, 1, 0)
+    BindTrigger(EVS_OnInteract_JumpRecords, TRIGGER_WALL_PRESS_A, COLLIDER_score1, 1, 0)
+    BindTrigger(EVS_OnInteract_SmashRecords, TRIGGER_WALL_PRESS_A, COLLIDER_score2, 1, 0)
     Return
     End
 };

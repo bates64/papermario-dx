@@ -24,7 +24,7 @@ EvtScript EVS_NpcAI_ShyGuy_03 = {
     Call(SetNpcAnimation, NPC_ShyGuy_02, ANIM_ShyGuy_Red_Hurt)
     Wait(10)
     Call(SetNpcAnimation, NPC_ShyGuy_02, ANIM_ShyGuy_Red_Run)
-    Call(SetNpcJumpscale, NPC_ShyGuy_02, Float(1.0))
+    Call(SetNpcJumpscale, NPC_ShyGuy_02, 1.0)
     Call(PlaySoundAtNpc, NPC_ShyGuy_02, SOUND_NPC_JUMP, SOUND_SPACE_DEFAULT)
     Call(NpcJump0, NPC_ShyGuy_02, 400, 20, -300, 20)
     Call(NpcFacePlayer, NPC_ShyGuy_02, 0)
@@ -35,20 +35,20 @@ EvtScript EVS_NpcAI_ShyGuy_03 = {
     Call(ShowSweat, NPC_ShyGuy_02, 1, 45, EMOTER_NPC, 0, 0, 0, 0, 20)
     Wait(10)
     Thread
-        Call(SetPlayerSpeed, Float(2.0))
+        Call(SetPlayerSpeed, 2.0)
         Call(PlayerMoveTo, 410, -340, 0)
     EndThread
     Set(LVar0, 22)
     Call(PlaySoundAtNpc, LVar0, SOUND_SHY_GUY_RUN_AWAY, SOUND_SPACE_DEFAULT)
     ExecGetTID(EVS_ShyGuy_PlayRunningSounds, LVarA)
-    Call(SetNpcSpeed, NPC_ShyGuy_02, Float(8.0))
+    Call(SetNpcSpeed, NPC_ShyGuy_02, 8.0)
     Call(NpcMoveTo, NPC_ShyGuy_02, 170, -140, 0)
     KillThread(LVarA)
     Call(SetNpcPos, NPC_ShyGuy_02, NPC_DISPOSE_LOCATION)
     Call(SetNpcPos, NPC_Toad_02, NPC_DISPOSE_LOCATION)
     Call(SetNpcPos, NPC_Toad_01, 170, 20, -140)
     Call(SetNpcFlagBits, NPC_Toad_01, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
-    Call(SetNpcSpeed, NPC_Toad_01, Float(8.0))
+    Call(SetNpcSpeed, NPC_Toad_01, 8.0)
     Call(SetNpcAnimation, NPC_Toad_01, ANIM_HarryT_Run)
     Call(NpcMoveTo, NPC_Toad_01, 430, -373, 0)
     Call(SetNpcPos, NPC_Toad_01, 430, 20, -373)
@@ -95,7 +95,7 @@ EvtScript EVS_NpcHit_ShyGuy_03 = {
     Set(GF_MAC00_ShyGuyChasedFromShop, true)
     Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     Call(SetEnemyFlagBits, NPC_ShyGuy_02, ENEMY_FLAG_CANT_INTERACT, true)
-    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_ShyGuy_03))
+    Call(BindNpcAI, NPC_SELF, EVS_NpcAI_ShyGuy_03)
     Return
     End
 };
@@ -112,7 +112,7 @@ EvtScript EVS_NpcInit_ShyGuy_02 = {
             IfEq(GF_MAC00_ShyGuyChasedFromShop, false)
                 Set(GF_MAC01_ShyGuyTookOverShop, true)
                 Call(SetNpcPos, NPC_SELF, 430, 20, -373)
-                Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ShyGuy_02))
+                Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_ShyGuy_02)
                 Return
             EndIf
     EndSwitch
@@ -135,7 +135,7 @@ EvtScript EVS_NpcInit_GardenShyGuy1 = {
                 Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
                 Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, true)
                 Call(SetNpcPos, NPC_SELF, 430, 20, -373)
-                Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_ShyGuy_03))
+                Call(BindNpcHit, NPC_SELF, EVS_NpcHit_ShyGuy_03)
                 Return
             EndIf
     EndSwitch
@@ -163,7 +163,7 @@ EvtScript EVS_NpcInit_Toad_01 = {
                 Call(SetNpcPos, NPC_Toad_01, NPC_DISPOSE_LOCATION)
             EndIf
     EndSwitch
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_01))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad_01)
     Return
     End
 };
@@ -173,7 +173,7 @@ EvtScript EVS_NpcInit_Toad_02 = {
         CaseRange(STORY_CH3_STAR_SPIRIT_DEPARTED, STORY_CH4_STAR_SPIRIT_RESCUED)
             IfEq(GF_MAC00_ShyGuyChasedFromShop, false)
                 Call(SetNpcPos, NPC_SELF, 105, 0, -40)
-                Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_02))
+                Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad_02)
                 Return
             EndIf
     EndSwitch

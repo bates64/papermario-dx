@@ -33,11 +33,11 @@ EvtScript EVS_ExitDoors_kpa_32_0 = {
     Call(DisablePlayerInput, true)
     Set(LVar0, kpa_81_ENTRY_2)
     Set(LVar1, COLLIDER_o166)
-    Set(LVar2, Ref(RightDoorModels))
-    Set(LVar3, Ref(LeftDoorModels))
+    Set(LVar2, RightDoorModels)
+    Set(LVar3, LeftDoorModels)
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, Ref("kpa_32"), kpa_32_ENTRY_0)
+    Call(GotoMap, "kpa_32", kpa_32_ENTRY_0)
     Wait(100)
     Return
     End
@@ -46,10 +46,10 @@ EvtScript EVS_ExitDoors_kpa_32_0 = {
 EvtScript EVS_ExitWalk_kpa_04_1 = EVT_EXIT_WALK(60, kpa_81_ENTRY_3, "kpa_04", kpa_04_ENTRY_1);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitDoors_kpa_50_1), TRIGGER_WALL_PRESS_A, COLLIDER_deilittw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_kpa_04_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deilin, 1, 0)
+    BindTrigger(EVS_ExitDoors_kpa_50_1, TRIGGER_WALL_PRESS_A, COLLIDER_deilittw, 1, 0)
+    BindTrigger(EVS_ExitWalk_kpa_04_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deilin, 1, 0)
     IfNe(GB_KPA81_BowserDoorState, 0)
-        BindTrigger(Ref(EVS_ExitDoors_kpa_32_0), TRIGGER_WALL_PRESS_A, COLLIDER_o166, 1, 0)
+        BindTrigger(EVS_ExitDoors_kpa_32_0, TRIGGER_WALL_PRESS_A, COLLIDER_o166, 1, 0)
     EndIf
     Return
     End
@@ -66,12 +66,12 @@ EvtScript EVS_EnterMap = {
             Exec(EVS_BindExitTriggers)
         CaseEq(kpa_81_ENTRY_2)
             Set(LVar0, kpa_81_ENTRY_2)
-            Set(LVar2, Ref(LeftDoorModels))
-            Set(LVar3, Ref(RightDoorModels))
+            Set(LVar2, LeftDoorModels)
+            Set(LVar3, RightDoorModels)
             ExecWait(BaseEnterDoor)
             Exec(EVS_BindExitTriggers)
         CaseEq(kpa_81_ENTRY_3)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
     EndSwitch
     Return
@@ -103,14 +103,14 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_BOWSERS_CASTLE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Call(MakeNpcs, true, DefaultNPCs)
     IfNe(GB_KPA81_BowserDoorState, 0)
         Call(GetEntryID, LVar0)
         Switch(LVar0)
             CaseEq(kpa_81_ENTRY_0)
-                BindTrigger(Ref(EVS_UnusedMoveStatue), TRIGGER_WALL_PRESS_A, COLLIDER_o146, 1, 0)
+                BindTrigger(EVS_UnusedMoveStatue, TRIGGER_WALL_PRESS_A, COLLIDER_o146, 1, 0)
             CaseEq(kpa_81_ENTRY_2)
-                BindTrigger(Ref(EVS_UnusedMoveStatue), TRIGGER_WALL_PRESS_A, COLLIDER_o146, 1, 0)
+                BindTrigger(EVS_UnusedMoveStatue, TRIGGER_WALL_PRESS_A, COLLIDER_o146, 1, 0)
             CaseEq(kpa_81_ENTRY_3)
         EndSwitch
     EndIf

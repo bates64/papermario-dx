@@ -81,8 +81,8 @@ ShopOwner Owner = {
 };
 
 EvtScript EVS_SetupShop = {
-    Call(MakeShop, Ref(ItemPositions), Ref(Inventory), Ref(PriceList), 0)
-    Call(MakeShopOwner, Ref(Owner))
+    Call(MakeShop, ItemPositions, Inventory, PriceList, 0)
+    Call(MakeShopOwner, Owner)
     Return
     End
 };

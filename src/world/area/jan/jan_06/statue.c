@@ -6,8 +6,8 @@ ITEM_LIST(JadeRavenList, ITEM_JADE_RAVEN);
 
 EvtScript EVS_MoveStatue = {
     Thread
-        Call(ShakeCam, CAM_DEFAULT, 0, 25, Float(0.8))
-        Call(ShakeCam, CAM_DEFAULT, 0, 25, Float(0.7))
+        Call(ShakeCam, CAM_DEFAULT, 0, 25, 0.8)
+        Call(ShakeCam, CAM_DEFAULT, 0, 25, 0.7)
     EndThread
     Call(MakeLerp, 1, 5, 50, EASING_CUBIC_IN)
     Set(LVar2, 1)
@@ -25,9 +25,9 @@ EvtScript EVS_MoveStatue = {
         EndIf
     EndLoop
     Thread
-        Call(ShakeCam, CAM_DEFAULT, 0, 25, Float(0.6))
-        Call(ShakeCam, CAM_DEFAULT, 0, 25, Float(0.5))
-        Call(ShakeCam, CAM_DEFAULT, 0, 25, Float(0.4))
+        Call(ShakeCam, CAM_DEFAULT, 0, 25, 0.6)
+        Call(ShakeCam, CAM_DEFAULT, 0, 25, 0.5)
+        Call(ShakeCam, CAM_DEFAULT, 0, 25, 0.4)
     EndThread
     Call(MakeLerp, 5, 0, 75, EASING_CUBIC_OUT)
     Loop(0)
@@ -78,7 +78,7 @@ EvtScript EVS_Scene_MoveStatue = {
     Call(PlaySoundAt, SOUND_LOOP_MOVE_STATUE, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
     ExecGetTID(PlayMovingStatueSound, LVar9)
     Thread
-        Call(ShakeCam, CAM_DEFAULT, 0, 180, Float(0.4))
+        Call(ShakeCam, CAM_DEFAULT, 0, 180, 0.4)
     EndThread
     Call(MakeLerp, 0, -100, 180, EASING_CUBIC_IN)
     Loop(0)
@@ -91,7 +91,7 @@ EvtScript EVS_Scene_MoveStatue = {
             BreakLoop
         EndIf
     EndLoop
-    Call(ShakeCam, CAM_DEFAULT, 0, 15, Float(1.0))
+    Call(ShakeCam, CAM_DEFAULT, 0, 15, 1.0)
     KillThread(LVar9)
     Call(StopSound, SOUND_LOOP_MOVE_STATUE)
     Call(StopSound, SOUND_LOOP_MOVE_LARGE_STATUE)
@@ -99,7 +99,7 @@ EvtScript EVS_Scene_MoveStatue = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o247, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o180, COLLIDER_FLAGS_UPPER_MASK)
     Wait(10)
-    Call(ResetCam, CAM_DEFAULT, Float(90.0))
+    Call(ResetCam, CAM_DEFAULT, 90.0)
     Return
     End
 };
@@ -139,7 +139,7 @@ EvtScript ItemPrompt_Statue = {
 
 EvtScript EVS_SetupStatue = {
     IfLt(GB_StoryProgress, STORY_CH5_MOVED_RAVEN_STATUE)
-        BindPadlock(Ref(ItemPrompt_Statue), TRIGGER_WALL_PRESS_A, COLLIDER_o166, Ref(JadeRavenList), 0, 1)
+        BindPadlock(ItemPrompt_Statue, TRIGGER_WALL_PRESS_A, COLLIDER_o166, JadeRavenList, 0, 1)
     EndIf
     Return
     End

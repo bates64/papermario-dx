@@ -125,23 +125,23 @@ BombTrigger BombPos_Tree1 = {
 };
 
 EvtScript EVS_SetupFoliage = {
-    Set(LVar0, Ref(SearchBush_Bush1))
-    BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o332, 1, 0)
-    Set(LVar0, Ref(SearchBush_Bush2))
-    BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o427, 1, 0)
-    Set(LVar0, Ref(SearchBush_Bush3))
-    BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o458, 1, 0)
-    Set(LVar0, Ref(SearchBush_Bush4))
-    BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o459, 1, 0)
+    Set(LVar0, SearchBush_Bush1)
+    BindTrigger(EVS_SearchBush, TRIGGER_WALL_PRESS_A, COLLIDER_o332, 1, 0)
+    Set(LVar0, SearchBush_Bush2)
+    BindTrigger(EVS_SearchBush, TRIGGER_WALL_PRESS_A, COLLIDER_o427, 1, 0)
+    Set(LVar0, SearchBush_Bush3)
+    BindTrigger(EVS_SearchBush, TRIGGER_WALL_PRESS_A, COLLIDER_o458, 1, 0)
+    Set(LVar0, SearchBush_Bush4)
+    BindTrigger(EVS_SearchBush, TRIGGER_WALL_PRESS_A, COLLIDER_o459, 1, 0)
     Exec(EVS_Bush4_HideFlowers)
-    Set(LVar0, Ref(SearchBush_Bush5))
-    BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o460, 1, 0)
+    Set(LVar0, SearchBush_Bush5)
+    BindTrigger(EVS_SearchBush, TRIGGER_WALL_PRESS_A, COLLIDER_o460, 1, 0)
     Exec(EVS_Bush5_HideFlowers)
-    Set(LVar0, Ref(SearchBush_Bush6))
-    BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o461, 1, 0)
-    Set(LVar0, Ref(ShakeTree_Tree1))
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_WALL_HAMMER, COLLIDER_o346, 1, 0)
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(BombPos_Tree1), 1, 0)
+    Set(LVar0, SearchBush_Bush6)
+    BindTrigger(EVS_SearchBush, TRIGGER_WALL_PRESS_A, COLLIDER_o461, 1, 0)
+    Set(LVar0, ShakeTree_Tree1)
+    BindTrigger(EVS_ShakeTree, TRIGGER_WALL_HAMMER, COLLIDER_o346, 1, 0)
+    BindTrigger(EVS_ShakeTree, TRIGGER_POINT_BOMB, BombPos_Tree1, 1, 0)
     Return
     End
 };

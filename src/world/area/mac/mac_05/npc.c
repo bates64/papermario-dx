@@ -296,7 +296,7 @@ EvtScript EVS_UpdateWhaleCamera = {
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     IfEq(LVar0, 0)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+        Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Else
         Call(SetCamSpeed, CAM_DEFAULT, 1)
     EndIf
@@ -359,7 +359,7 @@ EvtScript EVS_Scene_FuzzipedeDefeated = {
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamDistance, CAM_DEFAULT, 400)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Wait(20)
     Call(SpeakToPlayer, NPC_Whale, XNIM_Whale_Talk, XNIM_Whale_Idle, 5, MSG_MAC_Port_009F)
     Wait(20)
@@ -371,7 +371,7 @@ EvtScript EVS_Scene_FuzzipedeDefeated = {
     Call(SetCamSpeed, CAM_DEFAULT, 3)
     Wait(10)
     Thread
-        Call(SetPlayerJumpscale, Float(0.5))
+        Call(SetPlayerJumpscale, 0.5)
         Call(SetPlayerAnimation, ANIM_Mario1_Flail)
         Call(SetPlayerPos, -120, 24, 375)
         Call(PlaySoundAtPlayer, SOUND_WHALE_EJECT, SOUND_SPACE_DEFAULT)
@@ -382,7 +382,7 @@ EvtScript EVS_Scene_FuzzipedeDefeated = {
     Thread
         Wait(5)
         Call(SetNpcPos, NPC_PARTNER, -120, 24, 375)
-        Call(SetNpcJumpscale, NPC_PARTNER, Float(0.5))
+        Call(SetNpcJumpscale, NPC_PARTNER, 0.5)
         Call(PlaySoundAtNpc, NPC_PARTNER, SOUND_WHALE_EJECT, SOUND_SPACE_DEFAULT)
         Call(NpcJump0, NPC_PARTNER, -345, 0, 372, 80)
         Call(ClearPartnerMoveHistory, NPC_PARTNER)
@@ -392,7 +392,7 @@ EvtScript EVS_Scene_FuzzipedeDefeated = {
     Thread
         Wait(10)
         Call(SetNpcPos, NPC_Fuzzipede, -120, 24, 375)
-        Call(SetNpcJumpscale, NPC_Fuzzipede, Float(0.5))
+        Call(SetNpcJumpscale, NPC_Fuzzipede, 0.5)
         Call(PlaySoundAtNpc, NPC_Fuzzipede, SOUND_WHALE_EJECT, SOUND_SPACE_DEFAULT)
         Call(NpcJump0, NPC_Fuzzipede, -280, -10, 372, 90)
         Call(NpcFaceNpc, NPC_Fuzzipede, NPC_Whale, 0)
@@ -400,7 +400,7 @@ EvtScript EVS_Scene_FuzzipedeDefeated = {
     Wait(50)
     Thread
         Wait(15)
-        Call(SetNpcJumpscale, NPC_Kolorado, Float(0.1))
+        Call(SetNpcJumpscale, NPC_Kolorado, 0.1)
         Call(NpcJump0, NPC_Kolorado, -380, -10, 372, 20)
         Call(NpcFaceNpc, NPC_Kolorado, NPC_Whale, 0)
     EndThread
@@ -422,7 +422,7 @@ EvtScript EVS_Scene_FuzzipedeDefeated = {
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamDistance, CAM_DEFAULT, 400)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(SpeakToPlayer, NPC_Fuzzipede, ANIM_Fuzzipede_Talk, ANIM_Fuzzipede_Idle, 5, MSG_MAC_Port_00A0)
     Call(SpeakToPlayer, NPC_Whale, XNIM_Whale_Talk, XNIM_Whale_Idle, 5, MSG_MAC_Port_00A1)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -433,10 +433,10 @@ EvtScript EVS_Scene_FuzzipedeDefeated = {
     Div(LVar0, 2)
     Div(LVar1, 2)
     Div(LVar2, 2)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(SetCamDistance, CAM_DEFAULT, 475)
-    Call(SetCamPosA, CAM_DEFAULT, Float(-63.5), 0)
-    Call(SetCamPitch, CAM_DEFAULT, Float(18.5), Float(-5.0))
+    Call(SetCamPosA, CAM_DEFAULT, -63.5, 0)
+    Call(SetCamPitch, CAM_DEFAULT, 18.5, -5.0)
     Call(SpeakToNpc, NPC_Fuzzipede, ANIM_Fuzzipede_Talk, ANIM_Fuzzipede_Idle, 0, NPC_Whale, MSG_MAC_Port_00A2)
     Call(NpcFacePlayer, NPC_Fuzzipede, 0)
     Wait(10)
@@ -472,7 +472,7 @@ EvtScript EVS_Scene_FuzzipedeDefeated = {
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamDistance, CAM_DEFAULT, 300)
     Call(SetCamPosA, CAM_DEFAULT, 0, 0)
-    Call(SetCamPitch, CAM_DEFAULT, Float(18.0), Float(-7.0))
+    Call(SetCamPitch, CAM_DEFAULT, 18.0, -7.0)
     Wait(5)
     Thread
         Wait(5)
@@ -514,10 +514,10 @@ EvtScript EVS_Scene_FuzzipedeDefeated = {
     Div(LVar1, 2)
     Div(LVar2, 2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(SetCamDistance, CAM_DEFAULT, 475)
-    Call(SetCamPosA, CAM_DEFAULT, Float(-63.5), 0)
-    Call(SetCamPitch, CAM_DEFAULT, Float(18.5), Float(-5.0))
+    Call(SetCamPosA, CAM_DEFAULT, -63.5, 0)
+    Call(SetCamPitch, CAM_DEFAULT, 18.5, -5.0)
     Wait(5)
     Thread
         Wait(5)
@@ -527,7 +527,7 @@ EvtScript EVS_Scene_FuzzipedeDefeated = {
     EndThread
     Call(SpeakToPlayer, NPC_Whale, XNIM_Whale_Talk, XNIM_Whale_Idle, 5, MSG_MAC_Port_00AB)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(1.5))
+    Call(SetCamSpeed, CAM_DEFAULT, 1.5)
     Thread
         Wait(100)
         Call(SetCamSpeed, CAM_DEFAULT, 1)
@@ -579,18 +579,18 @@ EvtScript EVS_Scene_ArriveByWhale = {
         Call(SetNpcAnimation, NPC_Kolorado, ANIM_Kolorado_Run)
         Call(GetWhaleRiderTargetPos, WHALE_TARGET_DISMOUNT_KOLORADO, LVar0, LVar1, LVar2)
         Call(PlaySoundAtNpc, NPC_Kolorado, SOUND_NPC_JUMP, SOUND_SPACE_DEFAULT)
-        Call(SetNpcJumpscale, NPC_Kolorado, Float(1.0))
+        Call(SetNpcJumpscale, NPC_Kolorado, 1.0)
         Call(NpcJump0, NPC_Kolorado, LVar0, LVar1, LVar2, 20)
         Call(SetNpcAnimation, NPC_Kolorado, ANIM_Kolorado_Idle)
     EndIf
     Call(GetWhaleRiderTargetPos, WHALE_TARGET_DISMOUNT_PLAYER, LVar0, LVar1, LVar2)
     Exec(EVS_AnimatePlayerJump)
-    Call(SetPlayerJumpscale, Float(1.0))
+    Call(SetPlayerJumpscale, 1.0)
     Call(PlayerJump, LVar0, LVar1, LVar2, 20)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_RUN)
     Call(GetWhaleRiderTargetPos, WHALE_TARGET_DISMOUNT_PARTNER, LVar0, LVar1, LVar2)
-    Call(SetNpcJumpscale, NPC_PARTNER, Float(1.0))
+    Call(SetNpcJumpscale, NPC_PARTNER, 1.0)
     Call(NpcJump0, NPC_PARTNER, LVar0, LVar1, LVar2, 20)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_tt9, COLLIDER_FLAGS_UPPER_MASK)
@@ -605,7 +605,7 @@ EvtScript EVS_Scene_ArriveByWhale = {
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, false)
     Switch(GB_StoryProgress)
@@ -626,7 +626,7 @@ EvtScript EVS_Scene_ArriveByWhale = {
 
 EvtScript EVS_EjectPlayerAndPartner = {
     Thread
-        Call(SetPlayerJumpscale, Float(1.0))
+        Call(SetPlayerJumpscale, 1.0)
         Call(SetPlayerAnimation, ANIM_Mario1_Flail)
         Call(PlayerJump1, -310, -10, 372, 30)
         Call(SetPlayerActionState, ACTION_STATE_LAND)
@@ -637,7 +637,7 @@ EvtScript EVS_EjectPlayerAndPartner = {
         Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, true)
         Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
         Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
-        Call(SetNpcJumpscale, NPC_PARTNER, Float(1.0))
+        Call(SetNpcJumpscale, NPC_PARTNER, 1.0)
         Call(NpcJump0, NPC_PARTNER, -345, -10, 372, 30)
         Call(NpcFaceNpc, NPC_PARTNER, NPC_Whale, 0)
         Call(ClearPartnerMoveHistory, NPC_PARTNER)
@@ -656,7 +656,7 @@ EvtScript EVS_MovePlayerAndPartnerOffWhale = {
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, true)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(NpcMoveTo, NPC_PARTNER, -345, 372, 30)
-    Call(NpcFaceNpc, NPC_PARTNER, NPC_Whale, Float(1.0))
+    Call(NpcFaceNpc, NPC_PARTNER, NPC_Whale, 1.0)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
     Call(ClearPartnerMoveHistory, NPC_PARTNER)
     Call(EnablePartnerAI)
@@ -721,7 +721,7 @@ EvtScript EVS_AwaitWhaleWakeupHit = {
                     EndLoop
                     Wait(10)
                     Thread
-                        Call(SetPlayerJumpscale, Float(1.0))
+                        Call(SetPlayerJumpscale, 1.0)
                         Call(GetPlayerPos, LVar2, LVar3, LVar4)
                         Call(SetPlayerAnimation, ANIM_Mario1_Flail)
                         Call(PlayerJump1, LVar2, LVar3, LVar4, 10)
@@ -815,7 +815,7 @@ EvtScript EVS_Scene_WakeWhale = {
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamDistance, CAM_DEFAULT, 300)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Thread
         Wait(5)
         Call(NpcFaceNpc, NPC_Kolorado, NPC_Whale, 0)
@@ -833,8 +833,8 @@ EvtScript EVS_Scene_WakeWhale = {
     Div(LVar2, 2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamDistance, CAM_DEFAULT, 475)
-    Call(SetCamPosA, CAM_DEFAULT, Float(-63.5), 0)
-    Call(SetCamPitch, CAM_DEFAULT, Float(18.5), Float(-5.0))
+    Call(SetCamPosA, CAM_DEFAULT, -63.5, 0)
+    Call(SetCamPitch, CAM_DEFAULT, 18.5, -5.0)
     Thread
         Wait(5)
         Call(NpcFaceNpc, NPC_Kolorado, NPC_Whale, 0)
@@ -854,7 +854,7 @@ EvtScript EVS_Scene_WakeWhale = {
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamDistance, CAM_DEFAULT, 300)
     Call(SetCamPosA, CAM_DEFAULT, 0, 0)
-    Call(SetCamPitch, CAM_DEFAULT, Float(18.0), Float(-7.0))
+    Call(SetCamPitch, CAM_DEFAULT, 18.0, -7.0)
     Thread
         Wait(5)
         Call(NpcFaceNpc, NPC_Kolorado, NPC_Whale, 0)
@@ -872,8 +872,8 @@ EvtScript EVS_Scene_WakeWhale = {
     Div(LVar2, 2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamDistance, CAM_DEFAULT, 475)
-    Call(SetCamPosA, CAM_DEFAULT, Float(-63.5), 0)
-    Call(SetCamPitch, CAM_DEFAULT, Float(18.5), Float(-5.0))
+    Call(SetCamPosA, CAM_DEFAULT, -63.5, 0)
+    Call(SetCamPitch, CAM_DEFAULT, 18.5, -5.0)
     Thread
         Wait(5)
         Call(NpcFaceNpc, NPC_Kolorado, NPC_Whale, 0)
@@ -892,7 +892,7 @@ EvtScript EVS_Scene_WakeWhale = {
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamDistance, CAM_DEFAULT, 300)
     Call(SetCamPosA, CAM_DEFAULT, 0, 0)
-    Call(SetCamPitch, CAM_DEFAULT, Float(18.0), Float(-7.0))
+    Call(SetCamPitch, CAM_DEFAULT, 18.0, -7.0)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamDistance, CAM_DEFAULT, 450)
@@ -908,9 +908,9 @@ EvtScript EVS_Scene_WakeWhale = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(3.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 3.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(DisablePlayerPhysics, false)
     Call(DisablePlayerInput, false)
@@ -973,7 +973,7 @@ EvtScript EVS_NpcInteract_Whale = {
     Call(GetPlayerPos, LVar3, LVar4, LVar5)
     Call(GetWhaleRiderTargetPos, WHALE_TARGET_PLAYER, LVar0, LVar1, LVar2)
     Exec(EVS_AnimatePlayerJump)
-    Call(SetPlayerJumpscale, Float(1.0))
+    Call(SetPlayerJumpscale, 1.0)
     Call(PlayerJump, LVar0, LVar1, LVar2, 20)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Call(InterpPlayerYaw, 90, 0)
@@ -983,7 +983,7 @@ EvtScript EVS_NpcInteract_Whale = {
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_RUN)
     Call(NpcMoveTo, NPC_PARTNER, LVar3, LVar5, 10)
     Call(GetWhaleRiderTargetPos, WHALE_TARGET_PARTNER, LVar0, LVar1, LVar2)
-    Call(SetNpcJumpscale, NPC_PARTNER, Float(1.0))
+    Call(SetNpcJumpscale, NPC_PARTNER, 1.0)
     Call(NpcJump0, NPC_PARTNER, LVar0, LVar1, LVar2, 20)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
     Call(InterpNpcYaw, NPC_PARTNER, 90, 0)
@@ -996,7 +996,7 @@ EvtScript EVS_NpcInteract_Whale = {
         Call(NpcMoveTo, NPC_Kolorado, LVar3, LVar5, 20)
         Call(GetWhaleRiderTargetPos, WHALE_TARGET_KOLORADO, LVar0, LVar1, LVar2)
         Call(PlaySoundAtNpc, NPC_Kolorado, SOUND_NPC_JUMP, SOUND_SPACE_DEFAULT)
-        Call(SetNpcJumpscale, NPC_Kolorado, Float(1.0))
+        Call(SetNpcJumpscale, NPC_Kolorado, 1.0)
         Call(NpcJump0, NPC_Kolorado, LVar0, LVar1, LVar2, 20)
         Call(SetNpcAnimation, NPC_Kolorado, ANIM_Kolorado_Idle)
         Thread
@@ -1012,7 +1012,7 @@ EvtScript EVS_NpcInteract_Whale = {
     Set(MF_WhaleDepartureReady, false)
     Thread
         Call(UpdateWhaleTravel, WHALE_TRAVEL_DEPART)
-        Call(GotoMap, Ref("mac_06"), mac_06_ENTRY_0)
+        Call(GotoMap, "mac_06", mac_06_ENTRY_0)
     EndThread
     IfLt(GB_StoryProgress, STORY_CH5_REACHED_LAVA_LAVA_ISLAND)
         Call(SpeakToPlayer, NPC_Whale, XNIM_Whale_Talk, XNIM_Whale_Idle, 5, MSG_MAC_Port_00AF)
@@ -1025,7 +1025,7 @@ EvtScript EVS_NpcInteract_Whale = {
 };
 
 EvtScript EVS_NpcInit_Whale = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Whale))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Whale)
     Call(SetNpcFlagBits, NPC_Whale, NPC_FLAG_HAS_NO_SPRITE, true)
     Call(SetNpcFlagBits, NPC_Whale, NPC_FLAG_HAS_SHADOW, false)
     Call(InterpNpcYaw, NPC_Whale, 270, 0)
@@ -1077,7 +1077,7 @@ EvtScript EVS_NpcIdle_Kolorado = {
     EndLoop
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Walk)
-    Call(SetNpcSpeed, NPC_SELF, Float(1.5))
+    Call(SetNpcSpeed, NPC_SELF, 1.5)
     Call(NpcMoveTo, NPC_SELF, -335, 400, 10)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Idle)
     Call(NpcFacePlayer, NPC_SELF, 0)
@@ -1096,11 +1096,11 @@ EvtScript EVS_NpcIdle_Kolorado = {
         Call(InterpPlayerYaw, 45, 0)
     EndThread
     Call(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Run)
-    Call(SetNpcSpeed, NPC_SELF, Float(8.0 / DT))
+    Call(SetNpcSpeed, NPC_SELF, 8.0 / DT)
     Call(NpcMoveTo, NPC_SELF, -280, 280, 0)
     Call(NpcMoveTo, NPC_SELF, -340, 70, 0)
     Call(NpcMoveTo, NPC_SELF, -260, -140, 0)
-    Call(SetNpcSpeed, NPC_SELF, Float(7.0 / DT))
+    Call(SetNpcSpeed, NPC_SELF, 7.0 / DT)
     Call(NpcMoveTo, NPC_SELF, 150, -140, 0)
     Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     Set(GB_StoryProgress, STORY_CH5_RETURNED_TO_TOAD_TOWN)
@@ -1132,7 +1132,7 @@ EvtScript EVS_NpcInteract_Kolorado = {
             Call(SpeakToPlayer, NPC_Kolorado, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_MAC_Port_00AC)
     EndSwitch
     ExecWait(EVS_ArtifactPrompt_Kolorado)
-    Set(LVar0, Ref(LetterDelivery_Kolorado))
+    Set(LVar0, LetterDelivery_Kolorado)
     ExecWait(EVS_TryLetterDelivery)
     Return
     End
@@ -1143,10 +1143,10 @@ EvtScript EVS_NpcInit_Kolorado = {
         CaseLt(STORY_CH5_REACHED_LAVA_LAVA_ISLAND)
             Call(SetNpcPos, NPC_SELF, -380, -10, 372)
             Call(NpcFaceNpc, NPC_SELF, NPC_Whale, 0)
-            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Kolorado))
+            Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Kolorado)
         CaseEq(STORY_CH5_TRADED_VASE_FOR_SEED)
             Call(SetSelfVar, 0, 0)
-            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Kolorado))
+            Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Kolorado)
         CaseDefault
             Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
             Call(EnableNpcShadow, NPC_SELF, false)
@@ -1227,12 +1227,12 @@ EvtScript EVS_NpcIdle_JrTroopa_01 = {
     Call(UseSettingsFrom, CAM_DEFAULT, -100, -10, 490)
     Call(SetPanTarget, CAM_DEFAULT, -100, -10, 490)
     Call(SetCamDistance, CAM_DEFAULT, 700)
-    Call(SetCamPitch, CAM_DEFAULT, Float(20.0), Float(-8.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamPitch, CAM_DEFAULT, 20.0, -8.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(SetNpcAnimation, NPC_SELF, ANIM_JrTroopa_ChargeTripped)
-    Call(SetNpcSpeed, NPC_SELF, Float(2.0))
+    Call(SetNpcSpeed, NPC_SELF, 2.0)
     Call(NpcMoveTo, NPC_SELF, -40, 490, 0)
     KillThread(LVar9)
     Call(StopSound, SOUND_LOOP_JR_TROOPA_SWIM)
@@ -1240,25 +1240,25 @@ EvtScript EVS_NpcIdle_JrTroopa_01 = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_kujira, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o236, COLLIDER_FLAGS_UPPER_MASK)
     Call(SetNpcAnimation, NPC_SELF, ANIM_JrTroopa_Charge)
-    Call(SetNpcJumpscale, NPC_SELF, Float(1.5))
+    Call(SetNpcJumpscale, NPC_SELF, 1.5)
     Call(NpcJump0, NPC_SELF, -100, -10, 490, 15)
     Call(SetNpcAnimation, NPC_SELF, ANIM_JrTroopa_OutOfBreath)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_kujira, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o236, COLLIDER_FLAGS_UPPER_MASK)
     Wait(10)
     Call(SetCamDistance, CAM_DEFAULT, 300)
-    Call(SetCamPitch, CAM_DEFAULT, Float(18.0), Float(-7.0))
+    Call(SetCamPitch, CAM_DEFAULT, 18.0, -7.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(10)
     Call(SpeakToPlayer, NPC_SELF, ANIM_JrTroopa_TiredTalk, ANIM_JrTroopa_OutOfBreath, 0, MSG_MAC_Port_00B5)
     Call(SetCamDistance, CAM_DEFAULT, 225)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(5.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 5.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Wait(10)
     Call(SpeakToPlayer, NPC_SELF, ANIM_JrTroopa_PointTalk, ANIM_JrTroopa_OutOfBreath, 0, MSG_MAC_Port_00B6)
     Call(SetPanTarget, CAM_DEFAULT, -250, -10, 490)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(0.5))
+    Call(SetCamSpeed, CAM_DEFAULT, 0.5)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(SetNpcAnimation, NPC_SELF, ANIM_JrTroopa_Walk)
     Call(NpcMoveTo, NPC_SELF, -255, 490, 75)
@@ -1300,7 +1300,7 @@ EvtScript EVS_NpcDefeat_JrTroopa_01 = {
     Call(SetNpcYaw, NPC_SELF, 270)
     Call(SetNpcYaw, NPC_JrTroopa_02, 270)
     Call(SetNpcAnimation, NPC_SELF, ANIM_JrTroopa_Defeated)
-    Call(ResetCam, CAM_DEFAULT, Float(90.0))
+    Call(ResetCam, CAM_DEFAULT, 90.0)
     Wait(10)
     Call(SpeakToPlayer, NPC_SELF, ANIM_JrTroopa_Defeated, ANIM_JrTroopa_Defeated, 0, MSG_MAC_Port_00BE)
     Call(FadeOutMusic, 0, 2000)
@@ -1325,9 +1325,9 @@ EvtScript EVS_NpcHit_JrTroopa_02 = {
 };
 
 EvtScript EVS_NpcInit_JrTroopa_01 = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_JrTroopa_01))
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_JrTroopa_01))
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_JrTroopa_01))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_JrTroopa_01)
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_JrTroopa_01)
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_JrTroopa_01)
     Return
     End
 };
@@ -1336,7 +1336,7 @@ EvtScript EVS_NpcInit_JrTroopa_02 = {
     Call(EnableNpcShadow, NPC_SELF, false)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, true)
     Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
-    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_JrTroopa_02))
+    Call(BindNpcHit, NPC_SELF, EVS_NpcHit_JrTroopa_02)
     Return
     End
 };
@@ -1368,7 +1368,7 @@ EvtScript EVS_NpcInteract_Fuzzipede1 = {
     EndSwitch
     Call(SpeakToNpc, NPC_Fishmael, ANIM_Fishmael_Talk, ANIM_Fishmael_Idle, 0, NPC_Fuzzipede, LVar0)
     Call(SpeakToNpc, NPC_Fuzzipede, ANIM_Fuzzipede_Talk, ANIM_Fuzzipede_Idle, 0, NPC_Fishmael, LVar1)
-    Set(LVar0, Ref(LetterDelivery_Fishmael))
+    Set(LVar0, LetterDelivery_Fishmael)
     ExecWait(EVS_TryLetterDelivery)
     Return
     End
@@ -1400,7 +1400,7 @@ EvtScript EVS_NpcInteract_Fishmael = {
             Set(LVar0, MSG_MAC_Port_005A)
     EndSwitch
     Call(SpeakToPlayer, NPC_SELF, ANIM_Fishmael_Talk, ANIM_Fishmael_Idle, 0, LVar0)
-    Set(LVar0, Ref(LetterDelivery_Fishmael))
+    Set(LVar0, LetterDelivery_Fishmael)
     ExecWait(EVS_TryLetterDelivery)
     Return
     End
@@ -1429,10 +1429,10 @@ EvtScript EVS_NpcInteract_Fuzzipede2 = {
 EvtScript EVS_NpcInit_Fishmael = {
     Call(SetNpcCollisionSize, NPC_SELF, 38, 38)
     IfLt(GB_StoryProgress, STORY_CH3_STAR_SPIRIT_RESCUED)
-        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Fuzzipede1))
+        Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Fuzzipede1)
     Else
         Call(SetSelfEnemyFlagBits, ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER, false)
-        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Fishmael))
+        Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Fishmael)
     EndIf
     Return
     End
@@ -1441,13 +1441,13 @@ EvtScript EVS_NpcInit_Fishmael = {
 EvtScript EVS_NpcInit_Fuzzipede = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_STAR_SPIRIT_RESCUED)
-            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Fuzzipede1))
+            Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Fuzzipede1)
         CaseLt(STORY_CH5_DEFEATED_FUZZIPEDE)
             Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
         CaseDefault
             Call(SetSelfEnemyFlagBits, ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER, false)
             Call(SetNpcPos, NPC_SELF, -575, 40, 120)
-            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Fuzzipede2))
+            Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Fuzzipede2)
         CaseDefault
     EndSwitch
     Return
@@ -1501,7 +1501,7 @@ EvtScript EVS_NpcInteract_Toad_04 = {
 };
 
 EvtScript EVS_NpcInit_Toad_04 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_04))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad_04)
     Return
     End
 };
@@ -1553,7 +1553,7 @@ EvtScript EVS_NpcInteract_Toad_05 = {
 };
 
 EvtScript EVS_NpcInit_Toad_05 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_05))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad_05)
     Return
     End
 };
@@ -1605,7 +1605,7 @@ EvtScript EVS_NpcInteract_Toad_06 = {
 };
 
 EvtScript EVS_NpcInit_Toad_06 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_06))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad_06)
     Return
     End
 };
@@ -1657,7 +1657,7 @@ EvtScript EVS_NpcInteract_Toad_07 = {
 };
 
 EvtScript EVS_NpcInit_Toad_07 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_07))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad_07)
     Return
     End
 };
@@ -1709,7 +1709,7 @@ EvtScript EVS_NpcInteract_Bartender = {
 };
 
 EvtScript EVS_NpcInit_Bartender = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bartender))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Bartender)
     Return
     End
 };
@@ -1761,7 +1761,7 @@ EvtScript EVS_NpcInteract_Toad_02 = {
 };
 
 EvtScript EVS_NpcInit_Toad_02 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_02))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad_02)
     Return
     End
 };
@@ -1856,10 +1856,10 @@ EvtScript EVS_NpcInteract_ArtistToad = {
                 EndThread
                 Call(UseSettingsFrom, CAM_DEFAULT, 112, 0, -511)
                 Call(SetPanTarget, CAM_DEFAULT, 112, 0, -511)
-                Call(SetCamDistance, CAM_DEFAULT, Float(320.0))
-                Call(SetCamSpeed, CAM_DEFAULT, Float(2.0))
+                Call(SetCamDistance, CAM_DEFAULT, 320.0)
+                Call(SetCamSpeed, CAM_DEFAULT, 2.0)
                 Call(PanToTarget, CAM_DEFAULT, 0, true)
-                Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+                Call(WaitForCam, CAM_DEFAULT, 1.0)
                 Call(InterpNpcYaw, NPC_Toad_02, 90, 0)
                 Call(InterpNpcYaw, NPC_ArtistToad, 270, 0)
                 Wait(60)
@@ -1904,7 +1904,7 @@ EvtScript EVS_NpcInteract_ArtistToad = {
                     Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
                     Call(SetNpcFlagBits, NPC_Chanterelle, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
                 EndThread
-                Call(SetCamSpeed, CAM_DEFAULT, Float(3.0))
+                Call(SetCamSpeed, CAM_DEFAULT, 3.0)
                 Call(PanToTarget, CAM_DEFAULT, 0, false)
                 Wait(60)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Musician_Poet_Talk, ANIM_Musician_Poet_Idle, 0, MSG_MAC_Port_007F)
@@ -1919,7 +1919,7 @@ EvtScript EVS_NpcInteract_ArtistToad = {
 };
 
 EvtScript EVS_NpcInit_ArtistToad = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ArtistToad))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_ArtistToad)
     Set(AF_MAC05_ToggleDialogue_Simon, false)
     Set(AF_MAC05_MetSimonBefore, false)
     IfEq(GF_MAC05_Met_Simon, true)
@@ -2005,7 +2005,7 @@ EvtScript EVS_NpcInteract_Chanterelle = {
 };
 
 EvtScript EVS_NpcInit_Chanterelle = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Chanterelle))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Chanterelle)
     IfEq(GF_MAC05_SimonGotMelody, true)
         Call(SetTattleMessage, NPC_Chanterelle, MSG_NpcTattle_PopDiva_CanSing)
     EndIf
@@ -2069,7 +2069,7 @@ EvtScript EVS_NpcInteract_Toad_03 = {
 
 EvtScript EVS_NpcInit_TradeEventToad = {
     IfNe(GF_TradingEvent3_Active, false)
-        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_03))
+        Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad_03)
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf

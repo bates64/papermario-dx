@@ -45,7 +45,7 @@ EvtScript EVS_Main = {
             Call(UseSettingsFrom, CAM_DEFAULT, 425, -246, 0)
             Call(SetPanTarget, CAM_DEFAULT, 425, -246, 0)
         EndIf
-        Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+        Call(SetCamSpeed, CAM_DEFAULT, 90.0)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
         Wait(2)
         Call(AwaitCameraFollowEnabled)

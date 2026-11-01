@@ -10,7 +10,7 @@ Entities are the objects the player hits, opens, and uses in a map, such as bloc
 #include "entity.h"
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Ref(Entity_SavePoint), 250, 60, 75, -15, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_SavePoint, 250, 60, 75, -15, MAKE_ENTITY_END)
     Return
     End
 };
@@ -42,9 +42,9 @@ After `MakeEntity`, `LVar0` holds the entity's index, which other calls such as 
 The game places blocks and save blocks 60 units above the floor, so the player can jump and hit them from below:
 
 ```c
-Call(MakeEntity, Ref(Entity_YellowBlock), 400, 60, -15, 0, ITEM_COIN, MAKE_ENTITY_END)
-Call(MakeEntity, Ref(Entity_BrickBlock), 450, 60, -15, 0, MAKE_ENTITY_END)
-Call(MakeEntity, Ref(Entity_SimpleSpring), 345, 75, -250, 0, 100, MAKE_ENTITY_END)
+Call(MakeEntity, Entity_YellowBlock, 400, 60, -15, 0, ITEM_COIN, MAKE_ENTITY_END)
+Call(MakeEntity, Entity_BrickBlock, 450, 60, -15, 0, MAKE_ENTITY_END)
+Call(MakeEntity, Entity_SimpleSpring, 345, 75, -250, 0, 100, MAKE_ENTITY_END)
 ```
 
 ## Running an EVT script from an entity
@@ -68,8 +68,8 @@ EvtScript EVS_ReadSign = {
 };
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Ref(Entity_Signpost), 436, 0, -42, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(EVS_ReadSign))
+    Call(MakeEntity, Entity_Signpost, 436, 0, -42, 0, MAKE_ENTITY_END)
+    Call(AssignScript, EVS_ReadSign)
     Return
     End
 };
@@ -92,7 +92,7 @@ Without a saved flag, an entity is back the way it started each time the player 
 If the flag is already set when the map loads, a block appears empty, a chest appears open, and a switch doesn't appear.
 
 ```c
-Call(MakeEntity, Ref(Entity_YellowBlock), -190, 75, 220, 0, ITEM_SLEEPY_SHEEP, MAKE_ENTITY_END)
+Call(MakeEntity, Entity_YellowBlock, -190, 75, 220, 0, ITEM_SLEEPY_SHEEP, MAKE_ENTITY_END)
 Call(AssignBlockFlag, GF_KMR10_ItemBlock_SleepySheep)
 ```
 
@@ -106,9 +106,9 @@ A chest gives its item through its EVT script, so the game passes `0` as the che
 EvtScript EVS_OpenChest_HammerThrow = EVT_OPEN_CHEST(ITEM_HAMMER_THROW, GF_KMR10_Chest_HammerThrow);
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Ref(Entity_Chest), 633, 142, 119, 0, 0, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_Chest, 633, 142, 119, 0, 0, MAKE_ENTITY_END)
     Call(AssignChestFlag, GF_KMR10_Chest_HammerThrow)
-    Call(AssignScript, Ref(EVS_OpenChest_HammerThrow))
+    Call(AssignScript, EVS_OpenChest_HammerThrow)
     Return
     End
 };
@@ -119,9 +119,9 @@ EvtScript EVS_MakeEntities = {
 `AssignSwitchFlag` takes an [area flag](/papermario-dx/save-data/game-flags/#adding-an-area-flag-or-byte), wrapped in `EVT_INDEX_OF_AREA_FLAG`. To make something happen when the player presses the switch, bind a `TRIGGER_AREA_FLAG_SET` [trigger](/papermario-dx/world/triggers/) to the same flag:
 
 ```c
-Call(MakeEntity, Ref(Entity_BlueSwitch), -960, -120, -37, 0, MAKE_ENTITY_END)
+Call(MakeEntity, Entity_BlueSwitch, -960, -120, -37, 0, MAKE_ENTITY_END)
 Call(AssignSwitchFlag, EVT_INDEX_OF_AREA_FLAG(AF_SAM08_ImposterSwitchPressed))
-BindTrigger(Ref(EVS_Scene_ImposterAppears), TRIGGER_AREA_FLAG_SET, AF_SAM08_ImposterSwitchPressed, true, 0)
+BindTrigger(EVS_Scene_ImposterAppears, TRIGGER_AREA_FLAG_SET, AF_SAM08_ImposterSwitchPressed, true, 0)
 ```
 
 ### Brick blocks
@@ -137,8 +137,8 @@ EvtScript EVS_BreakBlock = {
 
 EvtScript EVS_MakeEntities = {
     IfEq(GF_KMR02_BrokeBrick, false)
-        Call(MakeEntity, Ref(Entity_BrickBlock), 230, 50, -160, 15, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(EVS_BreakBlock))
+        Call(MakeEntity, Entity_BrickBlock, 230, 50, -160, 15, MAKE_ENTITY_END)
+        Call(AssignScript, EVS_BreakBlock)
     EndIf
     Return
     End

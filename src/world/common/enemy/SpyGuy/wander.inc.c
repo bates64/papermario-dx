@@ -46,7 +46,7 @@ EvtScript EVS_NpcAI_SpyGuy_Wander = {
     Call(SetSelfVar, AI_VAR_RANGED_PRE_TIME, 12)
     Call(SetSelfVar, AI_VAR_RANGED_POST_TIME, 5)
     Call(SetSelfVar, AI_VAR_RANGED_AMMO_COUNT, 2)
-    Call(RangedAttackAI_Main, Ref(AISettings_SpyGuy_Wander))
+    Call(RangedAttackAI_Main, AISettings_SpyGuy_Wander)
     Return
     End
 };
@@ -72,7 +72,7 @@ EvtScript EVS_NpcAI_SpyGuyRock = {
     Call(SetSelfVar, AI_VAR_MISSILE_FLAGS, 0)
     Call(SetSelfVar, AI_VAR_MISSILE_SPAWN_Y, 12)
     Call(SetSelfVar, AI_VAR_MISSILE_SPAWN_R, 13)
-    Call(MissileAI_Main, Ref(AISettings_SpyGuyRock))
+    Call(MissileAI_Main, AISettings_SpyGuyRock)
     Return
     End
 };
@@ -87,7 +87,7 @@ EvtScript EVS_NpcHit_SpyGuyRock = {
     IfEq(LVar0, 0)
         Return
     EndIf
-    Call(BindNpcAI, NPC_SELF, Ref(EVS_NoAI_SpyGuyRock))
+    Call(BindNpcAI, NPC_SELF, EVS_NoAI_SpyGuyRock)
     Call(GetOwnerEncounterTrigger, LVar0)
     Switch(LVar0)
         CaseOrEq(ENCOUNTER_TRIGGER_HAMMER)
@@ -109,7 +109,7 @@ EvtScript EVS_NpcHit_SpyGuyRock = {
         CaseDefault
             Call(SetBattleAsScripted)
     EndSwitch
-    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_SpyGuyRock))
+    Call(BindNpcAI, NPC_SELF, EVS_NpcAI_SpyGuyRock)
     Return
     End
 };

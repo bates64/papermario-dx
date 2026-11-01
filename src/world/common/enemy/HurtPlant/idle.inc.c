@@ -45,7 +45,7 @@ EvtScript EVS_NpcDefeat_HurtPlant = {
         CaseEq(OUTCOME_PLAYER_WON)
             Call(DoNpcDefeat)
         CaseEq(OUTCOME_PLAYER_FLED)
-            Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_HurtPlant))
+            Call(BindNpcAI, NPC_SELF, EVS_NpcAI_HurtPlant)
         CaseEq(OUTCOME_ENEMY_FLED)
             Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_FLED, true)
             Call(RemoveNpc, NPC_SELF)

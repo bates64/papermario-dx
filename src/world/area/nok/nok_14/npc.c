@@ -29,11 +29,11 @@ EvtScript EVS_NpcIdle_KoopaTroopa_01 = {
             Goto(1)
         EndIf
     EndThread
-    Call(SetNpcJumpscale, NPC_SELF, Float(0.6))
+    Call(SetNpcJumpscale, NPC_SELF, 0.6)
     Call(NpcJump0, NPC_SELF, -650, 75, -30, 20)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_FLIP_INSTANTLY, false)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, true)
-    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_KoopaTroopa_Wander))
+    Call(BindNpcAI, NPC_SELF, EVS_NpcAI_KoopaTroopa_Wander)
     Return
     End
 };
@@ -41,7 +41,7 @@ EvtScript EVS_NpcIdle_KoopaTroopa_01 = {
 EvtScript EVS_NpcInit_KoopaTroopa_01 = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, false)
     Call(SetNpcPos, NPC_SELF, -650, 75, -150)
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_KoopaTroopa_01))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_KoopaTroopa_01)
     Return
     End
 };

@@ -35,10 +35,10 @@ EvtScript EVS_UseSpring = {
     Wait(1)
     ExecGetTID(EVS_TetherCameraToPlayer, LVarA)
     IfEq(MV_PlayerCliffLevel, 0)
-        Call(SetPlayerJumpscale, Float(1.4))
+        Call(SetPlayerJumpscale, 1.4)
         Call(PlayerJump, -1582, 23, 60, 15)
     Else
-        Call(SetPlayerJumpscale, Float(0.7))
+        Call(SetPlayerJumpscale, 0.7)
         Call(PlayerJump, -1582, 408, -60, 40)
     EndIf
     KillThread(LVarA)
@@ -55,13 +55,13 @@ EvtScript EVS_MakeEntities = {
     Thread
         Call(MonitorPlayerAltitude)
     EndThread
-    Call(MakeEntity, Ref(Entity_ScriptSpring), -1580, 23, 20, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(EVS_UseSpring))
-    Call(MakeEntity, Ref(Entity_YellowBlock), -1775, 408, -120, 0, ITEM_COIN, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_ScriptSpring, -1580, 23, 20, 0, MAKE_ENTITY_END)
+    Call(AssignScript, EVS_UseSpring)
+    Call(MakeEntity, Entity_YellowBlock, -1775, 408, -120, 0, ITEM_COIN, MAKE_ENTITY_END)
     Call(AssignBlockFlag, GF_IWA03_ItemBlock_Coin)
-    Call(MakeEntity, Ref(Entity_YellowBlock), -620, -15, -69, 0, ITEM_MUSHROOM, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_YellowBlock, -620, -15, -69, 0, ITEM_MUSHROOM, MAKE_ENTITY_END)
     Call(AssignBlockFlag, GF_IWA03_ItemBlock_Mushroom)
-    Call(MakeEntity, Ref(Entity_YellowBlock), -1090, 408, -130, 0, ITEM_HONEY_SYRUP, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_YellowBlock, -1090, 408, -130, 0, ITEM_HONEY_SYRUP, MAKE_ENTITY_END)
     Call(AssignBlockFlag, GF_IWA03_ItemBlock_HoneySyrup)
     Call(MakeItemEntity, ITEM_LETTER_TO_KOLORADO, -20, 95, -85, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_IWA03_Item_LettertoKolorado)
     Call(MakeItemEntity, ITEM_STAR_PIECE, -1865, 23, 20, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_IWA03_Item_StarPiece)
@@ -73,9 +73,9 @@ EvtScript EVS_MakeEntities = {
     Call(MakeItemEntity, ITEM_COIN, -1890, 23, -23, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_IWA03_Item_CoinH)
     Call(MakeItemEntity, ITEM_COIN, -1707, -60, 0, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_IWA03_Item_CoinA)
     Call(MakeItemEntity, ITEM_COIN, -1707, -60, 60, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_IWA03_Item_CoinB)
-    Call(MakeEntity, Ref(Entity_Chest), -1717, 93, -127, 0, 0, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_Chest, -1717, 93, -127, 0, 0, MAKE_ENTITY_END)
     Call(AssignChestFlag, GF_IWA03_Chest_DamageDodgeB)
-    Call(AssignScript, Ref(EVS_OpenChest))
+    Call(AssignScript, EVS_OpenChest)
     Return
     End
 };

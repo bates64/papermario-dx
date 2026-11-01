@@ -6,11 +6,11 @@ EvtScript EVS_GotoMap_sam_02_2 = {
     IfEq(GF_StartedChapter7, false)
         Set(GF_StartedChapter7, true)
         Call(FadeOutMusic, 0, 1500)
-        Call(GotoMapSpecial, Ref("kmr_22"), kmr_22_ENTRY_7, TRANSITION_BEGIN_OR_END_CHAPTER)
+        Call(GotoMapSpecial, "kmr_22", kmr_22_ENTRY_7, TRANSITION_BEGIN_OR_END_CHAPTER)
         Wait(100)
         Return
     EndIf
-    Call(GotoMap, Ref("sam_02"), sam_02_ENTRY_2)
+    Call(GotoMap, "sam_02", sam_02_ENTRY_2)
     Wait(100)
     Return
     End
@@ -19,7 +19,7 @@ EvtScript EVS_GotoMap_sam_02_2 = {
 EvtScript EVS_ExitPipe_sam_02_2 = EVT_EXIT_PIPE_HORIZONTAL(tik_17_ENTRY_1, COLLIDER_o105, EVS_GotoMap_sam_02_2);
 
 EvtScript EVS_GotoMap_tik_22_1 = {
-    Call(GotoMap, Ref("tik_22"), tik_22_ENTRY_1)
+    Call(GotoMap, "tik_22", tik_22_ENTRY_1)
     Wait(100)
     Return
     End
@@ -28,8 +28,8 @@ EvtScript EVS_GotoMap_tik_22_1 = {
 EvtScript EVS_ExitPipe_tik_22_1 = EVT_EXIT_PIPE_VERTICAL(tik_17_ENTRY_0, COLLIDER_o58, EVS_GotoMap_tik_22_1);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitPipe_sam_02_2), TRIGGER_WALL_PUSH, COLLIDER_o105, 1, 0)
-    BindTrigger(Ref(EVS_ExitPipe_tik_22_1), TRIGGER_FLOOR_TOUCH, COLLIDER_o58, 1, 0)
+    BindTrigger(EVS_ExitPipe_sam_02_2, TRIGGER_WALL_PUSH, COLLIDER_o105, 1, 0)
+    BindTrigger(EVS_ExitPipe_tik_22_1, TRIGGER_FLOOR_TOUCH, COLLIDER_o58, 1, 0)
     Return
     End
 };

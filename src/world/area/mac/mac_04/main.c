@@ -26,8 +26,8 @@ EvtScript EVS_ExitWalk_mac_05_0 = EVT_EXIT_WALK(60, mac_04_ENTRY_1, "mac_05", ma
 EvtScript EVS_ExitWalk_mac_02_0 = EVT_EXIT_WALK(60, mac_04_ENTRY_0, "mac_02", mac_02_ENTRY_0);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_mac_05_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilisw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_mac_02_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitWalk_mac_05_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilisw, 1, 0)
+    BindTrigger(EVS_ExitWalk_mac_02_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     Return
     End
 };
@@ -57,7 +57,7 @@ EvtScript EVS_EnterMap = {
         CaseEq(mac_04_ENTRY_5)
             Exec(EVS_BindExitTriggers)
         CaseDefault
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
     EndSwitch
     Return
@@ -70,21 +70,21 @@ EvtScript EVS_Main = {
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, mac_04_ENTRY_4)
-        Call(MakeNpcs, false, Ref(WishSceneNPCs))
+        Call(MakeNpcs, false, WishSceneNPCs)
     Else
         Switch(GB_StoryProgress)
             CaseLt(STORY_CH3_STAR_SPIRIT_DEPARTED)
-                Call(MakeNpcs, false, Ref(DefaultNPCs))
+                Call(MakeNpcs, false, DefaultNPCs)
             CaseLt(STORY_CH4_BEGAN_PEACH_MISSION)
-                Call(MakeNpcs, false, Ref(Chapter4NPCs))
+                Call(MakeNpcs, false, Chapter4NPCs)
             CaseEq(STORY_CH4_BEGAN_PEACH_MISSION)
-                Call(MakeNpcs, false, Ref(PostChapter4NPCs))
+                Call(MakeNpcs, false, PostChapter4NPCs)
             CaseLt(STORY_CH5_RETURNED_TO_TOAD_TOWN)
-                Call(MakeNpcs, false, Ref(DefaultNPCs))
+                Call(MakeNpcs, false, DefaultNPCs)
             CaseLt(STORY_CH7_BEGAN_PEACH_MISSION)
-                Call(MakeNpcs, false, Ref(Chapter7NPCs))
+                Call(MakeNpcs, false, Chapter7NPCs)
             CaseDefault
-                Call(MakeNpcs, false, Ref(DefaultNPCs))
+                Call(MakeNpcs, false, DefaultNPCs)
         EndSwitch
     EndIf
     Set(AF_MAC04_Unread_31, false)

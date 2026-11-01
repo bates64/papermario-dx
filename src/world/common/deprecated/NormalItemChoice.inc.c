@@ -86,7 +86,7 @@ EvtScript EVS_ItemChoicePopup = {
 
 EvtScript EVS_ChooseItem = {
     Call(BuildItemChoiceList, LVar0)
-    BindPadlock(Ref(EVS_ItemChoicePopup), TRIGGER_FORCE_ACTIVATE, 0, Ref(ItemChoice_List), 0, 1)
+    BindPadlock(EVS_ItemChoicePopup, TRIGGER_FORCE_ACTIVATE, 0, ItemChoice_List, 0, 1)
     Call(ItemChoice_WaitForSelection, LVar0)
     Return
     End
@@ -98,7 +98,7 @@ EvtScript EVS_ChooseItem = {
     ExecWait(EVS_ChooseItem)
 
 #define EVT_CHOOSE_CONSUMABLE_FROM(itemList, unkMode) \
-    Set(LVar0, Ref(itemList)) \
+    Set(LVar0, itemList) \
     Set(LVar1, unkMode) \
     ExecWait(EVS_ChooseItem)
 

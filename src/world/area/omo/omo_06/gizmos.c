@@ -64,10 +64,10 @@ EvtScript EVS_Scene_PullPinkSwitch = {
     Wait(20 * DT)
     Call(UseSettingsFrom, CAM_DEFAULT, 223, 10, -165)
     Call(SetPanTarget, CAM_DEFAULT, 223, 10, -165)
-    Call(SetCamDistance, CAM_DEFAULT, Float(500.0))
-    Call(SetCamPosA, CAM_DEFAULT, Float(-500.0), Float(-200.0))
+    Call(SetCamDistance, CAM_DEFAULT, 500.0)
+    Call(SetCamPosA, CAM_DEFAULT, -500.0, -200.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Wait(20 * DT)
     Call(PlaySoundAt, SOUND_OMO_FLIP_TRAIN_TRACK, SOUND_SPACE_DEFAULT, 265, 0, -235)
     Call(MakeLerp, 0, 180, 30 * DT, EASING_COS_IN_OUT)
@@ -81,12 +81,12 @@ EvtScript EVS_Scene_PullPinkSwitch = {
             Goto(1)
         EndIf
     Call(PlaySoundAt, SOUND_OMO_FLIP_TRACK_THUD, SOUND_SPACE_DEFAULT, 265, 0, -235)
-    Call(ShakeCam, CAM_DEFAULT, 0, 10, Float(1.0))
+    Call(ShakeCam, CAM_DEFAULT, 0, 10, 1.0)
     Call(GetModelCenter, MODEL_o897)
     PlayEffect(EFFECT_LANDING_DUST, 3, LVar0, LVar1, LVar2, 0)
     Wait(30 * DT)
     Set(GB_StoryProgress, STORY_CH4_PULLED_SWITCH_SWITCH)
-    Call(ResetCam, CAM_DEFAULT, Float(90.0))
+    Call(ResetCam, CAM_DEFAULT, 90.0)
     Call(DisablePlayerInput, false)
     Unbind
     Return
@@ -98,7 +98,7 @@ EvtScript EVS_SetupGizmos = {
     Exec(EVS_Gizmos_Shutters)
     Call(ParentColliderToModel, COLLIDER_bou1, MODEL_bou1)
     IfLt(GB_StoryProgress, STORY_CH4_PULLED_SWITCH_SWITCH)
-        BindTrigger(Ref(EVS_Scene_PullPinkSwitch), TRIGGER_WALL_PRESS_A, COLLIDER_o664, 1, 0)
+        BindTrigger(EVS_Scene_PullPinkSwitch, TRIGGER_WALL_PRESS_A, COLLIDER_o664, 1, 0)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o930, COLLIDER_FLAGS_UPPER_MASK)
     Else
         Call(RotateModel, MODEL_bou1, 70, 0, 0, 1)

@@ -21,7 +21,7 @@ EvtScript EVS_ItemPrompt_Lock = {
     Set(GF_KKJ11_UnlockedKitchen, true)
     Call(CloseChoicePopup)
     Unbind
-    BindTrigger(Ref(EVS_ExitDoors_kkj_10_1), TRIGGER_WALL_PRESS_A, COLLIDER_tts, 1, 0)
+    BindTrigger(EVS_ExitDoors_kkj_10_1, TRIGGER_WALL_PRESS_A, COLLIDER_tts, 1, 0)
     Return
     End
 };
@@ -29,11 +29,11 @@ EvtScript EVS_ItemPrompt_Lock = {
 EvtScript EVS_MakeEntities = {
     IfLe(GB_StoryProgress, STORY_CH4_BEGAN_PEACH_MISSION)
         IfEq(GF_KKJ11_UnlockedKitchen, false)
-            Call(MakeEntity, Ref(Entity_Padlock), 0, 10, 490, 180, MAKE_ENTITY_END)
+            Call(MakeEntity, Entity_Padlock, 0, 10, 490, 180, MAKE_ENTITY_END)
             Set(MV_EntityID_Padlock, LVar0)
-            BindPadlock(Ref(EVS_ItemPrompt_Lock), TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), Ref(PeachKeyList), 0, 1)
+            BindPadlock(EVS_ItemPrompt_Lock, TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), PeachKeyList, 0, 1)
         Else
-            BindTrigger(Ref(EVS_ExitDoors_kkj_10_1), TRIGGER_WALL_PRESS_A, COLLIDER_tts, 1, 0)
+            BindTrigger(EVS_ExitDoors_kkj_10_1, TRIGGER_WALL_PRESS_A, COLLIDER_tts, 1, 0)
         EndIf
     EndIf
     Return

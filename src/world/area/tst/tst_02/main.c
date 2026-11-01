@@ -24,14 +24,14 @@ OVL_DEF_MAP() = {
 };
 
 EvtScript EVS_GotoMap_tst_01_1 = {
-    Call(GotoMap, Ref("tst_01"), tst_01_ENTRY_1)
+    Call(GotoMap, "tst_01", tst_01_ENTRY_1)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_GotoMap_tst_03_0 = {
-    Call(GotoMap, Ref("tst_03"), tst_03_ENTRY_0)
+    Call(GotoMap, "tst_03", tst_03_ENTRY_0)
     Wait(100)
     Return
     End
@@ -42,8 +42,8 @@ EvtScript EVS_Main = {
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     ExecWait(EVS_MakeEntities)
-    BindTrigger(Ref(EVS_GotoMap_tst_01_1), TRIGGER_WALL_PUSH, COLLIDER_deilitw, 1, 0)
-    BindTrigger(Ref(EVS_GotoMap_tst_03_0), TRIGGER_WALL_PUSH, COLLIDER_deilite, 1, 0)
+    BindTrigger(EVS_GotoMap_tst_01_1, TRIGGER_WALL_PUSH, COLLIDER_deilitw, 1, 0)
+    BindTrigger(EVS_GotoMap_tst_03_0, TRIGGER_WALL_PUSH, COLLIDER_deilite, 1, 0)
     Return
     End
 };

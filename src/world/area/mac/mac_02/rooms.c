@@ -102,25 +102,25 @@ EvtScript EVS_SetupRooms = {
     // tayce T's house on the right
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
-        Ref(EVS_SetDoorRot_TayceT),
-        Ref(EVS_SetWallRot_TayceT),
+        EVS_SetDoorRot_TayceT,
+        EVS_SetWallRot_TayceT,
         nullptr,
-        Ref(EVS_RoomListener_TayceT),
+        EVS_RoomListener_TayceT,
         COLLIDER_deilit1u,
         COLLIDER_deilit1,
         MODEL_cooking,
-        Ref(InsideNPCs_TayceT))
+        InsideNPCs_TayceT)
     // blue house on the left
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
-        Ref(EVS_SetDoorRot_BlueHouse),
-        Ref(EVS_SetWallRot_BlueHouse),
+        EVS_SetDoorRot_BlueHouse,
+        EVS_SetWallRot_BlueHouse,
         nullptr,
-        Ref(EVS_RoomListener_BlueHouse),
+        EVS_RoomListener_BlueHouse,
         COLLIDER_deilit2,
         COLLIDER_deilit2u,
         MODEL_souko,
-        Ref(InsideNPCs_BlueHouse))
+        InsideNPCs_BlueHouse)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, mac_02_ENTRY_5)
         Set(LVar0, 3)

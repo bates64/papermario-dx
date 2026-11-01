@@ -26,7 +26,7 @@ EvtScript EVS_PushStatue_Impl = {
     Call(DisablePlayerInput, true)
     Call(PlaySoundAtCollider, COLLIDER_o160, SOUND_LOOP_MOVE_STATUE, SOUND_SPACE_DEFAULT)
     Thread
-        Call(ShakeCam, CAM_DEFAULT, 0, 100, Float(0.6))
+        Call(ShakeCam, CAM_DEFAULT, 0, 100, 0.6)
     EndThread
     Thread
         Call(EnableGroup, MODEL_g22, true)
@@ -34,7 +34,7 @@ EvtScript EVS_PushStatue_Impl = {
         Loop(0)
             Call(UpdateLerp)
             SetF(LVarA, LVar0)
-            MulF(LVarA, Float(0.01))
+            MulF(LVarA, 0.01)
             Call(ScaleGroup, MODEL_g22, LVarA, 1, 1)
             Wait(1)
             IfEq(LVar1, 0)
@@ -113,7 +113,7 @@ EvtScript EVS_SetupStatues = {
     Call(ParentColliderToModel, COLLIDER_o160, MODEL_o103)
     Switch(GB_KPA04_StatuePosition)
         CaseEq(0)
-            BindTrigger(Ref(EVS_PushStatue_FromRight), TRIGGER_WALL_PUSH, COLLIDER_o160, 1, 0)
+            BindTrigger(EVS_PushStatue_FromRight, TRIGGER_WALL_PUSH, COLLIDER_o160, 1, 0)
             Call(EnableGroup, MODEL_g22, false)
         CaseEq(1)
             Call(TranslateGroup, MODEL_g20, -50, 0, 0)

@@ -30,13 +30,13 @@ EvtScript EVS_SetupMusicMix = {
     IfEq(MF_SetupMusicMixes, false)
         Set(MF_SetupMusicMixes, true)
         Thread
-            Call(MonitorMusicProximityTrigger, Ref(MusicMixTrigger1))
+            Call(MonitorMusicProximityTrigger, MusicMixTrigger1)
         EndThread
         Thread
-            Call(MonitorMusicProximityTrigger, Ref(MusicMixTrigger2))
+            Call(MonitorMusicProximityTrigger, MusicMixTrigger2)
         EndThread
         Thread
-            Call(MonitorMusicProximityTrigger, Ref(MusicMixTrigger3))
+            Call(MonitorMusicProximityTrigger, MusicMixTrigger3)
         EndThread
     EndIf
     Return

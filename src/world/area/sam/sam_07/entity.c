@@ -3,18 +3,18 @@
 
 EvtScript EVS_MakeEntities = {
     IfEq(GF_SAM07_FloorRaised, false)
-        Call(MakeEntity, Ref(Entity_GreenStompSwitch), -945, -179, -75, 0, MAKE_ENTITY_END)
+        Call(MakeEntity, Entity_GreenStompSwitch, -945, -179, -75, 0, MAKE_ENTITY_END)
         Set(MV_SwitchEntityID, LVar0)
-        Call(AssignScript, Ref(EVS_UseGreenSwitch))
+        Call(AssignScript, EVS_UseGreenSwitch)
     Else
-        Call(MakeEntity, Ref(Entity_GreenStompSwitch), -945, 1, -75, 0, MAKE_ENTITY_END)
+        Call(MakeEntity, Entity_GreenStompSwitch, -945, 1, -75, 0, MAKE_ENTITY_END)
         Set(MV_SwitchEntityID, LVar0)
-        Call(AssignScript, Ref(EVS_UseGreenSwitch))
+        Call(AssignScript, EVS_UseGreenSwitch)
     EndIf
-    Call(MakeEntity, Ref(Entity_BrickBlock), 810, 330, -120, 90, MAKE_ENTITY_END)
-    Call(MakeEntity, Ref(Entity_HiddenYellowBlock), 810, 360, -120, 90, ITEM_ULTRA_SHROOM, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_BrickBlock, 810, 330, -120, 90, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_HiddenYellowBlock, 810, 360, -120, 90, ITEM_ULTRA_SHROOM, MAKE_ENTITY_END)
     Call(AssignBlockFlag, GF_SAM07_HiddenItem_UltraShroom)
-    Call(MakeEntity, Ref(Entity_SavePoint), -1350, -60, -120, 0, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_SavePoint, -1350, -60, -120, 0, MAKE_ENTITY_END)
     Return
     End
 };

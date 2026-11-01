@@ -100,9 +100,9 @@ OVL_DEF_ACTOR() = {
 };
 
 EvtScript EVS_Init = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
     Return
     End
 };
@@ -228,7 +228,7 @@ EvtScript EVS_TakeTurn = {
         Wait(15)
     Else
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleClubba_Frost_Run)
-        Call(SetActorSpeed, ACTOR_SELF, Float(4.0))
+        Call(SetActorSpeed, ACTOR_SELF, 4.0)
         Call(SetGoalToTarget, ACTOR_SELF)
         Call(GetStatusFlags, ACTOR_SELF, LVar0)
         IfNotFlag(LVar0, STATUS_FLAG_SHRINK)
@@ -271,7 +271,7 @@ EvtScript EVS_TakeTurn = {
     EndIf
     Call(GetActorHP, ACTOR_SELF, LVar0)
     Call(GetEnemyMaxHP, ACTOR_SELF, LVar1)
-    MulF(LVar0, Float(100.0))
+    MulF(LVar0, 100.0)
     DivF(LVar0, LVar1)
     IfLt(LVar0, 30)
         Goto(50)
@@ -290,7 +290,7 @@ EvtScript EVS_TakeTurn = {
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(EnemyDamageTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_NO_CONTACT, 0, 0, DMG_HEAVY_STRIKE, BS_FLAGS1_TRIGGER_EVENTS)
     Thread
-        Call(ShakeCam, CAM_BATTLE, 0, 10, Float(1.5))
+        Call(ShakeCam, CAM_BATTLE, 0, 10, 1.5)
     EndThread
     Goto(100)
     Label(50) // swift club attack
@@ -303,7 +303,7 @@ EvtScript EVS_TakeTurn = {
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(EnemyDamageTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_NO_CONTACT, 0, 0, DMG_QUICK_STRIKE, BS_FLAGS1_INCLUDE_POWER_UPS)
     Thread
-        Call(ShakeCam, CAM_BATTLE, 0, 10, Float(1.5))
+        Call(ShakeCam, CAM_BATTLE, 0, 10, 1.5)
     EndThread
     Call(GetActorHP, ACTOR_PLAYER, LVar0)
     IfEq(LVar0, 0)
@@ -318,7 +318,7 @@ EvtScript EVS_TakeTurn = {
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(EnemyDamageTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_NO_CONTACT, 0, 0, DMG_QUICK_STRIKE, BS_FLAGS1_NICE_HIT)
     Thread
-        Call(ShakeCam, CAM_BATTLE, 0, 10, Float(1.5))
+        Call(ShakeCam, CAM_BATTLE, 0, 10, 1.5)
     EndThread
     Call(GetActorHP, ACTOR_PLAYER, LVar0)
     IfEq(LVar0, 0)
@@ -333,7 +333,7 @@ EvtScript EVS_TakeTurn = {
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(EnemyDamageTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_NO_CONTACT, 0, 0, DMG_QUICK_STRIKE, BS_FLAGS1_TRIGGER_EVENTS)
     Thread
-        Call(ShakeCam, CAM_BATTLE, 0, 10, Float(1.5))
+        Call(ShakeCam, CAM_BATTLE, 0, 10, 1.5)
     EndThread
     Label(100)
     Switch(LVar0)

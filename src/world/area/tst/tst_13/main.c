@@ -326,11 +326,11 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_TESTING)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Call(MakeNpcs, false, Ref(DefaultNPCs))
-    Set(LVar0, Ref(BetaPanelData))
+    Call(MakeNpcs, false, DefaultNPCs)
+    Set(LVar0, BetaPanelData)
     Exec(EVS_BetaPanel_Setup)
     Call(SetModelCustomGfx, MODEL_o152, CUSTOM_GFX_0, -1)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_0, 0, Ref(build_gfx_floor))
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_0, 0, build_gfx_floor)
     Return
     End
 };

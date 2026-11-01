@@ -9,9 +9,9 @@
 EvtScript EVS_Scene_FallIntoCell = {
     Call(UseSettingsFrom, CAM_DEFAULT, 1042, 30, -496)
     Call(SetPanTarget, CAM_DEFAULT, 1042, 30, -496)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
@@ -38,9 +38,9 @@ EvtScript EVS_Scene_FallIntoCell = {
     EndLoop
     Call(SetPlayerAnimation, ANIM_MarioW2_PanicStill)
     Thread
-        Call(ShakeCam, CAM_DEFAULT, 0, 20, Float(0.6))
+        Call(ShakeCam, CAM_DEFAULT, 0, 20, 0.6)
     EndThread
-    Call(SetPlayerJumpscale, Float(1.0))
+    Call(SetPlayerJumpscale, 1.0)
     Call(PlayerJump1, 1030, 30, -496, 10)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Wait(1)
@@ -159,7 +159,7 @@ EvtScript EVS_NpcInteract_ToadMinister = {
 };
 
 EvtScript EVS_NpcInit_Toad_01 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_01))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad_01)
     Call(SetNpcPos, NPC_SELF, 813, 30, -394)
     Call(InterpNpcYaw, NPC_SELF, 270, 0)
     Return
@@ -167,7 +167,7 @@ EvtScript EVS_NpcInit_Toad_01 = {
 };
 
 EvtScript EVS_NpcInit_Toad_02 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_02))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad_02)
     Call(SetNpcPos, NPC_SELF, 870, 30, -465)
     Call(InterpNpcYaw, NPC_SELF, 90, 0)
     Return
@@ -175,7 +175,7 @@ EvtScript EVS_NpcInit_Toad_02 = {
 };
 
 EvtScript EVS_NpcInit_ToadGuard = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ToadGuard))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_ToadGuard)
     Call(SetNpcPos, NPC_SELF, 930, 30, -400)
     Call(InterpNpcYaw, NPC_SELF, 90, 0)
     Return
@@ -183,7 +183,7 @@ EvtScript EVS_NpcInit_ToadGuard = {
 };
 
 EvtScript EVS_NpcInit_ToadMinister = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ToadMinister))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_ToadMinister)
     Call(SetNpcPos, NPC_SELF, 1100, 30, -450)
     Call(InterpNpcYaw, NPC_SELF, 270, 0)
     Return

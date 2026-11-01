@@ -22,18 +22,18 @@ NpcSettings NpcSettings_KoopaTroopa = {
 
 EvtScript EVS_Bombette_DemonstrateAbility = {
     Call(SetPanTarget, CAM_DEFAULT, 96, 0, 129)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(0.6 / DT))
+    Call(SetCamSpeed, CAM_DEFAULT, 0.6 / DT)
     Call(DisablePlayerInput, true)
     Call(DisablePartnerAI, false)
     Thread
         Call(SetNpcAnimation, NPC_PARTNER, ANIM_WorldBombette_Walk)
-        Call(SetNpcSpeed, NPC_PARTNER, Float(3.0 / DT))
+        Call(SetNpcSpeed, NPC_PARTNER, 3.0 / DT)
         Call(NpcMoveTo, NPC_PARTNER, 124, 129, 0)
         Call(GetAngleToPlayer, NPC_PARTNER, LVar0)
         Call(InterpNpcYaw, NPC_PARTNER, LVar0, 5)
     EndThread
     Wait(30 * DT)
-    Call(SetPlayerSpeed, Float(3.0 / DT))
+    Call(SetPlayerSpeed, 3.0 / DT)
     Call(PlayerMoveTo, 96, 129, 0)
     Call(GetAngleToNPC, NPC_PARTNER, LVar0)
     Call(InterpPlayerYaw, LVar0, 5)
@@ -46,7 +46,7 @@ EvtScript EVS_Bombette_DemonstrateAbility = {
 
 EvtScript EVS_NpcInteract_Bombette = {
     Thread
-        Call(AdjustCam, CAM_DEFAULT, Float(5.0 / DT), 0, Float(300.0), Float(18.0), Float(-7.0))
+        Call(AdjustCam, CAM_DEFAULT, 5.0 / DT, 0, 300.0, 18.0, -7.0)
     EndThread
     Call(GetAngleToPlayer, NPC_SELF, LVar0)
     IfLt(LVar0, 180)
@@ -62,11 +62,11 @@ EvtScript EVS_NpcInteract_Bombette = {
     EndIf
     IfLt(LVarA, 20)
         Add(LVar2, LVar1)
-        Call(SetPlayerSpeed, Float(3.0 / DT))
+        Call(SetPlayerSpeed, 3.0 / DT)
         Call(PlayerMoveTo, LVar2, LVar4, 0)
         Call(PlayerFaceNpc, NPC_Bombette, 3)
     EndIf
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     IfEq(GF_TRD06_Met_Bombette, false)
         Set(GF_TRD06_Met_Bombette, true)
         Call(SpeakToPlayer, NPC_SELF, ANIM_WorldBombette_Talk, ANIM_WorldBombette_Idle, 0, MSG_CH1_00DA)
@@ -88,14 +88,14 @@ EvtScript EVS_NpcInteract_Bombette = {
     EndIf
     IfEq(LVar0, 0)
         Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
-        Call(SetNpcJumpscale, NPC_SELF, Float(0.8))
+        Call(SetNpcJumpscale, NPC_SELF, 0.8)
         Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
         Call(NpcJump0, NPC_SELF, LVar0, LVar1, LVar2, 15 * DT)
         Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
         Call(ContinueSpeech, NPC_SELF, ANIM_WorldBombette_Talk, ANIM_WorldBombette_Idle, 0, MSG_CH1_00DE)
         Call(ChangeNpcToPartner, NPC_Bombette, PARTNER_BOMBETTE)
         Set(GB_StoryProgress, STORY_CH1_BOMBETTE_JOINED_PARTY)
-        Call(LoadPartyImage, Ref("party_pinki"))
+        Call(LoadPartyImage, "party_pinki")
         Exec(EVS_PushSong)
         Wait(15 * DT)
         Call(ShowMessageAtScreenPos, MSG_Menus_018B, 160, 40)
@@ -113,7 +113,7 @@ EvtScript EVS_NpcInteract_Bombette = {
         Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldBombette_Talk, ANIM_WorldBombette_Idle, 0, MSG_CH1_00E0)
         ExecWait(EVS_Bombette_DemonstrateAbility)
     EndIf
-    Call(ResetCam, CAM_DEFAULT, Float(5.0 / DT))
+    Call(ResetCam, CAM_DEFAULT, 5.0 / DT)
     Return
     End
 };
@@ -122,7 +122,7 @@ EvtScript EVS_NpcInit_Bombette = {
     IfGe(GB_StoryProgress, STORY_CH1_BOMBETTE_JOINED_PARTY)
         Call(RemoveNpc, NPC_SELF)
     Else
-        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bombette))
+        Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Bombette)
     EndIf
     Return
     End
@@ -149,9 +149,9 @@ EvtScript EVS_NpcIdle_KoopaTroopa = {
     Call(SetNpcPos, NPC_Jailer_KoopaTroopa, -350, 0, 0)
     Call(SetNpcPos, NPC_Jailer_Bobomb_01, -370, 0, 0)
     Call(SetNpcPos, NPC_Jailer_Bobomb_02, -390, 0, 0)
-    Call(SetNpcSpeed, NPC_Jailer_KoopaTroopa, Float(4.0 / DT))
-    Call(SetNpcSpeed, NPC_Jailer_Bobomb_01, Float(4.0 / DT))
-    Call(SetNpcSpeed, NPC_Jailer_Bobomb_02, Float(4.0 / DT))
+    Call(SetNpcSpeed, NPC_Jailer_KoopaTroopa, 4.0 / DT)
+    Call(SetNpcSpeed, NPC_Jailer_Bobomb_01, 4.0 / DT)
+    Call(SetNpcSpeed, NPC_Jailer_Bobomb_02, 4.0 / DT)
     Call(SetNpcAnimation, NPC_Jailer_KoopaTroopa, ANIM_KoopaTroopa_Run)
     Call(SetNpcAnimation, NPC_Jailer_Bobomb_01, ANIM_Bobomb_Run)
     Call(SetNpcAnimation, NPC_Jailer_Bobomb_02, ANIM_Bobomb_Run)
@@ -170,7 +170,7 @@ EvtScript EVS_NpcIdle_KoopaTroopa = {
     Call(UseSettingsFrom, CAM_DEFAULT, -260, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, -260, 0, 0)
     Call(SetCamDistance, CAM_DEFAULT, 300)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(SetNpcAnimation, NPC_Jailer_Bobomb_01, ANIM_Bobomb_Idle)
     Call(SetNpcAnimation, NPC_Jailer_Bobomb_02, ANIM_Bobomb_Idle)
@@ -202,8 +202,8 @@ EvtScript EVS_NpcIdle_KoopaTroopa = {
     Wait(15 * DT)
     Call(NpcMoveTo, NPC_Jailer_Bobomb_02, -265, 0, 0)
     Call(NpcMoveTo, NPC_Jailer_Bobomb_02, -186, 175, 0)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-    Call(SetNpcJumpscale, NPC_Jailer_KoopaTroopa, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
+    Call(SetNpcJumpscale, NPC_Jailer_KoopaTroopa, 1.0)
     Call(GetNpcPos, NPC_Jailer_KoopaTroopa, LVar0, LVar1, LVar2)
     Call(NpcJump0, NPC_Jailer_KoopaTroopa, LVar0, LVar1, LVar2, 10 * DT)
     Call(SetNpcAnimation, NPC_Jailer_Bobomb_01, ANIM_Bobomb_Idle)
@@ -254,8 +254,8 @@ EvtScript EVS_NpcDefeat_KoopaTroopa = {
 };
 
 EvtScript EVS_NpcInit_KoopaTroopa = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_KoopaTroopa))
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_KoopaTroopa))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_KoopaTroopa)
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_KoopaTroopa)
     IfGe(GB_StoryProgress, STORY_CH1_DEFEATED_DUNGEON_GUARDS)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -336,25 +336,25 @@ EvtScript EVS_NpcInteract_Bobomb_04 = {
 };
 
 EvtScript EVS_NpcInit_Bobomb_01 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bobomb_01))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Bobomb_01)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Bobomb_02 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bobomb_02))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Bobomb_02)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Bobomb_03 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bobomb_03))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Bobomb_03)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Bobomb_04 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bobomb_04))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Bobomb_04)
     Return
     End
 };

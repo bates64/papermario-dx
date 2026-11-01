@@ -47,14 +47,14 @@ EvtScript EVS_SetupTexPan = {
 };
 
 EvtScript EVS_GotoMap_nok_15_4 = {
-    Call(GotoMap, Ref("nok_15"), nok_15_ENTRY_4)
+    Call(GotoMap, "nok_15", nok_15_ENTRY_4)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_GotoMap_nok_15_3 = {
-    Call(GotoMap, Ref("nok_15"), nok_15_ENTRY_3)
+    Call(GotoMap, "nok_15", nok_15_ENTRY_3)
     Wait(100)
     Return
     End
@@ -70,17 +70,17 @@ EvtScript EVS_ExitPipe = {
 };
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_nok_14_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_trd_00_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deili2, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_trd_00_4), TRIGGER_FLOOR_ABOVE, COLLIDER_deili3, 1, 0)
+    BindTrigger(EVS_ExitWalk_nok_14_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
+    BindTrigger(EVS_ExitWalk_trd_00_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deili2, 1, 0)
+    BindTrigger(EVS_ExitWalk_trd_00_4, TRIGGER_FLOOR_ABOVE, COLLIDER_deili3, 1, 0)
     Set(LVar0, nok_15_ENTRY_3)
     Set(LVar1, COLLIDER_o680)
-    Set(LVar2, Ref(EVS_GotoMap_nok_15_4))
-    BindTrigger(Ref(EVS_ExitPipe), TRIGGER_FLOOR_TOUCH, LVar1, 1, 0)
+    Set(LVar2, EVS_GotoMap_nok_15_4)
+    BindTrigger(EVS_ExitPipe, TRIGGER_FLOOR_TOUCH, LVar1, 1, 0)
     Set(LVar0, nok_15_ENTRY_4)
     Set(LVar1, COLLIDER_o679)
-    Set(LVar2, Ref(EVS_GotoMap_nok_15_3))
-    BindTrigger(Ref(EVS_ExitPipe), TRIGGER_FLOOR_TOUCH, LVar1, 1, 0)
+    Set(LVar2, EVS_GotoMap_nok_15_3)
+    BindTrigger(EVS_ExitPipe, TRIGGER_FLOOR_TOUCH, LVar1, 1, 0)
     Return
     End
 };
@@ -89,13 +89,13 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_PLEASANT_PATH)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Call(MakeNpcs, false, Ref(DefaultNPCs))
+    Call(MakeNpcs, false, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     Exec(EVS_SetupFoliage)
     Exec(EVS_SetupTexPan)
     IfEq(GF_NOK15_BombedWall, false)
         Call(EnableModel, MODEL_bomb_ato, false)
-        BindTrigger(Ref(EVS_BlastWall), TRIGGER_POINT_BOMB, Ref(BombPos_Wall), 1, 0)
+        BindTrigger(EVS_BlastWall, TRIGGER_POINT_BOMB, BombPos_Wall, 1, 0)
     Else
         Call(EnableModel, MODEL_bomb_1, false)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_tt1, COLLIDER_FLAGS_UPPER_MASK)
@@ -103,10 +103,10 @@ EvtScript EVS_Main = {
     Exec(EVS_SetupMusic)
     Call(GetEntryID, LVar0)
     IfLe(LVar0, nok_15_ENTRY_2)
-        Set(LVar0, Ref(EVS_BindExitTriggers))
+        Set(LVar0, EVS_BindExitTriggers)
         Exec(EnterWalk)
     Else
-        Set(LVarA, Ref(EVS_BindExitTriggers))
+        Set(LVarA, EVS_BindExitTriggers)
         Exec(EVS_Pipe_EnterVertical)
     EndIf
     Wait(1)

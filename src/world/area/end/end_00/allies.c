@@ -52,7 +52,7 @@ EvtScript EVS_ParadePhase_Partners = {
         EndLoop
     EndChildThread
     ChildThread
-        Call(SetNpcJumpscale, NPC_Sushie, Float(1.0))
+        Call(SetNpcJumpscale, NPC_Sushie, 1.0)
         Loop(0)
             Call(NpcJump0, NPC_Sushie, -2550, 35, 7, 15)
             Wait(10)
@@ -73,7 +73,7 @@ EvtScript EVS_ParadePhase_Partners = {
 
 EvtScript EVS_Twirler = {
     Call(EnableNpcShadow, LVar1, false)
-    Call(SetNpcJumpscale, LVar1, Float(0.5))
+    Call(SetNpcJumpscale, LVar1, 0.5)
     Loop(0)
         Call(SetNpcAnimation, LVar0, ANIM_ParadeToad_Red_TwirlerWalk)
         Wait(30)

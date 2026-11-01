@@ -19,7 +19,7 @@ MobileAISettings AISettings_ShyGuy_Wander = {
 };
 
 EvtScript EVS_NpcAI_ShyGuy_Wander = {
-    Call(ShyGuyWanderAI_Main, Ref(AISettings_ShyGuy_Wander))
+    Call(ShyGuyWanderAI_Main, AISettings_ShyGuy_Wander)
     Return
     End
 };

@@ -37,9 +37,9 @@ EvtScript EVS_Scene_TossedBackInRoom = {
     Call(SetNpcYaw, NPC_Koopatrol_Guard_02, 90)
     Call(UseSettingsFrom, CAM_DEFAULT, -300, 0, -30)
     Call(SetPanTarget, CAM_DEFAULT, -300, 0, -30)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Wait(30 * DT)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_ttw, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o112, COLLIDER_FLAGS_UPPER_MASK)
@@ -55,7 +55,7 @@ EvtScript EVS_Scene_TossedBackInRoom = {
     EndLoop
     Thread
         Wait(10 * DT)
-        Call(LoadPath, 50 * DT, Ref(TwinkFollowPath), ARRAY_COUNT(TwinkFollowPath), EASING_LINEAR)
+        Call(LoadPath, 50 * DT, TwinkFollowPath, ARRAY_COUNT(TwinkFollowPath), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_PARTNER, LVar1, LVar2, LVar3)
@@ -69,13 +69,13 @@ EvtScript EVS_Scene_TossedBackInRoom = {
     Call(SetNpcVar, NPC_Koopatrol_Guard_01, 0, 1)
     Thread
         Call(SetNpcAnimation, NPC_Koopatrol_Guard_01, ANIM_WorldKoopatrol_CarryFast)
-        Call(SetNpcSpeed, NPC_Koopatrol_Guard_01, Float(5.0))
+        Call(SetNpcSpeed, NPC_Koopatrol_Guard_01, 5.0)
         Call(NpcMoveTo, NPC_Koopatrol_Guard_01, -316, -32, 0)
         Call(SetNpcVar, NPC_Koopatrol_Guard_01, 0, 0)
     EndThread
     Thread
         Call(SetNpcAnimation, NPC_Koopatrol_Guard_02, ANIM_WorldKoopatrol_CarryFast)
-        Call(SetNpcSpeed, NPC_Koopatrol_Guard_02, Float(5.0))
+        Call(SetNpcSpeed, NPC_Koopatrol_Guard_02, 5.0)
         Call(NpcMoveTo, NPC_Koopatrol_Guard_02, -284, -28, 0)
     EndThread
     Loop(0)
@@ -95,7 +95,7 @@ EvtScript EVS_Scene_TossedBackInRoom = {
     Call(SetPlayerAnimation, ANIM_Peach2_Thrown)
     Call(SetNpcAnimation, NPC_Koopatrol_Guard_01, ANIM_WorldKoopatrol_Toss)
     Call(SetNpcAnimation, NPC_Koopatrol_Guard_02, ANIM_WorldKoopatrol_Toss)
-    Call(LoadPath, 15 * DT, Ref(PeachTossPath), ARRAY_COUNT(PeachTossPath), EASING_LINEAR)
+    Call(LoadPath, 15 * DT, PeachTossPath, ARRAY_COUNT(PeachTossPath), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(SetPlayerPos, LVar1, LVar2, LVar3)
@@ -145,7 +145,7 @@ EvtScript EVS_Scene_TossedBackInRoom = {
         Call(PlaySoundAtCollider, COLLIDER_ttw, SOUND_BASIC_DOOR_CLOSE, 0)
     EndThread
     Wait(60 * DT)
-    Call(LoadPath, 50 * DT, Ref(TwinkApproachPath), ARRAY_COUNT(TwinkApproachPath), EASING_LINEAR)
+    Call(LoadPath, 50 * DT, TwinkApproachPath, ARRAY_COUNT(TwinkApproachPath), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_PARTNER, LVar1, LVar2, LVar3)
@@ -184,7 +184,7 @@ EvtScript EVS_Scene_TossedBackInRoom = {
         Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_Talk, ANIM_Twink_Idle, 0, LVar0)
     EndIf
     Exec(EVS_SetupMusic)
-    Call(ResetCam, CAM_DEFAULT, Float(1.0 / DT))
+    Call(ResetCam, CAM_DEFAULT, 1.0 / DT)
     Call(EnablePartnerAI)
     Call(DisablePlayerPhysics, false)
     Call(DisablePlayerInput, false)

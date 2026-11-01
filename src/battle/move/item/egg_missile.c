@@ -151,7 +151,7 @@ EvtScript EVS_UseItem = {
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Throw)
     Call(PlaySound, SOUND_THROW)
     Wait(3)
-    Call(CreateVirtualEntity, LVarA, Ref(EMS_EggMissile))
+    Call(CreateVirtualEntity, LVarA, EMS_EggMissile)
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Add(LVar0, 20)
     Add(LVar1, 42)
@@ -168,7 +168,7 @@ EvtScript EVS_UseItem = {
             Wait(1)
         EndLoop
     EndThread
-    Call(SetVirtualEntityJumpGravity, LVarA, Float(1.0))
+    Call(SetVirtualEntityJumpGravity, LVarA, 1.0)
     Add(LVar2, 5)
     Call(VirtualEntityJumpTo, LVarA, LVar0, LVar1, LVar2, 18)
     Call(DeleteVirtualEntity, LVarA)
@@ -176,10 +176,10 @@ EvtScript EVS_UseItem = {
     Call(func_802A123C_71CF1C, LVar0, LVar1, LVar2)
     Thread
         Call(StartRumble, BTL_RUMBLE_HIT_EXTREME)
-        Call(ShakeCam, CAM_BATTLE, 0, 2, Float(0.75))
-        Call(ShakeCam, CAM_BATTLE, 0, 5, Float(1.5))
-        Call(ShakeCam, CAM_BATTLE, 0, 4, Float(1.2))
-        Call(ShakeCam, CAM_BATTLE, 0, 2, Float(0.45))
+        Call(ShakeCam, CAM_BATTLE, 0, 2, 0.75)
+        Call(ShakeCam, CAM_BATTLE, 0, 5, 1.5)
+        Call(ShakeCam, CAM_BATTLE, 0, 4, 1.2)
+        Call(ShakeCam, CAM_BATTLE, 0, 2, 0.45)
     EndThread
     Call(GetItemPower, ITEM_EGG_MISSILE, LVar0, LVar1)
     Call(ItemDamageEnemy, LVar0, DAMAGE_TYPE_FIRE | DAMAGE_TYPE_BLAST | DAMAGE_TYPE_IGNORE_DEFENSE | DAMAGE_TYPE_NO_CONTACT, 0, LVar0, BS_FLAGS1_TRIGGER_EVENTS)

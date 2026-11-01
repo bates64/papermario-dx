@@ -22,7 +22,7 @@ EvtScript EVS_UseSpring = {
     Wait(2)
     Call(GetPlayerPos, LVar7, LVar8, LVar9)
     ExecGetTID(EVS_TetherCameraToPlayer, LVarA)
-    Call(SetPlayerJumpscale, Float(0.7))
+    Call(SetPlayerJumpscale, 0.7)
     Call(PlayerJump, 450, 180, -120, 30)
     Call(SetPlayerActionState, ACTION_STATE_IDLE)
     Call(DisablePlayerPhysics, false)
@@ -59,10 +59,10 @@ EvtScript EVS_MonitorCeilingPound = {
 
 EvtScript EVS_MakeEntities = {
     Set(AF_FLO16_FoundHiddenStarPiece, false)
-    BindTrigger(Ref(EVS_MonitorCeilingPound), TRIGGER_FLOOR_TOUCH, COLLIDER_o214, 1, 0)
+    BindTrigger(EVS_MonitorCeilingPound, TRIGGER_FLOOR_TOUCH, COLLIDER_o214, 1, 0)
     EVT_MAKE_SUPER_BLOCK(350, 240, -100, 0)
-    Call(MakeEntity, Ref(Entity_ScriptSpring), 472, 100, -100, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(EVS_UseSpring))
+    Call(MakeEntity, Entity_ScriptSpring, 472, 100, -100, 0, MAKE_ENTITY_END)
+    Call(AssignScript, EVS_UseSpring)
     Return
     End
 };

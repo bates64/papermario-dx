@@ -32,14 +32,14 @@ EvtScript EVS_CapturePeach_Later = {
     Call(GetApproachPeachPos, NPC_SELF, 100, LVar3, LVar0, LVar2)
     IfNe(LVar3, 0)
         Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_RunFlashlight)
-        Call(SetNpcSpeed, NPC_SELF, Float(5.0))
+        Call(SetNpcSpeed, NPC_SELF, 5.0)
         Call(NpcMoveTo, NPC_SELF, LVar0, LVar2, 0)
         Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Idle)
     EndIf
     Call(SpeakToPlayer, NPC_SELF, ANIM_WorldKoopatrol_Talk, ANIM_WorldKoopatrol_Idle, 0, MSG_Peach_0175)
     Call(SetPlayerAnimation, ANIM_Peach2_ForwardSad)
     Wait(20)
-    Call(GotoMapSpecial, Ref("kkj_14"), kkj_14_ENTRY_B, TRANSITION_PEACH_CAPTURED)
+    Call(GotoMapSpecial, "kkj_14", kkj_14_ENTRY_B, TRANSITION_PEACH_CAPTURED)
     Wait(100)
     Call(DisablePlayerInput, false)
     Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
@@ -56,7 +56,7 @@ EvtScript EVS_CheckForPeach_Koopatrol_01_Later = {
             IfEq(LVar3, PEACH_DISGUISE_NONE)
                 Call(IsPlayerWithin, LVar0, LVar2, 80, LVar0)
                 IfEq(LVar0, 1)
-                    Call(BindNpcAI, NPC_SELF, Ref(EVS_CapturePeach_Later))
+                    Call(BindNpcAI, NPC_SELF, EVS_CapturePeach_Later)
                     Return
                 EndIf
             EndIf
@@ -75,7 +75,7 @@ EvtScript EVS_CheckForPeach_Koopatrol_02_Later = {
             IfEq(LVar0, 1)
                 Call(SetNpcAnimation, NPC_Koopatrol_02, ANIM_WorldKoopatrol_Idle)
                 Call(SetNpcAnimation, NPC_Koopatrol_03, ANIM_WorldKoopatrol_Idle)
-                Call(BindNpcAI, NPC_SELF, Ref(EVS_CapturePeach_Later))
+                Call(BindNpcAI, NPC_SELF, EVS_CapturePeach_Later)
                 Return
             EndIf
         EndIf
@@ -93,12 +93,12 @@ EvtScript EVS_NpcIdle_Koopatrol_01_Later = {
         Call(WaitForPlayerInputEnabled)
         Thread
             Call(DisablePlayerInput, true)
-            Call(SetPlayerSpeed, Float(2.0))
+            Call(SetPlayerSpeed, 2.0)
             Call(PlayerMoveTo, 70, -325, 0)
             Call(DisablePlayerInput, false)
         EndThread
         Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Walk)
-        Call(SetNpcSpeed, NPC_SELF, Float(2.0))
+        Call(SetNpcSpeed, NPC_SELF, 2.0)
         Call(NpcMoveTo, NPC_SELF, 0, -350, 0)
         Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Idle)
         Call(InterpNpcYaw, NPC_SELF, 220, 5)
@@ -119,12 +119,12 @@ EvtScript EVS_NpcIdle_Koopatrol_04_Later = {
         Call(WaitForPlayerInputEnabled)
         Thread
             Call(DisablePlayerInput, true)
-            Call(SetPlayerSpeed, Float(2.0))
+            Call(SetPlayerSpeed, 2.0)
             Call(PlayerMoveTo, 70, -200, 0)
             Call(DisablePlayerInput, false)
         EndThread
         Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Walk)
-        Call(SetNpcSpeed, NPC_SELF, Float(2.0))
+        Call(SetNpcSpeed, NPC_SELF, 2.0)
         Call(NpcMoveTo, NPC_SELF, 0, -240, 0)
         Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Idle)
         Call(InterpNpcYaw, NPC_SELF, 220, 5)
@@ -172,12 +172,12 @@ EvtScript EVS_NpcInteract_Koopatrol_01_Later = {
     Else
         Add(LVar3, 50)
     EndIf
-    Call(SetNpcSpeed, NPC_SELF, Float(2.0))
+    Call(SetNpcSpeed, NPC_SELF, 2.0)
     Call(NpcMoveTo, NPC_SELF, LVar3, LVar5, 0)
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Idle)
     Call(InterpNpcYaw, NPC_SELF, 220, 5)
     Call(SetSelfVar, 0, 1)
-    BindTrigger(Ref(EVS_ExitDoors_kkj_12_0), TRIGGER_WALL_PRESS_A, COLLIDER_ttn, 1, 0)
+    BindTrigger(EVS_ExitDoors_kkj_12_0, TRIGGER_WALL_PRESS_A, COLLIDER_ttn, 1, 0)
     Return
     End
 };
@@ -196,12 +196,12 @@ EvtScript EVS_NpcInteract_Koopatrol_04_Later = {
     Else
         Add(LVar3, 50)
     EndIf
-    Call(SetNpcSpeed, NPC_SELF, Float(2.0))
+    Call(SetNpcSpeed, NPC_SELF, 2.0)
     Call(NpcMoveTo, NPC_SELF, LVar3, LVar5, 0)
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Idle)
     Call(InterpNpcYaw, NPC_SELF, 220, 5)
     Call(SetSelfVar, 0, 1)
-    BindTrigger(Ref(EVS_ExitDoor_kkj_14_0), TRIGGER_WALL_PRESS_A, COLLIDER_ttn2, 1, 0)
+    BindTrigger(EVS_ExitDoor_kkj_14_0, TRIGGER_WALL_PRESS_A, COLLIDER_ttn2, 1, 0)
     Return
     End
 };
@@ -214,7 +214,7 @@ EvtScript EVS_NpcInteract_Koopatrol_02_Later = {
     IfEq(LVar0, PEACH_DISGUISE_NONE)
         Call(NpcFacePlayer, NPC_SELF, 0)
         Wait(5)
-        Call(BindNpcAI, NPC_SELF, Ref(EVS_CapturePeach_Later))
+        Call(BindNpcAI, NPC_SELF, EVS_CapturePeach_Later)
         Return
     EndIf
     Call(GetSelfVar, 0, LVar0)
@@ -239,7 +239,7 @@ EvtScript EVS_NpcInteract_Koopatrol_03_Later = {
     IfEq(LVar0, PEACH_DISGUISE_NONE)
         Call(NpcFacePlayer, NPC_SELF, 0)
         Wait(5)
-        Call(BindNpcAI, NPC_SELF, Ref(EVS_CapturePeach_Later))
+        Call(BindNpcAI, NPC_SELF, EVS_CapturePeach_Later)
         Return
     EndIf
     Call(GetSelfVar, 0, LVar0)
@@ -265,8 +265,8 @@ EvtScript EVS_NpcInit_Koopatrol_01_Later = {
         Call(SetNpcPos, NPC_SELF, 0, 100, -350)
         Call(SetNpcYaw, NPC_SELF, 200)
     EndIf
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Koopatrol_01_Later))
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Koopatrol_01_Later))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Koopatrol_01_Later)
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Koopatrol_01_Later)
     Return
     End
 };
@@ -276,8 +276,8 @@ EvtScript EVS_NpcInit_Koopatrol_02_Later = {
     Call(SetNpcPos, NPC_SELF, -295, 0, -30)
     Call(NpcFaceNpc, NPC_SELF, NPC_Koopatrol_03, 0)
     Exec(EVS_CheckForPeach_Koopatrol_02_Later)
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Koopatrol_02_Later))
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Koopatrol_02_Later))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Koopatrol_02_Later)
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Koopatrol_02_Later)
     Return
     End
 };
@@ -286,7 +286,7 @@ EvtScript EVS_NpcInit_Koopatrol_03_Later = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Idle)
     Call(SetNpcPos, NPC_SELF, -255, 0, -55)
     Call(NpcFaceNpc, NPC_SELF, NPC_Koopatrol_02, 0)
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Koopatrol_03_Later))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Koopatrol_03_Later)
     Return
     End
 };
@@ -300,8 +300,8 @@ EvtScript EVS_NpcInit_Koopatrol_04_Later = {
         Call(SetNpcPos, NPC_SELF, 0, 0, -240)
         Call(SetNpcYaw, NPC_SELF, 220)
     EndIf
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Koopatrol_04_Later))
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Koopatrol_04_Later))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Koopatrol_04_Later)
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Koopatrol_04_Later)
     Return
     End
 };

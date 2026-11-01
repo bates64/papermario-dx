@@ -7,8 +7,8 @@ EvtScript EVS_ExitWalk_flo_08_1 = EVT_EXIT_WALK(60, flo_24_ENTRY_0, "flo_08", fl
 EvtScript EVS_ExitWalk_flo_10_0 = EVT_EXIT_WALK(60, flo_24_ENTRY_1, "flo_10", flo_10_ENTRY_0);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_flo_08_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_flo_10_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitWalk_flo_08_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitWalk_flo_10_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     Return
     End
 };
@@ -38,7 +38,7 @@ EvtScript EVS_Main = {
         Exec(EVS_Scene_FillWithWater)
         Exec(EVS_BindExitTriggers)
     Else
-        Set(LVar0, Ref(EVS_BindExitTriggers))
+        Set(LVar0, EVS_BindExitTriggers)
         Exec(EnterWalk)
     EndIf
     ExecWait(EVS_SetupMusic)

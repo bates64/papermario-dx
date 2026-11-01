@@ -2,7 +2,7 @@
 
 EvtScript EVS_ShakeCam1 = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
-    Call(ShakeCam, LVar0, LVar1, LVar2, Float(1.0))
+    Call(ShakeCam, LVar0, LVar1, LVar2, 1.0)
     Return
     End
 };

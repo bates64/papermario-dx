@@ -7,7 +7,7 @@ EvtScript EVS_ExitWalk_sbk_36_1 = {
     Set(GF_DRO01_HeardHintAboutSpinningRoof, 0)
     Call(UseExitHeading, 60, 0)
     Exec(ExitWalk)
-    Call(GotoMap, Ref("sbk_36"), 1)
+    Call(GotoMap, "sbk_36", 1)
     Wait(100)
     Return
     End
@@ -26,22 +26,22 @@ EvtScript EVS_Scene_RuinsRising = {
     Call(PlaySound, SOUND_LOOP_SBK_RUINS_RISING_DISTANT)
     Call(UseSettingsFrom, CAM_DEFAULT, 175, 0, -201)
     Call(SetPanTarget, CAM_DEFAULT, 175, 0, -201)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(SetModelTintMode, APPLY_TINT_BG, nullptr, ENV_TINT_REMAP)
     Call(SetModelTintMode, APPLY_TINT_GROUPS, -1, ENV_TINT_REMAP)
     Call(SetModelTintParams, ENV_TINT_REMAP, 44, 32, 177, 0, 0, 0, 0, 0, 0)
     Call(DisablePlayerInput, true)
     Thread
-        Call(ShakeCam, CAM_DEFAULT, 0, 300, Float(0.2))
+        Call(ShakeCam, CAM_DEFAULT, 0, 300, 0.2)
     EndThread
     Thread
         Wait(60)
         Call(GetEntryID, LVar0)
         IfEq(LVar0, dro_01_ENTRY_3)
-            Call(GotoMap, Ref("dro_02"), dro_02_ENTRY_2)
+            Call(GotoMap, "dro_02", dro_02_ENTRY_2)
         Else
-            Call(GotoMap, Ref("dro_02"), dro_02_ENTRY_3)
+            Call(GotoMap, "dro_02", dro_02_ENTRY_3)
         EndIf
         Wait(100)
     EndThread
@@ -75,7 +75,7 @@ EvtScript EVS_EnterMap = {
                 Call(DisablePlayerPhysics, false)
                 Call(DisablePlayerInput, false)
             EndIf
-            Set(LVarA, Ref(EVS_BindExitTriggers))
+            Set(LVarA, EVS_BindExitTriggers)
             ExecWait(EVS_Pipe_EnterVertical)
         CaseOrEq(dro_01_ENTRY_3)
         CaseOrEq(dro_01_ENTRY_4)
@@ -85,7 +85,7 @@ EvtScript EVS_EnterMap = {
             Exec(EnterPostPipe)
             Exec(EVS_BindExitTriggers)
         CaseDefault
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
     EndSwitch
     Wait(1)
@@ -103,14 +103,14 @@ EvtScript EVS_Main = {
     EndIf
     Switch(GB_StoryProgress)
         CaseRange(STORY_CH2_STAR_SPIRIT_DEPARTED, STORY_CH4_BEGAN_PEACH_MISSION)
-            Call(MakeNpcs, false, Ref(Chapter3NPCs))
+            Call(MakeNpcs, false, Chapter3NPCs)
         CaseDefault
-            Call(MakeNpcs, false, Ref(DefaultNPCs))
+            Call(MakeNpcs, false, DefaultNPCs)
     EndSwitch
     Call(InitVirtualEntityList)
     ExecWait(EVS_MakeEntities)
-    Call(MakeShop, Ref(ShopItemPositions), Ref(ShopInventory), Ref(ShopPriceList), 0)
-    Call(MakeShopOwner, Ref(MouserShopOwner))
+    Call(MakeShop, ShopItemPositions, ShopInventory, ShopPriceList, 0)
+    Call(MakeShopOwner, MouserShopOwner)
     ExecWait(EVS_SetupRooms)
     Exec(EVS_ShopSignSwing)
     Exec(EVS_SetupMusic)

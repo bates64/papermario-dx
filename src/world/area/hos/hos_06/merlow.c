@@ -135,7 +135,7 @@ API_CALLABLE(Merlow_ShopBadgesPopup) {
 }
 
 EvtScript EVS_NpcInteract_Merlow = {
-    Set(LVar0, Ref(LetterDelivery_Merlow))
+    Set(LVar0, LetterDelivery_Merlow)
     ExecWait(EVS_TryLetterDelivery)
     EVT_RETURN_IF_DELIVERED()
     IfGe(GB_HOS06_Merlow_PurchaseCount, MERLOW_BADGE_COUNT)
@@ -222,7 +222,7 @@ EvtScript EVS_NpcInteract_Merlow = {
 };
 
 EvtScript EVS_NpcInit_Merluvlee_Passthrough = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Merluvlee_Passthrough))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Merluvlee_Passthrough)
     Exec(EVS_NpcInit_Merluvlee)
     Return
     End
@@ -230,7 +230,7 @@ EvtScript EVS_NpcInit_Merluvlee_Passthrough = {
 
 EvtScript EVS_NpcInit_Merlow = {
     Set(MF_PurchasedBadge, false)
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Merlow))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Merlow)
     Return
     End
 };

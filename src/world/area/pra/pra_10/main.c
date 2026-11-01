@@ -14,7 +14,7 @@ EvtScript EVS_ExitDoors_pra_04_2 = {
     Set(LVar5, MODEL_o846)
     Exec(ExitSplitDoubleDoor)
     Wait(17)
-    Call(GotoMap, Ref("pra_04"), pra_04_ENTRY_2)
+    Call(GotoMap, "pra_04", pra_04_ENTRY_2)
     Wait(100)
     Return
     End
@@ -31,15 +31,15 @@ EvtScript EVS_ExitDoors_pra_12_0 = {
     Set(LVar5, MODEL_o1022)
     Exec(ExitSplitDoubleDoor)
     Wait(17)
-    Call(GotoMap, Ref("pra_12"), pra_12_ENTRY_0)
+    Call(GotoMap, "pra_12", pra_12_ENTRY_0)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitDoors_pra_04_2), TRIGGER_WALL_PRESS_A, COLLIDER_deilittsw, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoors_pra_12_0), TRIGGER_WALL_PRESS_A, COLLIDER_deilittse, 1, 0)
+    BindTrigger(EVS_ExitDoors_pra_04_2, TRIGGER_WALL_PRESS_A, COLLIDER_deilittsw, 1, 0)
+    BindTrigger(EVS_ExitDoors_pra_12_0, TRIGGER_WALL_PRESS_A, COLLIDER_deilittse, 1, 0)
     Return
     End
 };
@@ -69,7 +69,7 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_CRYSTAL_PALACE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Call(MakeNpcs, true, DefaultNPCs)
     Exec(EVS_SetupMusic)
     Set(LVar0, REFLECTION_FLOOR_ONLY)
     Set(LVar1, GF_PRA_BrokeIllusion)

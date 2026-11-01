@@ -71,14 +71,14 @@ s32 InteriorNPCs_House[] = {
 EvtScript EVS_SetupRooms = {
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT),
-        Ref(EVS_SetDoorRot_House),
-        Ref(EVS_SetWallRot_House),
+        EVS_SetDoorRot_House,
+        EVS_SetWallRot_House,
         nullptr,
-        Ref(EVS_RoomListener_House),
+        EVS_RoomListener_House,
         COLLIDER_o246,
         COLLIDER_o245,
         MODEL_g62,
-        Ref(InteriorNPCs_House))
+        InteriorNPCs_House)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseOrEq(kmr_20_ENTRY_2)

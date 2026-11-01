@@ -9,7 +9,7 @@ GuardAISettings AISettings_Toad_Guard = {
 };
 
 EvtScript EVS_NpcAI_Toad_Guard = {
-    Call(GuardAI_Main, Ref(AISettings_Toad_Guard))
+    Call(GuardAI_Main, AISettings_Toad_Guard)
     Return
     End
 };

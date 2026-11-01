@@ -146,19 +146,19 @@ EvtScript EVS_NpcInteract_AlbinoDino_03 = {
 };
 
 EvtScript EVS_NpcInit_AlbinoDino_01 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_AlbinoDino_01))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_AlbinoDino_01)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_AlbinoDino_02 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_AlbinoDino_02))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_AlbinoDino_02)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_AlbinoDino_03 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_AlbinoDino_03))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_AlbinoDino_03)
     Return
     End
 };

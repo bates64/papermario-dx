@@ -41,7 +41,7 @@ An actor can store another actor's ID in a variable to keep track of it. Magikoo
 
 ```c
 // in the attack that makes a clone
-Call(SummonEnemy, Ref(CloneFormation), false)
+Call(SummonEnemy, CloneFormation, false)
 Call(SetActorVar, ACTOR_SELF, AVAR_CloneActorID, LVar0)
 
 // in EVS_Idle
@@ -82,9 +82,9 @@ enum ActorVars {
 };
 
 EvtScript EVS_Init = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
     Call(GetActorVar, ACTOR_SELF, AVAR_FiredFromBlaster, LVar0)
     IfFalse(LVar0)
         // float a little above its home position

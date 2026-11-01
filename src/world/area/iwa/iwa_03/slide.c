@@ -15,7 +15,7 @@ API_CALLABLE(SetPlayerSliding) {
 }
 
 EvtScript EVS_UpdateSliding = {
-    Set(LVar0, Ref(SlideData))
+    Set(LVar0, SlideData)
     Call(SetPlayerSliding)
     Return
     End
@@ -38,7 +38,7 @@ EvtScript EVS_UseSlide = {
     EndThread
     Wait(15)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_st1, COLLIDER_FLAGS_UPPER_MASK)
-    Call(SetPlayerSpeed, Float(3.0))
+    Call(SetPlayerSpeed, 3.0)
     Call(PlayerMoveTo, -1460, -60, 0)
     Call(DisablePlayerInput, false)
     Wait(100)
@@ -60,8 +60,8 @@ EvtScript EVS_UseSlide = {
 };
 
 EvtScript EVS_BindSlideTriggers = {
-    BindTrigger(Ref(EVS_UseSlide), TRIGGER_WALL_PRESS_A, COLLIDER_st1, 1, 0)
-    BindTrigger(Ref(EVS_UpdateSliding), TRIGGER_FLOOR_TOUCH, COLLIDER_suberi0, 1, 0)
+    BindTrigger(EVS_UseSlide, TRIGGER_WALL_PRESS_A, COLLIDER_st1, 1, 0)
+    BindTrigger(EVS_UpdateSliding, TRIGGER_FLOOR_TOUCH, COLLIDER_suberi0, 1, 0)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_suberi0, SURFACE_TYPE_SLIDE)
     Return
     End

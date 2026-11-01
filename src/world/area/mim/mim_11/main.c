@@ -75,9 +75,9 @@ EvtScript EVS_Scene_ReachedMansion = {
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerPos, -800, 0, 0)
     Call(SetNpcPos, NPC_PARTNER, -800, 0, 0)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_LOOK_AT_POINT, true)
-    Call(SetCamPitch, CAM_DEFAULT, Float(40.0), Float(-63.59375))
+    Call(SetCamPitch, CAM_DEFAULT, 40.0, -63.59375)
     Call(SetCamDistance, CAM_DEFAULT, 720)
     Call(SetCamPosA, CAM_DEFAULT, 89, 84)
     Call(SetCamPosB, CAM_DEFAULT, 89, 84)
@@ -89,13 +89,13 @@ EvtScript EVS_Scene_ReachedMansion = {
     ChildThread
         Call(OrbitMansionRevealCamera)
         Wait(90)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+        Call(SetCamSpeed, CAM_DEFAULT, 90.0)
         Loop(0)
             Call(GetPlayerPos, LVar0, LVar1, LVar2)
             Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
             Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
             Call(SetCamDistance, CAM_DEFAULT, -350)
-            Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+            Call(WaitForCam, CAM_DEFAULT, 1.0)
         EndLoop
     EndChildThread
     Wait(50)
@@ -131,7 +131,7 @@ EvtScript EVS_Scene_ReachedMansion = {
 // interesting broken, unused snippet for starting next peach sequence
 EvtScript EVS_ExitWarp_osr_03_4 = {
     Call(FadeOutMusic, 0, 1500)
-    Call(GotoMapSpecial, Ref("osr_03"), osr_03_ENTRY_4, 0xB)
+    Call(GotoMapSpecial, "osr_03", osr_03_ENTRY_4, 0xB)
     Wait(100)
     Return
     End
@@ -142,7 +142,7 @@ EvtScript EVS_ExitWalk_mim_07_3 = {
     Call(UseExitHeading, 60, mim_11_ENTRY_0)
     Exec(ExitWalk)
     Set(GF_MIM_ChoosingPath, false)
-    Call(GotoMap, Ref("mim_07"), mim_07_ENTRY_3)
+    Call(GotoMap, "mim_07", mim_07_ENTRY_3)
     Wait(100)
     Return
     End
@@ -155,9 +155,9 @@ EvtScript EVS_ExitWalk_obk_01_0 = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
 );
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_mim_07_3), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_mim_12_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_obk_01_0), TRIGGER_WALL_PRESS_A, COLLIDER_ttd, 1, 0)
+    BindTrigger(EVS_ExitWalk_mim_07_3, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitWalk_mim_12_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitWalk_obk_01_0, TRIGGER_WALL_PRESS_A, COLLIDER_ttd, 1, 0)
     Return
     End
 };
@@ -177,19 +177,19 @@ EvtScript EVS_EnterMap = {
             IfLt(GB_StoryProgress, STORY_CH3_ARRIVED_AT_BOOS_MANSION)
                 Set(GB_StoryProgress, STORY_CH3_ARRIVED_AT_BOOS_MANSION)
                 ExecWait(EVS_Scene_ReachedMansion)
-                Call(SetCamSpeed, CAM_DEFAULT, Float(4.0))
+                Call(SetCamSpeed, CAM_DEFAULT, 4.0)
                 Call(GetPlayerPos, LVar0, LVar1, LVar2)
                 Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
                 Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-                Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+                Call(WaitForCam, CAM_DEFAULT, 1.0)
                 Call(PanToTarget, CAM_DEFAULT, 0, false)
                 Exec(EVS_BindExitTriggers)
             Else
-                Set(LVar0, Ref(EVS_BindExitTriggers))
+                Set(LVar0, EVS_BindExitTriggers)
                 Exec(EnterWalk)
             EndIf
         CaseEq(mim_11_ENTRY_1)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
         CaseEq(mim_11_ENTRY_2)
             Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
@@ -214,7 +214,7 @@ EvtScript EVS_EnterMap = {
                 Call(DisablePlayerPhysics, false)
                 Call(DisablePlayerInput, false)
             EndIf
-            Set(LVarA, Ref(EVS_BindExitTriggers))
+            Set(LVarA, EVS_BindExitTriggers)
             ExecWait(EVS_Pipe_EnterVertical)
         CaseEq(mim_11_ENTRY_4)
             Exec(EVS_BindExitTriggers)
@@ -232,7 +232,7 @@ EvtScript EVS_Main = {
     Call(SetSpriteShading, SHADING_MIM_11)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(EnableGroup, MODEL_g62, false)
-    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Call(MakeNpcs, true, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     Exec(EVS_SetupMansionGate)
     Exec(EVS_SetupFoliage)

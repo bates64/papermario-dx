@@ -16,7 +16,7 @@ EvtScript EVS_ChestTrap = {
             EndIf
         EndLoop
         Call(PlaySoundAt, SOUND_OBK_CHANDELIER_STOP, SOUND_SPACE_DEFAULT, 4, 26, -12)
-        Call(ShakeCam, CAM_DEFAULT, 0, 10, Float(1.5))
+        Call(ShakeCam, CAM_DEFAULT, 0, 10, 1.5)
         Wait(40 * DT)
         Call(PlaySoundAt, SOUND_OBK_CHANDELIER_RETRACT, SOUND_SPACE_DEFAULT, 4, 26, -12)
         Call(MakeLerp, -80, 0, 20 * DT, EASING_LINEAR)
@@ -50,10 +50,10 @@ EvtScript EVS_OpenChest = {
 };
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Ref(Entity_Chest), 0, 0, 0, 0, 0, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_Chest, 0, 0, 0, 0, 0, MAKE_ENTITY_END)
     Call(AssignChestFlag, GF_OBK02_Chest_Trap)
-    Call(AssignScript, Ref(EVS_OpenChest))
-    Call(MakeEntity, Ref(Entity_HiddenPanel), 100, -210, 0, 0, MODEL_yuka_b1, MAKE_ENTITY_END)
+    Call(AssignScript, EVS_OpenChest)
+    Call(MakeEntity, Entity_HiddenPanel, 100, -210, 0, 0, MODEL_yuka_b1, MAKE_ENTITY_END)
     Call(AssignPanelFlag, GF_OBK02_HiddenPanel)
     Return
     End

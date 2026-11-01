@@ -7,7 +7,7 @@ EvtScript EVS_ExitWalk_mac_01_1 = {
     EndIf
     Call(UseExitHeading, 60, nok_11_ENTRY_0)
     Exec(ExitWalk)
-    Call(GotoMap, Ref("mac_01"), mac_01_ENTRY_1)
+    Call(GotoMap, "mac_01", mac_01_ENTRY_1)
     Wait(100)
     Return
     End
@@ -57,8 +57,8 @@ EvtScript EVS_SetupTexPan = {
 };
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_mac_01_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiri1, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_nok_12_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deili2, 1, 0)
+    BindTrigger(EVS_ExitWalk_mac_01_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiri1, 1, 0)
+    BindTrigger(EVS_ExitWalk_nok_12_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deili2, 1, 0)
     Return
     End
 };
@@ -69,23 +69,23 @@ EvtScript EVS_Main = {
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Set(GF_MAP_PleasantPath, true)
     IfEq(GB_StoryProgress, STORY_CH1_STAR_SPIRIT_DEPARTED)
-        Call(MakeNpcs, false, Ref(JrTroopaNPCs))
+        Call(MakeNpcs, false, JrTroopaNPCs)
     Else
         IfGe(GB_StoryProgress, STORY_CH5_RETURNED_TO_TOAD_TOWN)
             IfEq(GF_NOK11_Defeated_KentC, false)
-                Call(MakeNpcs, false, Ref(KentCKoopaNPCs))
+                Call(MakeNpcs, false, KentCKoopaNPCs)
             Else
-                Call(MakeNpcs, false, Ref(DefaultNPCs))
+                Call(MakeNpcs, false, DefaultNPCs)
             EndIf
         Else
-            Call(MakeNpcs, false, Ref(DefaultNPCs))
+            Call(MakeNpcs, false, DefaultNPCs)
         EndIf
     EndIf
     ExecWait(EVS_MakeEntities)
     Exec(EVS_SetupTexPan)
     Exec(EVS_SetupMusic)
     Call(PlaySound, SOUND_LOOP_NOK_WATER)
-    Set(LVar0, Ref(EVS_BindExitTriggers))
+    Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     Wait(1)
     Return

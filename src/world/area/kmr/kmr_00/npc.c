@@ -48,7 +48,7 @@ EvtScript EVS_NpcAux_StarSpirit = {
         Label(0)
         Call(RandInt, 90, LVar0)
         Add(LVar0, 30)
-        SetF(ArrayVar(0), Float(10.0))
+        SetF(ArrayVar(0), 10.0)
         Wait(LVar0)
         Call(RandInt, 100, LVar1)
         IfLt(LVar1, 80)
@@ -57,30 +57,30 @@ EvtScript EVS_NpcAux_StarSpirit = {
             Set(LVar1, 2)
         EndIf
         Loop(LVar1)
-            SetF(ArrayVar(0), Float(40.0))
+            SetF(ArrayVar(0), 40.0)
             Wait(1)
-            SetF(ArrayVar(0), Float(50.0))
+            SetF(ArrayVar(0), 50.0)
             Wait(1)
-            SetF(ArrayVar(0), Float(80.0))
+            SetF(ArrayVar(0), 80.0)
             Wait(1)
-            SetF(ArrayVar(0), Float(70.0))
+            SetF(ArrayVar(0), 70.0)
             Wait(1)
-            SetF(ArrayVar(0), Float(60.0))
+            SetF(ArrayVar(0), 60.0)
             Wait(1)
-            SetF(ArrayVar(0), Float(50.0))
+            SetF(ArrayVar(0), 50.0)
             Wait(1)
         EndLoop
         Goto(0)
     EndThread
-    SetF(LVar0, Float(100.0))
+    SetF(LVar0, 100.0)
     Label(1)
     Loop(50)
-        AddF(LVar0, Float(0.8))
+        AddF(LVar0, 0.8)
         Call(SetNpcImgFXParams, NPC_SELF, IMGFX_HOLOGRAM, IMGFX_HOLOGRAM_NOISE, ArrayVar(0), MV_SpiritHologramOffset, LVar0)
         Wait(1)
     EndLoop
     Loop(50)
-        AddF(LVar0, Float(-0.8))
+        AddF(LVar0, -0.8)
         Call(SetNpcImgFXParams, NPC_SELF, IMGFX_HOLOGRAM, IMGFX_HOLOGRAM_NOISE, ArrayVar(0), MV_SpiritHologramOffset, LVar0)
         Wait(1)
     EndLoop
@@ -91,7 +91,7 @@ EvtScript EVS_NpcAux_StarSpirit = {
 
 EvtScript EVS_NpcInit_StarSpirit = {
     Call(EnableNpcShadow, NPC_SELF, false)
-    Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_StarSpirit))
+    Call(BindNpcAux, NPC_SELF, EVS_NpcAux_StarSpirit)
     IfGe(GB_StoryProgress, STORY_CH0_WAKE_UP)
         Call(RemoveNpc, NPC_SELF)
     EndIf

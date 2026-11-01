@@ -243,10 +243,10 @@ EvtScript EVS_Cam_FocusOnGoompa = {
 };
 
 EvtScript EVS_Init = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
-    Call(BindHandlePhase, ACTOR_SELF, Ref(EVS_HandlePhase))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
+    Call(BindHandlePhase, ACTOR_SELF, EVS_HandlePhase)
     Call(SetActorVar, ACTOR_SELF, AVAR_MagicBrag_State, AVAL_MagicBrag_None)
     Call(SetActorVar, ACTOR_SELF, AVAR_DamageBrag_State, AVAL_DamageBrag_None)
     Call(SetActorVar, ACTOR_SELF, AVAR_Unused, 0)
@@ -326,7 +326,7 @@ EvtScript EVS_HandleEvent = {
             SetConst(LVar0, PRT_BASE)
             SetConst(LVar1, ANIM_MageJrTroopa_Run)
             ExecWait(EVS_Enemy_ReturnHome)
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(1.6))
+            Call(SetActorJumpGravity, ACTOR_SELF, 1.6)
             Call(JumpToGoal, ACTOR_SELF, 5, false, true, false)
         CaseEq(EVENT_SHOCK_DEATH)
             SetConst(LVar0, PRT_BASE)
@@ -368,7 +368,7 @@ EvtScript EVS_HandleEvent = {
             Wait(20)
             Call(SetAnimation, ACTOR_SELF, PRT_BASE, ANIM_MageJrTroopa_Run)
             Call(SetGoalToHome, ACTOR_SELF)
-            Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
+            Call(SetActorSpeed, ACTOR_SELF, 6.0)
             Call(RunToGoal, ACTOR_SELF, 0, false)
             Call(SetAnimation, ACTOR_SELF, PRT_BASE, ANIM_MageJrTroopa_Idle)
         CaseEq(EVENT_END_FIRST_STRIKE)
@@ -400,11 +400,11 @@ EvtScript EVS_TakeTurn = {
     IfNotFlag(LVar0, STATUS_FLAG_SHRINK)
         Set(LVar3, 0)
         Set(LVar4, 36)
-        SetF(LVar5, Float(1.0))
+        SetF(LVar5, 1.0)
     Else
         Set(LVar3, 0)
         Set(LVar4, 14)
-        SetF(LVar5, Float(0.4))
+        SetF(LVar5, 0.4)
     EndIf
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Add(LVar0, LVar3)
@@ -425,11 +425,11 @@ EvtScript EVS_TakeTurn = {
             IfNotFlag(LVar0, STATUS_FLAG_SHRINK)
                 Set(LVar6, -8)
                 Set(LVar7, 20)
-                SetF(LVar8, Float(1.0))
+                SetF(LVar8, 1.0)
             Else
                 Set(LVar6, -3)
                 Set(LVar7, 8)
-                SetF(LVar8, Float(0.4))
+                SetF(LVar8, 0.4)
             EndIf
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Add(LVar0, LVar6)
@@ -451,11 +451,11 @@ EvtScript EVS_TakeTurn = {
     IfNotFlag(LVar0, STATUS_FLAG_SHRINK)
         Set(LVar6, -8)
         Set(LVar7, 20)
-        SetF(LVar8, Float(1.0))
+        SetF(LVar8, 1.0)
     Else
         Set(LVar6, -3)
         Set(LVar7, 8)
-        SetF(LVar8, Float(0.4))
+        SetF(LVar8, 0.4)
     EndIf
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Add(LVar0, LVar6)
@@ -596,7 +596,7 @@ EvtScript EVS_JrTroopa_Death = {
     Call(MoveBattleCamOver, 30)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_KNOCKOUT_CHIRPING)
     Call(SetAnimation, ACTOR_SELF, PRT_MAGE, ANIM_JrTroopa_Defeated)
-    Call(SetIdleAnimations, ACTOR_SELF, PRT_MAGE, Ref(DefeatedAnims))
+    Call(SetIdleAnimations, ACTOR_SELF, PRT_MAGE, DefeatedAnims)
     Wait(60)
     Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_NO_DMG_APPLY, true)
     Return

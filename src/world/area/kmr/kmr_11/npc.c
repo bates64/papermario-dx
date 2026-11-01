@@ -20,7 +20,7 @@ EvtScript EVS_NpcIdle_GoombaKing = {
                 Call(GetNpcPos, NPC_GoombaKing, LVar0, LVar1, LVar2)
                 Call(AwaitPlayerApproach, LVar0, LVar2, 300)
                 Call(DisablePlayerInput, true)
-                Call(SetPlayerSpeed, Float(3.0 / DT))
+                Call(SetPlayerSpeed, 3.0 / DT)
                 Call(PlayerMoveTo, -564, -64, 0)
             Else
                 Label(0)
@@ -33,27 +33,27 @@ EvtScript EVS_NpcIdle_GoombaKing = {
         CaseGe(STORY_CH0_DEFEATED_GOOMBA_KING)
             Return
     EndSwitch
-    Call(SetNpcJumpscale, NPC_RedGoombaBro, Float(0.8))
-    Call(SetNpcJumpscale, NPC_BlueGoombaBro, Float(0.8))
-    Call(SetNpcJumpscale, NPC_GoombaKing, Float(0.8))
+    Call(SetNpcJumpscale, NPC_RedGoombaBro, 0.8)
+    Call(SetNpcJumpscale, NPC_BlueGoombaBro, 0.8)
+    Call(SetNpcJumpscale, NPC_GoombaKing, 0.8)
     Thread
         Call(GetNpcPos, NPC_RedGoombaBro, LVar0, LVar1, LVar2)
         Call(GetAngleToPlayer, NPC_RedGoombaBro, LVar3)
-        Call(AddVectorPolar, LVar0, LVar2, Float(100.0), LVar3)
+        Call(AddVectorPolar, LVar0, LVar2, 100.0, LVar3)
         Call(PlaySoundAtNpc, NPC_RedGoombaBro, SOUND_ACTOR_HURT, SOUND_SPACE_DEFAULT)
         Call(NpcJump0, NPC_RedGoombaBro, LVar0, 0, LVar2, 30 * DT)
     EndThread
     Thread
         Call(GetNpcPos, NPC_BlueGoombaBro, LVar0, LVar1, LVar2)
         Call(GetAngleToPlayer, NPC_BlueGoombaBro, LVar3)
-        Call(AddVectorPolar, LVar0, LVar2, Float(100.0), LVar3)
+        Call(AddVectorPolar, LVar0, LVar2, 100.0, LVar3)
         Call(PlaySoundAtNpc, NPC_BlueGoombaBro, SOUND_ACTOR_HURT, SOUND_SPACE_DEFAULT)
         Call(NpcJump0, NPC_BlueGoombaBro, LVar0, 0, LVar2, 30 * DT)
     EndThread
     Thread
         Call(GetNpcPos, NPC_GoombaKing, LVar0, LVar1, LVar2)
         Call(GetAngleToPlayer, NPC_GoombaKing, LVar3)
-        Call(AddVectorPolar, LVar0, LVar2, Float(100.0), LVar3)
+        Call(AddVectorPolar, LVar0, LVar2, 100.0, LVar3)
         Call(PlaySoundAtNpc, NPC_GoombaKing, SOUND_LARGE_ACTOR_JUMP, SOUND_SPACE_DEFAULT)
         Call(NpcJump0, NPC_GoombaKing, LVar0, 0, LVar2, 30 * DT)
     EndThread
@@ -69,15 +69,15 @@ EvtScript EVS_Scene_BossDefeated = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(15.0), Float(-8.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
+    Call(SetCamPitch, CAM_DEFAULT, 15.0, -8.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(SetCameraVFov, 25)
     Call(SpeakToPlayer, NPC_GoombaKing, ANIM_GoombaKing_Walk, ANIM_GoombaKing_Idle, 0, MSG_CH0_00D1)
-    Call(SetNpcSpeed, NPC_BlueGoombaBro, Float(6.0 / DT))
-    Call(SetNpcSpeed, NPC_RedGoombaBro, Float(6.0 / DT))
-    Call(SetNpcSpeed, NPC_GoombaKing, Float(6.0 / DT))
+    Call(SetNpcSpeed, NPC_BlueGoombaBro, 6.0 / DT)
+    Call(SetNpcSpeed, NPC_RedGoombaBro, 6.0 / DT)
+    Call(SetNpcSpeed, NPC_GoombaKing, 6.0 / DT)
     Call(SetNpcAnimation, NPC_BlueGoombaBro, ANIM_GoombaBros_Blue_Run)
     Call(SetNpcAnimation, NPC_RedGoombaBro, ANIM_GoombaBros_Red_Run)
     Call(SetNpcAnimation, NPC_GoombaKing, ANIM_GoombaKing_Run)
@@ -114,10 +114,10 @@ EvtScript EVS_Scene_BossDefeated = {
         Goto(1)
     EndIf
     Call(PlaySoundAtCollider, COLLIDER_tt, SOUND_METAL_DOOR_CLOSE, SOUND_SPACE_DEFAULT)
-    Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(2.0))
+    Call(ShakeCam, CAM_DEFAULT, 0, 5, 2.0)
     Set(GB_StoryProgress, STORY_CH0_DEFEATED_GOOMBA_KING)
     Exec(EVS_SetupMusic)
-    Call(AdjustCam, CAM_DEFAULT, Float(4.0 / DT), 0, Float(250.0), Float(15.0), Float(-7.5))
+    Call(AdjustCam, CAM_DEFAULT, 4.0 / DT, 0, 250.0, 15.0, -7.5)
     Wait(10 * DT)
     Call(DisablePartnerAI, false)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldGoombario_Talk, ANIM_WorldGoombario_Idle, 0, MSG_CH0_00D2)
@@ -126,7 +126,7 @@ EvtScript EVS_Scene_BossDefeated = {
     Call(DisablePlayerInput, true)
     Thread
         Wait(40)
-        Call(ResetCam, CAM_DEFAULT, Float(4.0 / DT))
+        Call(ResetCam, CAM_DEFAULT, 4.0 / DT)
         Call(DisablePlayerInput, false)
     EndThread
     Call(SetNpcPos, NPC_BlueGoombaBro, NPC_DISPOSE_LOCATION)
@@ -142,7 +142,7 @@ EvtScript EVS_NpcDefeat_GoombaKing = {
             ExecWait(EVS_Scene_BossDefeated)
         CaseEq(OUTCOME_PLAYER_LOST)
         CaseEq(OUTCOME_PLAYER_FLED)
-            Call(SetPlayerSpeed, Float(6.0))
+            Call(SetPlayerSpeed, 6.0)
             Call(PlayerMoveTo, -954, -50, 0)
     EndSwitch
     Call(DisablePlayerInput, false)
@@ -207,10 +207,10 @@ EvtScript EVS_NpcAux_Kammy = {
         IfEq(LVar3, 0)
             IfEq(LVar5, 0)
             Else
-                PlayEffect(EFFECT_PURPLE_RING, 0, LVar0, LVar1, LVar2, LVar3, LVar4, LVar5, Float(1.0))
+                PlayEffect(EFFECT_PURPLE_RING, 0, LVar0, LVar1, LVar2, LVar3, LVar4, LVar5, 1.0)
             EndIf
         Else
-            PlayEffect(EFFECT_PURPLE_RING, 0, LVar0, LVar1, LVar2, LVar3, LVar4, LVar5, Float(1.0))
+            PlayEffect(EFFECT_PURPLE_RING, 0, LVar0, LVar1, LVar2, LVar3, LVar4, LVar5, 1.0)
         EndIf
         Wait(3)
         Goto(0)
@@ -225,7 +225,7 @@ s32 KammyFloatingOffsets[] = {
 
 EvtScript EVS_NpcAI_Kammy = {
     Label(0)
-        UseBuf(Ref(KammyFloatingOffsets))
+        UseBuf(KammyFloatingOffsets)
         Loop(ARRAY_COUNT(KammyFloatingOffsets))
             BufRead1(LVar1)
             Call(GetNpcPos, NPC_SELF, LVar2, LVar3, LVar4)
@@ -239,8 +239,8 @@ EvtScript EVS_NpcAI_Kammy = {
 };
 
 EvtScript EVS_NpcInit_GoombaBros_01 = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_GoombaBros_01))
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_GoombaBros_01))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_GoombaBros_01)
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_GoombaBros_01)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_DEFEATED_GOOMBA_KING)
             IfEq(GF_KMR11_GoombaBrosFledToCastle, true)
@@ -255,8 +255,8 @@ EvtScript EVS_NpcInit_GoombaBros_01 = {
 };
 
 EvtScript EVS_NpcInit_GoombaBros_02 = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_GoombaBros_02))
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_GoombaBros_02))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_GoombaBros_02)
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_GoombaBros_02)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_DEFEATED_GOOMBA_KING)
             IfEq(GF_KMR11_GoombaBrosFledToCastle, true)
@@ -271,8 +271,8 @@ EvtScript EVS_NpcInit_GoombaBros_02 = {
 };
 
 EvtScript EVS_NpcInit_GoombaKing = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_GoombaKing))
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_GoombaKing))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_GoombaKing)
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_GoombaKing)
     Call(SetNpcCollisionSize, NPC_SELF, 70, 50)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_DEFEATED_GOOMBA_KING)

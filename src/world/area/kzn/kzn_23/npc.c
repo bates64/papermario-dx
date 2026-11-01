@@ -85,14 +85,14 @@ EvtScript EVS_NpcInit_Kolorado = {
     Call(SetNpcRotationPivot, NPC_SELF, 10)
     Call(SetNpcRotation, NPC_SELF, 0, 0, 180)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Panic)
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Kolorado))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Kolorado)
     Return
     End
 };
 
 EvtScript EVS_CameraFollowMisstar = {
     Label(0)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+        Call(SetCamSpeed, CAM_DEFAULT, 90.0)
         Call(GetNpcPos, NPC_Misstar, LVar0, LVar1, LVar2)
         Add(LVar1, 60)
         Call(SetCamTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -164,19 +164,19 @@ EvtScript EVS_SpawnPyroclasts = {
                 CaseEq(0)
                     PlayEffect(EFFECT_65, 2, 50, 2650, -20, 1, 0)
                     Set(LVarE, LVarF)
-                    Call(LoadPath, 15, Ref(PyroclastPathA), ARRAY_COUNT(PyroclastPathA), EASING_QUADRATIC_OUT)
+                    Call(LoadPath, 15, PyroclastPathA, ARRAY_COUNT(PyroclastPathA), EASING_QUADRATIC_OUT)
                 CaseEq(1)
                     PlayEffect(EFFECT_65, 2, -20, 2650, -20, 1, 0)
                     Set(LVarE, LVarF)
-                    Call(LoadPath, 10, Ref(PyroclastPathB), ARRAY_COUNT(PyroclastPathB), EASING_QUADRATIC_OUT)
+                    Call(LoadPath, 10, PyroclastPathB, ARRAY_COUNT(PyroclastPathB), EASING_QUADRATIC_OUT)
                 CaseEq(2)
                     PlayEffect(EFFECT_65, 2, 10, 2650, -20, 1, 0)
                     Set(LVarE, LVarF)
-                    Call(LoadPath, 15, Ref(PyroclastPathC), ARRAY_COUNT(PyroclastPathC), EASING_QUADRATIC_OUT)
+                    Call(LoadPath, 15, PyroclastPathC, ARRAY_COUNT(PyroclastPathC), EASING_QUADRATIC_OUT)
                 CaseEq(3)
                     PlayEffect(EFFECT_65, 2, -50, 2650, -20, 1, 0)
                     Set(LVarE, LVarF)
-                    Call(LoadPath, 20, Ref(PyroclastPathD), ARRAY_COUNT(PyroclastPathD), EASING_QUADRATIC_OUT)
+                    Call(LoadPath, 20, PyroclastPathD, ARRAY_COUNT(PyroclastPathD), EASING_QUADRATIC_OUT)
             EndSwitch
             Call(RandInt, 1, LVar4)
             IfEq(LVar4, 0)
@@ -243,7 +243,7 @@ EvtScript EVS_Scene_Misstar = {
     Exec(EVS_SpawnPyroclasts)
     Wait(35)
     // make the chest thrown from the volcano
-    Call(MakeEntity, Ref(Entity_Chest), 0, 2650, 0, 148, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_Chest, 0, 2650, 0, 148, MAKE_ENTITY_END)
     Set(LVarA, LVar0)
     Thread
         Call(AnimateChestSize)
@@ -262,7 +262,7 @@ EvtScript EVS_Scene_Misstar = {
     EndLoop
     // end scene
     Wait(45)
-    Call(GotoMap, Ref("jan_04"), jan_04_ENTRY_1)
+    Call(GotoMap, "jan_04", jan_04_ENTRY_1)
     Wait(100)
     Return
     End
@@ -271,7 +271,7 @@ EvtScript EVS_Scene_Misstar = {
 EvtScript EVS_NpcInit_Misstar = {
     Call(SetNpcPos, NPC_SELF, 0, -100, 0)
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldMisstar_IdleAngry)
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_Scene_Misstar))
+    Call(BindNpcIdle, NPC_SELF, EVS_Scene_Misstar)
     Return
     End
 };

@@ -91,9 +91,9 @@ OVL_DEF_ACTOR(light_bulb) = {
 
 static EvtScript EVS_Init = {
     Call(SetActorPos, ACTOR_SELF, 116, 70, 0)
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
     Return
     End
 };
@@ -122,13 +122,13 @@ static EvtScript EVS_HandleEvent = {
             Call(GetActorVar, ACTOR_TANK, AVAR_Tank_HandlingEvent, LVar0)
             IfFalse(LVar0)
                 Call(func_8026E914, LVar0, LVar1)
-                Call(PlayModelAnimation, 0, Ref(AS_ToyTank_CloseHatch))
+                Call(PlayModelAnimation, 0, AS_ToyTank_CloseHatch)
                 Wait(30)
             EndIf
         CaseEq(EVENT_IMMUNE)
             Call(GetActorVar, ACTOR_TANK, AVAR_Tank_HandlingEvent, LVar0)
             IfFalse(LVar0)
-                Call(PlayModelAnimation, 0, Ref(AS_ToyTank_CloseHatch))
+                Call(PlayModelAnimation, 0, AS_ToyTank_CloseHatch)
                 Wait(30)
             EndIf
         CaseEq(EVENT_AIR_LIFT_FAILED)
@@ -166,7 +166,7 @@ static EvtScript EVS_Hit = {
 static EvtScript EVS_ShakeTank = {
     Call(GetActorVar, ACTOR_TANK, AVAR_Tank_HandlingEvent, LVar0)
     IfFalse(LVar0)
-        Call(PlayModelAnimation, 0, Ref(AS_ToyTank_CloseHatch))
+        Call(PlayModelAnimation, 0, AS_ToyTank_CloseHatch)
         Wait(30)
     EndIf
     Return

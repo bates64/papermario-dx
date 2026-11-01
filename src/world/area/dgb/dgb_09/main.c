@@ -15,7 +15,7 @@ EvtScript exitSingleDoor_80243A88 = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(
 EvtScript exitWalk_80243B3C = EVT_EXIT_WALK(40, dgb_09_ENTRY_3, "dgb_10", dgb_10_ENTRY_0);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(exitWalk_80243B3C), TRIGGER_FLOOR_ABOVE, COLLIDER_deiline, 1, 0)
+    BindTrigger(exitWalk_80243B3C, TRIGGER_FLOOR_ABOVE, COLLIDER_deiline, 1, 0)
     Return
     End
 };
@@ -42,7 +42,7 @@ EvtScript enterWalk_80243BC4 = {
             ExecWait(EnterSingleDoor)
             Exec(EVS_BindExitTriggers)
         CaseEq(dgb_09_ENTRY_3)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
             Wait(1)
     EndSwitch
@@ -55,12 +55,12 @@ EvtScript EVS_Main = {
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     IfLt(GB_StoryProgress, STORY_CH3_STAR_SPIRIT_RESCUED)
-        Call(MakeNpcs, true, Ref(DefaultNPCs))
+        Call(MakeNpcs, true, DefaultNPCs)
     EndIf
     Exec(EVS_SetupBreakable)
-    BindTrigger(Ref(exitDoubleDoor_80243920), TRIGGER_WALL_PRESS_A, COLLIDER_deilittw, 1, 0)
-    BindTrigger(Ref(exitDoubleDoor_802439D4), TRIGGER_WALL_PRESS_A, COLLIDER_deilitte, 1, 0)
-    BindTrigger(Ref(exitSingleDoor_80243A88), TRIGGER_WALL_PRESS_A, COLLIDER_deilittnw, 1, 0)
+    BindTrigger(exitDoubleDoor_80243920, TRIGGER_WALL_PRESS_A, COLLIDER_deilittw, 1, 0)
+    BindTrigger(exitDoubleDoor_802439D4, TRIGGER_WALL_PRESS_A, COLLIDER_deilitte, 1, 0)
+    BindTrigger(exitSingleDoor_80243A88, TRIGGER_WALL_PRESS_A, COLLIDER_deilittnw, 1, 0)
     Exec(EVS_SetupMusic)
     Exec(enterWalk_80243BC4)
     Return

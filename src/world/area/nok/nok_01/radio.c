@@ -139,7 +139,7 @@ EvtScript EVS_Interact_Radio = {
 };
 
 EvtScript EVS_SetupRadio = {
-    BindTrigger(Ref(EVS_Interact_Radio), TRIGGER_WALL_PRESS_A, COLLIDER_o235, 1, 0)
+    BindTrigger(EVS_Interact_Radio, TRIGGER_WALL_PRESS_A, COLLIDER_o235, 1, 0)
     Return
     End
 };

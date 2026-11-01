@@ -17,7 +17,7 @@ MobileAISettings AISettings_ShyGuy_AvoidPlayer = {
 };
 
 EvtScript EVS_NpcAI_ShyGuy_AvoidPlayer = {
-    Call(AvoidPlayerAI_Main, Ref(AISettings_ShyGuy_AvoidPlayer))
+    Call(AvoidPlayerAI_Main, AISettings_ShyGuy_AvoidPlayer)
     Return
     End
 };

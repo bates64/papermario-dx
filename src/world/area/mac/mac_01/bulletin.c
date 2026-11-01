@@ -111,8 +111,8 @@ EvtScript EVS_ReadBulletin_Gossip = {
 };
 
 EvtScript EVS_SetupBulletinBoard = {
-    BindTrigger(Ref(EVS_ReadBulletin_News), TRIGGER_WALL_PRESS_A, COLLIDER_syoumen, 1, 0)
-    BindTrigger(Ref(EVS_ReadBulletin_Gossip), TRIGGER_WALL_PRESS_A, COLLIDER_yoko_ushiro, 1, 0)
+    BindTrigger(EVS_ReadBulletin_News, TRIGGER_WALL_PRESS_A, COLLIDER_syoumen, 1, 0)
+    BindTrigger(EVS_ReadBulletin_Gossip, TRIGGER_WALL_PRESS_A, COLLIDER_yoko_ushiro, 1, 0)
     Return
     End
 };

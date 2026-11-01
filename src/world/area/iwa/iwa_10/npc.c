@@ -23,7 +23,7 @@ EvtScript EVS_NpcInteract_TrainToad_01 = {
 };
 
 EvtScript EVS_NpcInit_TrainToad_01 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_TrainToad_01))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_TrainToad_01)
     Return
     End
 };
@@ -49,7 +49,7 @@ EvtScript EVS_NpcInteract_Toad = {
 };
 
 EvtScript EVS_NpcInit_Toad = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad)
     IfGe(GB_StoryProgress, STORY_CH2_ARRIVED_AT_DRY_DRY_OUTPOST)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -66,7 +66,7 @@ EvtScript EVS_NpcInteract_Toadette_02 = {
 };
 
 EvtScript EVS_NpcInit_Toadette_02 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toadette_02))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toadette_02)
     IfLt(GB_StoryProgress, STORY_CH2_ARRIVED_AT_DRY_DRY_OUTPOST)
         Call(RemoveNpc, NPC_SELF)
         Return
@@ -99,7 +99,7 @@ EvtScript EVS_NpcInteract_Dryite = {
 };
 
 EvtScript EVS_NpcInit_Dryite = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Dryite))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Dryite)
     Return
     End
 };
@@ -116,7 +116,7 @@ EvtScript EVS_NpcInteract_Toadette_01 = {
 };
 
 EvtScript EVS_NpcInit_Toadette_01 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toadette_01))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toadette_01)
     Return
     End
 };

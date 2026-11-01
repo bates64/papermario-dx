@@ -13,7 +13,7 @@ GuardAISettings AISettings_GoombaBros_Guard = {
 };
 
 EvtScript EVS_NpcAI_GoombaBros_Guard = {
-    Call(GuardAI_Main, Ref(AISettings_GoombaBros_Guard))
+    Call(GuardAI_Main, AISettings_GoombaBros_Guard)
     Return
     End
 };

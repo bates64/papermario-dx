@@ -6,13 +6,13 @@
 EvtScript EVS_ExitWalk_pra_09_1 = EVT_EXIT_WALK(60, pra_11_ENTRY_0, "pra_09", pra_09_ENTRY_1);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_pra_09_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deilisw, 1, 0)
+    BindTrigger(EVS_ExitWalk_pra_09_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deilisw, 1, 0)
     Return
     End
 };
 
 EvtScript EVS_EnterMap = {
-    Set(LVar0, Ref(EVS_BindExitTriggers))
+    Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     Return
     End

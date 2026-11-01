@@ -7,10 +7,10 @@ EvtScript EVS_ExitWalk_sbk_20_3 = EVT_EXIT_WALK(60, sbk_30_ENTRY_2, "sbk_20", sb
 EvtScript EVS_ExitWalk_sbk_40_2 = EVT_EXIT_WALK(60, sbk_30_ENTRY_3, "sbk_40", sbk_40_ENTRY_2);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_sbk_99_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_sbk_31_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_sbk_20_3), TRIGGER_FLOOR_ABOVE, COLLIDER_deilin, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_sbk_40_2), TRIGGER_FLOOR_ABOVE, COLLIDER_deilis, 1, 0)
+    BindTrigger(EVS_ExitWalk_sbk_99_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitWalk_sbk_31_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitWalk_sbk_20_3, TRIGGER_FLOOR_ABOVE, COLLIDER_deilin, 1, 0)
+    BindTrigger(EVS_ExitWalk_sbk_40_2, TRIGGER_FLOOR_ABOVE, COLLIDER_deilis, 1, 0)
     Return
     End
 };
@@ -29,7 +29,7 @@ EvtScript EVS_EnterMap = {
         CaseEq(sbk_30_ENTRY_4)
             Return
     EndSwitch
-    Set(LVar0, Ref(EVS_BindExitTriggers))
+    Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     Return
     End
@@ -39,22 +39,22 @@ EvtScript EVS_Scene_RuinsRising = {
     Call(PlaySound, SOUND_LOOP_SBK_RUINS_RISING_DISTANT)
     Call(UseSettingsFrom, CAM_DEFAULT, 193, 0, -237)
     Call(SetPanTarget, CAM_DEFAULT, 193, 0, -237)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(SetModelTintMode, APPLY_TINT_BG, nullptr, ENV_TINT_REMAP)
     Call(SetModelTintMode, APPLY_TINT_GROUPS, -1, ENV_TINT_REMAP)
     Call(SetModelTintParams, ENV_TINT_REMAP, 44, 32, 177, 0, 0, 0, 0, 0, 0)
     Call(DisablePlayerInput, true)
     Thread
-        Call(ShakeCam, CAM_DEFAULT, 0, 300, Float(0.25))
+        Call(ShakeCam, CAM_DEFAULT, 0, 300, 0.25)
     EndThread
     Thread
         Wait(60)
         Call(GetEntryID, LVar0)
         IfEq(LVar0, sbk_30_ENTRY_4)
-            Call(GotoMap, Ref("dro_01"), dro_01_ENTRY_3)
+            Call(GotoMap, "dro_01", dro_01_ENTRY_3)
         Else
-            Call(GotoMap, Ref("dro_01"), dro_01_ENTRY_4)
+            Call(GotoMap, "dro_01", dro_01_ENTRY_4)
         EndIf
         Wait(100)
     EndThread
@@ -71,7 +71,7 @@ EvtScript EVS_Main = {
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     IfLt(GB_StoryProgress, STORY_UNUSED_FFFFFFCC)
         Call(EnableGroup, MODEL_g28, false)
-        Call(MakeNpcs, false, Ref(DefaultNPCs))
+        Call(MakeNpcs, false, DefaultNPCs)
     Else
         Call(EnableGroup, MODEL_g23, false)
         Call(EnableGroup, MODEL_sakji_tent, false)

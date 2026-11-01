@@ -244,8 +244,8 @@ EvtScript EVS_SetupPit = {
         Call(TranslateGroup, MODEL_move1, 0, -180, 0)
         Call(UpdateColliderTransform, COLLIDER_m1_yuka)
         Call(UpdateColliderTransform, COLLIDER_o116)
-        BindTrigger(Ref(EVS_TouchFloor_FragileIce), TRIGGER_FLOOR_TOUCH, COLLIDER_o116, 1, 0)
-        BindTrigger(Ref(EVS_Blast_FragileIce), TRIGGER_POINT_BOMB, Ref(BombPos_Ice), 1, 0)
+        BindTrigger(EVS_TouchFloor_FragileIce, TRIGGER_FLOOR_TOUCH, COLLIDER_o116, 1, 0)
+        BindTrigger(EVS_Blast_FragileIce, TRIGGER_POINT_BOMB, BombPos_Ice, 1, 0)
     Else
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o116, COLLIDER_FLAGS_UPPER_MASK)
         Call(SetGroupVisibility, MODEL_move1, MODEL_GROUP_HIDDEN)

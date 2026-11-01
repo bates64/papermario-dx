@@ -17,7 +17,7 @@ EvtScript EVS_BossDefeated = {
     Switch(GB_StoryProgress)
         CaseEq(STORY_CH1_KOOPA_BROS_FIRING_BLASTERS)
             Set(GB_StoryProgress, STORY_CH1_DEFEATED_KOOPA_BROS)
-            Call(GotoMap, Ref("trd_06"), trd_06_ENTRY_2)
+            Call(GotoMap, "trd_06", trd_06_ENTRY_2)
             Wait(100)
             Return
         CaseEq(STORY_CH1_DEFEATED_KOOPA_BROS)
@@ -32,7 +32,7 @@ EvtScript EVS_BossDefeated = {
     IfEq(LVar0, 0)
         Call(DisablePlayerInput, true)
         Call(UseSettingsFrom, CAM_DEFAULT, -135, 85, 0)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(0.6))
+        Call(SetCamSpeed, CAM_DEFAULT, 0.6)
         Call(SetPanTarget, CAM_DEFAULT, -135, 30, 0)
         EVT_SPIRIT_ADJUST_CAM(10000)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
@@ -67,9 +67,9 @@ EvtScript EVS_BossDefeated = {
         Call(AwaitSpiritCardProgress, SPIRIT_CARD_NOTIFY_DONE_FALLING)
         Call(GetPlayerPos, LVar2, LVar3, LVar4)
         Call(UseSettingsFrom, CAM_DEFAULT, LVar2, LVar3, LVar4)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(1.0))
+        Call(SetCamSpeed, CAM_DEFAULT, 1.0)
         Call(SetPanTarget, CAM_DEFAULT, LVar2, LVar3, LVar4)
-        Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+        Call(WaitForCam, CAM_DEFAULT, 1.0)
         Call(PanToTarget, CAM_DEFAULT, 0, false)
         Call(DisablePlayerInput, false)
     Else
@@ -83,7 +83,7 @@ EvtScript EVS_BossDefeated = {
     Call(PlaySoundAtPlayer, SOUND_RESCUE_STAR_SPIRIT, SOUND_SPACE_DEFAULT)
     Call(DisablePlayerInput, true)
     Set(GB_StoryProgress, STORY_CH1_STAR_SPIRIT_RESCUED)
-    Call(GotoMapSpecial, Ref("kmr_23"), kmr_23_ENTRY_0, TRANSITION_GET_STAR_CARD)
+    Call(GotoMapSpecial, "kmr_23", kmr_23_ENTRY_0, TRANSITION_GET_STAR_CARD)
     Wait(100)
     Return
     End
@@ -111,7 +111,7 @@ EvtScript EVS_ExitDoors_trd_09_1 =
     EVT_EXIT_DOUBLE_DOOR(trd_10_ENTRY_0, "trd_09", trd_09_ENTRY_1, COLLIDER_ttw, MODEL_o192, MODEL_o191);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitDoors_trd_09_1), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
+    BindTrigger(EVS_ExitDoors_trd_09_1, TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
     Return
     End
 };
@@ -121,7 +121,7 @@ EvtScript EVS_Main = {
     Call(SetSpriteShading, SHADING_NONE)
     Call(SetMapChangeFadeRate)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Call(MakeNpcs, true, DefaultNPCs)
     ExecWait(EVS_InitFakeBowser)
     Exec(EVS_SetupFakeBowser)
     IfEq(GB_StoryProgress, STORY_CH1_DEFEATED_KOOPA_BROS)

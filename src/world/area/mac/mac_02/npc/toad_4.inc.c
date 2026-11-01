@@ -45,7 +45,7 @@ EvtScript EVS_NpcInteract_Toad_04 = {
 };
 
 EvtScript EVS_NpcInit_Toad_04 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_04))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad_04)
     Return
     End
 };

@@ -163,14 +163,14 @@ EvtScript EVS_SetupLockedHouse = {
     // lower right house
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
-        Ref(EVS_SetDoorRot_RightHouse),
-        Ref(EVS_SetWallRot_RightHouse),
-        Ref(EVS_DropDoor_RightHouse),
-        Ref(EVS_RoomListener_RightHouse),
+        EVS_SetDoorRot_RightHouse,
+        EVS_SetWallRot_RightHouse,
+        EVS_DropDoor_RightHouse,
+        EVS_RoomListener_RightHouse,
         COLLIDER_o540,
         COLLIDER_o591,
         MODEL_sou,
-        Ref(InteriorNPCs_RightHouse))
+        InteriorNPCs_RightHouse)
     Return
     End
 };
@@ -181,20 +181,20 @@ EvtScript EVS_SetupRooms = {
     // lower left house
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
-        Ref(EVS_SetDoorRot_LeftHouse),
-        Ref(EVS_SetWallRot_LeftHouse),
-        Ref(EVS_DropDoor_LeftHouse),
-        Ref(EVS_RoomListener_LeftHouse),
+        EVS_SetDoorRot_LeftHouse,
+        EVS_SetWallRot_LeftHouse,
+        EVS_DropDoor_LeftHouse,
+        EVS_RoomListener_LeftHouse,
         COLLIDER_o541,
         COLLIDER_o590,
         MODEL_gon,
-        Ref(InteriorNPCs_LeftHouse))
+        InteriorNPCs_LeftHouse)
     Call(SetGroupVisibility, MODEL_s_naiso, MODEL_GROUP_HIDDEN)
     IfEq(GF_SAM11_UnlockedDoor, true)
         ExecWait(EVS_SetupLockedHouse)
     Else
-        BindPadlock(Ref(EVS_UnlockPrompt_LeftHouse), TRIGGER_WALL_PRESS_A,
-            EVT_ENTITY_INDEX(0), Ref(KeyList), 0, 1)
+        BindPadlock(EVS_UnlockPrompt_LeftHouse, TRIGGER_WALL_PRESS_A,
+            EVT_ENTITY_INDEX(0), KeyList, 0, 1)
     EndIf
     Return
     End

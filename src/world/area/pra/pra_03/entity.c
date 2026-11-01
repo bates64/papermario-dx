@@ -59,14 +59,14 @@ EvtScript EVS_UseSpring = {
         Set(LVar3, -175)
         ExecGetTID(EVS_TetherCamToPlayerWithCeiling, LVarA)
         Call(GetTargetPosXForSpring_Floor0)
-        Call(SetPlayerJumpscale, Float(2.0))
+        Call(SetPlayerJumpscale, 2.0)
         Set(LVar1, -200)
         Set(LVar2, 15)
     Else
         Set(LVar3, 0)
         ExecGetTID(EVS_TetherCamToPlayerWithCeiling, LVarA)
         Call(GetTargetPosXForSpring_Floor1)
-        Call(SetPlayerJumpscale, Float(0.7))
+        Call(SetPlayerJumpscale, 0.7)
         Set(LVar1, 0)
         Set(LVar2, 35)
     EndIf
@@ -84,9 +84,9 @@ EvtScript EVS_MakeEntities = {
     Thread
         Call(MonitorPlayerFloor)
     EndThread
-    Call(MakeEntity, Ref(Entity_ScriptSpring), 124, -200, -75, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(EVS_UseSpring))
-    Call(MakeEntity, Ref(Entity_SavePoint), -200, 60, -75, 0, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_ScriptSpring, 124, -200, -75, 0, MAKE_ENTITY_END)
+    Call(AssignScript, EVS_UseSpring)
+    Call(MakeEntity, Entity_SavePoint, -200, 60, -75, 0, MAKE_ENTITY_END)
     Return
     End
 };

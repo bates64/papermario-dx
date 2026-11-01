@@ -330,10 +330,10 @@ s32 BrightAnims[] = {
 };
 
 EvtScript EVS_Init = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
-    Call(BindHandlePhase, ACTOR_SELF, Ref(EVS_HandlePhase))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
+    Call(BindHandlePhase, ACTOR_SELF, EVS_HandlePhase)
     Call(SetActorVar, ACTOR_SELF, AVAR_NumDefeated, 0)
     Call(SetActorVar, ACTOR_SELF, AVAR_NumPendingDefeat, 0)
     Call(SetActorVar, ACTOR_SELF, AVAR_FleeState, 0)
@@ -441,7 +441,7 @@ EvtScript EVS_Init = {
     Set(LVar1, ANIM_TankGuy_Flee)
     Set(LVar2, 55)
     Set(LVar3, 47)
-    Set(LVar4, Float(4.0))
+    Set(LVar4, 4.0)
     Set(LVar5, 30)
     Set(LVarF, 0)
     Loop(NUM_MEMBERS)
@@ -470,15 +470,15 @@ EvtScript EVS_Idle = {
     Label(0)
         Call(GetCurrentPartnerID, LVar0)
         IfEq(LVar0, PARTNER_WATT)
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(BrightAnims))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, BrightAnims)
             LOOP_MEMBERS(LVar0)
-            Call(SetIdleAnimations, ACTOR_SELF, LVar0, Ref(BrightAnims))
+            Call(SetIdleAnimations, ACTOR_SELF, LVar0, BrightAnims)
             Add(LVar0, 1)
             EndLoop
         Else
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(DarkAnims))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, DarkAnims)
             LOOP_MEMBERS(LVar0)
-            Call(SetIdleAnimations, ACTOR_SELF, LVar0, Ref(DarkAnims))
+            Call(SetIdleAnimations, ACTOR_SELF, LVar0, DarkAnims)
             Add(LVar0, 1)
             EndLoop
         EndIf
@@ -843,7 +843,7 @@ EvtScript EVS_HandleEvent = {
             SetConst(LVar1, ANIM_TankGuy_Idle)
             ExecWait(EVS_HitReaction)
         CaseEq(EVENT_END_FIRST_STRIKE)
-            Call(SetActorSpeed, ACTOR_SELF, Float(4.0))
+            Call(SetActorSpeed, ACTOR_SELF, 4.0)
             Call(HPBarToHome, ACTOR_SELF)
         CaseEq(EVENT_RECOVER_STATUS)
             SetConst(LVar0, PRT_MAIN)
@@ -890,7 +890,7 @@ EvtScript EVS_ReduceCrowdSize = {
                 Call(GetPartMovementVar, ACTOR_SELF, LVar0, HIT_OFFSET_Z, LVar8)
                 Add(LVar1, LVar7)
                 Add(LVar3, LVar8)
-                Call(SetPartJumpGravity, ACTOR_SELF, LVar0, Float(0.5))
+                Call(SetPartJumpGravity, ACTOR_SELF, LVar0, 0.5)
                 Call(JumpPartTo, ACTOR_SELF, LVar0, LVar1, 0, LVar3, 15, true)
                 Call(GetDamageSource, LVar5)
                 Switch(LVar5)
@@ -1114,13 +1114,13 @@ EvtScript EVS_Attack_Swarm = {
             Add(LVar2, LVar5)
             Call(GetPartMovementVar, ACTOR_SELF, LVar0, SWARM_OFFSET_Z, LVar5)
             Add(LVar3, LVar5)
-            SetF(LVar4, Float(6.0))
+            SetF(LVar4, 6.0)
             Set(LVar5, 30)
             ExecWait(EVS_MoveMemberToPos)
         EndThread
         Add(LVar0, 1)
     EndLoop
-    Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
+    Call(SetActorSpeed, ACTOR_SELF, 6.0)
     Call(GetGoalPos, ACTOR_PLAYER, LVar2, LVar5, LVar3)
     Call(GetPartMovementVar, ACTOR_SELF, PRT_MEMBER_01, SWARM_OFFSET_X, LVar5)
     Add(LVar2, LVar5)
@@ -1230,7 +1230,7 @@ EvtScript EVS_MoveSquadHome = {
             Add(LVar2, LVar5)
             Call(GetPartMovementVar, ACTOR_SELF, LVar0, SWARM_OFFSET_Z, LVar5)
             Add(LVar3, LVar5)
-            SetF(LVar4, Float(6.0))
+            SetF(LVar4, 6.0)
             Set(LVar5, 30)
             ExecWait(EVS_MoveMemberToPos)
             Call(SetAnimation, ACTOR_SELF, LVar0, ANIM_TankGuy_Idle)
@@ -1238,7 +1238,7 @@ EvtScript EVS_MoveSquadHome = {
         EndThread
         Add(LVar0, 1)
     EndLoop
-    Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
+    Call(SetActorSpeed, ACTOR_SELF, 6.0)
     Call(SetGoalToHome, ACTOR_SELF)
     Call(GetGoalPos, ACTOR_SELF, LVar2, LVar5, LVar3)
     Call(GetPartMovementVar, ACTOR_SELF, PRT_MEMBER_01, SWARM_OFFSET_X, LVar5)

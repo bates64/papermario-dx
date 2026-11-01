@@ -20,14 +20,14 @@ EvtScript EVS_NpcInteract_Igor = {
     Else
         Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Talk, ANIM_Boo_Idle, 0, MSG_CH3_005C)
     EndIf
-    Set(LVar0, Ref(LetterDelivery_Igor))
+    Set(LVar0, LetterDelivery_Igor)
     ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Igor = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Igor))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Igor)
     Return
     End
 };

@@ -3,8 +3,8 @@
 EvtScript EVS_ExitWalk_hos_04_1 = EVT_EXIT_WALK(60, hos_05_ENTRY_0, "hos_04", hos_04_ENTRY_1);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_hos_04_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(EVS_Starship_Depart), TRIGGER_FLOOR_TOUCH, COLLIDER_o630, 1, 0)
+    BindTrigger(EVS_ExitWalk_hos_04_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_Starship_Depart, TRIGGER_FLOOR_TOUCH, COLLIDER_o630, 1, 0)
     Return
     End
 };
@@ -15,9 +15,9 @@ EvtScript EVS_Main = {
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, hos_05_ENTRY_3)
-        Call(MakeNpcs, false, Ref(IntroNPCs))
+        Call(MakeNpcs, false, IntroNPCs)
     Else
-        Call(MakeNpcs, false, Ref(DefaultNPCs))
+        Call(MakeNpcs, false, DefaultNPCs)
     EndIf
     Exec(EVS_SetupStarshipAndWater)
     ExecWait(EVS_SetupMusic)
@@ -25,8 +25,8 @@ EvtScript EVS_Main = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(hos_05_ENTRY_0)
-            Call(SetCamSpeed, CAM_DEFAULT, Float(2.5))
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Call(SetCamSpeed, CAM_DEFAULT, 2.5)
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
         CaseEq(hos_05_ENTRY_1)
             Thread

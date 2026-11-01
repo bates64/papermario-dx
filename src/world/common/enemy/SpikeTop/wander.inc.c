@@ -21,7 +21,7 @@ EvtScript EVS_NpcAI_BuzzyBeetle_Wander = {
     Call(SetSelfVar, AI_VAR_TACKLE_MIN_CHASE_TIME, 2)
     Call(SetSelfVar, AI_VAR_TACKLE_POST_DELAY, 5)
     Call(SetSelfVar, AI_VAR_TACKLE_TYPE, TACKLER_BUZZY_BEETLE)
-    Call(TackleWanderAI_Main, Ref(AISettings_BuzzyBeetle_Wander))
+    Call(TackleWanderAI_Main, AISettings_BuzzyBeetle_Wander)
     Return
     End
 };
@@ -44,7 +44,7 @@ EvtScript EVS_NpcAI_SpikeTop_Wander = {
     Call(SetSelfVar, AI_VAR_TACKLE_MIN_CHASE_TIME, 10)
     Call(SetSelfVar, AI_VAR_TACKLE_POST_DELAY, 4)
     Call(SetSelfVar, AI_VAR_TACKLE_TYPE, TACKLER_SPIKE_TOP)
-    Call(TackleWanderAI_Main, Ref(AISettings_SpikeTop_Wander))
+    Call(TackleWanderAI_Main, AISettings_SpikeTop_Wander)
     Return
     End
 };
@@ -65,7 +65,7 @@ EvtScript EVS_NpcAI_BonyBeetle_Wander = {
     Call(SetSelfVar, AI_VAR_TACKLE_MIN_CHASE_TIME, 8)
     Call(SetSelfVar, AI_VAR_TACKLE_POST_DELAY, 6)
     Call(SetSelfVar, AI_VAR_TACKLE_TYPE, TACKLER_BONY_BEETLE)
-    Call(TackleWanderAI_Main, Ref(AISettings_BonyBeetle_Wander))
+    Call(TackleWanderAI_Main, AISettings_BonyBeetle_Wander)
     Return
     End
 };
@@ -121,7 +121,7 @@ EvtScript EVS_NpcAI_BuzzyBeetle_Ceiling = {
     Call(SetSelfVar, AI_VAR_TACKLE_MIN_CHASE_TIME, 2)
     Call(SetSelfVar, AI_VAR_TACKLE_POST_DELAY, 5)
     Call(SetSelfVar, AI_VAR_TACKLE_TYPE, TACKLER_BUZZY_BEETLE)
-    Call(TackleWanderAI_Main, Ref(AISettings_BuzzyBeetle_Wander))
+    Call(TackleWanderAI_Main, AISettings_BuzzyBeetle_Wander)
     Return
     End
 };

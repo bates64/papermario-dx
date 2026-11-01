@@ -149,7 +149,7 @@ EvtScript EVS_Scene_ShowTitle = {
         EndIf
     EndLoop
     Wait(15 * DT)
-    Call(GotoMapSpecial, Ref("kmr_22"), kmr_22_ENTRY_0, TRANSITION_BEGIN_OR_END_CHAPTER)
+    Call(GotoMapSpecial, "kmr_22", kmr_22_ENTRY_0, TRANSITION_BEGIN_OR_END_CHAPTER)
     Wait(100 * DT)
     Return
     End
@@ -175,7 +175,7 @@ EvtScript EVS_Main = {
     Call(SetCamPosB, CAM_DEFAULT, 0, 0)
     Call(SetCamPosC, CAM_DEFAULT, 0, 65)
     Call(SetPanTarget, CAM_DEFAULT, 0, 0, 0)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)

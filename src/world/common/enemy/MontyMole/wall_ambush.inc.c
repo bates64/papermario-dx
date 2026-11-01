@@ -61,14 +61,14 @@ EvtScript EVS_NpcAI_MontyMole_WallAmbush = {
     Call(SetNpcPos, NPC_SELF, LVar1, LVar2, LVar3)
     Sub(LVar2, 30)
     Add(LVar3, 80)
-    Call(SetNpcJumpscale, NPC_SELF, Float(0.7))
+    Call(SetNpcJumpscale, NPC_SELF, 0.7)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_MOLE_POP, SOUND_SPACE_DEFAULT)
     Call(NpcJump0, NPC_SELF, LVar1, LVar2, LVar3, 20)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION, false)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_DISABLE_AI, false)
     Call(NpcFacePlayer, NPC_SELF, 0)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_BEGIN_WITH_CHASING, true)
-    Call(BasicAI_Main, Ref(AISettings_MontyMole_WallAmbush))
+    Call(BasicAI_Main, AISettings_MontyMole_WallAmbush)
     Return
     End
 };

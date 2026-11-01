@@ -80,13 +80,13 @@ s32 IcebergBobbingOffsets[] = {
 EvtScript EVS_UpdateIceberg = {
     Call(RandInt, 10, LVar0)
     Wait(LVar0)
-    UseBuf(Ref(IcebergBobbingOffsets))
+    UseBuf(IcebergBobbingOffsets)
     Loop(0)
         BufRead1(LVar0)
         IfEq(LVar0, 0x8000)
             Call(RandInt, 10, LVar0)
             Wait(LVar0)
-            UseBuf(Ref(IcebergBobbingOffsets))
+            UseBuf(IcebergBobbingOffsets)
             BufRead1(LVar0)
         EndIf
         Call(TranslateModel, LVarA, 0, LVar0, 0)
@@ -128,11 +128,11 @@ EvtScript EVS_DamageFrozenPond_Before = {
             Call(SetNpcFlagBits, NPC_PenguinPatrol, NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_GRAVITY, true)
             Call(SetNpcAnimation, NPC_PenguinPatrol, ANIM_PenguinPatrol_Run)
             Call(GetNpcPos, NPC_PenguinPatrol, LVar7, LVar8, LVar9)
-            Call(SetNpcSpeed, NPC_PenguinPatrol, Float(9.0))
+            Call(SetNpcSpeed, NPC_PenguinPatrol, 9.0)
             Call(NpcMoveTo, NPC_PenguinPatrol, -207, 110, 0)
             Call(GetAngleToNPC, NPC_PenguinPatrol, LVar0)
             Call(GetPlayerPos, LVar1, LVar2, LVar3)
-            Call(AddVectorPolar, LVar1, LVar3, Float(40.0), LVar0)
+            Call(AddVectorPolar, LVar1, LVar3, 40.0, LVar0)
             Call(NpcMoveTo, NPC_PenguinPatrol, LVar1, LVar3, 0)
             Call(PlayerFaceNpc, NPC_PenguinPatrol, false)
             Call(SpeakToPlayer, NPC_PenguinPatrol, ANIM_PenguinPatrol_Talk, ANIM_PenguinPatrol_Idle, 0, MSG_CH7_00B6)
@@ -154,11 +154,11 @@ EvtScript EVS_DamageFrozenPond_Before = {
             Call(SetNpcFlagBits, NPC_PenguinPatrol, NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_GRAVITY, true)
             Call(SetNpcAnimation, NPC_PenguinPatrol, ANIM_PenguinPatrol_Run)
             Call(GetNpcPos, NPC_PenguinPatrol, LVar7, LVar8, LVar9)
-            Call(SetNpcSpeed, NPC_PenguinPatrol, Float(9.0))
+            Call(SetNpcSpeed, NPC_PenguinPatrol, 9.0)
             Call(NpcMoveTo, NPC_PenguinPatrol, -207, 110, 0)
             Call(GetAngleToNPC, NPC_PenguinPatrol, LVar0)
             Call(GetPlayerPos, LVar1, LVar2, LVar3)
-            Call(AddVectorPolar, LVar1, LVar3, Float(40.0), LVar0)
+            Call(AddVectorPolar, LVar1, LVar3, 40.0, LVar0)
             Call(NpcMoveTo, NPC_PenguinPatrol, LVar1, LVar3, 0)
             Call(SetNpcAnimation, NPC_PenguinPatrol, ANIM_PenguinPatrol_Idle)
             Call(PlayerFaceNpc, NPC_PenguinPatrol, false)
@@ -180,7 +180,7 @@ EvtScript EVS_DamageFrozenPond_Before = {
                     EndIf
                     Call(GetAngleToPlayer, NPC_PenguinPatrol, LVar0)
                     Call(GetNpcPos, NPC_PenguinPatrol, LVar1, LVar2, LVar3)
-                    Call(AddVectorPolar, LVar1, LVar3, Float(20.0), LVar0)
+                    Call(AddVectorPolar, LVar1, LVar3, 20.0, LVar0)
                     Call(SetPlayerPos, LVar1, 0, LVar3)
                     Call(SetDraggingPlayerPosY)
                     Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -188,7 +188,7 @@ EvtScript EVS_DamageFrozenPond_Before = {
                     Wait(1)
                 EndLoop
             EndThread
-            Call(SetNpcSpeed, NPC_PenguinPatrol, Float(3.8))
+            Call(SetNpcSpeed, NPC_PenguinPatrol, 3.8)
             Call(NpcMoveTo, NPC_PenguinPatrol, -207, 110, 0)
             Call(NpcMoveTo, NPC_PenguinPatrol, -450, 0, 0)
             Set(MF_PenguinDragDone, true)
@@ -208,7 +208,7 @@ EvtScript EVS_DamageFrozenPond_Before = {
             Call(PlaySoundAtNpc, NPC_PenguinPatrol, SOUND_TOSS_PLAYER, SOUND_SPACE_DEFAULT)
             Thread
                 Set(MV_ThrownOut, 1)
-                Call(SetPlayerJumpscale, Float(1.0))
+                Call(SetPlayerJumpscale, 1.0)
                 Call(SetPlayerAnimation, ANIM_MarioW2_Thrown)
                 Call(PlayerJump1, -680, 50, 0, 30)
             EndThread
@@ -216,7 +216,7 @@ EvtScript EVS_DamageFrozenPond_Before = {
             Call(SetNpcFlagBits, NPC_PenguinPatrol, NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_GRAVITY, false)
             Wait(15)
             Set(GB_SAM11_FrozenPondDamage, 0)
-            Call(GotoMap, Ref("sam_02"), sam_02_ENTRY_3)
+            Call(GotoMap, "sam_02", sam_02_ENTRY_3)
     EndSwitch
     Return
     End
@@ -287,11 +287,11 @@ EvtScript EVS_DamageFrozenPond_After = {
     EndIf
     Call(DisablePlayerInput, true)
     Call(InterruptUsePartner)
-    Call(ShakeCam, CAM_DEFAULT, 0, 20, Float(1.0))
+    Call(ShakeCam, CAM_DEFAULT, 0, 20, 1.0)
     Call(IsPlayerWithin, 0, 210, 240, LVarA)
     IfEq(LVarA, 1)
         Thread
-            Call(SetPlayerJumpscale, Float(1.5))
+            Call(SetPlayerJumpscale, 1.5)
             Call(SetPlayerAnimation, ANIM_MarioW2_SitIdle)
             Call(PlayerJump1, 247, 0, 225, 30)
             Call(PlayerJump1, 257, 0, 225, 8)
@@ -300,7 +300,7 @@ EvtScript EVS_DamageFrozenPond_After = {
             Call(DisablePartnerAI, false)
             Wait(1)
             Call(PlaySoundAtNpc, NPC_PARTNER, SOUND_FALL_LONG, SOUND_SPACE_DEFAULT)
-            Call(SetNpcJumpscale, NPC_PARTNER, Float(1.5))
+            Call(SetNpcJumpscale, NPC_PARTNER, 1.5)
             Call(NpcJump1, NPC_PARTNER, 265, 0, 225, 30)
             Call(PlaySoundAtNpc, NPC_PARTNER, SOUND_TRIP, SOUND_SPACE_DEFAULT)
             Call(NpcJump1, NPC_PARTNER, 275, 0, 225, 8)
@@ -311,7 +311,7 @@ EvtScript EVS_DamageFrozenPond_After = {
             Loop(30)
                 Call(GetPlayerPos, LVar3, LVar4, LVar5)
                 Call(UseSettingsFrom, CAM_DEFAULT, LVar3, LVar1, LVar5)
-                Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+                Call(SetCamSpeed, CAM_DEFAULT, 90.0)
                 Call(SetPanTarget, CAM_DEFAULT, LVar3, LVar1, LVar5)
                 Call(PanToTarget, CAM_DEFAULT, 0, true)
                 Wait(1)
@@ -319,7 +319,7 @@ EvtScript EVS_DamageFrozenPond_After = {
             Call(GetPlayerPos, LVar0, LVar1, LVar2)
             Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
             Call(PanToTarget, CAM_DEFAULT, 0, true)
-            Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+            Call(WaitForCam, CAM_DEFAULT, 1.0)
             Call(PanToTarget, CAM_DEFAULT, 0, false)
         EndThread
     EndIf
@@ -490,11 +490,11 @@ EvtScript EVS_SetupPond = {
         Exec(EVS_SetupIcebergs)
     EndIf
     IfLt(GB_StoryProgress, STORY_CH7_MAYOR_MURDER_MYSTERY)
-        BindTrigger(Ref(EVS_BlastPond_Before), TRIGGER_POINT_BOMB, Ref(BombTrigger_Pond), 1, 0)
-        BindTrigger(Ref(EVS_TouchPond_Before), TRIGGER_FLOOR_TOUCH, COLLIDER_suimen, 1, 0)
+        BindTrigger(EVS_BlastPond_Before, TRIGGER_POINT_BOMB, BombTrigger_Pond, 1, 0)
+        BindTrigger(EVS_TouchPond_Before, TRIGGER_FLOOR_TOUCH, COLLIDER_suimen, 1, 0)
     Else
-        BindTrigger(Ref(EVS_BlastPond_After), TRIGGER_POINT_BOMB, Ref(BombTrigger_Pond), 1, 0)
-        BindTrigger(Ref(EVS_TouchPond_After), TRIGGER_FLOOR_TOUCH, COLLIDER_suimen, 1, 0)
+        BindTrigger(EVS_BlastPond_After, TRIGGER_POINT_BOMB, BombTrigger_Pond, 1, 0)
+        BindTrigger(EVS_TouchPond_After, TRIGGER_FLOOR_TOUCH, COLLIDER_suimen, 1, 0)
     EndIf
     IfLt(GB_StoryProgress, STORY_CH7_SHATTERED_FROZEN_POND)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitp, COLLIDER_FLAGS_UPPER_MASK)

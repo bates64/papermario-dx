@@ -20,14 +20,14 @@ EvtScript EVS_ExitDoors_pra_39_1 = {
     Set(LVar5, MODEL_o846)
     Exec(ExitSplitDoubleDoor)
     Wait(17)
-    Call(GotoMap, Ref("pra_39"), pra_39_ENTRY_1)
+    Call(GotoMap, "pra_39", pra_39_ENTRY_1)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitDoors_pra_39_1), TRIGGER_WALL_PRESS_A, COLLIDER_deilittsw, 1, 0)
+    BindTrigger(EVS_ExitDoors_pra_39_1, TRIGGER_WALL_PRESS_A, COLLIDER_deilittsw, 1, 0)
     Return
     End
 };

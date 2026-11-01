@@ -38,15 +38,15 @@ EvtScript EVS_Main = {
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, obk_09_ENTRY_2)
-        Call(MakeNpcs, false, Ref(EpilogueNPCs))
+        Call(MakeNpcs, false, EpilogueNPCs)
         Exec(EVS_Scene_Epilogue)
         Call(FadeInMusic, 0, SONG_CHEERFUL_BOOS_MANSION, 0, 3000, 0, 127)
         Wait(1)
         Return
     EndIf
-    Call(MakeNpcs, false, Ref(DefaultNPCs))
-    BindTrigger(Ref(EVS_ExitDoors_obk_01_5), TRIGGER_WALL_PRESS_A, COLLIDER_tt1, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoors_obk_01_6), TRIGGER_WALL_PRESS_A, COLLIDER_tt2, 1, 0)
+    Call(MakeNpcs, false, DefaultNPCs)
+    BindTrigger(EVS_ExitDoors_obk_01_5, TRIGGER_WALL_PRESS_A, COLLIDER_tt1, 1, 0)
+    BindTrigger(EVS_ExitDoors_obk_01_6, TRIGGER_WALL_PRESS_A, COLLIDER_tt2, 1, 0)
     Exec(EVS_EnterMap)
     Exec(EVS_SetupMusic)
     Return

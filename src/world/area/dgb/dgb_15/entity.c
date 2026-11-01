@@ -29,15 +29,15 @@ EvtScript EVS_UnlockPrompt_Door = {
 };
 
 EvtScript EVS_OpenLockedDoor = {
-    BindTrigger(Ref(EVS_ExitDoors_dgb_17_0), TRIGGER_WALL_PRESS_A, COLLIDER_deilitte, 1, 0)
+    BindTrigger(EVS_ExitDoors_dgb_17_0, TRIGGER_WALL_PRESS_A, COLLIDER_deilitte, 1, 0)
     Return
     End
 };
 
 EvtScript EVS_MakeEntities = {
     IfEq(GF_DGB15_UnlockedUpperFoyer, false)
-        Call(MakeEntity, Ref(Entity_Padlock), 130, 8, 175, -80, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(EVS_OpenLockedDoor))
+        Call(MakeEntity, Entity_Padlock, 130, 8, 175, -80, MAKE_ENTITY_END)
+        Call(AssignScript, EVS_OpenLockedDoor)
         Set(MV_EntityID_Padlock, LVar0)
     EndIf
     Return

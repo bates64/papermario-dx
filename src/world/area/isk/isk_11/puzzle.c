@@ -10,11 +10,11 @@ ITEM_LIST(ItemList_Artifacts, ITEM_LUNAR_STONE, ITEM_PYRAMID_STONE, ITEM_DIAMOND
 
 EvtScript EVS_SetupPuzzle = {
     IfLt(GB_StoryProgress, STORY_CH2_SOLVED_ARTIFACT_PUZZLE)
-        BindPadlock(Ref(EVS_ItemPrompt_Socket1), TRIGGER_WALL_PRESS_A, COLLIDER_o2087, Ref(ItemList_Artifacts), 0, 1)
-        BindPadlock(Ref(EVS_ItemPrompt_Socket2), TRIGGER_WALL_PRESS_A, COLLIDER_o2091, Ref(ItemList_Artifacts), 0, 1)
-        BindPadlock(Ref(EVS_ItemPrompt_Socket3), TRIGGER_WALL_PRESS_A, COLLIDER_o2090, Ref(ItemList_Artifacts), 0, 1)
-        BindPadlock(Ref(EVS_ItemPrompt_Socket4), TRIGGER_WALL_PRESS_A, COLLIDER_o2089, Ref(ItemList_Artifacts), 0, 1)
-        BindPadlock(Ref(EVS_ItemPrompt_Socket5), TRIGGER_WALL_PRESS_A, COLLIDER_o2088, Ref(ItemList_Artifacts), 0, 1)
+        BindPadlock(EVS_ItemPrompt_Socket1, TRIGGER_WALL_PRESS_A, COLLIDER_o2087, ItemList_Artifacts, 0, 1)
+        BindPadlock(EVS_ItemPrompt_Socket2, TRIGGER_WALL_PRESS_A, COLLIDER_o2091, ItemList_Artifacts, 0, 1)
+        BindPadlock(EVS_ItemPrompt_Socket3, TRIGGER_WALL_PRESS_A, COLLIDER_o2090, ItemList_Artifacts, 0, 1)
+        BindPadlock(EVS_ItemPrompt_Socket4, TRIGGER_WALL_PRESS_A, COLLIDER_o2089, ItemList_Artifacts, 0, 1)
+        BindPadlock(EVS_ItemPrompt_Socket5, TRIGGER_WALL_PRESS_A, COLLIDER_o2088, ItemList_Artifacts, 0, 1)
     EndIf
     Set(MV_ItemEntity_Socket1, -1)
     Set(MV_ItemEntity_Socket2, -1)

@@ -97,7 +97,7 @@ EvtScript EVS_Fuzzipede_ReactToLight = {
             Call(AwaitPartnerWatt)
             IfEq(LVarB, 0)
                 Call(DisablePlayerInput, true)
-                Call(SetNpcJumpscale, NPC_SELF, Float(1.0))
+                Call(SetNpcJumpscale, NPC_SELF, 1.0)
                 Call(GetPlayerPos, LVar0, LVar1, LVar2)
                 IfLt(LVar0, 0)
                     Add(LVar0, 80)
@@ -191,7 +191,7 @@ EvtScript EVS_NpcDefeat_Fuzzipede = {
     Call(SetNpcYaw, NPC_SELF, 270)
     Call(UseSettingsFrom, CAM_DEFAULT, -5, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, -5, 0, 0)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(1)
     Call(SpeakToPlayer, NPC_SELF, ANIM_Fuzzipede_Talk, ANIM_Fuzzipede_Idle, 0, MSG_MAC_Port_009D)
@@ -258,7 +258,7 @@ EvtScript EVS_NpcDefeat_Fuzzipede = {
         EndLoop
     EndChildThread
     Wait(120)
-    Call(GotoMap, Ref("mac_05"), mac_05_ENTRY_2)
+    Call(GotoMap, "mac_05", mac_05_ENTRY_2)
     Wait(100)
     Call(InterruptUsePartner)
     Call(DisablePlayerPhysics, false)

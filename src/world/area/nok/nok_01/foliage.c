@@ -188,36 +188,36 @@ BombTrigger BombPos_Tree1 = {
 };
 
 EvtScript EVS_SetupFoliage = {
-    Set(LVar0, Ref(SearchBush_Bush5))
-    BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o312, 1, 0)
+    Set(LVar0, SearchBush_Bush5)
+    BindTrigger(EVS_SearchBush, TRIGGER_WALL_PRESS_A, COLLIDER_o312, 1, 0)
     IfEq(GB_KootFavor_Current, KOOT_FAVOR_CH6_2)
-        Set(LVar0, Ref(SearchBush_Bush3))
+        Set(LVar0, SearchBush_Bush3)
     Else
-        Set(LVar0, Ref(SearchBush_Bush4))
+        Set(LVar0, SearchBush_Bush4)
     EndIf
-    BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o313, 1, 0)
-    Set(LVar0, Ref(SearchBush_Bush6))
-    BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o419, 1, 0)
+    BindTrigger(EVS_SearchBush, TRIGGER_WALL_PRESS_A, COLLIDER_o313, 1, 0)
+    Set(LVar0, SearchBush_Bush6)
+    BindTrigger(EVS_SearchBush, TRIGGER_WALL_PRESS_A, COLLIDER_o419, 1, 0)
     Exec(EVS_Bush6_HideFlowers)
-    Set(LVar0, Ref(SearchBush_Bush7))
-    BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o420, 1, 0)
-    Set(LVar0, Ref(SearchBush_Bush8))
-    BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o421, 1, 0)
-    Set(LVar0, Ref(SearchBush_Bush9))
-    BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o422, 1, 0)
+    Set(LVar0, SearchBush_Bush7)
+    BindTrigger(EVS_SearchBush, TRIGGER_WALL_PRESS_A, COLLIDER_o420, 1, 0)
+    Set(LVar0, SearchBush_Bush8)
+    BindTrigger(EVS_SearchBush, TRIGGER_WALL_PRESS_A, COLLIDER_o421, 1, 0)
+    Set(LVar0, SearchBush_Bush9)
+    BindTrigger(EVS_SearchBush, TRIGGER_WALL_PRESS_A, COLLIDER_o422, 1, 0)
     IfEq(GB_KootFavor_Current, KOOT_FAVOR_CH3_2)
-        Set(LVar0, Ref(SearchBush_Bush1))
+        Set(LVar0, SearchBush_Bush1)
     Else
-        Set(LVar0, Ref(SearchBush_Bush2))
+        Set(LVar0, SearchBush_Bush2)
     EndIf
-    BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o423, 1, 0)
+    BindTrigger(EVS_SearchBush, TRIGGER_WALL_PRESS_A, COLLIDER_o423, 1, 0)
     Exec(EVS_Bush2_HideFlowers)
-    Set(LVar0, Ref(ShakeTree_Tree1))
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_WALL_HAMMER, COLLIDER_o323, 1, 0)
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(BombPos_Tree1), 1, 0)
+    Set(LVar0, ShakeTree_Tree1)
+    BindTrigger(EVS_ShakeTree, TRIGGER_WALL_HAMMER, COLLIDER_o323, 1, 0)
+    BindTrigger(EVS_ShakeTree, TRIGGER_POINT_BOMB, BombPos_Tree1, 1, 0)
     // bind the same tree a second time for the koopa shell stuck inside
-    BindTrigger(Ref(EVS_Scene_RecoverTreeShell), TRIGGER_WALL_HAMMER, COLLIDER_o323, 1, 0)
-    BindTrigger(Ref(EVS_Scene_RecoverTreeShell), TRIGGER_POINT_BOMB, Ref(BombPos_Tree1), 1, 0)
+    BindTrigger(EVS_Scene_RecoverTreeShell, TRIGGER_WALL_HAMMER, COLLIDER_o323, 1, 0)
+    BindTrigger(EVS_Scene_RecoverTreeShell, TRIGGER_POINT_BOMB, BombPos_Tree1, 1, 0)
     Return
     End
 };

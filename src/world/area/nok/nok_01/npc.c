@@ -147,12 +147,12 @@ EvtScript EVS_NpcIdle_MiscFuzzy1 = {
         Wait(8)
         Goto(100)
     EndIf
-    UseBuf(Ref(FuzzyJumpPath1))
+    UseBuf(FuzzyJumpPath1)
     Set(LVar1, 200)
     BufRead2(LVar0, LVar2)
     Call(SetNpcPos, NPC_MiscFuzzy1, LVar0, LVar1, LVar2)
     Label(0)
-    UseBuf(Ref(FuzzyJumpPath1))
+    UseBuf(FuzzyJumpPath1)
     Loop(22)
         Set(LVar1, 0)
         BufRead2(LVar0, LVar2)
@@ -204,7 +204,7 @@ EvtScript EVS_MiscFuzzyFlee = {
 };
 
 EvtScript EVS_NpcHit_MiscFuzzy1 = {
-    Call(BindNpcAI, NPC_SELF, Ref(EVS_MiscFuzzyFlee))
+    Call(BindNpcAI, NPC_SELF, EVS_MiscFuzzyFlee)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER, true)
     Return
     End
@@ -216,21 +216,21 @@ EvtScript EVS_NpcIdle_MiscFuzzy2 = {
         Wait(8)
         Goto(100)
     EndIf
-    UseBuf(Ref(FuzzyJumpPath2))
+    UseBuf(FuzzyJumpPath2)
     Set(LVar1, 200)
     BufRead2(LVar0, LVar2)
-    MulF(LVar0, Float(0.9))
-    MulF(LVar2, Float(0.9))
+    MulF(LVar0, 0.9)
+    MulF(LVar2, 0.9)
     Call(SetNpcPos, NPC_MiscFuzzy2, LVar0, LVar1, LVar2)
     Label(0)
-    UseBuf(Ref(FuzzyJumpPath2))
+    UseBuf(FuzzyJumpPath2)
     Loop(22)
         Set(LVar1, 0)
         BufRead2(LVar0, LVar2)
         Call(RandInt, 9, LVar3)
         Add(LVar3, 13)
-        MulF(LVar0, Float(0.9))
-        MulF(LVar2, Float(0.9))
+        MulF(LVar0, 0.9)
+        MulF(LVar2, 0.9)
         Call(PlaySoundAtNpc, NPC_MiscFuzzy2, SOUND_FUZZY_HOP_C, SOUND_SPACE_DEFAULT)
         Call(NpcJump0, NPC_MiscFuzzy2, LVar0, LVar1, LVar2, LVar3)
     EndLoop
@@ -240,7 +240,7 @@ EvtScript EVS_NpcIdle_MiscFuzzy2 = {
 };
 
 EvtScript EVS_NpcHit_MiscFuzzy2 = {
-    Call(BindNpcAI, NPC_SELF, Ref(EVS_MiscFuzzyFlee))
+    Call(BindNpcAI, NPC_SELF, EVS_MiscFuzzyFlee)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER, true)
     Return
     End
@@ -253,7 +253,7 @@ EvtScript EVS_NpcInteract_Koopa_ShopOwner = {
 };
 
 EvtScript EVS_NpcInit_Koopa_ShopOwner = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Koopa_ShopOwner))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Koopa_ShopOwner)
     Return
     End
 };
@@ -277,7 +277,7 @@ EvtScript EVS_ToadHouse_SetDialogue = {
 
 EvtScript EVS_ToadHouse_GetInBed = {
     Exec(EVS_PlayRestingSong)
-    Call(func_802D1270, -311, 85, Float(3.0))
+    Call(func_802D1270, -311, 85, 3.0)
     Thread
         Wait(5)
         Call(ToadHouse_CamSetFOV, 0, 40)
@@ -287,11 +287,11 @@ EvtScript EVS_ToadHouse_GetInBed = {
         Call(SetCamPosA, CAM_DEFAULT, -200, 53)
         Call(SetCamPosB, CAM_DEFAULT, -401, 50)
         Call(SetCamPosC, CAM_DEFAULT, 0, -2)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+        Call(SetCamSpeed, CAM_DEFAULT, 90.0)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
     EndThread
-    Call(func_802D1270, -334, 70, Float(3.0))
-    Call(func_802D1270, -385, -6, Float(3.0))
+    Call(func_802D1270, -334, 70, 3.0)
+    Call(func_802D1270, -385, -6, 3.0)
     Wait(1)
     Call(InterpPlayerYaw, 160, 1)
     Call(HidePlayerShadow, true)
@@ -319,7 +319,7 @@ EvtScript EVS_ToadHouse_ReturnFromRest = {
     Call(HidePlayerShadow, false)
     Call(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_CLEAR, 0, 0, 0, 0)
     Call(SetPlayerPos, -380, 0, 5)
-    Call(SetPlayerSpeed, Float(3.0))
+    Call(SetPlayerSpeed, 3.0)
     Call(PlayerMoveTo, -325, 79, 0)
     Exec(EVS_SetupMusic)
     Return
@@ -327,7 +327,7 @@ EvtScript EVS_ToadHouse_ReturnFromRest = {
 };
 
 EvtScript EVS_NpcInteract_MortT = {
-    Set(LVar0, Ref(LetterDelivery_MortT))
+    Set(LVar0, LetterDelivery_MortT)
     ExecWait(EVS_TryLetterDelivery)
     EVT_RETURN_IF_DELIVERED()
     ExecWait(EVS_NpcInteract_ToadHouseKeeper)
@@ -336,7 +336,7 @@ EvtScript EVS_NpcInteract_MortT = {
 };
 
 EvtScript EVS_NpcInit_MortT = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_MortT))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_MortT)
     Return
     End
 };
@@ -377,7 +377,7 @@ EvtScript EVS_NpcInteract_RelaxedKoopa = {
 #include "npcs_crisis.inc.c"
 
 EvtScript EVS_NpcInit_RelaxedKoopa = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_RelaxedKoopa))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_RelaxedKoopa)
     Call(SetNpcPos, NPC_RelaxedKoopa, 333, 17, -162)
     Call(InterpNpcYaw, NPC_RelaxedKoopa, 180, 0)
     Call(SetNpcAnimation, NPC_RelaxedKoopa, ANIM_Koopa_LeanBack)

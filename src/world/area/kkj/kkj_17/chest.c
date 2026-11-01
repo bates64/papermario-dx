@@ -254,7 +254,7 @@ EvtScript EVS_Interact_MagicChest = {
 };
 
 EvtScript EVS_SetupMagicChest = {
-    BindTrigger(Ref(EVS_Interact_MagicChest), TRIGGER_WALL_PRESS_A, COLLIDER_o89, 1, 0)
+    BindTrigger(EVS_Interact_MagicChest, TRIGGER_WALL_PRESS_A, COLLIDER_o89, 1, 0)
     Return
     End
 };

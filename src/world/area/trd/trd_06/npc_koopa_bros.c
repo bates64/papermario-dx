@@ -11,7 +11,7 @@ EvtScript EVS_Scene_ImprisonedKoopaBros = {
     Call(FadeOutMusic, 0, 2000)
     Wait(30)
     Call(GetEntryID, LVar0)
-    Call(GotoMap, Ref("trd_10"), trd_10_ENTRY_1)
+    Call(GotoMap, "trd_10", trd_10_ENTRY_1)
     Wait(100)
     Return
     End

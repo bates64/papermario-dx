@@ -47,7 +47,7 @@ EvtScript EVS_NpcIdle_Toad_01_Intro = {
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(AwaitPlayerLeave, LVar0, LVar2, 100)
         Wait(50)
-        Call(SetNpcSpeed, NPC_Toad_01, Float(2.0))
+        Call(SetNpcSpeed, NPC_Toad_01, 2.0)
         Call(SetNpcAnimation, NPC_Toad_01, ANIM_Toad_Red_Walk)
         Call(NpcMoveTo, NPC_Toad_01, 60, 320, 0)
         Call(SetNpcAnimation, NPC_Toad_01, ANIM_Toad_Red_Idle)
@@ -185,7 +185,7 @@ EvtScript EVS_NpcInit_Luigi_Intro = {
         Call(SetNpcPos, NPC_SELF, 20, 0, 320)
         Call(SetNpcYaw, NPC_SELF, 90)
     EndIf
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Luigi_Intro))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Luigi_Intro)
     Return
     End
 };
@@ -196,65 +196,65 @@ EvtScript EVS_NpcInit_Toad_01_Intro = {
         Call(SetNpcPos, NPC_SELF, 60, 0, 320)
         Call(SetNpcYaw, NPC_SELF, 270)
     EndIf
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Toad_01_Intro))
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_01_Intro))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Toad_01_Intro)
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad_01_Intro)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Toad_02_Intro = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_02_Intro))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad_02_Intro)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Toad_03_Intro = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Toad_03_Intro))
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_03_Intro))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Toad_03_Intro)
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad_03_Intro)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Toadette_01_Intro = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Toadette_01_Intro))
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toadette_01_Intro))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Toadette_01_Intro)
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toadette_01_Intro)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Toadette_02_Intro = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toadette_02_Intro))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toadette_02_Intro)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_RussT_Intro = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_RussT_Intro))
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_RussT_Intro))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_RussT_Intro)
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_RussT_Intro)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_ShiverToad_Intro = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ShiverToad_Intro))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_ShiverToad_Intro)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Penguin_01_Intro = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Penguin_01_Intro))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Penguin_01_Intro)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_ToadGuard_01_Intro = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ToadGuard_01_Intro))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_ToadGuard_01_Intro)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_ToadGuard_02_Intro = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ToadGuard_02_Intro))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_ToadGuard_02_Intro)
     Return
     End
 };

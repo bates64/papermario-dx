@@ -5,7 +5,7 @@
 EvtScript EVS_ExitWalk_tik_24_1 = EVT_EXIT_WALK(60, tik_23_ENTRY_0, "tik_24", tik_24_ENTRY_1);
 
 EvtScript EVS_GotoMap_tik_20_2 = {
-    Call(GotoMap, Ref("tik_20"), tik_20_ENTRY_2)
+    Call(GotoMap, "tik_20", tik_20_ENTRY_2)
     Wait(100)
     Return
     End
@@ -14,8 +14,8 @@ EvtScript EVS_GotoMap_tik_20_2 = {
 EvtScript EVS_ExitPipe_tik_20_2 = EVT_EXIT_PIPE_HORIZONTAL(tik_23_ENTRY_1, COLLIDER_ttd, EVS_GotoMap_tik_20_2);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_tik_24_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
-    BindTrigger(Ref(EVS_ExitPipe_tik_20_2), TRIGGER_WALL_PUSH, COLLIDER_ttd, 1, 0)
+    BindTrigger(EVS_ExitWalk_tik_24_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitPipe_tik_20_2, TRIGGER_WALL_PUSH, COLLIDER_ttd, 1, 0)
     Return
     End
 };
@@ -45,7 +45,7 @@ DripVolumeList DripVolumes = {
 };
 
 EvtScript EVS_SetupDrips = {
-    Set(LVar0, Ref(DripVolumes))
+    Set(LVar0, DripVolumes)
     Set(LVar1, MODEL_sizuku)
     Exec(EVS_CreateDripVolumes)
     Return
@@ -58,13 +58,13 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_TOAD_TOWN_TUNNELS)
     Call(SetSpriteShading, SHADING_TIK_23)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Call(MakeNpcs, true, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, tik_23_ENTRY_1)
         EVT_ENTER_PIPE_HORIZONTAL(COLLIDER_ttd, EVS_BindExitTriggers)
     Else
-        Set(LVar0, Ref(EVS_BindExitTriggers))
+        Set(LVar0, EVS_BindExitTriggers)
         Exec(EnterWalk)
     EndIf
     Wait(1)

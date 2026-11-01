@@ -29,7 +29,7 @@ EvtScript EVS_TossTrainInToybox = {
         Loop(0)
             Call(UpdateLerp)
             Call(SetItemPos, LVar7, -440, LVar3, LVar0)
-            AddF(LVar5, Float(-0.5))
+            AddF(LVar5, -0.5)
             Add(LVar3, LVar5)
             IfLt(LVar3, 0)
                 Set(LVar3, 0)
@@ -98,7 +98,7 @@ EvtScript EVS_ItemPrompt_ToyTrain = {
     Set(GB_StoryProgress, STORY_CH4_RETURNED_TOY_TRAIN)
     Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
     Unbind
-    Call(GotoMap, Ref("omo_03"), omo_03_ENTRY_6)
+    Call(GotoMap, "omo_03", omo_03_ENTRY_6)
     Wait(100)
     Return
     End
@@ -108,7 +108,7 @@ ITEM_LIST(ItemList_ToyTrain, ITEM_TOY_TRAIN);
 
 EvtScript EVS_Toybox_SetupTrainPrompt = {
     IfLt(GB_StoryProgress, STORY_CH4_RETURNED_TOY_TRAIN)
-        BindPadlock(Ref(EVS_ItemPrompt_ToyTrain), TRIGGER_WALL_PRESS_A, COLLIDER_o468, Ref(ItemList_ToyTrain), 0, 1)
+        BindPadlock(EVS_ItemPrompt_ToyTrain, TRIGGER_WALL_PRESS_A, COLLIDER_o468, ItemList_ToyTrain, 0, 1)
     EndIf
     Return
     End

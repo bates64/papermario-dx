@@ -15,7 +15,7 @@ MobileAISettings AISettings_HyperGoomba_Wander = {
 };
 
 EvtScript EVS_NpcAI_HyperGoomba_Wander = {
-    Call(BasicAI_Main, Ref(AISettings_HyperGoomba_Wander))
+    Call(BasicAI_Main, AISettings_HyperGoomba_Wander)
     Return
     End
 };

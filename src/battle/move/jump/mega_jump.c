@@ -28,16 +28,16 @@ EvtScript EVS_UseMove = {
 EvtScript EVS_PlayQuakeFX = {
     Call(StartRumble, BTL_RUMBLE_PLAYER_MAX)
     Thread
-        Call(ShakeCam, CAM_BATTLE, 0, 2, Float(1.0))
-        Call(ShakeCam, CAM_BATTLE, 0, 2, Float(3.0))
-        Call(ShakeCam, CAM_BATTLE, 0, 2, Float(6.0))
-        Call(ShakeCam, CAM_BATTLE, 0, 2, Float(5.0))
-        Call(ShakeCam, CAM_BATTLE, 0, 2, Float(4.0))
-        Call(ShakeCam, CAM_BATTLE, 0, 2, Float(3.0))
-        Call(ShakeCam, CAM_BATTLE, 0, 2, Float(2.0))
-        Call(ShakeCam, CAM_BATTLE, 0, 2, Float(1.0))
-        Call(ShakeCam, CAM_BATTLE, 0, 2, Float(0.5))
-        Call(ShakeCam, CAM_BATTLE, 0, 2, Float(0.2))
+        Call(ShakeCam, CAM_BATTLE, 0, 2, 1.0)
+        Call(ShakeCam, CAM_BATTLE, 0, 2, 3.0)
+        Call(ShakeCam, CAM_BATTLE, 0, 2, 6.0)
+        Call(ShakeCam, CAM_BATTLE, 0, 2, 5.0)
+        Call(ShakeCam, CAM_BATTLE, 0, 2, 4.0)
+        Call(ShakeCam, CAM_BATTLE, 0, 2, 3.0)
+        Call(ShakeCam, CAM_BATTLE, 0, 2, 2.0)
+        Call(ShakeCam, CAM_BATTLE, 0, 2, 1.0)
+        Call(ShakeCam, CAM_BATTLE, 0, 2, 0.5)
+        Call(ShakeCam, CAM_BATTLE, 0, 2, 0.2)
     EndThread
     Return
     End

@@ -39,7 +39,7 @@ EvtScript EVS_NpcDefeat_DarkTroopa = {
 
 EvtScript EVS_NpcInit_DarkTroopa = {
     IfEq(GF_TIK09_Defeated_Ambush, false)
-        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_DarkTroopa))
+        Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_DarkTroopa)
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf

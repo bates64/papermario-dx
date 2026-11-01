@@ -21,13 +21,13 @@ EvtScript EVS_UseSpring_Exit = {
         Call(EnableCameraFollowPlayerY)
         Thread
             Wait(6)
-            Call(GotoMap, Ref("mac_04"), mac_04_ENTRY_2)
+            Call(GotoMap, "mac_04", mac_04_ENTRY_2)
             Wait(100)
         EndThread
-        Call(SetPlayerJumpscale, Float(0.7))
+        Call(SetPlayerJumpscale, 0.7)
         Call(PlayerJump, -245, 270, 250, 20)
     Else
-        Call(SetPlayerJumpscale, Float(1.0))
+        Call(SetPlayerJumpscale, 1.0)
         Call(PlayerJump, -95, 0, 250, 25)
         Set(AF_OMO03_EnteringViaSpring, false)
     EndIf
@@ -58,14 +58,14 @@ EvtScript EVS_Scene_EnterSpring = {
             CaseEq(PARTNER_BOW)
             CaseEq(PARTNER_WATT)
             CaseDefault
-                Call(SetNpcJumpscale, NPC_PARTNER, Float(0.7))
+                Call(SetNpcJumpscale, NPC_PARTNER, 0.7)
                 Call(NpcJump0, NPC_PARTNER, -150, 25, 250, 37)
                 Call(NpcJump0, NPC_PARTNER, -110, 0, 190, 20)
         EndSwitch
         Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, true)
         Call(EnablePartnerAI)
     EndThread
-    Call(SetPlayerJumpscale, Float(0.7))
+    Call(SetPlayerJumpscale, 0.7)
     Call(PlayerJump, -150, 25, 250, 25)
     KillThread(LVarA)
     Call(DisablePlayerPhysics, false)
@@ -76,12 +76,12 @@ EvtScript EVS_Scene_EnterSpring = {
 };
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Ref(Entity_SavePoint), -250, 60, 50, 0, MAKE_ENTITY_END)
-    Call(MakeEntity, Ref(Entity_ScriptSpring), -150, 0, 250, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(EVS_UseSpring_Exit))
-    Call(MakeEntity, Ref(Entity_HiddenPanel), 203, 0, 200, 0, MODEL_o930, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_SavePoint, -250, 60, 50, 0, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_ScriptSpring, -150, 0, 250, 0, MAKE_ENTITY_END)
+    Call(AssignScript, EVS_UseSpring_Exit)
+    Call(MakeEntity, Entity_HiddenPanel, 203, 0, 200, 0, MODEL_o930, MAKE_ENTITY_END)
     Call(AssignPanelFlag, GF_OMO03_HiddenPanel)
-    Call(MakeEntity, Ref(Entity_HiddenYellowBlock), 400, 60, -50, 0, ITEM_STONE_CAP, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_HiddenYellowBlock, 400, 60, -50, 0, ITEM_STONE_CAP, MAKE_ENTITY_END)
     Call(AssignBlockFlag, GF_OMO03_HiddenItem_StoneCap)
     Return
     End

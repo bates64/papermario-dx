@@ -20,27 +20,27 @@ EvtScript EVS_ShakeTree_Sushie = {
     Call(SetNpcFlagBits, NPC_Sushie, NPC_FLAG_IGNORE_ENTITY_COLLISION, true)
     IfEq(GF_JAN04_SushieTreeHitCounterB, false)
         IfEq(GF_JAN04_SushieTreeHitCounterA, false)
-            Call(SetNpcJumpscale, NPC_Sushie, Float(1.0))
+            Call(SetNpcJumpscale, NPC_Sushie, 1.0)
             Call(PlaySoundAtNpc, NPC_Sushie, SOUND_SUSHIE_FLOP, SOUND_SPACE_DEFAULT)
             Call(NpcJump0, NPC_Sushie, 90, 140, -85, 20 * DT)
             Call(UseSettingsFrom, CAM_DEFAULT, 90, 140, -85)
             Call(SetPanTarget, CAM_DEFAULT, 90, 140, -85)
             Call(SetCamDistance, CAM_DEFAULT, 280)
-            Call(SetCamPitch, CAM_DEFAULT, 16, Float(-6.0))
+            Call(SetCamPitch, CAM_DEFAULT, 16, -6.0)
 #if VERSION_PAL
-            Call(SetCamSpeed, CAM_DEFAULT, Float(3 / DT))
+            Call(SetCamSpeed, CAM_DEFAULT, 3 / DT)
 #else
             Call(SetCamSpeed, CAM_DEFAULT, 3)
 #endif
             Call(PanToTarget, CAM_DEFAULT, 0, true)
-            Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+            Call(WaitForCam, CAM_DEFAULT, 1.0)
             Call(SpeakToPlayer, NPC_Sushie, ANIM_WorldSushie_Talk, ANIM_WorldSushie_Idle, 0, MSG_CH5_00A1)
-            Call(ResetCam, CAM_DEFAULT, Float(90.0))
+            Call(ResetCam, CAM_DEFAULT, 90.0)
             Set(GF_JAN04_SushieTreeHitCounterA, true)
             Wait(10 * DT)
             Set(AF_JAN04_IgnoreSushieTreeHit, false)
         Else
-            Call(SetNpcJumpscale, NPC_Sushie, Float(1.0))
+            Call(SetNpcJumpscale, NPC_Sushie, 1.0)
             Call(PlaySoundAtNpc, NPC_Sushie, SOUND_SUSHIE_FLOP, SOUND_SPACE_DEFAULT)
             Call(NpcJump0, NPC_Sushie, -10, 112, -80, 15 * DT)
             Set(GF_JAN04_SushieTreeHitCounterA, false)
@@ -49,7 +49,7 @@ EvtScript EVS_ShakeTree_Sushie = {
             Set(AF_JAN04_IgnoreSushieTreeHit, false)
         EndIf
     Else
-        Call(SetNpcJumpscale, NPC_Sushie, Float(1.0))
+        Call(SetNpcJumpscale, NPC_Sushie, 1.0)
         Call(PlaySoundAtNpc, NPC_Sushie, SOUND_SUSHIE_FLOP, SOUND_SPACE_DEFAULT)
         Call(NpcJump0, NPC_Sushie, 50, 0, 0, 20 * DT)
         Set(GF_JAN04_SushieTreeHitCounterA, true)
@@ -103,18 +103,18 @@ EvtScript EVS_Sushie_ShoutAtChildren = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(SetPanTarget, CAM_DEFAULT, 30, 140, -60)
     Call(SetCamDistance, CAM_DEFAULT, 300)
-    Call(SetCamPitch, CAM_DEFAULT, 16, Float(-6.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(1.0 / DT))
+    Call(SetCamPitch, CAM_DEFAULT, 16, -6.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 1.0 / DT)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(SpeakToPlayer, NPC_SELF, ANIM_WorldSushie_Hurt, ANIM_WorldSushie_Idle, 0, MSG_CH5_00A0)
 #if VERSION_PAL
-    Call(ResetCam, CAM_DEFAULT, Float(3 / DT))
+    Call(ResetCam, CAM_DEFAULT, 3 / DT)
 #else
     Call(ResetCam, CAM_DEFAULT, 3)
 #endif
@@ -141,8 +141,8 @@ EvtScript EVS_NpcIdle_Sushie = {
         Call(SetSelfVar, 0, 1)
     EndIf
     Set(AF_JAN04_IgnoreSushieTreeHit, false)
-    BindTrigger(Ref(EVS_ShakeTree_Sushie), TRIGGER_WALL_HAMMER, COLLIDER_o34, 1, 0)
-    BindTrigger(Ref(EVS_ShakeTree_Sushie), TRIGGER_POINT_BOMB, Ref(BombPos_SushieTree), 1, 0)
+    BindTrigger(EVS_ShakeTree_Sushie, TRIGGER_WALL_HAMMER, COLLIDER_o34, 1, 0)
+    BindTrigger(EVS_ShakeTree_Sushie, TRIGGER_POINT_BOMB, BombPos_SushieTree, 1, 0)
     ExecGetTID(EVS_Sushie_ScoldPlayerLeaving, LVar9)
     Label(0)
         Call(GetSelfVar, 0, LVar0)
@@ -152,11 +152,11 @@ EvtScript EVS_NpcIdle_Sushie = {
         EndIf
     KillThread(LVar9)
     Call(DisablePlayerInput, true)
-    Call(SetPlayerSpeed, Float(4.0 / DT))
+    Call(SetPlayerSpeed, 4.0 / DT)
     Call(PlayerMoveTo, 10, 0, 0)
     Call(PlayerFaceNpc, NPC_SELF, false)
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldSushie_Idle)
-    Call(AdjustCam, CAM_DEFAULT, Float(5.0 / DT), 20, 301, Float(17.0), Float(-7.0))
+    Call(AdjustCam, CAM_DEFAULT, 5.0 / DT, 20, 301, 17.0, -7.0)
     Wait(10)
     Call(SpeakToPlayer, NPC_SELF, ANIM_WorldSushie_Talk, ANIM_WorldSushie_Idle, 0, MSG_CH5_00A4)
     Call(SetPlayerAnimation, ANIM_MarioW2_SpeakUp)
@@ -173,13 +173,13 @@ EvtScript EVS_NpcIdle_Sushie = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_WorldSushie_Talk, ANIM_WorldSushie_Idle, 0, MSG_CH5_00A7)
     Call(CloseMessage)
     Call(ChangeNpcToPartner, NPC_Sushie, PARTNER_SUSHIE)
-    Call(LoadPartyImage, Ref("party_opuku"))
+    Call(LoadPartyImage, "party_opuku")
     Exec(EVS_PushNewPartnerSong)
     Wait(15 * DT)
     Call(ShowMessageAtScreenPos, MSG_Menus_018F, 160, 40)
     Exec(EVS_PopSong)
     Wait(10 * DT)
-    Call(ResetCam, CAM_DEFAULT, Float(5.0))
+    Call(ResetCam, CAM_DEFAULT, 5.0)
     Set(GB_StoryProgress, STORY_CH5_SUSHIE_JOINED_PARTY)
     Call(EnablePartnerAI)
     Call(DisablePlayerInput, false)
@@ -210,7 +210,7 @@ EvtScript EVS_NpcInit_Sushie = {
                 Call(EnableNpcShadow, NPC_SELF, true)
             EndIf
         EndIf
-        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Sushie))
+        Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Sushie)
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -249,7 +249,7 @@ EvtScript EVS_NpcInteract_Bubulb = {
 };
 
 EvtScript EVS_NpcInit_Bubulb = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bubulb))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Bubulb)
     IfLt(GB_StoryProgress, STORY_CH5_RAPHAEL_LEFT_NEST)
         IfEq(GF_JAN04_Met_Bubulb, false)
             Call(SetNpcCollisionSize, NPC_SELF, 25, 25)

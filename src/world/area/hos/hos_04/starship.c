@@ -30,13 +30,13 @@ EvtScript EVS_Starship_FlyingAway = {
     Call(UseSettingsFrom, CAM_DEFAULT, -280, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, -280, 0, 0)
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_ORIENTATION, false)
-    Call(SetCamDistance, CAM_DEFAULT, Float(550.0))
-    Call(SetCamPosA, CAM_DEFAULT, Float(-688.0), Float(50.0))
-    Call(SetCamPosB, CAM_DEFAULT, Float(-544.0), Float(50.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(2.0), Float(-20.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamDistance, CAM_DEFAULT, 550.0)
+    Call(SetCamPosA, CAM_DEFAULT, -688.0, 50.0)
+    Call(SetCamPosB, CAM_DEFAULT, -544.0, 50.0)
+    Call(SetCamPitch, CAM_DEFAULT, 2.0, -20.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Wait(10)
     Thread
         Call(PlaySound, SOUND_STARSHIP_ASCEND)
@@ -54,7 +54,7 @@ EvtScript EVS_Starship_FlyingAway = {
         EndLoop
     EndThread
     Wait(55)
-    Call(GotoMap, Ref("hos_20"), hos_20_ENTRY_0)
+    Call(GotoMap, "hos_20", hos_20_ENTRY_0)
     Wait(100)
     Return
     End
@@ -71,7 +71,7 @@ EvtScript EVS_SetStarshipPosRot = {
         Loop(0)
             Call(UpdateLerp)
             SetF(LVar2, LVar0)
-            MulF(LVar2, Float(0.1))
+            MulF(LVar2, 0.1)
             AddF(LVar2, MV_Starship_PosY)
             Call(TranslateGroup, MODEL_g161, MV_Starship_PosX, LVar2, 0)
             Call(RotateGroup, MODEL_g161, MV_Starship_PosZ, 0, 1, 0)
@@ -96,11 +96,11 @@ EvtScript EVS_BetaStarship_Flight1 = {
     Call(InterpPlayerYaw, 90, 0)
     Call(UseSettingsFrom, CAM_DEFAULT, -500, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, -5000, 0, 0)
-    Call(SetCamDistance, CAM_DEFAULT, Float(350.0))
+    Call(SetCamDistance, CAM_DEFAULT, 350.0)
     Call(SetCamPosA, CAM_DEFAULT, -5000, 50)
     Call(SetCamPosB, CAM_DEFAULT, 5000, 50)
-    Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-7.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamPitch, CAM_DEFAULT, 17.0, -7.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Set(MV_Starship_Yaw, 0)
     Set(MV_Starship_PosX, -5000)
@@ -150,7 +150,7 @@ EvtScript EVS_BetaStarship_Flight1 = {
         Goto(20)
     EndIf
     IfLt(GB_StoryProgress, STORY_UNUSED_0000005D)
-        Call(GotoMap, Ref("hos_00"), hos_00_ENTRY_3)
+        Call(GotoMap, "hos_00", hos_00_ENTRY_3)
     Else
         Set(LVar0, 2)
         Loop(10)
@@ -159,7 +159,7 @@ EvtScript EVS_BetaStarship_Flight1 = {
             Wait(1)
         EndLoop
         Wait(20)
-        Call(GotoMap, Ref("kpa_60"), kpa_60_ENTRY_4)
+        Call(GotoMap, "kpa_60", kpa_60_ENTRY_4)
     EndIf
     Wait(100)
     Return
@@ -176,11 +176,11 @@ EvtScript EVS_BetaStarship_Flight2 = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_g1, COLLIDER_FLAGS_UPPER_MASK)
     Call(UseSettingsFrom, CAM_DEFAULT, -500, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, -5000, 0, 0)
-    Call(SetCamDistance, CAM_DEFAULT, Float(350.0))
+    Call(SetCamDistance, CAM_DEFAULT, 350.0)
     Call(SetCamPosA, CAM_DEFAULT, -5000, 50)
     Call(SetCamPosB, CAM_DEFAULT, 5000, 50)
-    Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-7.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamPitch, CAM_DEFAULT, 17.0, -7.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Set(MV_Starship_Yaw, 0)
     Set(MV_Starship_PosX, -4673)
@@ -224,7 +224,7 @@ EvtScript EVS_BetaStarship_Flight2 = {
         Wait(1)
     EndLoop
     Wait(20)
-    Call(GotoMap, Ref("osr_03"), osr_03_ENTRY_3)
+    Call(GotoMap, "osr_03", osr_03_ENTRY_3)
     Wait(100)
     Return
     End
@@ -241,11 +241,11 @@ EvtScript EVS_BetaStarship_Return = {
     Call(SetNpcYaw, NPC_PARTNER, 90)
     Call(UseSettingsFrom, CAM_DEFAULT, -500, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, 5000, 0, 0)
-    Call(SetCamDistance, CAM_DEFAULT, Float(350.0))
+    Call(SetCamDistance, CAM_DEFAULT, 350.0)
     Call(SetCamPosA, CAM_DEFAULT, -5000, 50)
     Call(SetCamPosB, CAM_DEFAULT, 5000, 50)
-    Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-7.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamPitch, CAM_DEFAULT, 17.0, -7.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Set(MV_Starship_Yaw, 0)
     Set(MV_Starship_PosX, 5000)
@@ -296,7 +296,7 @@ EvtScript EVS_BetaStarship_Return = {
         Add(MV_Starship_PosX, LVar0)
         Wait(1)
     EndLoop
-    Call(GotoMap, Ref("hos_05"), hos_05_ENTRY_1)
+    Call(GotoMap, "hos_05", hos_05_ENTRY_1)
     Wait(100)
     Return
     End

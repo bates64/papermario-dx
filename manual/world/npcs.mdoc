@@ -113,8 +113,8 @@ Then make the NPCs from the map's main EVT script with `MakeNpcs`, before `Enter
 EvtScript EVS_Main = {
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Call(MakeNpcs, false, Ref(DefaultNPCs))
-    Set(LVar0, Ref(EVS_BindExitTriggers))
+    Call(MakeNpcs, false, DefaultNPCs)
+    Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     Return
     End
@@ -135,7 +135,7 @@ EvtScript EVS_NpcInteract_Toad = {
 };
 
 EvtScript EVS_NpcInit_Toad = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Toad)
     Return
     End
 };
@@ -177,7 +177,7 @@ MobileAISettings AISettings_Toad_Wander = {
 };
 
 EvtScript EVS_NpcAI_Toad_Wander = {
-    Call(BasicAI_Main, Ref(AISettings_Toad_Wander))
+    Call(BasicAI_Main, AISettings_Toad_Wander)
     Return
     End
 };

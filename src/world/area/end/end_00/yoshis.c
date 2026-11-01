@@ -11,7 +11,7 @@ EvtScript EVS_ParadePhase_Yoshis = {
         EndLoop
     EndChildThread
     ChildThread
-        Call(SetNpcScale, NPC_RaphaelRaven, Float(2.0), Float(2.0), 1)
+        Call(SetNpcScale, NPC_RaphaelRaven, 2.0, 2.0, 1)
         Loop(0)
             Call(NpcFlyTo, NPC_RaphaelRaven, 357, 0, -30, 10, 0, EASING_LINEAR)
             Wait(60)

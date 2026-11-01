@@ -56,7 +56,7 @@ EvtScript EVS_ShyGuyFloat_Open = {
             EndIf
         EndLoop
     EndThread
-    Call(SetModelTintMode, APPLY_TINT_MODELS, Ref(ShyGuyFloat_InteriorModels), ENV_TINT_REMAP)
+    Call(SetModelTintMode, APPLY_TINT_MODELS, ShyGuyFloat_InteriorModels, ENV_TINT_REMAP)
     Call(SetModelTintParams, ENV_TINT_REMAP, 255, 255, 255, 120, 120, 80, 0, 0, 0)
     Wait(30)
     Call(SetModelTintParams, ENV_TINT_REMAP, 255, 255, 255, 0, 0, 0, 0, 0, 0)
@@ -112,7 +112,7 @@ EvtScript EVS_GrooveGuy = {
     Wait(30)
     Set(LVar2, LVar0)
     Set(LVar3, LVar1)
-    Call(SetNpcJumpscale, LVar2, Float(0.5))
+    Call(SetNpcJumpscale, LVar2, 0.5)
     Call(NpcJump0, LVar2, LVar3, 10, 20, 20)
     Wait(10)
     Loop(0)
@@ -357,7 +357,7 @@ EvtScript EVS_ParadePhase_ShyGuyFormation = {
         Call(SetNpcRotation, NPC_Pratfaller, 0, 0, 0)
         Call(SetNpcAnimation, NPC_Pratfaller, ANIM_ShyGuy_Red_Crashed)
     EndThread
-    Call(SetNpcJumpscale, NPC_Pratfaller, Float(1.0))
+    Call(SetNpcJumpscale, NPC_Pratfaller, 1.0)
     Call(GetNpcPos, NPC_Pratfaller, LVar0, LVar1, LVar2)
     Add(LVar0, -45)
     Call(NpcJump0, NPC_Pratfaller, LVar0, LVar1, LVar2, 10)

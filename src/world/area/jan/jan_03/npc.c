@@ -96,7 +96,7 @@ EvtScript EVS_ToadHouse_SetDialogue = {
 
 EvtScript EVS_ToadHouse_GetInBed = {
     Exec(EVS_PlayRestingSong)
-    Call(SetPlayerSpeed, Float(3.5))
+    Call(SetPlayerSpeed, 3.5)
     Call(PlayerMoveTo, 322, -178, 0)
     Thread
         Wait(15)
@@ -107,10 +107,10 @@ EvtScript EVS_ToadHouse_GetInBed = {
         Call(SetCamPosA, CAM_DEFAULT, 406, -130)
         Call(SetCamPosB, CAM_DEFAULT, 361, -190)
         Call(SetCamPosC, CAM_DEFAULT, 0, -1)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+        Call(SetCamSpeed, CAM_DEFAULT, 90.0)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
     EndThread
-    Call(SetPlayerSpeed, Float(3.0))
+    Call(SetPlayerSpeed, 3.0)
     Call(PlayerMoveTo, 361, -194, 0)
     Call(PlayerMoveTo, 370, -257, 0)
     Call(InterpPlayerYaw, 229, 1)
@@ -139,7 +139,7 @@ EvtScript EVS_ToadHouse_ReturnFromRest = {
     Call(HidePlayerShadow, false)
     Call(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_CLEAR, 0, 0, 0, 0)
     Call(SetPlayerPos, 345, 0, -186)
-    Call(SetPlayerSpeed, Float(3.0))
+    Call(SetPlayerSpeed, 3.0)
     Call(PlayerMoveTo, 291, -100, 0)
     Exec(EVS_SetupMusic)
     Return
@@ -147,7 +147,7 @@ EvtScript EVS_ToadHouse_ReturnFromRest = {
 };
 
 EvtScript EVS_NpcInit_Toad = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ToadHouseKeeper))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_ToadHouseKeeper)
     Return
     End
 };
@@ -159,7 +159,7 @@ EvtScript EVS_NpcInteract_Yoshi_01 = {
 };
 
 EvtScript EVS_NpcInit_Yoshi_01 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Yoshi_01))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Yoshi_01)
     Return
     End
 };
@@ -200,8 +200,8 @@ EvtScript EVS_NpcInit_VillageLeader = {
             Call(RemoveNpc, NPC_SELF)
         CaseLt(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
             Call(SetNpcAnimation, NPC_SELF, ANIM_VillageLeader_Panic)
-            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_VillageLeader))
-            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_VillageLeader))
+            Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_VillageLeader)
+            Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_VillageLeader)
         CaseDefault
             Call(RemoveNpc, NPC_SELF)
     EndSwitch
@@ -256,12 +256,12 @@ EvtScript EVS_NpcInit_Yoshi_02 = {
         CaseLt(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
             IfEq(GF_JAN11_SavedYoshi, false)
                 Call(SetNpcAnimation, NPC_SELF, ANIM_Yoshi_Green_Panic)
-                Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Yoshi_02))
+                Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Yoshi_02)
             Else
                 Call(BindNpcIdle, NPC_SELF, 0)
             EndIf
     EndSwitch
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Yoshi_02))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Yoshi_02)
     Return
     End
 };
@@ -331,12 +331,12 @@ EvtScript EVS_NpcInit_Yoshi_03 = {
         CaseLt(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
             IfEq(GF_JAN07_SavedYoshi, false)
                 Call(SetNpcAnimation, NPC_SELF, ANIM_Yoshi_Yellow_Panic)
-                Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Yoshi_03))
+                Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Yoshi_03)
             Else
                 Call(BindNpcIdle, NPC_SELF, 0)
             EndIf
     EndSwitch
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Yoshi_03))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Yoshi_03)
     Return
     End
 };
@@ -381,7 +381,7 @@ EvtScript EVS_NpcInteract_YoshiKid_02 = {
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_YoshiKid_Red_Talk, ANIM_YoshiKid_Red_Idle, 0, MSG_CH5_0078)
     EndSwitch
-    Set(LVar0, Ref(LetterDelivery_RedYoshiKid))
+    Set(LVar0, LetterDelivery_RedYoshiKid)
     ExecWait(EVS_TryLetterDelivery)
     Return
     End
@@ -449,10 +449,10 @@ EvtScript EVS_NpcInit_YoshiKid_01 = {
             Else
                 Call(SetNpcPos, NPC_SELF, -450, 0, -190)
             EndIf
-            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_YoshiKid_01))
+            Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_YoshiKid_01)
         EndIf
     EndIf
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_YoshiKid_01))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_YoshiKid_01)
     Return
     End
 };
@@ -464,7 +464,7 @@ EvtScript EVS_NpcInit_YoshiKid_02 = {
             Return
         EndIf
     EndIf
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_YoshiKid_02))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_YoshiKid_02)
     Return
     End
 };
@@ -476,7 +476,7 @@ EvtScript EVS_NpcInit_YoshiKid_03 = {
             Return
         EndIf
     EndIf
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_YoshiKid_03))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_YoshiKid_03)
     Return
     End
 };
@@ -493,10 +493,10 @@ EvtScript EVS_NpcInit_YoshiKid_04 = {
             Call(SetNpcPos, NPC_SELF, -135, 0, -70)
 #endif
             Call(InterpNpcYaw, NPC_SELF, 270, 0)
-            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_YoshiKid_04))
+            Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_YoshiKid_04)
         EndIf
     EndIf
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_YoshiKid_04))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_YoshiKid_04)
     Return
     End
 };
@@ -508,7 +508,7 @@ EvtScript EVS_NpcInit_YoshiKid_05 = {
             Return
         EndIf
     EndIf
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_YoshiKid_05))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_YoshiKid_05)
     Return
     End
 };
@@ -546,7 +546,7 @@ EvtScript EVS_NpcInteract_Raven = {
 };
 
 EvtScript EVS_NpcInit_Raven = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Raven))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Raven)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_RAPHAEL_LEFT_NEST)
         CaseRange(STORY_CH5_ZIP_LINE_READY, STORY_CH5_OPENED_ESCAPE_ROUTE)
@@ -566,11 +566,11 @@ EvtScript EVS_NpcInteract_Kolorado = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0012)
-            Set(LVar0, Ref(LetterDelivery_Kolorado))
+            Set(LVar0, LetterDelivery_Kolorado)
             ExecWait(EVS_TryLetterDelivery)
         CaseLt(STORY_CH5_GOT_JADE_RAVEN)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0013)
-            Set(LVar0, Ref(LetterDelivery_Kolorado))
+            Set(LVar0, LetterDelivery_Kolorado)
             ExecWait(EVS_TryLetterDelivery)
         CaseLt(STORY_CH5_ZIP_LINE_READY)
             IfEq(AF_JAN03_KoloradoLocalsHint, false)
@@ -579,21 +579,21 @@ EvtScript EVS_NpcInteract_Kolorado = {
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0015)
             EndIf
-            Set(LVar0, Ref(LetterDelivery_Kolorado))
+            Set(LVar0, LetterDelivery_Kolorado)
             ExecWait(EVS_TryLetterDelivery)
         CaseEq(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(FindItem, ITEM_VOLCANO_VASE, LVar0)
             IfEq(LVar0, -1)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0016)
-                Set(LVar0, Ref(LetterDelivery_Kolorado))
+                Set(LVar0, LetterDelivery_Kolorado)
                 ExecWait(EVS_TryLetterDelivery)
             Else
-                Call(AdjustCam, CAM_DEFAULT, Float(5.0), 0, 325, Float(20.0), Float(-7.5))
+                Call(AdjustCam, CAM_DEFAULT, 5.0, 0, 325, 20.0, -7.5)
                 EVT_CHOOSE_KEY_ITEM_ONLY(ITEM_VOLCANO_VASE, NPC_Kolorado)
                 Switch(LVar0)
                     CaseEq(ITEM_CHOICE_CANCELED)
                         Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0017)
-                        Set(LVar0, Ref(LetterDelivery_Kolorado))
+                        Set(LVar0, LetterDelivery_Kolorado)
                         ExecWait(EVS_TryLetterDelivery)
                     CaseDefault
                         Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0018)
@@ -616,13 +616,13 @@ EvtScript EVS_NpcInteract_Kolorado = {
                         Wait(10)
                         Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_001C)
                         Call(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Walk)
-                        Call(SetNpcSpeed, NPC_SELF, Float(4.0))
+                        Call(SetNpcSpeed, NPC_SELF, 4.0)
                         Call(NpcMoveTo, NPC_SELF, -465, -185, 0)
                         Call(NpcMoveTo, NPC_SELF, -540, -70, 0)
                         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
                         Set(GB_StoryProgress, STORY_CH5_TRADED_VASE_FOR_SEED)
                 EndSwitch
-                Call(ResetCam, CAM_DEFAULT, Float(5.0))
+                Call(ResetCam, CAM_DEFAULT, 5.0)
             EndIf
     EndSwitch
     Return
@@ -640,7 +640,7 @@ EvtScript EVS_NpcInit_Kolorado = {
             Set(LVar0, 1)
     EndSwitch
     IfEq(LVar0, 1)
-        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Kolorado))
+        Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Kolorado)
     Else
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndIf
@@ -673,8 +673,8 @@ EvtScript EVS_NpcIdle_Sushie = {
 };
 
 EvtScript EVS_NpcInit_Sushie = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Sushie))
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Sushie))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Sushie)
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Sushie)
     Return
     End
 };

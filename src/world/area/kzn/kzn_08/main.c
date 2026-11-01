@@ -71,10 +71,10 @@ EvtScript EVS_AnimateLavaScale = {
     Call(MakeLerp, 1, 100, 200, EASING_LINEAR)
     Label(0)
         Call(UpdateLerp)
-        DivF(LVar0, Float(10.0))
-        Call(ScaleModel, MODEL_yougan1, LVar0, Float(1.0), Float(1.0))
-        MulF(LVar0, Float(-5.0))
-        AddF(LVar0, Float(100.0))
+        DivF(LVar0, 10.0)
+        Call(ScaleModel, MODEL_yougan1, LVar0, 1.0, 1.0)
+        MulF(LVar0, -5.0)
+        AddF(LVar0, 100.0)
         Set(MV_GlowIntensity, LVar0)
         Wait(1)
         IfEq(LVar1, 1)
@@ -84,8 +84,8 @@ EvtScript EVS_AnimateLavaScale = {
     Label(10)
         Call(UpdateLerp)
         Call(TranslateModel, MODEL_yougan, 0, LVar0, 0)
-        MulF(LVar0, Float(-1.25))
-        AddF(LVar0, Float(50.0))
+        MulF(LVar0, -1.25)
+        AddF(LVar0, 50.0)
         Set(MV_GlowIntensity, LVar0)
         Wait(1)
         IfEq(LVar1, 1)
@@ -94,7 +94,7 @@ EvtScript EVS_AnimateLavaScale = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS,  COLLIDER_yougan_atari, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_yougan_atari, SURFACE_TYPE_LAVA)
     Thread
-        Call(ResetFromLava, Ref(SafeFloorColliders))
+        Call(ResetFromLava, SafeFloorColliders)
     EndThread
     Call(DisablePlayerInput, false)
     Unbind
@@ -106,7 +106,7 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_MT_LAVALAVA)
     Call(SetSpriteShading, SHADING_KZN_08)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Call(MakeNpcs, true, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     Call(SetMusic, 0, SONG_MT_LAVALAVA, 0, VOL_LEVEL_FULL)
     Call(PlayAmbientSounds, AMBIENT_LAVA_1)
@@ -116,9 +116,9 @@ EvtScript EVS_Main = {
     Exec(EVS_UpdateLavaRoomDarkness)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_yougan_atari, SURFACE_TYPE_LAVA)
     Thread
-        Call(ResetFromLava, Ref(SafeFloorColliders))
+        Call(ResetFromLava, SafeFloorColliders)
     EndThread
-    Call(ScaleModel, MODEL_yougan1, Float(10.0), Float(1.0), Float(1.0))
+    Call(ScaleModel, MODEL_yougan1, 10.0, 1.0, 1.0)
     Call(TranslateModel, MODEL_yougan, 0, 40, 0)
     Set(MV_GlowIntensity, 0)
     Thread
@@ -126,7 +126,7 @@ EvtScript EVS_Main = {
         Call(ApplyLavaGlowLighting, LAVA_GLOW_MODE_2, nullptr)
     EndThread
     Thread
-        Call(ClearLavaGlowLighting, Ref(LavaModelIDs))
+        Call(ClearLavaGlowLighting, LavaModelIDs)
     EndThread
     Exec(EVS_StartTexPanners)
     Return

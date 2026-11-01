@@ -163,9 +163,9 @@ EvtScript EVS_UnusedStub = {
 };
 
 EvtScript EVS_Init = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
     Call(SetActorVar, ACTOR_SELF, AVAR_Unused_0, 0)
     Call(SetActorVar, ACTOR_SELF, AVAR_Unused_1, 0)
     Call(SetActorVar, ACTOR_SELF, AVAR_Unused_2, 0)
@@ -177,9 +177,9 @@ EvtScript EVS_Init = {
     Call(SetPartPos, ACTOR_SELF, PRT_TREE_NUT_1, -95, 140, 10)
     Call(SetPartPos, ACTOR_SELF, PRT_TREE_NUT_2, -115, 130, 0)
     Call(SetPartPos, ACTOR_SELF, PRT_TREE_NUT_3, -65, 118, 5)
-    Call(SetPartScale, ACTOR_SELF, PRT_TREE_NUT_1, Float(0.5), Float(0.5), Float(1.0))
-    Call(SetPartScale, ACTOR_SELF, PRT_TREE_NUT_2, Float(0.5), Float(0.5), Float(1.0))
-    Call(SetPartScale, ACTOR_SELF, PRT_TREE_NUT_3, Float(0.5), Float(0.5), Float(1.0))
+    Call(SetPartScale, ACTOR_SELF, PRT_TREE_NUT_1, 0.5, 0.5, 1.0)
+    Call(SetPartScale, ACTOR_SELF, PRT_TREE_NUT_2, 0.5, 0.5, 1.0)
+    Call(SetPartScale, ACTOR_SELF, PRT_TREE_NUT_3, 0.5, 0.5, 1.0)
     Call(SetPartTargetFlagBits, ACTOR_SELF, PRT_MAIN, ACTOR_PART_TARGET_NO_DAMAGE, true)
     Return
     End
@@ -257,7 +257,7 @@ ShakeTreeConfig Tree = {
 };
 
 EvtScript EVS_TriggerTreeShake = {
-    Set(LVar0, Ref(Tree))
+    Set(LVar0, Tree)
     ExecWait(EVS_ShakeTree)
     Return
     End
@@ -278,8 +278,8 @@ EvtScript EVS_DropNutOnGoombas = {
         Call(SetGoalPos, ACTOR_SELF, 10, 0, 10)
         Call(SetPartFlagBits, ACTOR_SELF, PRT_BIG_NUT, ACTOR_PART_FLAG_INVISIBLE, false)
         Call(PlaySoundAtPart, ACTOR_SELF, PRT_BIG_NUT, SOUND_FALL_QUICK)
-        Call(SetPartJumpGravity, ACTOR_SELF, PRT_BIG_NUT, Float(0.8))
-        Call(SetPartMoveSpeed, ACTOR_SELF, PRT_BIG_NUT, Float(4.0))
+        Call(SetPartJumpGravity, ACTOR_SELF, PRT_BIG_NUT, 0.8)
+        Call(SetPartMoveSpeed, ACTOR_SELF, PRT_BIG_NUT, 4.0)
         Call(FallPartTo, ACTOR_SELF, PRT_BIG_NUT, 10, 20, 10, 20)
         Call(JumpPartTo, ACTOR_SELF, PRT_BIG_NUT, 30, 20, 10, 10, true)
         Call(JumpPartTo, ACTOR_SELF, PRT_BIG_NUT, 40, 20, 10, 5, true)
@@ -292,8 +292,8 @@ EvtScript EVS_DropNutOnGoombas = {
         Return
     EndIf
     Call(PlaySoundAtPart, ACTOR_SELF, PRT_BIG_NUT, SOUND_FALL_QUICK)
-    Call(SetPartJumpGravity, ACTOR_SELF, PRT_BIG_NUT, Float(0.8))
-    Call(SetPartMoveSpeed, ACTOR_SELF, PRT_BIG_NUT, Float(4.0))
+    Call(SetPartJumpGravity, ACTOR_SELF, PRT_BIG_NUT, 0.8)
+    Call(SetPartMoveSpeed, ACTOR_SELF, PRT_BIG_NUT, 4.0)
     Call(GetStatusFlags, ACTOR_KING, LVar0)
     IfNotFlag(LVar0, STATUS_FLAG_SHRINK)
         Call(FallPartTo, ACTOR_SELF, PRT_BIG_NUT, 10, 80, 10, 10)
@@ -310,7 +310,7 @@ EvtScript EVS_DropNutOnGoombas = {
         Call(GetPartOffset, ACTOR_SELF, PRT_BIG_NUT, LVar0, LVar1, LVar2)
         Add(LVar0, 65)
         Set(LVar1, 20)
-        Call(SetPartJumpGravity, ACTOR_SELF, PRT_BIG_NUT, Float(0.7))
+        Call(SetPartJumpGravity, ACTOR_SELF, PRT_BIG_NUT, 0.7)
         Call(JumpPartTo, ACTOR_SELF, PRT_BIG_NUT, LVar0, LVar1, LVar2, 20, true)
         Add(LVar0, 12)
         Call(JumpPartTo, ACTOR_SELF, PRT_BIG_NUT, LVar0, LVar1, LVar2, 8, true)
@@ -329,7 +329,7 @@ EvtScript EVS_DropNutOnGoombas = {
     Else
         Add(LVar1, 20)
     EndIf
-    Call(SetPartJumpGravity, ACTOR_SELF, PRT_BIG_NUT, Float(0.7))
+    Call(SetPartJumpGravity, ACTOR_SELF, PRT_BIG_NUT, 0.7)
     Call(JumpPartTo, ACTOR_SELF, PRT_BIG_NUT, LVar0, LVar1, LVar2, 20, true)
     Call(SetOwnerTarget, ACTOR_RED_GOOMBA, PRT_MAIN)
     Call(SetGoalToTarget, ACTOR_SELF)
@@ -339,7 +339,7 @@ EvtScript EVS_DropNutOnGoombas = {
         Call(GetPartOffset, ACTOR_SELF, PRT_BIG_NUT, LVar0, LVar1, LVar2)
         Add(LVar0, 35)
         Set(LVar1, 20)
-        Call(SetPartJumpGravity, ACTOR_SELF, PRT_BIG_NUT, Float(0.7))
+        Call(SetPartJumpGravity, ACTOR_SELF, PRT_BIG_NUT, 0.7)
         Call(JumpPartTo, ACTOR_SELF, PRT_BIG_NUT, LVar0, LVar1, LVar2, 20, true)
         Add(LVar0, 12)
         Call(JumpPartTo, ACTOR_SELF, PRT_BIG_NUT, LVar0, LVar1, LVar2, 8, true)
@@ -358,7 +358,7 @@ EvtScript EVS_DropNutOnGoombas = {
     Else
         Add(LVar1, 20)
     EndIf
-    Call(SetPartJumpGravity, ACTOR_SELF, PRT_BIG_NUT, Float(0.7))
+    Call(SetPartJumpGravity, ACTOR_SELF, PRT_BIG_NUT, 0.7)
     Call(JumpPartTo, ACTOR_SELF, PRT_BIG_NUT, LVar0, LVar1, LVar2, 20, true)
     Call(SetOwnerTarget, ACTOR_BLUE_GOOMBA, PRT_MAIN)
     Call(SetGoalToTarget, ACTOR_SELF)
@@ -366,7 +366,7 @@ EvtScript EVS_DropNutOnGoombas = {
     Call(GetPartOffset, ACTOR_SELF, PRT_BIG_NUT, LVar0, LVar1, LVar2)
     Add(LVar0, 20)
     Set(LVar1, 20)
-    Call(SetPartJumpGravity, ACTOR_SELF, PRT_BIG_NUT, Float(0.7))
+    Call(SetPartJumpGravity, ACTOR_SELF, PRT_BIG_NUT, 0.7)
     Call(JumpPartTo, ACTOR_SELF, PRT_BIG_NUT, LVar0, LVar1, LVar2, 20, true)
     Add(LVar0, 12)
     Call(JumpPartTo, ACTOR_SELF, PRT_BIG_NUT, LVar0, LVar1, LVar2, 8, true)

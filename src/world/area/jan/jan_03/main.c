@@ -8,9 +8,9 @@ EvtScript EVS_ExitWalk_jan_05_0 = EVT_EXIT_WALK(60, jan_03_ENTRY_1, "jan_05", ja
 EvtScript EVS_ExitWalk_jan_22_0 = EVT_EXIT_WALK(60, jan_03_ENTRY_2, "jan_22", jan_22_ENTRY_0);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_jan_02_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_jan_05_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilinw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_jan_22_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitWalk_jan_02_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitWalk_jan_05_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilinw, 1, 0)
+    BindTrigger(EVS_ExitWalk_jan_22_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     Return
     End
 };
@@ -24,7 +24,7 @@ EvtScript EVS_EnterMap = {
     EndIf
     Call(GetEntryID, LVar0)
     IfNe(LVar0, jan_03_ENTRY_3)
-        Set(LVar0, Ref(EVS_BindExitTriggers))
+        Set(LVar0, EVS_BindExitTriggers)
         Exec(EnterWalk)
     Else
         IfEq(GF_JAN03_WarpPipe, false)
@@ -43,7 +43,7 @@ EvtScript EVS_EnterMap = {
             Call(DisablePlayerPhysics, false)
             Call(DisablePlayerInput, false)
         EndIf
-        Set(LVarA, Ref(EVS_BindExitTriggers))
+        Set(LVarA, EVS_BindExitTriggers)
         ExecWait(EVS_Pipe_EnterVertical)
         Wait(1)
     EndIf
@@ -57,15 +57,15 @@ EvtScript EVS_Main = {
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
-            Call(MakeNpcs, false, Ref(CrisisNPCs))
+            Call(MakeNpcs, false, CrisisNPCs)
         CaseLt(STORY_CH5_ZIP_LINE_READY)
-            Call(MakeNpcs, false, Ref(ChapterNPCs))
+            Call(MakeNpcs, false, ChapterNPCs)
         CaseEq(STORY_CH5_STAR_SPIRIT_DEPARTED)
-            Call(MakeNpcs, false, Ref(ChapterNPCs))
+            Call(MakeNpcs, false, ChapterNPCs)
         CaseGt(STORY_CH5_STAR_SPIRIT_DEPARTED)
-            Call(MakeNpcs, false, Ref(AfterNPCs))
+            Call(MakeNpcs, false, AfterNPCs)
         CaseDefault
-            Call(MakeNpcs, false, Ref(DefaultNPCs))
+            Call(MakeNpcs, false, DefaultNPCs)
     EndSwitch
     ExecWait(EVS_MakeEntities)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitw, COLLIDER_FLAGS_UPPER_MASK)

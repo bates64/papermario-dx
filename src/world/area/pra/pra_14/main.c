@@ -8,14 +8,14 @@ EvtScript EVS_ExitWalk_pra_13_1 = EVT_EXIT_WALK(60, pra_14_ENTRY_0, "pra_13", pr
 EvtScript EVS_ExitWalk_pra_13_2 = EVT_EXIT_WALK(60, pra_14_ENTRY_1, "pra_13", pra_13_ENTRY_2);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_pra_13_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deilisw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_pra_13_2), TRIGGER_FLOOR_ABOVE, COLLIDER_deilinw, 1, 0)
+    BindTrigger(EVS_ExitWalk_pra_13_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deilisw, 1, 0)
+    BindTrigger(EVS_ExitWalk_pra_13_2, TRIGGER_FLOOR_ABOVE, COLLIDER_deilinw, 1, 0)
     Return
     End
 };
 
 EvtScript EVS_EnterMap = {
-    Set(LVar0, Ref(EVS_BindExitTriggers))
+    Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     Return
     End
@@ -65,13 +65,13 @@ EvtScript EVS_Main = {
     Exec(EVS_EnterMap)
     Wait(1)
     IfEq(GF_PRA13_BombedWallA, false)
-        BindTrigger(Ref(EVS_BlastWallA), TRIGGER_POINT_BOMB, Ref(BombPos_WallA), 1, 0)
+        BindTrigger(EVS_BlastWallA, TRIGGER_POINT_BOMB, BombPos_WallA, 1, 0)
     Else
         Call(EnableModel, MODEL_g289, false)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilittsw, COLLIDER_FLAGS_UPPER_MASK)
     EndIf
     IfEq(GF_PRA13_BombedWallB, false)
-        BindTrigger(Ref(EVS_BlastWallB), TRIGGER_POINT_BOMB, Ref(BombPos_WallB), 1, 0)
+        BindTrigger(EVS_BlastWallB, TRIGGER_POINT_BOMB, BombPos_WallB, 1, 0)
     Else
         Call(EnableModel, MODEL_g260, false)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilittnw, COLLIDER_FLAGS_UPPER_MASK)

@@ -110,16 +110,16 @@ EvtScript EVS_NpcAux_TrafficBoo = {
 };
 
 EvtScript EVS_NpcInit_TrafficBoo1 = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_TrafficBoo))
-    Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_TrafficBoo))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_TrafficBoo)
+    Call(BindNpcAux, NPC_SELF, EVS_NpcAux_TrafficBoo)
     Call(EnableNpcShadow, NPC_SELF, false)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_TrafficBoo2 = {
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_TrafficBoo))
-    Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_TrafficBoo))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_TrafficBoo)
+    Call(BindNpcAux, NPC_SELF, EVS_NpcAux_TrafficBoo)
     Call(EnableNpcShadow, NPC_SELF, false)
     Return
     End
@@ -147,7 +147,7 @@ EvtScript EVS_NpcInteract_Franky = {
         CaseGe(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Talk, ANIM_Boo_Idle, 0, MSG_CH3_0066)
     EndSwitch
-    Set(LVar0, Ref(LetterDelivery_Franky))
+    Set(LVar0, LetterDelivery_Franky)
     ExecWait(EVS_TryLetterDelivery)
     EVT_RETURN_IF_DELIVERED()
     IfEq(GB_KootFavor_Current, KOOT_FAVOR_CH5_3)
@@ -163,7 +163,7 @@ EvtScript EVS_NpcInteract_Franky = {
 };
 
 EvtScript EVS_NpcInit_UpstairsBoo = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_UpstairsBoo))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_UpstairsBoo)
     IfLt(GB_StoryProgress, STORY_CH3_BOW_JOINED_PARTY)
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndIf
@@ -172,7 +172,7 @@ EvtScript EVS_NpcInit_UpstairsBoo = {
 };
 
 EvtScript EVS_NpcInit_Franky = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Franky))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Franky)
     IfLt(GB_StoryProgress, STORY_CH3_BOW_JOINED_PARTY)
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndIf

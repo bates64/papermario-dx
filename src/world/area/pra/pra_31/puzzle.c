@@ -320,13 +320,13 @@ EvtScript EVS_Scene_PuzzleSolved = {
     Wait(40)
     Call(UseSettingsFrom, CAM_DEFAULT, 325, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, 325, 0, 0)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(12.0), Float(-10.0))
-    Call(SetCamDistance, CAM_DEFAULT, Float(350.0))
-    Call(SetCamPosA, CAM_DEFAULT, Float(323.3), Float(-66.5))
-    Call(SetCamPosB, CAM_DEFAULT, Float(500.0), Float(296.8))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
+    Call(SetCamPitch, CAM_DEFAULT, 12.0, -10.0)
+    Call(SetCamDistance, CAM_DEFAULT, 350.0)
+    Call(SetCamPosA, CAM_DEFAULT, 323.3, -66.5)
+    Call(SetCamPosB, CAM_DEFAULT, 500.0, 296.8)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Thread
         Wait(45)
         Call(SetGroupVisibility, MODEL_g255, MODEL_GROUP_VISIBLE)
@@ -386,7 +386,7 @@ EvtScript EVS_Scene_PuzzleSolved = {
         Call(EnableModel, MODEL_n5, false)
         Call(EnableModel, MODEL_k5, true)
     EndThread
-    Call(PlayModelAnimation, MDL_ANIMATOR_0, Ref(AS_Stairs_Unfold))
+    Call(PlayModelAnimation, MDL_ANIMATOR_0, AS_Stairs_Unfold)
     Wait(200)
     Set(GB_StoryProgress, STORY_CH7_SOLVED_ALBINO_DINO_PUZZLE)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
@@ -466,7 +466,7 @@ EvtScript EVS_PushStatue_Impl = {
         EndLoop
     EndThread
     Thread
-        Call(ShakeCam, CAM_DEFAULT, 0, PUSH_TIME, Float(0.3))
+        Call(ShakeCam, CAM_DEFAULT, 0, PUSH_TIME, 0.3)
     EndThread
     Set(MV_PushingStatue, true)
     Call(PlaySoundAtCollider, LVar9, SOUND_PRA_PUSH_STATUE, 0)
@@ -537,7 +537,7 @@ EvtScript EVS_PushStatue_03 = {
 
 EvtScript EVS_SetupPuzzle = {
     Call(InitAnimatedModels)
-    Call(LoadAnimatedModel, MDL_ANIMATOR_0, Ref(AS_Stairs_Skeleton))
+    Call(LoadAnimatedModel, MDL_ANIMATOR_0, AS_Stairs_Skeleton)
     Call(SetAnimatedModelRootPosition, MDL_ANIMATOR_0, 0, 0, 0)
     Call(SetAnimatedModelRenderMode, MDL_ANIMATOR_0, RENDER_MODE_SURFACE_OPA)
     Thread
@@ -558,16 +558,16 @@ EvtScript EVS_SetupPuzzle = {
     Call(ParentColliderToModel, COLLIDER_s03w, MODEL_o1044)
     Set(MV_PuzzleSolved, false)
     Exec(EVS_UpdateStatuePositions)
-    BindTrigger(Ref(EVS_PushStatue_01), TRIGGER_WALL_PUSH, COLLIDER_s01e, 1, 0)
-    BindTrigger(Ref(EVS_PushStatue_02), TRIGGER_WALL_PUSH, COLLIDER_s02e, 1, 0)
-    BindTrigger(Ref(EVS_PushStatue_03), TRIGGER_WALL_PUSH, COLLIDER_s03e, 1, 0)
+    BindTrigger(EVS_PushStatue_01, TRIGGER_WALL_PUSH, COLLIDER_s01e, 1, 0)
+    BindTrigger(EVS_PushStatue_02, TRIGGER_WALL_PUSH, COLLIDER_s02e, 1, 0)
+    BindTrigger(EVS_PushStatue_03, TRIGGER_WALL_PUSH, COLLIDER_s03e, 1, 0)
     IfGe(GB_StoryProgress, STORY_CH7_SOLVED_ALBINO_DINO_PUZZLE)
-        Call(PlayModelAnimation, MDL_ANIMATOR_0, Ref(AS_Stairs_InitializeAfter))
+        Call(PlayModelAnimation, MDL_ANIMATOR_0, AS_Stairs_InitializeAfter)
         Call(SetGroupVisibility, MODEL_no, MODEL_GROUP_HIDDEN)
         Call(SetGroupVisibility, MODEL_kage_yuka, MODEL_GROUP_VISIBLE)
     Else
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o1071, COLLIDER_FLAGS_UPPER_MASK)
-        Call(PlayModelAnimation, MDL_ANIMATOR_0, Ref(AS_Stairs_InitializeBefore))
+        Call(PlayModelAnimation, MDL_ANIMATOR_0, AS_Stairs_InitializeBefore)
         Call(SetGroupVisibility, MODEL_g255, MODEL_GROUP_HIDDEN)
         Call(SetGroupVisibility, MODEL_g262, MODEL_GROUP_HIDDEN)
         Call(SetGroupVisibility, MODEL_g264, MODEL_GROUP_HIDDEN)

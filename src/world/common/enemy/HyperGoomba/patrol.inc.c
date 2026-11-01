@@ -17,7 +17,7 @@ MobileAISettings AISettings_HyperGoomba_Patrol = {
 };
 
 EvtScript EVS_NpcAI_HyperGoomba_Patrol = {
-    Call(PatrolNoAttackAI_Main, Ref(AISettings_HyperGoomba_Patrol))
+    Call(PatrolNoAttackAI_Main, AISettings_HyperGoomba_Patrol)
     Return
     End
 };

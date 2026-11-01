@@ -47,7 +47,7 @@ EvtScript EVS_ParadePhase_CrystalKing = {
     Call(SetNpcYaw, NPC_TrueCrystalKing, 270)
     Call(SetNpcAnimation, NPC_TrueCrystalKing, ANIM_CrystalKing_Walk)
     Call(SetNpcPos, NPC_Duplighost1, LVar0, LVar1, LVar2)
-    Call(SetNpcJumpscale, NPC_Duplighost1, Float(0.5))
+    Call(SetNpcJumpscale, NPC_Duplighost1, 0.5)
     Add(LVar0, -40)
     Call(NpcJump1, NPC_Duplighost1, LVar0, LVar1, LVar2, 20 * DT)
     Call(SetNpcAnimation, NPC_Duplighost1, ANIM_Duplighost_Idle)
@@ -92,7 +92,7 @@ EvtScript EVS_ParadePhase_CrystalKing = {
     PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar0, LVar1, LVar2)
     Call(SetNpcPos, NPC_FakeCrystalKing, 0, -500, 0)
     Call(SetNpcPos, NPC_Duplighost2, LVar0, LVar1, LVar2)
-    Call(SetNpcJumpscale, NPC_Duplighost2, Float(0.5))
+    Call(SetNpcJumpscale, NPC_Duplighost2, 0.5)
     Add(LVar0, -40)
     Call(NpcJump1, NPC_Duplighost2, LVar0, LVar1, LVar2, 20 * DT)
     Call(SetNpcAnimation, NPC_Duplighost2, ANIM_Duplighost_Idle)
@@ -128,7 +128,7 @@ EvtScript EVS_ParadePhase_CrystalKing = {
     EndThread
     Wait(60 * DT)
     Thread
-        Call(LoadPath, 50 * DT, Ref(CrystalsFlyInPath), ARRAY_COUNT(CrystalsFlyInPath), EASING_LINEAR)
+        Call(LoadPath, 50 * DT, CrystalsFlyInPath, ARRAY_COUNT(CrystalsFlyInPath), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
             Set(LVar4, LVar1)
@@ -150,7 +150,7 @@ EvtScript EVS_ParadePhase_CrystalKing = {
     KillThread(LVarC)
     Thread
         Call(SetNpcAnimation, NPC_TrueCrystalKing, ANIM_CrystalKing_Hurt)
-        Call(LoadPath, 50 * DT, Ref(CrystalsFlyOutPath), ARRAY_COUNT(CrystalsFlyInPath), EASING_LINEAR)
+        Call(LoadPath, 50 * DT, CrystalsFlyOutPath, ARRAY_COUNT(CrystalsFlyInPath), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
             Set(LVar4, LVar1)

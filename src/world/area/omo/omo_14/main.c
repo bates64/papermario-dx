@@ -6,8 +6,8 @@ EvtScript EVS_ExitWalk_omo_02_1 = EVT_EXIT_WALK(60, omo_14_ENTRY_0, "omo_02", om
 EvtScript EVS_ExitWalk_omo_15_0 = EVT_EXIT_WALK(60, omo_14_ENTRY_1, "omo_15", omo_15_ENTRY_0);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_omo_02_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_omo_15_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deili2, 1, 0)
+    BindTrigger(EVS_ExitWalk_omo_02_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
+    BindTrigger(EVS_ExitWalk_omo_15_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deili2, 1, 0)
     Return
     End
 };
@@ -16,7 +16,7 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_SHY_GUYS_TOYBOX)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Call(MakeNpcs, true, DefaultNPCs)
     Exec(EVS_SetupMusic)
     IfLt(GB_StoryProgress, STORY_CH4_OPENED_GENERAL_GUY_ROOM)
         Call(PlaySoundAtNpc, NPC_ShyGuy_01, SOUND_LOOP_SHY_GUY_CROWD_1, SOUND_SPACE_DEFAULT)
@@ -27,7 +27,7 @@ EvtScript EVS_Main = {
         Call(EnableModel, MODEL_o828, false)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_tt1, COLLIDER_FLAGS_UPPER_MASK)
     EndIf
-    Set(LVar0, Ref(EVS_BindExitTriggers))
+    Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     Wait(1)
     Return

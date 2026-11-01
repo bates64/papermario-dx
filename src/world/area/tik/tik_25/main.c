@@ -3,7 +3,7 @@
 EvtScript EVS_ExitWalk_tik_24_0 = EVT_EXIT_WALK(60, tik_25_ENTRY_0, "tik_24", tik_24_ENTRY_0);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_tik_24_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitWalk_tik_24_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
     Return
     End
 };
@@ -33,7 +33,7 @@ DripVolumeList DripVolumes = {
 };
 
 EvtScript EVS_SetupDrips = {
-    Set(LVar0, Ref(DripVolumes))
+    Set(LVar0, DripVolumes)
     Set(LVar1, MODEL_sizuku)
     Exec(EVS_CreateDripVolumes)
     Return
@@ -55,7 +55,7 @@ EvtScript EVS_Main = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(EVS_UpdateTexturePan)
     EndThread
-    Set(LVar0, Ref(EVS_BindExitTriggers))
+    Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     Wait(1)
     Return

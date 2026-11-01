@@ -375,17 +375,17 @@ EvtScript EVS_ShowStarpoints = {
         Return
     EndIf
     IfLt(LVar0, 2)
-        Call(CreateVirtualEntity, LVar6, Ref(EMS_starpoint_starpoint))
+        Call(CreateVirtualEntity, LVar6, EMS_starpoint_starpoint)
         Call(SetVirtualEntityPosition, LVar6, -278, 68, 70)
-        Call(SetVirtualEntityScale, LVar6, Float(0.5), Float(0.5), Float(0.5))
+        Call(SetVirtualEntityScale, LVar6, 0.5, 0.5, 0.5)
     Else
 #if VERSION_JP
-        Call(CreateVirtualEntity, LVar6, Ref(EMS_starpoint_starpoint))
+        Call(CreateVirtualEntity, LVar6, EMS_starpoint_starpoint)
 #else
-        Call(CreateVirtualEntity, LVar6, Ref(EMS_starpoint_starpoints))
+        Call(CreateVirtualEntity, LVar6, EMS_starpoint_starpoints)
 #endif
         Call(SetVirtualEntityPosition, LVar6, -278, 68, 70)
-        Call(SetVirtualEntityScale, LVar6, Float(0.5), Float(0.5), Float(0.5))
+        Call(SetVirtualEntityScale, LVar6, 0.5, 0.5, 0.5)
         Set(LFlag0, true)
     EndIf
     Switch(LVar0)
@@ -399,13 +399,13 @@ EvtScript EVS_ShowStarpoints = {
     Call(GetStarPointDigitScripts)
     Call(CreateVirtualEntity, LVar7, LVarA)
     Call(SetVirtualEntityPosition, LVar7, -353, 68, 70)
-    Call(SetVirtualEntityScale, LVar7, Float(0.5), Float(0.5), Float(0.5))
+    Call(SetVirtualEntityScale, LVar7, 0.5, 0.5, 0.5)
     Call(CreateVirtualEntity, LVar8, LVarB)
     Call(SetVirtualEntityPosition, LVar8, -338, 68, 70)
-    Call(SetVirtualEntityScale, LVar8, Float(0.5), Float(0.5), Float(0.5))
+    Call(SetVirtualEntityScale, LVar8, 0.5, 0.5, 0.5)
     Call(CreateVirtualEntity, LVar9, LVarC)
     Call(SetVirtualEntityPosition, LVar9, -323, 68, 70)
-    Call(SetVirtualEntityScale, LVar9, Float(0.5), Float(0.5), Float(0.5))
+    Call(SetVirtualEntityScale, LVar9, 0.5, 0.5, 0.5)
     Call(InitStarPointModelFlags)
     Switch(LVarF)
         CaseEq(3)
@@ -477,7 +477,7 @@ EvtScript EVS_ShowStarpoints = {
 };
 
 EvtScript EVS_ShowLevelUp = {
-    Call(CreateVirtualEntity, LVar9, Ref(EMS_level_up))
+    Call(CreateVirtualEntity, LVar9, EMS_level_up)
     Call(SetVirtualEntityPosition, LVar9, 0, 210, 70)
     Call(InitLevelUpModelFlags)
     ChildThread
@@ -486,11 +486,11 @@ EvtScript EVS_ShowLevelUp = {
     EndChildThread
     Thread
         Wait(8)
-        Call(ShakeCam, 1, 0, 5, Float(3.0))
-        Call(ShakeCam, 1, 0, 3, Float(2.25))
-        Call(ShakeCam, 1, 0, 4, Float(1.2))
-        Call(ShakeCam, 1, 0, 6, Float(0.45))
-        Call(ShakeCam, 1, 0, 8, Float(0.15))
+        Call(ShakeCam, 1, 0, 5, 3.0)
+        Call(ShakeCam, 1, 0, 3, 2.25)
+        Call(ShakeCam, 1, 0, 4, 1.2)
+        Call(ShakeCam, 1, 0, 6, 0.45)
+        Call(ShakeCam, 1, 0, 8, 0.15)
     EndThread
     Thread
         Set(LVar0, 210)

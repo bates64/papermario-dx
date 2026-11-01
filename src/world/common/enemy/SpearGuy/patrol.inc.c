@@ -12,7 +12,7 @@ MobileAISettings AISettings_SpearGuy_Patrol = {
 };
 
 EvtScript EVS_NpcAI_SpearGuy_Patrol = {
-    Call(PatrolNoAttackAI_Main, Ref(AISettings_SpearGuy_Patrol))
+    Call(PatrolNoAttackAI_Main, AISettings_SpearGuy_Patrol)
     Return
     End
 };

@@ -140,9 +140,9 @@ OVL_DEF_ACTOR() = {
 };
 
 EvtScript EVS_Init = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
     Return
     End
 };
@@ -279,7 +279,7 @@ EvtScript EVS_Attack_Lick = {
     Else
         Call(AddGoalPos, ACTOR_SELF, 20, 0, 0)
     EndIf
-    Call(SetActorSpeed, ACTOR_SELF, Float(4.0))
+    Call(SetActorSpeed, ACTOR_SELF, 4.0)
     Call(RunToGoal, ACTOR_SELF, 0, false)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Gulpit_Idle)
     Wait(10)
@@ -339,7 +339,7 @@ EvtScript EVS_Attack_SpitRock = {
     Add(LVar0, 20)
     Sub(LVar2, 1)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Gulpit_Walk)
-    Call(SetActorSpeed, ACTOR_SELF, Float(3.0))
+    Call(SetActorSpeed, ACTOR_SELF, 3.0)
     Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(RunToGoal, ACTOR_SELF, 0, false)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Gulpit_Idle)
@@ -381,8 +381,8 @@ EvtScript EVS_Attack_SpitRock = {
             Call(SetPartPos, ACTOR_SELF, LVarA, LVar0, LVar1, LVar2)
             Call(SetGoalToTarget, ACTOR_SELF)
             Call(AddGoalPos, ACTOR_SELF, -100, 0, 5)
-            Call(SetPartMoveSpeed, ACTOR_SELF, LVarA, Float(14.0))
-            Call(SetPartJumpGravity, ACTOR_SELF, LVarA, Float(0.01))
+            Call(SetPartMoveSpeed, ACTOR_SELF, LVarA, 14.0)
+            Call(SetPartJumpGravity, ACTOR_SELF, LVarA, 0.01)
             Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(JumpPartTo, ACTOR_SELF, LVarA, LVar0, LVar1, LVar2, 0, true)
             Call(SetPartFlagBits, ACTOR_SELF, LVarA, ACTOR_PART_FLAG_INVISIBLE, true)
@@ -405,8 +405,8 @@ EvtScript EVS_Attack_SpitRock = {
     Add(LVar2, 2)
     Call(SetPartPos, ACTOR_SELF, LVarA, LVar0, LVar1, LVar2)
     Call(SetGoalToTarget, ACTOR_SELF)
-    Call(SetPartMoveSpeed, ACTOR_SELF, LVarA, Float(14.0))
-    Call(SetPartJumpGravity, ACTOR_SELF, LVarA, Float(0.01))
+    Call(SetPartMoveSpeed, ACTOR_SELF, LVarA, 14.0)
+    Call(SetPartJumpGravity, ACTOR_SELF, LVarA, 0.01)
     Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(JumpPartTo, ACTOR_SELF, LVarA, LVar0, LVar1, LVar2, 0, true)
     Switch(LVarA)
@@ -424,7 +424,7 @@ EvtScript EVS_Attack_SpitRock = {
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Gulpit_Idle)
             Call(GetPartOffset, ACTOR_SELF, LVarA, LVar0, LVar1, LVar2)
             Add(LVar0, -100)
-            Call(SetPartJumpGravity, ACTOR_SELF, LVarA, Float(1.0))
+            Call(SetPartJumpGravity, ACTOR_SELF, LVarA, 1.0)
             Call(JumpPartTo, ACTOR_SELF, LVarA, LVar0, LVar1, LVar2, 25, true)
             Call(SetPartFlagBits, ACTOR_SELF, LVarA, ACTOR_PART_FLAG_INVISIBLE, true)
             Wait(10)

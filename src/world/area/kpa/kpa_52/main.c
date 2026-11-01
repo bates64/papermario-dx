@@ -9,8 +9,8 @@ EvtScript EVS_ExitDoors_kpa_08_0 =
     EVT_EXIT_DOUBLE_DOOR(kpa_52_ENTRY_2, "kpa_08", kpa_08_ENTRY_0, COLLIDER_tte2, MODEL_o412, MODEL_o411);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitDoors_kpa_33_2), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoors_kpa_08_0), TRIGGER_WALL_PRESS_A, COLLIDER_tte2, 1, 0)
+    BindTrigger(EVS_ExitDoors_kpa_33_2, TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
+    BindTrigger(EVS_ExitDoors_kpa_08_0, TRIGGER_WALL_PRESS_A, COLLIDER_tte2, 1, 0)
     Return
     End
 };
@@ -45,7 +45,7 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_BOWSERS_CASTLE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Call(MakeNpcs, true, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     Exec(EVS_EnterMap)
     Wait(1)

@@ -17,7 +17,7 @@ MobileAISettings AISettings_PyroGuy_Wander = {
 };
 
 EvtScript EVS_NpcAI_PyroGuy_Wander = {
-    Call(BasicAI_Main, Ref(AISettings_PyroGuy_Wander))
+    Call(BasicAI_Main, AISettings_PyroGuy_Wander)
     Return
     End
 };

@@ -27,7 +27,7 @@ EvtScript EVS_ItemPrompt_ToyTrain = {
             IfEq(AF_OMO03_ToggleDialogue_Conductor, false)
                 Thread
                     Call(SetNpcFlagBits, NPC_Conductor, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
-                    Call(SetNpcJumpscale, NPC_Conductor, Float(1.0))
+                    Call(SetNpcJumpscale, NPC_Conductor, 1.0)
                     Call(GetNpcPos, NPC_Conductor, LVar0, LVar1, LVar2)
                     Loop(2)
                         Call(NpcJump1, NPC_Conductor, LVar0, LVar1, LVar2, 15)
@@ -65,7 +65,7 @@ EvtScript EVS_ItemPrompt_ToyTrain = {
 ITEM_LIST(ToyTrainList, ITEM_TOY_TRAIN);
 
 EvtScript EVS_NpcInteract_Conductor = {
-    BindPadlock(Ref(EVS_ItemPrompt_ToyTrain), TRIGGER_FORCE_ACTIVATE, 0, Ref(ToyTrainList), 0, 1)
+    BindPadlock(EVS_ItemPrompt_ToyTrain, TRIGGER_FORCE_ACTIVATE, 0, ToyTrainList, 0, 1)
     Return
     End
 };
@@ -74,7 +74,7 @@ EvtScript EVS_NpcInit_Conductor = {
     IfLt(GB_StoryProgress, STORY_CH4_RETURNED_TOY_TRAIN)
         Call(SetNpcAnimation, NPC_SELF, ANIM_TrainToad_SadIdle)
     EndIf
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Conductor))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Conductor)
     Return
     End
 };
@@ -114,7 +114,7 @@ EvtScript EVS_NpcInteract_TrainToad = {
 };
 
 EvtScript EVS_NpcInit_TrainToad = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_TrainToad))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_TrainToad)
     Return
     End
 };

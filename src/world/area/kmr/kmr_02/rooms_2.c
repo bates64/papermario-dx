@@ -58,7 +58,7 @@ EvtScript EVS_ToadSignSwinging = {
         Call(MakeLerp, 10, -10, 30, EASING_COS_IN_OUT)
         Label(10)
             Call(UpdateLerp)
-            Call(RotateModel, MODEL_kanban, LVar0, Float(35.498), 0, Float(-9.511))
+            Call(RotateModel, MODEL_kanban, LVar0, 35.498, 0, -9.511)
             Wait(1)
             IfEq(LVar1, 1)
                 Goto(10)
@@ -66,7 +66,7 @@ EvtScript EVS_ToadSignSwinging = {
         Call(MakeLerp, -10, 10, 30, EASING_COS_IN_OUT)
         Label(11)
             Call(UpdateLerp)
-            Call(RotateModel, MODEL_kanban, LVar0, Float(35.498), 0, Float(-9.511))
+            Call(RotateModel, MODEL_kanban, LVar0, 35.498, 0, -9.511)
             Wait(1)
             IfEq(LVar1, 1)
                 Goto(11)
@@ -90,14 +90,14 @@ EvtScript EVS_SetupToadHouse = {
     // toad house
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT),
-        Ref(EVS_SetDoorRot_ToadHouse),
-        Ref(EVS_SetWallRot_ToadHouse),
+        EVS_SetDoorRot_ToadHouse,
+        EVS_SetWallRot_ToadHouse,
         nullptr,
-        Ref(EVS_RoomListener_ToadHouse),
+        EVS_RoomListener_ToadHouse,
         COLLIDER_deilit7,
         COLLIDER_deilit8,
         MODEL_kinopi,
-        Ref(InsideNPCs_ToadHouse))
+        InsideNPCs_ToadHouse)
     Exec(EVS_ToadSignSwinging)
     Return
     End

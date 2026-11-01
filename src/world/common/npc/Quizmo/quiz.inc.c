@@ -546,8 +546,8 @@ EvtScript EVS_Quizmo_SetQuizCamera = {
     EndIf
     Call(SetCamDistance, CAM_DEFAULT, LVar0)
     Call(GetCamPitch, CAM_DEFAULT, LVar0, LVar1)
-    SetF(LVar0, Float(13.0))
-    SetF(LVar1, Float(-10.0))
+    SetF(LVar0, 13.0)
+    SetF(LVar1, -10.0)
     Call(SetCamPitch, CAM_DEFAULT, LVar0, LVar1)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(SetCamLeadPlayer, CAM_DEFAULT, false)
@@ -1045,9 +1045,9 @@ EvtScript EVS_Quizmo_QuizMain = {
             Call(Quizmo_SetVannaAnim_Idle)
             Call(SetMessageValue, GB_CompletedQuizzes, 0)
             IfEq(GB_CompletedQuizzes, 1)
-                Call(SetMessageText, Ref(MessageSingular), 1)
+                Call(SetMessageText, &MessageSingular, 1)
             Else
-                Call(SetMessageText, Ref(MessagePlural), 1)
+                Call(SetMessageText, &MessagePlural, 1)
             EndIf
             Call(SpeakToPlayer, NPC_SELF, ANIM_ChuckQuizmo_Talk, ANIM_ChuckQuizmo_Idle, 0, MSG_MGM_000F)
         EndIf
@@ -1105,7 +1105,7 @@ EvtScript EVS_Quizmo_NPC_OtherAI = {
 };
 
 EvtScript EVS_Quizmo_NPC_Interact = {
-    UseArray(Ref(Quizmo_ScriptArray))
+    UseArray(Quizmo_ScriptArray)
     Set(GF_Quizmo_ChangedLocation, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerFlagBits, PS_FLAG_MOVEMENT_LOCKED, 1)

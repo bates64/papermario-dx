@@ -23,7 +23,7 @@ EvtScript EVS_ExitWalk_tst_10_2 = {
     Call(DisablePlayerInput, true)
     Call(UseExitHeading, 60, tst_10_ENTRY_0)
     Exec(ExitWalk)
-    Call(GotoMap, Ref("tst_10"), tst_10_ENTRY_2)
+    Call(GotoMap, "tst_10", tst_10_ENTRY_2)
     Wait(100)
     Return
     End
@@ -34,7 +34,7 @@ EvtScript EVS_ExitWalk_tst_10_3 = {
     Call(DisablePlayerInput, true)
     Call(UseExitHeading, 60, tst_10_ENTRY_1)
     Exec(ExitWalk)
-    Call(GotoMap, Ref("tst_10"), tst_10_ENTRY_3)
+    Call(GotoMap, "tst_10", tst_10_ENTRY_3)
     Wait(100)
     Return
     End
@@ -45,7 +45,7 @@ EvtScript EVS_ExitWalk_tst_10_0 = {
     Call(DisablePlayerInput, true)
     Call(UseExitHeading, 60, tst_10_ENTRY_2)
     Exec(ExitWalk)
-    Call(GotoMap, Ref("tst_10"), tst_10_ENTRY_0)
+    Call(GotoMap, "tst_10", tst_10_ENTRY_0)
     Wait(100)
     Return
     End
@@ -56,7 +56,7 @@ EvtScript EVS_ExitWalk_tst_10_1 = {
     Call(DisablePlayerInput, true)
     Call(UseExitHeading, 60, tst_10_ENTRY_3)
     Exec(ExitWalk)
-    Call(GotoMap, Ref("tst_10"), tst_10_ENTRY_1)
+    Call(GotoMap, "tst_10", tst_10_ENTRY_1)
     Wait(100)
     Return
     End
@@ -73,10 +73,10 @@ EvtScript EVS_DisableExitCameraZones = {
 };
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_tst_10_2), TRIGGER_FLOOR_TOUCH, COLLIDER_deilin, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_tst_10_3), TRIGGER_FLOOR_TOUCH, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_tst_10_0), TRIGGER_FLOOR_TOUCH, COLLIDER_deilis, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_tst_10_1), TRIGGER_FLOOR_TOUCH, COLLIDER_deilie, 1, 0)
+    BindTrigger(EVS_ExitWalk_tst_10_2, TRIGGER_FLOOR_TOUCH, COLLIDER_deilin, 1, 0)
+    BindTrigger(EVS_ExitWalk_tst_10_3, TRIGGER_FLOOR_TOUCH, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitWalk_tst_10_0, TRIGGER_FLOOR_TOUCH, COLLIDER_deilis, 1, 0)
+    BindTrigger(EVS_ExitWalk_tst_10_1, TRIGGER_FLOOR_TOUCH, COLLIDER_deilie, 1, 0)
     Return
     End
 };
@@ -94,9 +94,9 @@ EvtScript EVS_Main = {
         Set(AF_TST10_DisabledExitCameras, false)
     Else
         Set(AF_TST10_DisabledExitCameras, true)
-        BindTrigger(Ref(EVS_DisableExitCameraZones), TRIGGER_FLOOR_TOUCH, COLLIDER_change, 1, 0)
+        BindTrigger(EVS_DisableExitCameraZones, TRIGGER_FLOOR_TOUCH, COLLIDER_change, 1, 0)
     EndIf
-    Set(LVar0, Ref(EVS_BindExitTriggers))
+    Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     Wait(1)
     Return
@@ -104,8 +104,8 @@ EvtScript EVS_Main = {
 };
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Ref(Entity_HeartBlock), -13, 60, -50, 0, MAKE_ENTITY_END)
-    Call(MakeEntity, Ref(Entity_HiddenPanel), -111, 0, -55, 0, MODEL_o137, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_HeartBlock, -13, 60, -50, 0, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_HiddenPanel, -111, 0, -55, 0, MODEL_o137, MAKE_ENTITY_END)
     Return
     End
 };

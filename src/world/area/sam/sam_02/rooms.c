@@ -127,38 +127,38 @@ EvtScript EVS_SetupRooms = {
     Call(SetGroupVisibility, MODEL_m_naiso, MODEL_GROUP_HIDDEN)
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
-        Ref(EVS_SetDoorRot_LeftHouse),
-        Ref(EVS_SetWallRot_LeftHouse),
-        Ref(EVS_DropDoor_LeftHouse),
-        Ref(EVS_RoomListener_LeftHouse),
+        EVS_SetDoorRot_LeftHouse,
+        EVS_SetWallRot_LeftHouse,
+        EVS_DropDoor_LeftHouse,
+        EVS_RoomListener_LeftHouse,
         COLLIDER_c_doa,
         COLLIDER_o470,
         MODEL_min,
-        Ref(InteriorNPCs_LeftHouse))
+        InteriorNPCs_LeftHouse)
     // shop
     Call(SetGroupVisibility, MODEL_t_naiso, MODEL_GROUP_HIDDEN)
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_1, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
-        Ref(EVS_SetDoorRot_Shop),
-        Ref(EVS_SetWallRot_Shop),
+        EVS_SetDoorRot_Shop,
+        EVS_SetWallRot_Shop,
         nullptr,
-        Ref(EVS_RoomListener_Shop),
+        EVS_RoomListener_Shop,
         COLLIDER_o382,
         COLLIDER_o471,
         MODEL_ten,
-        Ref(InteriorNPCs_Shop))
+        InteriorNPCs_Shop)
     // toad house
     Call(SetGroupVisibility, MODEL_k_naisou, MODEL_GROUP_HIDDEN)
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
-        Ref(EVS_SetDoorRot_ToadHouse),
-        Ref(EVS_SetWallRot_ToadHouse),
+        EVS_SetDoorRot_ToadHouse,
+        EVS_SetWallRot_ToadHouse,
         nullptr,
-        Ref(EVS_RoomListener_ToadHouse),
+        EVS_RoomListener_ToadHouse,
         COLLIDER_k_doa,
         COLLIDER_o472,
         MODEL_kino,
-        Ref(InteriorNPCs_ToadHouse))
+        InteriorNPCs_ToadHouse)
     Return
     End
 };

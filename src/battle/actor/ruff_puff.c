@@ -97,9 +97,9 @@ OVL_DEF_ACTOR() = {
 };
 
 EvtScript EVS_Init = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
     Return
     End
 };
@@ -107,10 +107,10 @@ EvtScript EVS_Init = {
 EvtScript EVS_Idle = {
     Set(LVarF, 0)
     Loop(0)
-        Call(CosInterpMinMax, LVarF, LVar0, Float(0.97), Float(1.03), 15, 0, 0)
-        Call(CosInterpMinMax, LVarF, LVar1, Float(1.03), Float(0.97), 15, 0, 0)
+        Call(CosInterpMinMax, LVarF, LVar0, 0.97, 1.03, 15, 0, 0)
+        Call(CosInterpMinMax, LVarF, LVar1, 1.03, 0.97, 15, 0, 0)
         Add(LVarF, 1)
-        Call(SetActorScale, ACTOR_SELF, LVar1, LVar0, Float(1.0))
+        Call(SetActorScale, ACTOR_SELF, LVar1, LVar0, 1.0)
         IfGe(LVarF, 30)
             Set(LVarF, 0)
         EndIf
@@ -123,7 +123,7 @@ EvtScript EVS_Idle = {
 EvtScript EVS_ReturnHome = {
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_RuffPuff_Run)
-    Call(SetActorSpeed, ACTOR_SELF, Float(8.0))
+    Call(SetActorSpeed, ACTOR_SELF, 8.0)
     Call(SetGoalToHome, ACTOR_SELF)
     Call(FlyToGoal, ACTOR_SELF, 0, -10, EASING_SIN_OUT)
     Return
@@ -242,7 +242,7 @@ EvtScript EVS_TakeTurn = {
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_RuffPuff_Run)
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(AddGoalPos, ACTOR_SELF, 50, 0, 0)
-    Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
+    Call(SetActorSpeed, ACTOR_SELF, 6.0)
     Call(FlyToGoal, ACTOR_SELF, 0, -10, EASING_SIN_OUT)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_RuffPuff_Idle)
     Wait(5)
@@ -253,15 +253,15 @@ EvtScript EVS_TakeTurn = {
         CaseOrEq(HIT_RESULT_MISS)
         CaseOrEq(HIT_RESULT_LUCKY)
             Set(LVarA, LVar0)
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(1.2))
+            Call(SetActorJumpGravity, ACTOR_SELF, 1.2)
             Call(SetGoalToTarget, ACTOR_SELF)
             Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(SetGoalPos, ACTOR_SELF, LVar0, 0, LVar2)
             Thread
                 Call(SetActorRotationOffset, ACTOR_SELF, 0, 16, 0)
-                SetF(LVar0, Float(0.0))
+                SetF(LVar0, 0.0)
                 Loop(15)
-                    AddF(LVar0, Float(12.0))
+                    AddF(LVar0, 12.0)
                     Call(SetActorRotation, ACTOR_SELF, 0, 0, LVar0)
                     Wait(1)
                 EndLoop
@@ -273,9 +273,9 @@ EvtScript EVS_TakeTurn = {
             EndIf
             Thread
                 Call(SetActorRotationOffset, ACTOR_SELF, 0, 16, 0)
-                SetF(LVar0, Float(180.0))
+                SetF(LVar0, 180.0)
                 Loop(10)
-                    AddF(LVar0, Float(18.0))
+                    AddF(LVar0, 18.0)
                     Call(SetActorRotation, ACTOR_SELF, 0, 0, LVar0)
                     Wait(1)
                 EndLoop
@@ -303,15 +303,15 @@ EvtScript EVS_TakeTurn = {
     EndSwitch
     Thread
         Call(SetActorRotationOffset, ACTOR_SELF, 0, 13, 0)
-        SetF(LVar0, Float(0.0))
+        SetF(LVar0, 0.0)
         Loop(8)
-            AddF(LVar0, Float(22.5))
+            AddF(LVar0, 22.5)
             Call(SetActorRotation, ACTOR_SELF, 0, 0, LVar0)
             Wait(1)
         EndLoop
     EndThread
     Call(SetGoalToTarget, ACTOR_SELF)
-    Call(SetActorJumpGravity, ACTOR_SELF, Float(1.2))
+    Call(SetActorJumpGravity, ACTOR_SELF, 1.2)
     Call(JumpToGoal, ACTOR_SELF, 8, false, true, false)
     Wait(2)
     Call(EnemyDamageTarget, ACTOR_SELF, LVar0, 0, SUPPRESS_EVENT_ALL, 0, DMG_TACKLE, BS_FLAGS1_TRIGGER_EVENTS)
@@ -321,9 +321,9 @@ EvtScript EVS_TakeTurn = {
             Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
             Thread
                 Call(SetActorRotationOffset, ACTOR_SELF, 0, 16, 0)
-                SetF(LVar0, Float(180.0))
+                SetF(LVar0, 180.0)
                 Loop(10)
-                    SubF(LVar0, Float(22.5))
+                    SubF(LVar0, 22.5)
                     Call(SetActorRotation, ACTOR_SELF, 0, 0, LVar0)
                     Wait(1)
                 EndLoop
@@ -332,8 +332,8 @@ EvtScript EVS_TakeTurn = {
             EndThread
             Call(SetGoalToTarget, ACTOR_SELF)
             Call(AddGoalPos, ACTOR_SELF, 30, 0, 0)
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(0.8))
-            Call(JumpWithBounce, ACTOR_SELF, 10, Float(5.0))
+            Call(SetActorJumpGravity, ACTOR_SELF, 0.8)
+            Call(JumpWithBounce, ACTOR_SELF, 10, 5.0)
             Wait(10)
             Call(YieldTurn)
             ExecWait(EVS_ReturnHome)

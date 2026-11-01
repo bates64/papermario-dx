@@ -61,10 +61,10 @@ EvtScript EVS_PlayKammyFlightFX = {
         IfEq(LVar3, 0)
             IfEq(LVar5, 0)
             Else
-                PlayEffect(EFFECT_PURPLE_RING, 0, LVar0, LVar1, LVar2, LVar3, LVar4, LVar5, Float(1.0))
+                PlayEffect(EFFECT_PURPLE_RING, 0, LVar0, LVar1, LVar2, LVar3, LVar4, LVar5, 1.0)
             EndIf
         Else
-            PlayEffect(EFFECT_PURPLE_RING, 0, LVar0, LVar1, LVar2, LVar3, LVar4, LVar5, Float(1.0))
+            PlayEffect(EFFECT_PURPLE_RING, 0, LVar0, LVar1, LVar2, LVar3, LVar4, LVar5, 1.0)
         EndIf
         Wait(3)
     EndLoop
@@ -82,7 +82,7 @@ EvtScript EVS_KammyReturnsToCastle = {
     EndThread
     ExecGetTID(EVS_PlayKammyFlightFX, LVar9)
     Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlyBack)
-    Call(LoadPath, 30, Ref(KammyFlightPath1), ARRAY_COUNT(KammyFlightPath1), EASING_LINEAR)
+    Call(LoadPath, 30, KammyFlightPath1, ARRAY_COUNT(KammyFlightPath1), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_Kammy, LVar1, LVar2, LVar3)
@@ -91,7 +91,7 @@ EvtScript EVS_KammyReturnsToCastle = {
         EndIf
         Wait(1)
     EndLoop
-    Call(LoadPath, 150, Ref(KammyFlightPath2), ARRAY_COUNT(KammyFlightPath2), EASING_LINEAR)
+    Call(LoadPath, 150, KammyFlightPath2, ARRAY_COUNT(KammyFlightPath2), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_Kammy, LVar1, LVar2, LVar3)
@@ -121,8 +121,8 @@ EvtScript EVS_Scene_BeginInterlude = {
     Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 80, 16, 4096)
     Call(UseSettingsFrom, CAM_DEFAULT, 0, -1, 0)
     Call(SetPanTarget, CAM_DEFAULT, 0, -1, 0)
-    Call(SetCamPitch, CAM_DEFAULT, Float(-13.0), Float(18.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamPitch, CAM_DEFAULT, -13.0, 18.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Set(MV_CastleLiftDist, 0)
     Exec(EVS_AnimateSwingingChains)
@@ -136,23 +136,23 @@ EvtScript EVS_Scene_BeginInterlude = {
     Set(GB_KKJ_LastPartner, LVar0)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_KAMMY_RETURNED_TO_BOWSER)
-            Call(GotoMap, Ref("kkj_15"), kkj_15_ENTRY_2)
+            Call(GotoMap, "kkj_15", kkj_15_ENTRY_2)
         CaseLt(STORY_CH0_BEGAN_PEACH_MISSION)
-            Call(GotoMap, Ref("kkj_14"), kkj_14_ENTRY_3)
+            Call(GotoMap, "kkj_14", kkj_14_ENTRY_3)
         CaseLt(STORY_CH1_BEGAN_PEACH_MISSION)
-            Call(GotoMap, Ref("kkj_14"), kkj_14_ENTRY_4)
+            Call(GotoMap, "kkj_14", kkj_14_ENTRY_4)
         CaseLt(STORY_CH2_BEGAN_PEACH_MISSION)
-            Call(GotoMap, Ref("kkj_14"), kkj_14_ENTRY_5)
+            Call(GotoMap, "kkj_14", kkj_14_ENTRY_5)
         CaseLt(STORY_CH3_BEGAN_PEACH_MISSION)
-            Call(GotoMap, Ref("kkj_14"), kkj_14_ENTRY_6)
+            Call(GotoMap, "kkj_14", kkj_14_ENTRY_6)
         CaseLt(STORY_CH4_BEGAN_PEACH_MISSION)
-            Call(GotoMap, Ref("kkj_14"), kkj_14_ENTRY_7)
+            Call(GotoMap, "kkj_14", kkj_14_ENTRY_7)
         CaseLt(STORY_CH5_BEGAN_PEACH_MISSION)
-            Call(GotoMap, Ref("kkj_14"), kkj_14_ENTRY_8)
+            Call(GotoMap, "kkj_14", kkj_14_ENTRY_8)
         CaseLt(STORY_CH6_BEGAN_PEACH_MISSION)
-            Call(GotoMap, Ref("kkj_14"), kkj_14_ENTRY_9)
+            Call(GotoMap, "kkj_14", kkj_14_ENTRY_9)
         CaseLt(STORY_CH7_BEGAN_PEACH_MISSION)
-            Call(GotoMap, Ref("kkj_26"), kkj_26_ENTRY_1)
+            Call(GotoMap, "kkj_26", kkj_26_ENTRY_1)
     EndSwitch
     Wait(100)
     Return

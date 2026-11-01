@@ -85,8 +85,8 @@ EvtScript EVS_ActivateSwitch = {
 
 EvtScript EVS_MakeEntities = {
     Set(AF_KPA08_PlatformRaised, false)
-    Call(MakeEntity, Ref(Entity_RedSwitch), 10, 0, 0, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(EVS_ActivateSwitch))
+    Call(MakeEntity, Entity_RedSwitch, 10, 0, 0, 0, MAKE_ENTITY_END)
+    Call(AssignScript, EVS_ActivateSwitch)
     Call(ParentColliderToModel, COLLIDER_o19, MODEL_m_yuka)
     Call(TranslateGroup, MODEL_move, 0, -50, 0)
     Call(UpdateColliderTransform, COLLIDER_o19)

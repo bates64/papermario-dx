@@ -17,7 +17,7 @@ MobileAISettings AISettings_CrazyDayzee_Wander = {
 };
 
 EvtScript EVS_NpcAI_CrazyDayzee_Wander = {
-    Call(BasicAI_Main, Ref(AISettings_CrazyDayzee_Wander))
+    Call(BasicAI_Main, AISettings_CrazyDayzee_Wander)
     Return
     End
 };

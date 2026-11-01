@@ -118,9 +118,9 @@ OVL_DEF_ACTOR() = {
 };
 
 EvtScript EVS_Init = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_HandleEvent)
     Call(SetActorVar, ACTOR_SELF, AVAR_TurnCount, 0)
     Call(SetActorVar, ACTOR_SELF, AVAR_TurnsSinceShockwave, 0)
     Call(SetActorVar, ACTOR_SELF, AVAR_DamageMultiplier, 1)
@@ -287,7 +287,7 @@ EvtScript EVS_Attack_ClawSwipe = {
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBowser_Walk)
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(AddGoalPos, ACTOR_SELF, 40, 0, 0)
-    Call(SetActorSpeed, ACTOR_SELF, Float(3.0))
+    Call(SetActorSpeed, ACTOR_SELF, 3.0)
     Call(RunToGoal, ACTOR_SELF, 0, false)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBowser_RearUpMock)
     Wait(25)
@@ -307,7 +307,7 @@ EvtScript EVS_Attack_ClawSwipe = {
             Else
                 Wait(30)
             EndIf
-            Call(SetActorSpeed, ACTOR_SELF, Float(3.0))
+            Call(SetActorSpeed, ACTOR_SELF, 3.0)
             Set(LVar1, ANIM_BattleBowser_Walk)
             ExecWait(EVS_ReturnHome)
             Return
@@ -328,7 +328,7 @@ EvtScript EVS_Attack_ClawSwipe = {
                 Return
             EndIf
             Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
-            Call(SetActorSpeed, ACTOR_SELF, Float(3.0))
+            Call(SetActorSpeed, ACTOR_SELF, 3.0)
             Set(LVar1, ANIM_BattleBowser_Walk)
             ExecWait(EVS_ReturnHome)
         EndCaseGroup
@@ -349,7 +349,7 @@ EvtScript EVS_Attack_BodySlam = {
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBowser_Walk)
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(AddGoalPos, ACTOR_SELF, 80, 0, 0)
-    Call(SetActorSpeed, ACTOR_SELF, Float(3.0))
+    Call(SetActorSpeed, ACTOR_SELF, 3.0)
     Call(RunToGoal, ACTOR_SELF, 0, false)
     Call(SetBattleCamTargetingModes, BTL_CAM_YADJ_TARGET, BTL_CAM_XADJ_AVG, false)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBowser_Idle)
@@ -361,7 +361,7 @@ EvtScript EVS_Attack_BodySlam = {
     Switch(LVarA)
         CaseOrEq(HIT_RESULT_MISS)
         CaseOrEq(HIT_RESULT_LUCKY)
-            Call(SetActorJumpGravity, ACTOR_SELF, Float(0.5))
+            Call(SetActorJumpGravity, ACTOR_SELF, 0.5)
             Call(SetGoalToTarget, ACTOR_SELF)
             Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Sub(LVar0, 30)
@@ -369,13 +369,13 @@ EvtScript EVS_Attack_BodySlam = {
             Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(JumpToGoal, ACTOR_SELF, 28, false, true, false)
             Thread
-                Call(ShakeCam, CAM_BATTLE, 0, 4, Float(3.0))
+                Call(ShakeCam, CAM_BATTLE, 0, 4, 3.0)
             EndThread
             Sub(LVar0, 35)
             Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(JumpToGoal, ACTOR_SELF, 14, false, true, false)
             Thread
-                Call(ShakeCam, CAM_BATTLE, 0, 4, Float(2.0))
+                Call(ShakeCam, CAM_BATTLE, 0, 4, 2.0)
             EndThread
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBowser_PostJump)
             Wait(3)
@@ -385,18 +385,18 @@ EvtScript EVS_Attack_BodySlam = {
             IfEq(LVarA, HIT_RESULT_LUCKY)
                 Call(EnemyTestTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_TRIGGER_LUCKY, 0, 0, 0)
             EndIf
-            Call(SetActorSpeed, ACTOR_SELF, Float(3.0))
+            Call(SetActorSpeed, ACTOR_SELF, 3.0)
             Set(LVar1, ANIM_BattleBowser_Walk)
             ExecWait(EVS_ReturnHome)
             Return
         EndCaseGroup
         CaseDefault
     EndSwitch
-    Call(SetActorJumpGravity, ACTOR_SELF, Float(0.5))
+    Call(SetActorJumpGravity, ACTOR_SELF, 0.5)
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(JumpToGoal, ACTOR_SELF, 24, false, true, false)
     Thread
-        Call(ShakeCam, CAM_BATTLE, 0, 4, Float(3.0))
+        Call(ShakeCam, CAM_BATTLE, 0, 4, 3.0)
     EndThread
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBowser_Land)
     Call(GetActorVar, ACTOR_SELF, AVAR_DamageMultiplier, LVar0)
@@ -412,7 +412,7 @@ EvtScript EVS_Attack_BodySlam = {
             Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(JumpToGoal, ACTOR_SELF, 18, false, true, false)
             Thread
-                Call(ShakeCam, CAM_BATTLE, 0, 4, Float(3.0))
+                Call(ShakeCam, CAM_BATTLE, 0, 4, 3.0)
             EndThread
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBowser_PostJump)
             Wait(3)
@@ -422,7 +422,7 @@ EvtScript EVS_Attack_BodySlam = {
                 Return
             EndIf
             Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
-            Call(SetActorSpeed, ACTOR_SELF, Float(3.0))
+            Call(SetActorSpeed, ACTOR_SELF, 3.0)
             Set(LVar1, ANIM_BattleBowser_Walk)
             ExecWait(EVS_ReturnHome)
         EndCaseGroup
@@ -514,9 +514,9 @@ EvtScript EVS_UseDrainingShockwave = {
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Add(LVar0, 15)
     Sub(LVar2, 3)
-    PlayEffect(EFFECT_LIGHT_RAYS, 2, LVar0, 90, LVar2, Float(1.0), LVarF)
+    PlayEffect(EFFECT_LIGHT_RAYS, 2, LVar0, 90, LVar2, 1.0, LVarF)
     Sub(LVar2, 3)
-    PlayEffect(EFFECT_BULB_GLOW, 2, LVar0, 90, LVar2, Float(1.0), LVarE)
+    PlayEffect(EFFECT_BULB_GLOW, 2, LVar0, 90, LVar2, 1.0, LVarE)
     Wait(16)
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
     Call(MoveBattleCamOver, 45)
@@ -526,7 +526,7 @@ EvtScript EVS_UseDrainingShockwave = {
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Add(LVar0, 13)
     Set(LVar1, 55)
-    PlayEffect(EFFECT_ENERGY_SHOCKWAVE, 0, LVar0, LVar1, LVar2, Float(1.0), 60)
+    PlayEffect(EFFECT_ENERGY_SHOCKWAVE, 0, LVar0, LVar1, LVar2, 1.0, 60)
     Thread
         Call(LightenBackground)
     EndThread
@@ -599,7 +599,7 @@ EvtScript EVS_ReturnHome = {
         Call(SetActorYaw, ACTOR_SELF, 0)
     EndIf
     Call(GetDist2D, LVar9, LVarA, LVarC, LVarD, LVarF)
-    IfGe(LVar9, Float(4.0))
+    IfGe(LVar9, 4.0)
         Call(SetAnimation, ACTOR_SELF, LVar0, LVar1)
         Call(RunToGoal, ACTOR_SELF, 0, false)
     EndIf
@@ -611,7 +611,7 @@ EvtScript EVS_ReturnHome = {
 EvtScript EVS_Recover = {
     Call(GetActorPos, ACTOR_SELF, LVar1, LVar2, LVar3)
     Add(LVar2, 60)
-    PlayEffect(EFFECT_SPARKLES, 0, LVar1, LVar2, LVar3, Float(1.0))
+    PlayEffect(EFFECT_SPARKLES, 0, LVar1, LVar2, LVar3, 1.0)
     Add(LVar1, 30)
     Add(LVar2, 20)
     PlayEffect(EFFECT_RECOVER, 0, LVar1, LVar2, LVar3, 10)

@@ -14,7 +14,7 @@ EvtScript EVS_MakeToadHouseGifts = {
 };
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Ref(Entity_SavePoint), 160, 60, 200, 0, MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_SavePoint, 160, 60, 200, 0, MAKE_ENTITY_END)
     Exec(EVS_MakeToadHouseGifts)
     Return
     End

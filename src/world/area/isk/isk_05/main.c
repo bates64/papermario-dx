@@ -18,7 +18,7 @@ API_CALLABLE(SetupLandingCamAdjust) {
 EvtScript EVS_ExitWalk_isk_04_4 = EVT_EXIT_WALK(40, isk_05_ENTRY_0, "isk_04", isk_04_ENTRY_4);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_isk_04_4), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(EVS_ExitWalk_isk_04_4, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
     Return
     End
 };
@@ -26,7 +26,7 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterWalk_80241F98 = {
     Call(TranslateGroup, MODEL_g304, 0, 65, 0)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilittw, COLLIDER_FLAGS_UPPER_MASK)
-    Set(LVar0, Ref(EVS_BindExitTriggers))
+    Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     Return
     End
@@ -37,7 +37,7 @@ EvtScript EVS_Main = {
     Call(SetSpriteShading, SHADING_ISK_05)
     Call(SetupLandingCamAdjust)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Call(MakeNpcs, true, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
 #if VERSION_PAL
     Call(SetMusic, 0, SONG_DRY_DRY_RUINS, 0, VOL_LEVEL_FULL)
@@ -60,7 +60,7 @@ EvtScript EVS_Main = {
         Call(SetGroupVisibility, MODEL_wan1, MODEL_GROUP_HIDDEN)
         Call(SetGroupVisibility, MODEL_wan2, MODEL_GROUP_VISIBLE)
     EndIf
-    Set(LVar0, Ref(EVS_BindExitTriggers))
+    Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     Wait(1)
     Return

@@ -554,17 +554,17 @@ EvtScript EVS_ItemPrompt_AddIngredient = {
 };
 
 EvtScript EVS_BindInteractTriggers = {
-    BindPadlock(Ref(EVS_ItemPrompt_AddIngredient), TRIGGER_FLOOR_PRESS_A, COLLIDER_o118, Ref(BakingIngredientsList), 0, 0)
-    BindTrigger(Ref(EVS_TakeIngredient), TRIGGER_FLOOR_PRESS_A, COLLIDER_o101, 1, 0)
-    BindTrigger(Ref(EVS_TakeIngredient), TRIGGER_FLOOR_PRESS_A, COLLIDER_o102, 1, 0)
-    BindTrigger(Ref(EVS_TakeIngredient), TRIGGER_FLOOR_PRESS_A, COLLIDER_o103, 1, 0)
-    BindTrigger(Ref(EVS_TakeIngredient), TRIGGER_FLOOR_PRESS_A, COLLIDER_o105, 1, 0)
-    BindTrigger(Ref(EVS_TakeIngredient), TRIGGER_FLOOR_PRESS_A, COLLIDER_o106, 1, 0)
-    BindTrigger(Ref(EVS_TakeIngredient), TRIGGER_FLOOR_PRESS_A, COLLIDER_o107, 1, 0)
-    BindTrigger(Ref(EVS_TakeIngredient), TRIGGER_FLOOR_PRESS_A, COLLIDER_o108, 1, 0)
-    BindTrigger(Ref(EVS_TakeIngredient), TRIGGER_FLOOR_PRESS_A, COLLIDER_o114, 1, 0)
-    BindTrigger(Ref(EVS_TakeIngredient), TRIGGER_FLOOR_PRESS_A, COLLIDER_o109, 1, 0)
-    BindTrigger(Ref(EVS_TakeIngredient), TRIGGER_FLOOR_PRESS_A, COLLIDER_o110, 1, 0)
+    BindPadlock(EVS_ItemPrompt_AddIngredient, TRIGGER_FLOOR_PRESS_A, COLLIDER_o118, BakingIngredientsList, 0, 0)
+    BindTrigger(EVS_TakeIngredient, TRIGGER_FLOOR_PRESS_A, COLLIDER_o101, 1, 0)
+    BindTrigger(EVS_TakeIngredient, TRIGGER_FLOOR_PRESS_A, COLLIDER_o102, 1, 0)
+    BindTrigger(EVS_TakeIngredient, TRIGGER_FLOOR_PRESS_A, COLLIDER_o103, 1, 0)
+    BindTrigger(EVS_TakeIngredient, TRIGGER_FLOOR_PRESS_A, COLLIDER_o105, 1, 0)
+    BindTrigger(EVS_TakeIngredient, TRIGGER_FLOOR_PRESS_A, COLLIDER_o106, 1, 0)
+    BindTrigger(EVS_TakeIngredient, TRIGGER_FLOOR_PRESS_A, COLLIDER_o107, 1, 0)
+    BindTrigger(EVS_TakeIngredient, TRIGGER_FLOOR_PRESS_A, COLLIDER_o108, 1, 0)
+    BindTrigger(EVS_TakeIngredient, TRIGGER_FLOOR_PRESS_A, COLLIDER_o114, 1, 0)
+    BindTrigger(EVS_TakeIngredient, TRIGGER_FLOOR_PRESS_A, COLLIDER_o109, 1, 0)
+    BindTrigger(EVS_TakeIngredient, TRIGGER_FLOOR_PRESS_A, COLLIDER_o110, 1, 0)
     Return
     End
 };
@@ -617,7 +617,7 @@ EvtScript EVS_PickupFinalCake = {
 };
 
 EvtScript EVS_BindCakePickup = {
-    BindTrigger(Ref(EVS_PickupFinalCake), TRIGGER_WALL_PRESS_A, COLLIDER_o189, 1, 0)
+    BindTrigger(EVS_PickupFinalCake, TRIGGER_WALL_PRESS_A, COLLIDER_o189, 1, 0)
     Return
     End
 };
@@ -635,10 +635,10 @@ EvtScript EVS_FocusCam_Twink = {
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamDistance, CAM_DEFAULT, 200)
-    Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-4.5))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(4.0 / DT))
+    Call(SetCamPitch, CAM_DEFAULT, 17.0, -4.5)
+    Call(SetCamSpeed, CAM_DEFAULT, 4.0 / DT)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Return
     End
 };
@@ -654,9 +654,9 @@ EvtScript EVS_FocusCam_PeachAndTwink = {
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamDistance, CAM_DEFAULT, 275)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(4.0 / DT))
+    Call(SetCamSpeed, CAM_DEFAULT, 4.0 / DT)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Return
     End
 };
@@ -665,10 +665,10 @@ EvtScript EVS_FocusCam_Oven = {
     Call(UseSettingsFrom, CAM_DEFAULT, 130, 0, -100)
     Call(SetPanTarget, CAM_DEFAULT, 130, 0, -100)
     Call(SetCamDistance, CAM_DEFAULT, 250)
-    Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-13.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(1.0 / DT))
+    Call(SetCamPitch, CAM_DEFAULT, 17.0, -13.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 1.0 / DT)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Return
     End
 };
@@ -676,10 +676,10 @@ EvtScript EVS_FocusCam_Oven = {
 EvtScript EVS_FocusCam_Table = {
     Call(UseSettingsFrom, CAM_DEFAULT, 330, 0, -80)
     Call(SetPanTarget, CAM_DEFAULT, 330, 0, -80)
-    Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamDistance, CAM_DEFAULT, 300.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Return
     End
 };
@@ -702,7 +702,7 @@ EvtScript EVS_Twink_FlyToPlayer = {
 };
 
 EvtScript EVS_Twink_FlyToHighPos = {
-    Call(SetNpcSpeed, NPC_PARTNER, Float(2.0 / DT))
+    Call(SetNpcSpeed, NPC_PARTNER, 2.0 / DT)
     Call(NpcFlyTo, NPC_PARTNER, 390, 50, -70, 0, -5, EASING_LINEAR)
     Call(InterpNpcYaw, NPC_PARTNER, 270, 5)
     Return
@@ -725,7 +725,7 @@ EvtScript EVS_ExitDoorWithCake = {
         Set(LVar3, DOOR_SWING_IN)
         Exec(ExitSingleDoor)
         Wait(17)
-        Call(GotoMap, Ref("kkj_18"), kkj_18_ENTRY_0)
+        Call(GotoMap, "kkj_18", kkj_18_ENTRY_0)
         Wait(100)
     EndIf
     Return
@@ -763,18 +763,18 @@ EvtScript EVS_EnterKitchen_FirstTime = {
     Set(LVar3, DOOR_SWING_IN)
     ExecWait(EnterSingleDoor)
     Thread
-        Call(SetNpcSpeed, NPC_PARTNER, Float(2.0))
+        Call(SetNpcSpeed, NPC_PARTNER, 2.0)
         Call(NpcFlyTo, NPC_PARTNER, 440, 25, -30, 0, -5, EASING_LINEAR)
         Call(NpcFacePlayer, NPC_PARTNER, 5)
     EndThread
-    Call(SetPlayerSpeed, Float(2.0 / DT))
+    Call(SetPlayerSpeed, 2.0 / DT)
     Call(PlayerMoveTo, 400, -30, 0)
     Wait(1)
     Call(SetPlayerAnimation, ANIM_Peach2_LookAround)
     Wait(60 * DT)
     Call(SetPlayerAnimation, ANIM_Peach1_Idle)
     Call(InterpPlayerYaw, 90, 5)
-    Call(AdjustCam, CAM_DEFAULT, Float(4.0 / DT), 0, Float(300.0), Float(17.0), Float(-7.0))
+    Call(AdjustCam, CAM_DEFAULT, 4.0 / DT, 0, 300.0, 17.0, -7.0)
     Call(SetPlayerAnimation, ANIM_Peach2_RaiseArms)
     Wait(10 * DT)
     Call(SetPlayerAnimation, ANIM_Peach2_TalkIdle)
@@ -788,12 +788,12 @@ EvtScript EVS_EnterKitchen_FirstTime = {
         Call(SetCamDistance, CAM_DEFAULT, 200)
         Call(SetCamPosA, CAM_DEFAULT, 112, -200)
         Call(SetCamPosB, CAM_DEFAULT, 610, -60)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-        Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+        Call(SetCamSpeed, CAM_DEFAULT, 90.0)
+        Call(WaitForCam, CAM_DEFAULT, 1.0)
     EndThread
     Call(InterpNpcYaw, NPC_PARTNER, 90, 5)
     Wait(10 * DT)
-    Call(LoadPath, 60 * DT, Ref(FetchBookPath), ARRAY_COUNT(FetchBookPath), EASING_LINEAR)
+    Call(LoadPath, 60 * DT, FetchBookPath, ARRAY_COUNT(FetchBookPath), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_PARTNER, LVar1, LVar2, LVar3)
@@ -810,10 +810,10 @@ EvtScript EVS_EnterKitchen_FirstTime = {
     Wait(30 * DT)
     Thread
         Wait(10 * DT)
-        Call(AdjustCam, CAM_DEFAULT, Float(90.0), 0, 300, Float(17.0), Float(-7.0))
+        Call(AdjustCam, CAM_DEFAULT, 90.0, 0, 300, 17.0, -7.0)
     EndThread
     Call(SetNpcAnimation, NPC_PARTNER, ANIM_Twink_Idle)
-    Call(SetNpcSpeed, NPC_PARTNER, Float(3.0 / DT))
+    Call(SetNpcSpeed, NPC_PARTNER, 3.0 / DT)
     Call(NpcFlyTo, NPC_PARTNER, 440, 25, -30, 0, -5, EASING_LINEAR)
     Wait(10 * DT)
     Call(SetNpcAnimation, NPC_PARTNER, ANIM_Twink_OpenBook)
@@ -847,7 +847,7 @@ EvtScript EVS_EnterKitchen_TryAgain = {
     Call(InterpPlayerYaw, 90, 0)
     Call(SetNpcPos, NPC_PARTNER, 440, 25, -30)
     Call(SetNpcYaw, NPC_PARTNER, 270)
-    Call(AdjustCam, CAM_DEFAULT, Float(90.0), 0, 300, Float(17.0), Float(-7.0))
+    Call(AdjustCam, CAM_DEFAULT, 90.0, 0, 300, 17.0, -7.0)
     Wait(30 * DT)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_Talk, ANIM_Twink_Idle, 0, MSG_Peach_00C2)
     Call(SpeakToPlayer, NPC_PLAYER, ANIM_Peach2_ArmsCrossedTalk, ANIM_Peach2_ArmsCrossedIdle, 5, MSG_Peach_00C3)
@@ -868,7 +868,7 @@ EvtScript EVS_ManageBaking = {
     Call(EnableModel, MODEL_o46, false)
     Call(EnableModel, MODEL_o50, false)
     ExecWait(EVS_SetCookwareOnTable)
-    BindTrigger(Ref(EVS_ExitDoorWithCake), TRIGGER_WALL_PRESS_A, COLLIDER_ttse, 1, 0)
+    BindTrigger(EVS_ExitDoorWithCake, TRIGGER_WALL_PRESS_A, COLLIDER_ttse, 1, 0)
     Exec(EVS_BindInteractTriggers)
     IfEq(AB_KKJ_CompletedBakeStep, CAKE_TYPE_NONE)
         ExecWait(EVS_EnterKitchen_FirstTime)
@@ -890,7 +890,7 @@ EvtScript EVS_ManageBaking = {
         ExecWait(EVS_FocusCam_Table)
         Call(InterpPlayerYaw, 270, 5)
         Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_ReadBook, ANIM_Twink_IdleBook, 5, MSG_Peach_00C6)
-        Call(ResetCam, CAM_DEFAULT, Float(90.0))
+        Call(ResetCam, CAM_DEFAULT, 90.0)
         Call(SetNpcAnimation, NPC_PARTNER, ANIM_Twink_CloseBook)
         Wait(10 * DT)
         Call(SetNpcAnimation, NPC_PARTNER, ANIM_Twink_Fly)
@@ -905,7 +905,7 @@ EvtScript EVS_ManageBaking = {
         ExecWait(EVS_FocusCam_Table)
         Call(InterpPlayerYaw, 270, 5)
         Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_ReadBook, ANIM_Twink_IdleBook, 5, MSG_Peach_00C8)
-        Call(ResetCam, CAM_DEFAULT, Float(90.0))
+        Call(ResetCam, CAM_DEFAULT, 90.0)
         Call(SetNpcAnimation, NPC_PARTNER, ANIM_Twink_CloseBook)
         Wait(10 * DT)
         Call(SetNpcAnimation, NPC_PARTNER, ANIM_Twink_Fly)
@@ -919,15 +919,15 @@ EvtScript EVS_ManageBaking = {
         ExecWait(EVS_FocusCam_Table)
         Call(InterpPlayerYaw, 270, 5)
         Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_ReadBook, ANIM_Twink_IdleBook, 5, MSG_Peach_00CA)
-        Call(ResetCam, CAM_DEFAULT, Float(90.0))
+        Call(ResetCam, CAM_DEFAULT, 90.0)
         Call(SetNpcAnimation, NPC_PARTNER, ANIM_Twink_CloseBook)
         Wait(10 * DT)
         Call(SetNpcAnimation, NPC_PARTNER, ANIM_Twink_Fly)
         Wait(20 * DT)
         Exec(EVS_Twink_FlyToHighPos)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
-        Call(func_802D1270, LVar0, -74, Float(2.0 / DT))
-        Call(func_802D1270, 287, -74, Float(2.0 / DT))
+        Call(func_802D1270, LVar0, -74, 2.0 / DT)
+        Call(func_802D1270, 287, -74, 2.0 / DT)
         Goto(LBL_BAKE_RESUME)
     EndIf
     IfEq(AB_KKJ_CompletedBakeStep, CAKE_TYPE_BAKED)
@@ -937,7 +937,7 @@ EvtScript EVS_ManageBaking = {
         ExecWait(EVS_FocusCam_Table)
         Call(InterpPlayerYaw, 270, 5)
         Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_ReadBook, ANIM_Twink_IdleBook, 5, MSG_Peach_00CC)
-        Call(ResetCam, CAM_DEFAULT, Float(90.0))
+        Call(ResetCam, CAM_DEFAULT, 90.0)
         Call(SetNpcAnimation, NPC_PARTNER, ANIM_Twink_CloseBook)
         Wait(10)
         Call(SetNpcAnimation, NPC_PARTNER, ANIM_Twink_Fly)
@@ -972,7 +972,7 @@ EvtScript EVS_ManageBaking = {
     EndThread
     // wait for peach to tell twink shes done
     Label(LBL_ADD_SUGAR_EGGS_WAITING)
-        Call(ResetCam, CAM_DEFAULT, Float(4.0 / DT))
+        Call(ResetCam, CAM_DEFAULT, 4.0 / DT)
         IfEq(LVarA, 0)
             Call(SetEnemyFlagBits, NPC_Twink, ENEMY_FLAG_CANT_INTERACT, false)
             Call(SetNpcVar, NPC_Twink, 1, 1)
@@ -1029,7 +1029,7 @@ EvtScript EVS_ManageBaking = {
     Call(SetNpcAnimation, NPC_PARTNER, ANIM_Twink_CloseBook)
     Wait(10)
     Call(SetNpcAnimation, NPC_PARTNER, ANIM_Twink_Fly)
-    Call(ResetCam, CAM_DEFAULT, Float(2.0))
+    Call(ResetCam, CAM_DEFAULT, 2.0)
     Exec(EVS_Twink_FlyToHighPos)
     // resume failed step from here
     Label(LBL_MIX_RESUME)
@@ -1037,7 +1037,7 @@ EvtScript EVS_ManageBaking = {
     Set(AB_KKJ19_BakeStepProgress, 0)
     Set(AF_KKJ19_CanTakeIngredients, false)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
-    Call(SetPlayerSpeed, Float(2.0 / DT))
+    Call(SetPlayerSpeed, 2.0 / DT)
     Call(PlayerMoveTo, LVar0, -74, 0)
     Call(PlayerMoveTo, 287, -74, 0)
     Call(SetPlayerAnimation, ANIM_Peach2_ForwardIdle)
@@ -1049,7 +1049,7 @@ EvtScript EVS_ManageBaking = {
     Call(SetMusic, 0, SONG_STIRRING_CAKE, 0, VOL_LEVEL_FULL)
     Call(PlaySound, SOUND_GENERAL_WHISTLE)
     Thread
-        Call(AdjustCam, CAM_DEFAULT, Float(0.2 / DT), 0, 250, Float(17.0), Float(-7.0))
+        Call(AdjustCam, CAM_DEFAULT, 0.2 / DT, 0, 250, 17.0, -7.0)
     EndThread
     Call(RunMixingMinigame, MIXING_TIME_IN_FRAMES)
     Call(PlaySound, SOUND_GENERAL_WHISTLE)
@@ -1060,7 +1060,7 @@ EvtScript EVS_ManageBaking = {
     EndIf
     Wait(10 * DT)
     Thread
-        Call(ResetCam, CAM_DEFAULT, Float(5.0 / DT))
+        Call(ResetCam, CAM_DEFAULT, 5.0 / DT)
     EndThread
     Call(NpcFlyTo, NPC_PARTNER, 337, 35, -74, 30 * DT, -5, EASING_LINEAR)
     Wait(10 * DT)
@@ -1113,7 +1113,7 @@ EvtScript EVS_ManageBaking = {
     EndThread
     // wait for peach to tell twink shes done
     Label(LBL_ADD_FLOUR_BUTTER_WAITING)
-        Call(ResetCam, CAM_DEFAULT, Float(4.0 / DT))
+        Call(ResetCam, CAM_DEFAULT, 4.0 / DT)
         IfEq(LVarA, 0)
             Call(SetEnemyFlagBits, NPC_Twink, ENEMY_FLAG_CANT_INTERACT, false)
             Call(SetNpcVar, NPC_Twink, 1, 1)
@@ -1167,14 +1167,14 @@ EvtScript EVS_ManageBaking = {
     Label(LBL_BAKE_FIRST)
     ExecWait(EVS_FocusCam_Twink)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_Talk, ANIM_Twink_Idle, 5, MSG_Peach_00DB)
-    Call(ResetCam, CAM_DEFAULT, Float(2.0 / DT))
+    Call(ResetCam, CAM_DEFAULT, 2.0 / DT)
     Exec(EVS_Twink_FlyToHighPos)
     // resume failed step from here
     Label(LBL_BAKE_RESUME)
     Set(AB_KKJ19_CurrentBakeStep, BAKE_STEP_BAKING)
     Set(AF_KKJ19_CanTakeIngredients, false)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
-    Call(SetPlayerSpeed, Float(2.0 / DT))
+    Call(SetPlayerSpeed, 2.0 / DT)
     Call(PlayerMoveTo, LVar0, -74, 0)
     Call(PlayerMoveTo, 287, -74, 0)
     Call(SetPlayerAnimation, ANIM_Peach2_ForwardIdle)
@@ -1186,10 +1186,10 @@ EvtScript EVS_ManageBaking = {
     Call(SetPlayerActionState, ACTION_STATE_IDLE)
     Wait(10 * DT)
     Thread
-        Call(SetNpcSpeed, NPC_PARTNER, Float(2.0 / DT))
+        Call(SetNpcSpeed, NPC_PARTNER, 2.0 / DT)
         Call(NpcFlyTo, NPC_PARTNER, 337, 35, -74, 0, -5, EASING_LINEAR)
     EndThread
-    Call(SetPlayerSpeed, Float(2.0 / DT))
+    Call(SetPlayerSpeed, 2.0 / DT)
     Call(PlayerMoveTo, 190, -70, 0)
     Call(InterpPlayerYaw, 90, 1)
     Call(PlayerMoveTo, 190, 35, 0)
@@ -1214,7 +1214,7 @@ EvtScript EVS_ManageBaking = {
     Call(SetNpcAnimation, NPC_PARTNER, ANIM_Twink_CloseBook)
     Wait(10 * DT)
     Call(SetNpcAnimation, NPC_PARTNER, ANIM_Twink_Fly)
-    Call(ResetCam, CAM_DEFAULT, Float(2.0 / DT))
+    Call(ResetCam, CAM_DEFAULT, 2.0 / DT)
     Call(InterpPlayerYaw, 315, 0)
     Wait(10)
     Call(RemoveItemEntity, AB_KKJ19_CakeItemIdx)
@@ -1225,7 +1225,7 @@ EvtScript EVS_ManageBaking = {
     Thread
         Call(NpcFlyTo, NPC_PARTNER, 190, 60, -100, 50 * DT, -5, EASING_LINEAR)
     EndThread
-    Call(SetPlayerSpeed, Float(2.0 / DT))
+    Call(SetPlayerSpeed, 2.0 / DT)
     Call(PlayerMoveTo, 190, 30, 0)
     Call(PlayerMoveTo, 190, -100, 0)
     Call(PlayerMoveTo, 125, -100, 0)
@@ -1289,7 +1289,7 @@ EvtScript EVS_ManageBaking = {
     Call(ContinueSpeech, NPC_PARTNER, ANIM_Twink_Talk, ANIM_Twink_Idle, 0, MSG_Peach_00E0)
     Call(UseSettingsFrom, CAM_DEFAULT, 287, 0, -74)
     Call(SetPanTarget, CAM_DEFAULT, 287, 0, -74)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(1.0 / DT))
+    Call(SetCamSpeed, CAM_DEFAULT, 1.0 / DT)
     Exec(EVS_Twink_FlyToHighPos)
     Call(PlayerMoveTo, 287, -74, 100)
     Call(SetHeldBakingItem, PEACH_BAKING_NONE)
@@ -1323,7 +1323,7 @@ EvtScript EVS_ManageBaking = {
     Set(AF_KKJ19_AddedBerries, false)
     // wait for peach to tell twink shes done
     Label(LBL_DECORATE_WAITING)
-        Call(ResetCam, CAM_DEFAULT, Float(4.0 / DT))
+        Call(ResetCam, CAM_DEFAULT, 4.0 / DT)
         IfEq(LVarA, 0)
             Call(SetEnemyFlagBits, NPC_Twink, ENEMY_FLAG_CANT_INTERACT, false)
             Call(SetNpcVar, NPC_Twink, 1, 1)
@@ -1377,7 +1377,7 @@ EvtScript EVS_ManageBaking = {
     Label(LBL_FINISHED)
     Set(AB_KKJ19_CurrentBakeStep, BAKE_STEP_DONE)
     Set(AF_KKJ19_CanTakeIngredients, false)
-    Call(ResetCam, CAM_DEFAULT, Float(5.0 / DT))
+    Call(ResetCam, CAM_DEFAULT, 5.0 / DT)
     Exec(EVS_BindCakePickup)
     Call(EnablePartnerAI)
     Call(DisablePlayerInput, false)
@@ -1400,7 +1400,7 @@ EvtScript EVS_ManageBaking = {
     Call(SetPlayerAnimation, ANIM_Peach1_Idle)
     Call(SetPlayerPos, 400, 0, -30)
     Call(InterpPlayerYaw, 90, 0)
-    Call(AdjustCam, CAM_DEFAULT, Float(90.0), 0, 350, Float(17.0), Float(-7.0))
+    Call(AdjustCam, CAM_DEFAULT, 90.0, 0, 350, 17.0, -7.0)
     Wait(10 * DT)
     Call(FadeScreenFromBlack)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_Talk, ANIM_Twink_Idle, 0, MSG_Peach_00CE)

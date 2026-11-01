@@ -18,7 +18,7 @@ Vec3f UnusedFallingPath1[] = {
 };
 
 EvtScript EVS_UnusedFalling1 = {
-    Call(LoadPath, 90, Ref(UnusedFallingPath1), ARRAY_COUNT(UnusedFallingPath1), EASING_LINEAR)
+    Call(LoadPath, 90, UnusedFallingPath1, ARRAY_COUNT(UnusedFallingPath1), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(SetPlayerPos, LVar1, LVar2, LVar3)
@@ -43,7 +43,7 @@ Vec3f UnusedFallingPath2[] = {
 };
 
 EvtScript EVS_UnusedFalling2 = {
-    Call(LoadPath, 135, Ref(UnusedFallingPath2), ARRAY_COUNT(UnusedFallingPath2), EASING_LINEAR)
+    Call(LoadPath, 135, UnusedFallingPath2, ARRAY_COUNT(UnusedFallingPath2), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(SetPlayerPos, LVar1, LVar2, LVar3)
@@ -215,16 +215,16 @@ EvtScript MV_Scene_CastleAscending = {
     Call(UseSettingsFrom, CAM_DEFAULT, 0, -1, 0)
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_LOOK_AT_POINT, true)
     Call(SetPanTarget, CAM_DEFAULT, -150, 0, 0)
-    Call(SetCamPitch, CAM_DEFAULT, Float(-13.0), Float(18.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamPitch, CAM_DEFAULT, -13.0, 18.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Exec(EVS_AnimateCastle)
     Wait(1)
     Call(SetPanTarget, CAM_DEFAULT, -50, 200, 0)
-    Call(SetCamDistance, CAM_DEFAULT, Float(1000.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(0.75))
+    Call(SetCamDistance, CAM_DEFAULT, 1000.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 0.75)
     Wait(180 * DT)
-    Call(GotoMap, Ref("kkj_13"), kkj_13_ENTRY_2)
+    Call(GotoMap, "kkj_13", kkj_13_ENTRY_2)
     Wait(100 * DT)
     Call(DisablePlayerInput, false)
     Return
@@ -253,8 +253,8 @@ EvtScript MV_Scene_PlayerTossedOut = {
     Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 80, 16, 4096)
     Call(UseSettingsFrom, CAM_DEFAULT, 0, -1, 0)
     Call(SetPanTarget, CAM_DEFAULT, 0, -1, 0)
-    Call(SetCamPitch, CAM_DEFAULT, Float(-13.0), Float(18.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamPitch, CAM_DEFAULT, -13.0, 18.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(1)
     Set(MV_CastleLiftDist, 0)
@@ -268,7 +268,7 @@ EvtScript MV_Scene_PlayerTossedOut = {
             Wait(1)
         EndLoop
     EndChildThread
-    Call(LoadPath, 90 * DT, Ref(FlightPath_TossedOut), ARRAY_COUNT(FlightPath_TossedOut), EASING_LINEAR)
+    Call(LoadPath, 90 * DT, FlightPath_TossedOut, ARRAY_COUNT(FlightPath_TossedOut), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(SetPlayerPos, LVar1, LVar2, LVar3)
@@ -277,7 +277,7 @@ EvtScript MV_Scene_PlayerTossedOut = {
             BreakLoop
         EndIf
     EndLoop
-    Call(GotoMap, Ref("kkj_13"), kkj_13_ENTRY_3)
+    Call(GotoMap, "kkj_13", kkj_13_ENTRY_3)
     Wait(100)
     Return
     End
@@ -302,18 +302,18 @@ EvtScript EVS_Scene_UnusedTossOut = {
     Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 16, 6000)
     Call(UseSettingsFrom, CAM_DEFAULT, 0, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, -400, -1500, 0)
-    Call(SetCamDistance, CAM_DEFAULT, Float(3500.0))
+    Call(SetCamDistance, CAM_DEFAULT, 3500.0)
     Call(SetCamPosA, CAM_DEFAULT, -300, -160)
     Call(SetCamPosB, CAM_DEFAULT, 300, 80)
-    Call(SetCamPitch, CAM_DEFAULT, Float(-30.0), Float(0.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamPitch, CAM_DEFAULT, -30.0, 0.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(1)
     Call(DisablePlayerPhysics, true)
     Wait(15)
     ExecWait(EVS_UnusedFalling2)
     Wait(60)
-    Call(GotoMap, Ref("hos_10"), hos_10_ENTRY_5)
+    Call(GotoMap, "hos_10", hos_10_ENTRY_5)
     Wait(100)
     Call(DisablePlayerInput, false)
     Return

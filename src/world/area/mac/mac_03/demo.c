@@ -90,22 +90,22 @@ EvtScript EVS_DemoDepartForMtRugged = {
     Set(MF_TrainMoving, true)
     Exec(EVS_DemoUpdatePassengerPos)
     Call(UseSettingsFrom, CAM_DEFAULT, 0, 0, 0)
-    Call(SetCamDistance, CAM_DEFAULT, Float(240.0))
-    Call(SetCamPosB, CAM_DEFAULT, Float(-100.0), Float(-50.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(-2.5), Float(-3.5))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamDistance, CAM_DEFAULT, 240.0)
+    Call(SetCamPosB, CAM_DEFAULT, -100.0, -50.0)
+    Call(SetCamPitch, CAM_DEFAULT, -2.5, -3.5)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(1)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Add(LVar0, 100)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Thread
         Loop(1000)
-            AddF(MV_TrainMoveSpeed, Float(0.031))
+            AddF(MV_TrainMoveSpeed, 0.031)
             IfGt(MV_TrainMoveSpeed, 10)
-                SetF(MV_TrainMoveSpeed, Float(10.0))
+                SetF(MV_TrainMoveSpeed, 10.0)
             EndIf
             Wait(1)
         EndLoop
@@ -118,7 +118,7 @@ EvtScript EVS_DemoDepartForMtRugged = {
         Return
     EndIf
     Set(GF_DemoSceneDone, true)
-    Call(GotoMapSpecial, Ref("mac_03"), mac_03_ENTRY_2, TRANSITION_END_DEMO_SCENE_BLACK)
+    Call(GotoMapSpecial, "mac_03", mac_03_ENTRY_2, TRANSITION_END_DEMO_SCENE_BLACK)
     Wait(110)
     Return
     End
@@ -137,7 +137,7 @@ EvtScript EVS_MonitorDemoState = {
         Return
     EndIf
     Set(GF_DemoSceneDone, true)
-    Call(GotoMapSpecial, Ref("mac_03"), mac_03_ENTRY_2, TRANSITION_END_DEMO_SCENE_WHITE)
+    Call(GotoMapSpecial, "mac_03", mac_03_ENTRY_2, TRANSITION_END_DEMO_SCENE_WHITE)
     Wait(100)
     Return
     End

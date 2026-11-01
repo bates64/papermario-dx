@@ -64,7 +64,7 @@ EvtScript EVS_BowserActivatesSwitch = {
         Call(SetNpcAnimation, NPC_Bowser_01, ANIM_WorldBowser_RearUpLaugh)
         Call(PlaySound, SOUND_LRAW_RUMBLE)
         Loop(0)
-            Call(ShakeCam, CAM_DEFAULT, 0, 1, Float(2.0))
+            Call(ShakeCam, CAM_DEFAULT, 0, 1, 2.0)
             Wait(1)
             IfEq(MV_BridgeCollapseState, BRIDGE_STATE_FALLING)
                 BreakLoop
@@ -72,7 +72,7 @@ EvtScript EVS_BowserActivatesSwitch = {
         EndLoop
         Call(PlaySound, SOUND_LRAW_RUMBLE | SOUND_ID_TRIGGER_CHANGE_SOUND)
     EndThread
-    Call(SetNpcJumpscale, NPC_Bowser_01, Float(1.0))
+    Call(SetNpcJumpscale, NPC_Bowser_01, 1.0)
     Call(NpcJump0, NPC_Bowser_01, 300, 0, 0, 20)
     Call(PlaySoundAtNpc, NPC_Bowser_01, SOUND_FLOOR_SWITCH_ACTIVATE, SOUND_SPACE_DEFAULT)
     Call(PlaySoundAtNpc, NPC_Bowser_01, SOUND_LARGE_NPC_IMPACT, SOUND_SPACE_DEFAULT)
@@ -136,7 +136,7 @@ EvtScript EVS_Scene_BowserTrapsMario = {
             EndIf
             Add(LVar3, -10)
             Call(DisablePartnerAI, false)
-            Call(SetNpcJumpscale, NPC_PARTNER, Float(0.8))
+            Call(SetNpcJumpscale, NPC_PARTNER, 0.8)
             Call(NpcJump0, NPC_PARTNER, LVar3, LVar1, LVar5, 12)
             Call(EnablePartnerAI)
         EndIf
@@ -147,29 +147,29 @@ EvtScript EVS_Scene_BowserTrapsMario = {
     Call(UseSettingsFrom, CAM_DEFAULT, 350, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, 350, 0, 0)
     Call(SetCamDistance, CAM_DEFAULT, 450)
-    Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-7.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(4.0))
+    Call(SetCamPitch, CAM_DEFAULT, 17.0, -7.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 4.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Wait(10)
     Call(SpeakToPlayer, NPC_Bowser_01, ANIM_WorldBowser_Talk, ANIM_WorldBowser_Idle, 0, MSG_CH8_007D)
     ExecWait(EVS_BowserActivatesSwitch)
     Call(UseSettingsFrom, CAM_DEFAULT, -150, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, -150, 0, 100)
     Call(SetCamDistance, CAM_DEFAULT, 250)
-    Call(SetCamPitch, CAM_DEFAULT, Float(26.0), Float(-18.0))
+    Call(SetCamPitch, CAM_DEFAULT, 26.0, -18.0)
     Call(SetCamPosA, CAM_DEFAULT, -480, -480)
     Call(SetCamPosB, CAM_DEFAULT, 0, 480)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Return
     End
 };
 
 EvtScript EVS_WaveBridgeModels = {
-    UseBuf(Ref(BridgeModels))
-    SetF(LVar1, Float(1.0))
+    UseBuf(BridgeModels)
+    SetF(LVar1, 1.0)
     Set(LVar2, 1)
     Loop(ARRAY_COUNT(BridgeModels))
         BufRead1(LVar3)
@@ -197,9 +197,9 @@ EvtScript EVS_WaveBridgeModels = {
             EndLoop
         EndThread
         IfLt(LVar2, 8)
-            AddF(LVar1, Float(0.5))
+            AddF(LVar1, 0.5)
         Else
-            SubF(LVar1, Float(0.5))
+            SubF(LVar1, 0.5)
         EndIf
         Add(LVar2, 1)
         Wait(3)
@@ -217,7 +217,7 @@ EvtScript EVS_AnimateBridgeCollapsing = {
         Wait(15)
         Set(MV_BridgeCollapseState, BRIDGE_STATE_FALLING)
     EndThread
-    UseBuf(Ref(BridgeModels))
+    UseBuf(BridgeModels)
     Set(LVar2, 35)
     Set(LVar5, -15)
     Loop(ARRAY_COUNT(BridgeModels))
@@ -275,10 +275,10 @@ EvtScript EVS_Scene_ActivateMachine = {
     Call(UseSettingsFrom, CAM_DEFAULT, -150, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, -150, 0, 0)
     Call(SetCamDistance, CAM_DEFAULT, 1000)
-    Call(SetCamPitch, CAM_DEFAULT, Float(12.0), Float(-5.0))
+    Call(SetCamPitch, CAM_DEFAULT, 12.0, -5.0)
     Call(SetCamPosA, CAM_DEFAULT, -480, -480)
     Call(SetCamPosB, CAM_DEFAULT, 0, 480)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(4.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 4.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(1)
     Thread
@@ -304,13 +304,13 @@ EvtScript EVS_Scene_ActivateMachine = {
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamDistance, CAM_DEFAULT, 330)
-    Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-11.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamPitch, CAM_DEFAULT, 17.0, -11.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(10)
     Call(SpeakToPlayer, NPC_Bowser_01, ANIM_WorldBowser_RearUpLaugh, ANIM_WorldBowser_RearUpLaugh, 0, MSG_CH8_007E)
     Thread
-        Call(SetNpcJumpscale, NPC_Peach_01, Float(1.0))
+        Call(SetNpcJumpscale, NPC_Peach_01, 1.0)
         Call(GetNpcPos, NPC_Peach_01, LVar0, LVar1, LVar2)
         Call(NpcJump0, NPC_Peach_01, LVar0, LVar1, LVar2, 12)
         Wait(8)
@@ -326,10 +326,10 @@ EvtScript EVS_Scene_ActivateMachine = {
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamDistance, CAM_DEFAULT, 250)
-    Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-8.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(2.0))
+    Call(SetCamPitch, CAM_DEFAULT, 17.0, -8.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 2.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(SetNpcAnimation, NPC_Bowser_01, ANIM_WorldBowser_Idle)
     Wait(10)
     Thread
@@ -351,7 +351,7 @@ EvtScript EVS_Scene_ActivateMachine = {
         Call(SetNpcAnimation, NPC_Kammy_01, ANIM_BattleKammy_FlyStill)
     EndThread
     Wait(40)
-    Call(SetCamProperties, CAM_DEFAULT, Float(4.0), 300, 0, 0, 1100, Float(7.0), Float(0.0))
+    Call(SetCamProperties, CAM_DEFAULT, 4.0, 300, 0, 0, 1100, 7.0, 0.0)
     Wait(20)
     Call(SetMusic, 0, SONG_BOWSER_BATTLE, 0, VOL_LEVEL_FULL)
     Exec(EVS_ArenaEyesFlash)
@@ -367,14 +367,14 @@ EvtScript EVS_Scene_ActivateMachine = {
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamDistance, CAM_DEFAULT, 400)
-    Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-10.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(4.0))
+    Call(SetCamPitch, CAM_DEFAULT, 17.0, -10.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 4.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(SetNpcAnimation, NPC_Bowser_01, ANIM_WorldBowser_Shock)
     Call(GetNpcPos, NPC_Bowser_01, LVar3, LVar4, LVar5)
     Thread
-        UseBuf(Ref(PowerUpBoltOrigins1))
+        UseBuf(PowerUpBoltOrigins1)
         Loop(ARRAY_COUNT(PowerUpBoltOrigins1))
             BufRead3(LVar0, LVar1, LVar2)
             PlayEffect(EFFECT_LIGHTNING_BOLT, 0, LVar0, LVar1, LVar2, LVar3, LVar4, LVar5, 1, 8)
@@ -382,7 +382,7 @@ EvtScript EVS_Scene_ActivateMachine = {
         EndLoop
     EndThread
     Thread
-        UseBuf(Ref(PowerUpBoltOrigins2))
+        UseBuf(PowerUpBoltOrigins2)
         Loop(ARRAY_COUNT(PowerUpBoltOrigins2))
             BufRead3(LVar0, LVar1, LVar2)
             PlayEffect(EFFECT_LIGHTNING_BOLT, 0, LVar0, LVar1, LVar2, LVar3, LVar4, LVar5, 1, 8)
@@ -392,9 +392,9 @@ EvtScript EVS_Scene_ActivateMachine = {
     EndThread
     Wait(15)
     Call(PlaySoundAtNpc, NPC_Bowser_01, SOUND_KPA_BOWSER_POWER_UP, SOUND_SPACE_DEFAULT)
-    SetF(LVar0, Float(1.0))
+    SetF(LVar0, 1.0)
     Loop(50)
-        AddF(LVar0, Float(0.01))
+        AddF(LVar0, 0.01)
         Call(SetNpcScale, NPC_Bowser_01, LVar0, LVar0, LVar0)
         Wait(1)
     EndLoop
@@ -408,15 +408,15 @@ EvtScript EVS_Scene_ActivateMachine = {
     Add(LVar0, 50)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamDistance, CAM_DEFAULT, 500)
-    Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-11.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(2.0))
+    Call(SetCamPitch, CAM_DEFAULT, 17.0, -11.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 2.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Thread
         Wait(8)
         Loop(4)
-            Call(ShakeCam, CAM_DEFAULT, 0, 4, Float(2.0))
+            Call(ShakeCam, CAM_DEFAULT, 0, 4, 2.0)
             Wait(3)
-            Call(ShakeCam, CAM_DEFAULT, 0, 2, Float(1.0))
+            Call(ShakeCam, CAM_DEFAULT, 0, 2, 1.0)
             Wait(3)
         EndLoop
     EndThread
@@ -499,7 +499,7 @@ EvtScript EVS_ManageArenaEffects = {
     Wait(45)
     ChildThread
         Loop(0)
-            UseBuf(Ref(CirculatingBoltPositions))
+            UseBuf(CirculatingBoltPositions)
             Loop(ARRAY_COUNT(CirculatingBoltPositions) / 2)
                 BufRead3(LVar0, LVar1, LVar2)
                 BufRead3(LVar3, LVar4, LVar5)
@@ -511,7 +511,7 @@ EvtScript EVS_ManageArenaEffects = {
     EndChildThread
     ChildThread
         Loop(0)
-            UseBuf(Ref(RandomBoltPositions))
+            UseBuf(RandomBoltPositions)
             Call(RandInt, 7, LVar6)
             Add(LVar6, 1)
             Loop(LVar6)

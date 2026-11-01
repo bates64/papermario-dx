@@ -15,7 +15,7 @@ EvtScript EVS_SpawnSwitch = {
         Wait(1)
     EndLoop
     Call(PlaySoundAt, SOUND_OBJECT_LAND, SOUND_SPACE_DEFAULT, LVar2, LVar0, 25)
-    Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(1.0))
+    Call(ShakeCam, CAM_DEFAULT, 0, 5, 1.0)
     Wait(10)
     Return
     End
@@ -29,21 +29,21 @@ EvtScript EVS_SmashBlock = {
 };
 
 EvtScript EVS_GotoMap_kmr_02_3 = {
-    Call(GotoMap, Ref("kmr_02"), kmr_02_ENTRY_3)
+    Call(GotoMap, "kmr_02", kmr_02_ENTRY_3)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_GotoMap_nok_02_2 = {
-    Call(GotoMap, Ref("nok_02"), nok_02_ENTRY_2)
+    Call(GotoMap, "nok_02", nok_02_ENTRY_2)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_GotoMap_dro_01_2 = {
-    Call(GotoMap, Ref("dro_01"), dro_01_ENTRY_2)
+    Call(GotoMap, "dro_01", dro_01_ENTRY_2)
     Wait(100)
     Return
     End
@@ -60,27 +60,27 @@ EvtScript EVS_OnSwitchActivate = {
 
 EvtScript EVS_MakeEntities = {
     IfEq(GF_TIK01_Hammer2Block, false)
-        Call(MakeEntity, Ref(Entity_Hammer2Block), -240, -10, 0, 0, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(EVS_SmashBlock))
+        Call(MakeEntity, Entity_Hammer2Block, -240, -10, 0, 0, MAKE_ENTITY_END)
+        Call(AssignScript, EVS_SmashBlock)
     Else
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o64, COLLIDER_FLAGS_UPPER_MASK)
     EndIf
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o63, COLLIDER_FLAGS_UPPER_MASK)
     IfEq(GF_TIK01_WarpPipes, false)
-        Call(MakeEntity, Ref(Entity_BlueSwitch), NPC_DISPOSE_LOCATION, 0, MAKE_ENTITY_END)
+        Call(MakeEntity, Entity_BlueSwitch, NPC_DISPOSE_LOCATION, 0, MAKE_ENTITY_END)
         Call(AssignSwitchFlag, EVT_INDEX_OF_AREA_FLAG(AF_TIK01_Switch_WarpPipe))
         Set(MV_EntityID_Switch, LVar0)
-        BindTrigger(Ref(EVS_OnSwitchActivate), TRIGGER_AREA_FLAG_SET, AF_TIK01_Switch_WarpPipe, 1, 0)
+        BindTrigger(EVS_OnSwitchActivate, TRIGGER_AREA_FLAG_SET, AF_TIK01_Switch_WarpPipe, 1, 0)
         IfEq(GF_TIK01_Defeated_Blooper, true)
             Call(SetEntityPosition, MV_EntityID_Switch, 125, -10, 25)
         EndIf
     EndIf
-    Call(MakeEntity, Ref(Entity_BlueWarpPipe), 150, -10, -82, 0, tik_01_ENTRY_2,
-        Ref(EVS_GotoMap_kmr_02_3), EVT_INDEX_OF_GAME_FLAG(GF_TIK01_WarpPipes), MAKE_ENTITY_END)
-    Call(MakeEntity, Ref(Entity_BlueWarpPipe),  50, -10, -82, 0, tik_01_ENTRY_3,
-        Ref(EVS_GotoMap_nok_02_2), EVT_INDEX_OF_GAME_FLAG(GF_TIK01_WarpPipes), MAKE_ENTITY_END)
-    Call(MakeEntity, Ref(Entity_BlueWarpPipe), -50, -10, -82, 0, tik_01_ENTRY_4,
-        Ref(EVS_GotoMap_dro_01_2), EVT_INDEX_OF_GAME_FLAG(GF_TIK01_WarpPipes), MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_BlueWarpPipe, 150, -10, -82, 0, tik_01_ENTRY_2,
+        EVS_GotoMap_kmr_02_3, EVT_INDEX_OF_GAME_FLAG(GF_TIK01_WarpPipes), MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_BlueWarpPipe,  50, -10, -82, 0, tik_01_ENTRY_3,
+        EVS_GotoMap_nok_02_2, EVT_INDEX_OF_GAME_FLAG(GF_TIK01_WarpPipes), MAKE_ENTITY_END)
+    Call(MakeEntity, Entity_BlueWarpPipe, -50, -10, -82, 0, tik_01_ENTRY_4,
+        EVS_GotoMap_dro_01_2, EVT_INDEX_OF_GAME_FLAG(GF_TIK01_WarpPipes), MAKE_ENTITY_END)
     Return
     End
 };

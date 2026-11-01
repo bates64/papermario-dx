@@ -8,7 +8,7 @@ EvtScript EVS_SetDoorRot_House = {
 };
 
 EvtScript EVS_DropDoor_House = {
-    Call(RotateModel, MODEL_syoumen_enter, LVar0, Float(54.56), 0, Float(31.5))
+    Call(RotateModel, MODEL_syoumen_enter, LVar0, 54.56, 0, 31.5)
     Return
     End
 };
@@ -59,7 +59,7 @@ EvtScript EVS_RoomListener_House = {
                 IfEq(GF_KMR02_Met_Goompapa, true)
                     IfEq(GF_KMR02_Goombario_RelayedMessage, false)
                         Call(DisablePlayerInput, true)
-                        Call(BindNpcAI, NPC_Goombario, Ref(EVS_NpcAI_Goombario_NoAI))
+                        Call(BindNpcAI, NPC_Goombario, EVS_NpcAI_Goombario_NoAI)
                         Call(SetNpcPos, NPC_Goombario, -54, 0, -55)
                     EndIf
                 EndIf
@@ -72,7 +72,7 @@ EvtScript EVS_RoomListener_House = {
                         Call(SetNpcAnimation, NPC_Goombario, ANIM_WorldGoombario_Walk)
                         Call(NpcMoveTo, NPC_Goombario, 8, -94, 20)
                         Call(SpeakToPlayer, NPC_Goombario, ANIM_WorldGoombario_Talk, ANIM_WorldGoombario_Idle, 0, MSG_CH0_0050)
-                        Call(BindNpcAI, NPC_Goombario, Ref(EVS_NpcAI_Goombario))
+                        Call(BindNpcAI, NPC_Goombario, EVS_NpcAI_Goombario)
                         Set(GF_KMR02_Goombario_RelayedMessage, true)
                         Call(DisablePlayerInput, false)
                     EndIf
@@ -113,7 +113,7 @@ EvtScript EVS_RoomListener_Verdana = {
             Call(UseSettingsFrom, CAM_DEFAULT, 499, 0, -378)
             Call(SetPanTarget, CAM_DEFAULT, 499, 70, -378)
             Call(SetCamDistance, CAM_DEFAULT, 370)
-            Call(SetCamSpeed, CAM_DEFAULT, Float(2.0))
+            Call(SetCamSpeed, CAM_DEFAULT, 2.0)
             Call(PanToTarget, CAM_DEFAULT, 0, true)
             Switch(GB_StoryProgress)
                 CaseLt(STORY_CH0_GATE_CRUSHED)
@@ -157,7 +157,7 @@ EvtScript EVS_RoomListener_Verdana = {
                     EndIf
                     Call(SetPlayerAnimation, ANIM_MarioW2_PanicStill)
                     Wait(5 * DT)
-                    Call(SetCamSpeed, CAM_DEFAULT, Float(2.0))
+                    Call(SetCamSpeed, CAM_DEFAULT, 2.0)
                     Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
                     Sub(LVar1, 150)
                     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -184,7 +184,7 @@ EvtScript EVS_RoomListener_Verdana = {
                         EndThread
                     EndIf
                     Wait(20 * DT)
-                    Call(GotoMap, Ref("kmr_03"), kmr_03_ENTRY_2)
+                    Call(GotoMap, "kmr_03", kmr_03_ENTRY_2)
                     Wait(100 * DT)
                 EndIf
             EndIf
@@ -203,25 +203,25 @@ EvtScript EVS_SetupRooms = {
     // goomba family home, main room
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_LARGE_DOOR_RIGHT_HINGE_OPENS_OUT),
-        Ref(EVS_SetDoorRot_House),
-        Ref(EVS_SetWallRot_House),
-        Ref(EVS_DropDoor_House),
-        Ref(EVS_RoomListener_House),
+        EVS_SetDoorRot_House,
+        EVS_SetWallRot_House,
+        EVS_DropDoor_House,
+        EVS_RoomListener_House,
         COLLIDER_deilit5,
         COLLIDER_deilit6,
         MODEL_kuribou_house,
-        Ref(InsideNPCs_House))
+        InsideNPCs_House)
     // verdana
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_LARGE_DOOR_LEFT_HINGE_OPENS_OUT),
-        Ref(EVS_SetDoorRot_Verdana),
-        Ref(EVS_SetWallRot_Verdana),
+        EVS_SetDoorRot_Verdana,
+        EVS_SetWallRot_Verdana,
         nullptr,
-        Ref(EVS_RoomListener_Verdana),
+        EVS_RoomListener_Verdana,
         COLLIDER_deilit4,
         COLLIDER_deilit4_1,
         MODEL_kuribou_house,
-        Ref(InsideNPCs_House))
+        InsideNPCs_House)
     Set(LVar0, ROOM_UPDATE_EXIT_END)
     Exec(EVS_RoomListener_House)
     Call(SetGroupVisibility, MODEL_monohoshi, MODEL_GROUP_HIDDEN)
@@ -256,13 +256,13 @@ EvtScript EVS_ToadHouse_GetInBed = {
         Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
         Call(SetCamPitch, CAM_DEFAULT, 34, -8)
         Call(SetCamDistance, CAM_DEFAULT, 220)
-        Call(SetCamPosA, CAM_DEFAULT, Float(-46.0), Float(-311.0))
-        Call(SetCamPosB, CAM_DEFAULT, Float(-262.4), Float(-324.6))
+        Call(SetCamPosA, CAM_DEFAULT, -46.0, -311.0)
+        Call(SetCamPosB, CAM_DEFAULT, -262.4, -324.6)
         Call(SetCamPosC, CAM_DEFAULT, 1, 10)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+        Call(SetCamSpeed, CAM_DEFAULT, 90.0)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
     EndThread
-    Call(SetPlayerSpeed, Float(3.0))
+    Call(SetPlayerSpeed, 3.0)
     Call(PlayerMoveTo, -212, -376, 0)
     Call(InterpPlayerYaw, 191, 1)
     Call(SetPlayerPos, -212, 21, -376)

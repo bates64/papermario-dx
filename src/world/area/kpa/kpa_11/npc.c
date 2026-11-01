@@ -26,7 +26,7 @@ EvtScript EVS_NpcDefeat_Koopatrol = {
 
 EvtScript EVS_NpcInit_Koopatrol = {
     IfEq(GF_KPA11_Defeated_Guard, false)
-        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Koopatrol))
+        Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_Koopatrol)
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf

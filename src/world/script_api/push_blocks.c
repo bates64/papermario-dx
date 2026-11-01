@@ -362,7 +362,7 @@ EvtScript EVS_PushWall_PushBlock = {
         Wait(2)
         Call(CheckPlayerActionState, LVarD, ACTION_STATE_PUSHING_BLOCK)
         IfNe(LVarD, false)
-            Call(IsEventForSourceRunning, LVarD, Ref(EVS_PushWall_PushBlock))
+            Call(IsEventForSourceRunning, LVarD, EVS_PushWall_PushBlock)
             IfEq(LVarD, false)
                 Call(SetPlayerActionState, ACTION_STATE_IDLE)
             EndIf

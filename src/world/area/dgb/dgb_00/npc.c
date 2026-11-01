@@ -109,7 +109,7 @@ EvtScript EVS_AdvanceBooPhalanx = {
 };
 
 EvtScript EVS_BraceDoor1 = {
-    Call(SetNpcJumpscale, NPC_Boo_01, Float(-0.2))
+    Call(SetNpcJumpscale, NPC_Boo_01, -0.2)
     Call(NpcJump0, NPC_Boo_01, 257, 30, -90, 5 * DT)
     Call(EnableNpcShadow, NPC_Boo_01, false)
     Call(SetNpcAnimation, NPC_Boo_01, ANIM_Boo_Tan_Flail)
@@ -118,7 +118,7 @@ EvtScript EVS_BraceDoor1 = {
 };
 
 EvtScript EVS_BraceDoor2 = {
-    Call(SetNpcJumpscale, NPC_Boo_02, Float(-0.3))
+    Call(SetNpcJumpscale, NPC_Boo_02, -0.3)
     Call(NpcJump0, NPC_Boo_02, 272, 112, -81, 12 * DT)
     Call(EnableNpcShadow, NPC_Boo_02, false)
     Call(SetNpcAnimation, NPC_Boo_02, ANIM_Boo_Tan_Flail)
@@ -127,7 +127,7 @@ EvtScript EVS_BraceDoor2 = {
 };
 
 EvtScript EVS_BraceDoor3 = {
-    Call(SetNpcJumpscale, NPC_Boo_03, Float(-0.4))
+    Call(SetNpcJumpscale, NPC_Boo_03, -0.4)
     Call(NpcJump0, NPC_Boo_03, 237, 120, -118, 10 * DT)
     Call(EnableNpcShadow, NPC_Boo_03, false)
     Call(SetNpcAnimation, NPC_Boo_03, ANIM_Boo_Tan_Flail)
@@ -136,7 +136,7 @@ EvtScript EVS_BraceDoor3 = {
 };
 
 EvtScript EVS_BraceDoor4 = {
-    Call(SetNpcJumpscale, NPC_Boo_04, Float(-0.3))
+    Call(SetNpcJumpscale, NPC_Boo_04, -0.3)
     Call(NpcJump0, NPC_Boo_04, 280, 60, -79, 8 * DT)
     Call(EnableNpcShadow, NPC_Boo_04, false)
     Call(SetNpcAnimation, NPC_Boo_04, ANIM_Boo_Tan_Flail)
@@ -145,7 +145,7 @@ EvtScript EVS_BraceDoor4 = {
 };
 
 EvtScript EVS_BraceDoor5 = {
-    Call(SetNpcJumpscale, NPC_Boo_05, Float(-0.4))
+    Call(SetNpcJumpscale, NPC_Boo_05, -0.4)
     Call(NpcJump0, NPC_Boo_05, 250, 81, -97, 9 * DT)
     Call(EnableNpcShadow, NPC_Boo_05, false)
     Call(SetNpcAnimation, NPC_Boo_05, ANIM_Boo_Tan_Flail)
@@ -154,7 +154,7 @@ EvtScript EVS_BraceDoor5 = {
 };
 
 EvtScript EVS_BraceDoor6 = {
-    Call(SetNpcJumpscale, NPC_Boo_06, Float(-0.5))
+    Call(SetNpcJumpscale, NPC_Boo_06, -0.5)
     Call(NpcJump0, NPC_Boo_06, 227, 43, -123, 15 * DT)
     Call(EnableNpcShadow, NPC_Boo_06, false)
     Call(SetNpcAnimation, NPC_Boo_06, ANIM_Boo_Tan_Flail)
@@ -208,7 +208,7 @@ EvtScript EVS_TubbaTaunting = {
         IfEq(MV_PreventTaunting, false)
             Call(DisablePlayerInput, true)
             Call(PlaySoundAt, SOUND_TUBBA_POUNDING, SOUND_SPACE_DEFAULT, 240, 10, -125)
-            Call(ShakeCam, CAM_DEFAULT, 0, 20, Float(2.0))
+            Call(ShakeCam, CAM_DEFAULT, 0, 20, 2.0)
             Call(ShowMessageAtScreenPos, MSG_CH3_00EF, 160, 40)
             Call(DisablePlayerInput, false)
         EndIf
@@ -225,7 +225,7 @@ EvtScript EVS_Scene_BoosApproachManor = {
     Call(SetNpcPos, NPC_PARTNER, 350, 10, -150)
     Call(EnablePartnerAI)
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Set(LVar0, 175)
     Set(LVar1, 0)
@@ -233,7 +233,7 @@ EvtScript EVS_Scene_BoosApproachManor = {
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Wait(40 * DT)
     Call(SetNpcPos, NPC_Boo_01, -60, 10, -70)
     Call(SetNpcPos, NPC_Boo_02, -100, 10, -110)
@@ -248,10 +248,10 @@ EvtScript EVS_Scene_BoosApproachManor = {
     Call(SpeakToPlayer, NPC_Boo_05, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 5, MSG_CH3_00DC)
     Call(SpeakToPlayer, NPC_Boo_01, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 5, MSG_CH3_00DD)
     Call(PlaySoundAt, SOUND_TUBBA_POUNDING, SOUND_SPACE_DEFAULT, 240, 10, -125)
-    Call(ShakeCam, CAM_DEFAULT, 0, 20, Float(2.0))
+    Call(ShakeCam, CAM_DEFAULT, 0, 20, 2.0)
     Wait(10 * DT)
     Call(PlaySoundAt, SOUND_TUBBA_POUNDING, SOUND_SPACE_DEFAULT, 240, 10, -125)
-    Call(ShakeCam, CAM_DEFAULT, 0, 20, Float(2.0))
+    Call(ShakeCam, CAM_DEFAULT, 0, 20, 2.0)
     Call(InterpNpcYaw, NPC_Boo_01, 90, 1)
     Call(ShowMessageAtScreenPos, MSG_CH3_00DE, 160, 40)
     Call(SetPlayerPos, 350, 10, -150)
@@ -264,7 +264,7 @@ EvtScript EVS_Scene_BoosApproachManor = {
 };
 
 EvtScript EVS_Scene_EscapeFromTubba = {
-    Call(SetPlayerSpeed, Float(8.0 / DT))
+    Call(SetPlayerSpeed, 8.0 / DT)
     Call(PlayerMoveTo, 184, -44, 0)
     Call(PlaySoundAtNpc, NPC_Boo_01, SOUND_EMOTE_IDEA, SOUND_SPACE_DEFAULT)
     Call(PlaySoundAtNpc, NPC_Boo_02, SOUND_EMOTE_IDEA, SOUND_SPACE_DEFAULT)
@@ -284,14 +284,14 @@ EvtScript EVS_Scene_EscapeFromTubba = {
     Exec(EVS_BoosBraceDoor)
     Wait(20 * DT)
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_CONSTRAIN_BETWEEN_POINTS, true)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(6.0 / DT))
-    Call(SetCamPitch, CAM_DEFAULT, Float(15.0), Float(-15.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 6.0 / DT)
+    Call(SetCamPitch, CAM_DEFAULT, 15.0, -15.0)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamDistance, CAM_DEFAULT, 300)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     ExecGetTID(EVS_LeaderBooShivering, LVarA)
     Call(SpeakToPlayer, NPC_Boo_01, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_00DF)
     KillThread(LVarA)
@@ -318,18 +318,18 @@ EvtScript EVS_Scene_EscapeFromTubba = {
     EndSwitch
     Call(EnablePartnerAI)
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(6.0 / DT))
+    Call(SetCamSpeed, CAM_DEFAULT, 6.0 / DT)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(PlaySoundAt, SOUND_TUBBA_POUNDING, SOUND_SPACE_DEFAULT, 240, 10, -125)
-    Call(ShakeCam, CAM_DEFAULT, 0, 20, Float(2.0))
+    Call(ShakeCam, CAM_DEFAULT, 0, 20, 2.0)
     Wait(5 * DT)
     Call(PlaySoundAt, SOUND_TUBBA_POUNDING, SOUND_SPACE_DEFAULT, 240, 10, -125)
-    Call(ShakeCam, CAM_DEFAULT, 0, 20, Float(2.0))
+    Call(ShakeCam, CAM_DEFAULT, 0, 20, 2.0)
     Call(ShowMessageAtScreenPos, MSG_CH3_00E7, 160, 40)
     ExecWait(EVS_BraceDoor1)
     Wait(10 * DT)
@@ -379,25 +379,25 @@ EvtScript EVS_NpcInteract_Boo_01 = {
     Call(GetCurrentPartnerID, LVar0)
     Switch(LVar0)
         CaseEq(PARTNER_GOOMBARIO)
-            Call(AdjustCam, CAM_DEFAULT, Float(6.0), 0, Float(-275.0), Float(15.0), Float(-6.0))
+            Call(AdjustCam, CAM_DEFAULT, 6.0, 0, -275.0, 15.0, -6.0)
             Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldGoombario_Talk, ANIM_WorldGoombario_Idle, 0, MSG_CH3_00EA)
-            Call(ResetCam, CAM_DEFAULT, Float(6.0))
+            Call(ResetCam, CAM_DEFAULT, 6.0)
         CaseEq(PARTNER_KOOPER)
-            Call(AdjustCam, CAM_DEFAULT, Float(6.0), 0, Float(-275.0), Float(15.0), Float(-6.0))
+            Call(AdjustCam, CAM_DEFAULT, 6.0, 0, -275.0, 15.0, -6.0)
             Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldKooper_Talk, ANIM_WorldKooper_Idle, 0, MSG_CH3_00EB)
-            Call(ResetCam, CAM_DEFAULT, Float(6.0))
+            Call(ResetCam, CAM_DEFAULT, 6.0)
         CaseEq(PARTNER_BOMBETTE)
-            Call(AdjustCam, CAM_DEFAULT, Float(6.0), 0, Float(-275.0), Float(15.0), Float(-6.0))
+            Call(AdjustCam, CAM_DEFAULT, 6.0, 0, -275.0, 15.0, -6.0)
             Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldBombette_Talk, ANIM_WorldBombette_Idle, 0, MSG_CH3_00EC)
-            Call(ResetCam, CAM_DEFAULT, Float(6.0))
+            Call(ResetCam, CAM_DEFAULT, 6.0)
         CaseEq(PARTNER_PARAKARRY)
-            Call(AdjustCam, CAM_DEFAULT, Float(6.0), 0, Float(-275.0), Float(15.0), Float(-6.0))
+            Call(AdjustCam, CAM_DEFAULT, 6.0, 0, -275.0, 15.0, -6.0)
             Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldParakarry_Talk, ANIM_WorldParakarry_Idle, 0, MSG_CH3_00ED)
-            Call(ResetCam, CAM_DEFAULT, Float(6.0))
+            Call(ResetCam, CAM_DEFAULT, 6.0)
         CaseEq(PARTNER_BOW)
-            Call(AdjustCam, CAM_DEFAULT, Float(6.0), 0, Float(-275.0), Float(15.0), Float(-6.0))
+            Call(AdjustCam, CAM_DEFAULT, 6.0, 0, -275.0, 15.0, -6.0)
             Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldBow_Talk, ANIM_WorldBow_Idle, 0, MSG_CH3_00EE)
-            Call(ResetCam, CAM_DEFAULT, Float(6.0))
+            Call(ResetCam, CAM_DEFAULT, 6.0)
     EndSwitch
     Call(EnablePartnerAI)
     Set(MV_PreventTaunting, false)
@@ -406,7 +406,7 @@ EvtScript EVS_NpcInteract_Boo_01 = {
 };
 
 EvtScript EVS_NpcInit_Boo_01 = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Boo_01))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Boo_01)
     Return
     End
 };
@@ -524,8 +524,8 @@ EvtScript EVS_Scene_ThrownOutBySentinel = {
     Call(SetNpcAnimation, NPC_Sentinel, ANIM_Sentinel_Grab)
     Call(UseSettingsFrom, CAM_DEFAULT, 175, 0, -35)
     Call(SetPanTarget, CAM_DEFAULT, 175, 0, -35)
-    Call(SetCamDistance, CAM_DEFAULT, Float(540.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamDistance, CAM_DEFAULT, 540.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(20)
     Thread
@@ -576,9 +576,9 @@ EvtScript EVS_Scene_ThrownOutBySentinel = {
         PlayEffect(EFFECT_EMOTE, EMOTE_FRUSTRATION, 0, 175, 0, -35, 20, -20, 30, 0)
     EndThread
     Thread
-        Call(SetCamDistance, CAM_DEFAULT, Float(320.0))
-        Call(SetCamPitch, CAM_DEFAULT, Float(15.0), Float(-7.5))
-        Call(SetCamSpeed, CAM_DEFAULT, Float(2.0))
+        Call(SetCamDistance, CAM_DEFAULT, 320.0)
+        Call(SetCamPitch, CAM_DEFAULT, 15.0, -7.5)
+        Call(SetCamSpeed, CAM_DEFAULT, 2.0)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
     EndThread
     Wait(65)
@@ -633,9 +633,9 @@ EvtScript EVS_Scene_ThrownOutBySentinel = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(4.0))
+    Call(SetCamSpeed, CAM_DEFAULT, 4.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(EnablePartnerAI)
     Call(DisablePlayerPhysics, false)

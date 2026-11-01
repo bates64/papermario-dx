@@ -90,7 +90,7 @@ EvtScript EVS_NpcInit_Chan = {
     Else
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_tt, COLLIDER_FLAGS_UPPER_MASK)
     EndIf
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Chan))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Chan)
     Return
     End
 };
@@ -156,7 +156,7 @@ EvtScript EVS_NpcInit_Lee = {
         Call(SetNpcPos, NPC_SELF, 600, 20, -145)
         Call(SetNpcYaw, NPC_SELF, 270)
     EndIf
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Lee))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Lee)
     Return
     End
 };
@@ -280,13 +280,13 @@ EvtScript EVS_TheMaster_InteractImpl = {
     Wait(1)
     Switch(GB_MAC00_DojoRank)
         CaseEq(0)
-            Call(BindNpcDefeat, NPC_Chan, Ref(EVS_NpcDefeat_Chan))
-            Call(BindNpcAI, NPC_Chan, Ref(EVS_NpcAI_Chan))
+            Call(BindNpcDefeat, NPC_Chan, EVS_NpcDefeat_Chan)
+            Call(BindNpcAI, NPC_Chan, EVS_NpcAI_Chan)
             Call(DisablePlayerInput, false)
             Return
         CaseEq(1)
-            Call(BindNpcDefeat, NPC_Lee, Ref(EVS_NpcDefeat_Lee))
-            Call(BindNpcAI, NPC_Lee, Ref(EVS_NpcAI_Lee))
+            Call(BindNpcDefeat, NPC_Lee, EVS_NpcDefeat_Lee)
+            Call(BindNpcAI, NPC_Lee, EVS_NpcAI_Lee)
             Call(DisablePlayerInput, false)
             Return
         CaseEq(2)
@@ -310,7 +310,7 @@ EvtScript EVS_TheMaster_InteractImpl = {
     Call(InterpNpcYaw, NPC_TheMaster, 225, 0)
     Wait(30)
     Call(SetNpcFlagBits, NPC_TheMaster, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Dojo))
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_Dojo)
     Wait(1)
     Call(SetDojoBattle)
     IfLt(GB_MAC00_DojoRank, 2)
@@ -331,8 +331,8 @@ EvtScript EVS_NpcInteract_TheMaster = {
 };
 
 EvtScript EVS_NpcInit_TheMaster = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_TheMaster))
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_TheMaster))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_TheMaster)
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_TheMaster)
     Return
     End
 };

@@ -38,11 +38,11 @@ EvtScript EVS_ExitDoors_trd_04_2 =
 EvtScript EVS_ExitDoors_trd_02_4 = EVT_EXIT_WALK(40, trd_03_ENTRY_4, "trd_02", trd_02_ENTRY_4);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitDoors_trd_02_1), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoors_trd_04_0), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoors_trd_02_3), TRIGGER_WALL_PRESS_A, COLLIDER_ttwo, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoors_trd_04_2), TRIGGER_WALL_PRESS_A, COLLIDER_tteo, 1, 0)
-    BindTrigger(Ref(EVS_ExitDoors_trd_02_4), TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
+    BindTrigger(EVS_ExitDoors_trd_02_1, TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
+    BindTrigger(EVS_ExitDoors_trd_04_0, TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
+    BindTrigger(EVS_ExitDoors_trd_02_3, TRIGGER_WALL_PRESS_A, COLLIDER_ttwo, 1, 0)
+    BindTrigger(EVS_ExitDoors_trd_04_2, TRIGGER_WALL_PRESS_A, COLLIDER_tteo, 1, 0)
+    BindTrigger(EVS_ExitDoors_trd_02_4, TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
     Return
     End
 };
@@ -71,7 +71,7 @@ EvtScript EVS_EnterMap = {
             ExecWait(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
         CaseEq(trd_03_ENTRY_4)
-            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
     EndSwitch
     Return
@@ -124,7 +124,7 @@ EvtScript EVS_BombWall_RightCell = {
 
 EvtScript EVS_HiddenDoor = {
     Set(LVarB, 0)
-    SetF(LVarC, Float(0.0))
+    SetF(LVarC, 0.0)
     Set(LVarD, 0)
     Set(LVarE, 0)
     Call(CloneModel, MODEL_rou2, CLONED_MODEL(0))
@@ -143,7 +143,7 @@ EvtScript EVS_HiddenDoor = {
                     Sub(LVar1, LVarA)
                     IfEq(LVar1, 1)
                         Add(LVarB, 1)
-                        SubF(LVarC, Float(0.1))
+                        SubF(LVarC, 0.1)
                     Else
                         Set(LVarB, 0)
                     EndIf
@@ -161,14 +161,14 @@ EvtScript EVS_HiddenDoor = {
                 CaseDefault
                     Set(LVarB, 0)
                     IfLt(LVarC, 0)
-                        AddF(LVarC, Float(0.2))
+                        AddF(LVarC, 0.2)
                         IfGt(LVarC, 0)
-                            SetF(LVarC, Float(0.0))
+                            SetF(LVarC, 0.0)
                         EndIf
                     Else
-                        SubF(LVarC, Float(0.2))
+                        SubF(LVarC, 0.2)
                         IfLt(LVarC, 0)
-                            SetF(LVarC, Float(0.0))
+                            SetF(LVarC, 0.0)
                         EndIf
                     EndIf
             EndSwitch
@@ -179,14 +179,14 @@ EvtScript EVS_HiddenDoor = {
             Call(UpdateColliderTransform, COLLIDER_o84)
             Call(UpdateColliderTransform, COLLIDER_o85)
         Else
-            SetF(LVarC, Float(0.0))
+            SetF(LVarC, 0.0)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o84, 0x7FFFFFFF)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o85, 0x7FFFFFFF)
             IfGt(LVarD, 0)
                 Sub(LVarD, 1)
                 Call(GetPlayerPos, LVar0, LVar1, LVar2)
                 SetF(LVar3, LVarD)
-                MulF(LVar3, Float(1.8))
+                MulF(LVar3, 1.8)
                 SubF(LVar0, LVar3)
                 Call(SetPlayerPos, LVar0, LVar1, LVar2)
             Else
@@ -204,7 +204,7 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_KOOPA_BROS_FORTRESS)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Call(MakeNpcs, true, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     IfLt(GB_StoryProgress, STORY_CH1_KOOPA_BROS_HID_KEY)
         Exec(EVS_Scene_GreenKoopaBros)
@@ -220,7 +220,7 @@ EvtScript EVS_Main = {
     EndIf
     IfEq(GF_TRD03_BombedCenterCell, false)
         Call(EnableModel, MODEL_nk2, false)
-        BindTrigger(Ref(EVS_BombWall_MiddleCell), TRIGGER_POINT_BOMB, Ref(BombPos_MiddleCell), 1, 0)
+        BindTrigger(EVS_BombWall_MiddleCell, TRIGGER_POINT_BOMB, BombPos_MiddleCell, 1, 0)
     Else
         Call(SetGroupVisibility, MODEL_ana2, MODEL_GROUP_HIDDEN)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilit2, COLLIDER_FLAGS_UPPER_MASK)
@@ -228,7 +228,7 @@ EvtScript EVS_Main = {
     EndIf
     IfEq(GF_TRD03_BombedRightCell, false)
         Call(EnableModel, MODEL_nk3, false)
-        BindTrigger(Ref(EVS_BombWall_RightCell), TRIGGER_POINT_BOMB, Ref(BombPos_RightCell), 1, 0)
+        BindTrigger(EVS_BombWall_RightCell, TRIGGER_POINT_BOMB, BombPos_RightCell, 1, 0)
     Else
         Call(SetGroupVisibility, MODEL_ana3, MODEL_GROUP_HIDDEN)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilit3, COLLIDER_FLAGS_UPPER_MASK)

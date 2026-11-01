@@ -10,14 +10,14 @@ EvtScript EVS_Scene_SunReturns = {
     Call(UseSettingsFrom, CAM_DEFAULT, 0, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, 0, 0, 0)
     Call(SetCamDistance, CAM_DEFAULT, 450)
-    Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-6.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Call(SetCamPitch, CAM_DEFAULT, 17.0, -6.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 90.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Wait(20)
     Call(SpeakToPlayer, NPC_Lily, ANIM_Lily_Talk, ANIM_Lily_Idle, 0, MSG_CH6_00C6)
     Wait(10)
-    Call(GotoMap, Ref("flo_12"), flo_12_ENTRY_1)
+    Call(GotoMap, "flo_12", flo_12_ENTRY_1)
     Wait(100)
     Return
     End
@@ -49,7 +49,7 @@ EvtScript EVS_OnInteract_WaterStoneSocket = {
                 Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
                 Call(InterpPlayerYaw, 100, 1)
                 Wait(10 * DT)
-                Call(AdjustCam, CAM_DEFAULT, Float(1.0 / DT), 0, 450, Float(25.0), Float(-6.0))
+                Call(AdjustCam, CAM_DEFAULT, 1.0 / DT, 0, 450, 25.0, -6.0)
                 Wait(10 * DT)
                 Call(SetPlayerAnimation, ANIM_MarioW1_PlaceItem)
                 Call(RemoveKeyItemAt, LVar1)
@@ -67,7 +67,7 @@ EvtScript EVS_OnInteract_WaterStoneSocket = {
 };
 
 EvtScript EVS_SetupWaterStoneSocket = {
-    BindPadlock(Ref(EVS_OnInteract_WaterStoneSocket), TRIGGER_FLOOR_TOUCH, COLLIDER_o83, Ref(KeyList), 0, 1)
+    BindPadlock(EVS_OnInteract_WaterStoneSocket, TRIGGER_FLOOR_TOUCH, COLLIDER_o83, KeyList, 0, 1)
     Return
     End
 };
@@ -112,10 +112,10 @@ EvtScript EVS_NpcInteract_Lily = {
             Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
             Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
             Call(SetCamDistance, CAM_DEFAULT, 325)
-            Call(SetCamPitch, CAM_DEFAULT, Float(23.0), Float(-9.0))
-            Call(SetCamSpeed, CAM_DEFAULT, Float(4.0 / DT))
+            Call(SetCamPitch, CAM_DEFAULT, 23.0, -9.0)
+            Call(SetCamSpeed, CAM_DEFAULT, 4.0 / DT)
             Call(PanToTarget, CAM_DEFAULT, 0, true)
-            Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+            Call(WaitForCam, CAM_DEFAULT, 1.0)
             Wait(10 * DT)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Lily_TalkPlead, ANIM_Lily_IdlePlead, 5, MSG_CH6_0078)
             Call(EndSpeech, NPC_SELF, ANIM_Lily_DreadLoop, ANIM_Lily_Dread, 5)
@@ -126,10 +126,10 @@ EvtScript EVS_NpcInteract_Lily = {
                 Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
                 Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
                 Call(SetCamDistance, CAM_DEFAULT, 325)
-                Call(SetCamPitch, CAM_DEFAULT, Float(23.0), Float(-9.0))
-                Call(SetCamSpeed, CAM_DEFAULT, Float(4.0 / DT))
+                Call(SetCamPitch, CAM_DEFAULT, 23.0, -9.0)
+                Call(SetCamSpeed, CAM_DEFAULT, 4.0 / DT)
                 Call(PanToTarget, CAM_DEFAULT, 0, true)
-                Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+                Call(WaitForCam, CAM_DEFAULT, 1.0)
                 Wait(10 * DT)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Lily_TalkPlead, ANIM_Lily_IdlePlead, 5, MSG_CH6_0079)
                 Call(NpcFacePlayer, NPC_SELF, 1)
@@ -172,14 +172,14 @@ EvtScript EVS_NpcInteract_Lily = {
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_Lily_Talk, ANIM_Lily_Idle, 0, MSG_CH6_0087)
     EndSwitch
-    Call(ResetCam, CAM_DEFAULT, Float(4.0 / DT))
+    Call(ResetCam, CAM_DEFAULT, 4.0 / DT)
     ExecWait(EVS_PopSong)
     Return
     End
 };
 
 EvtScript EVS_NpcInit_Lily = {
-    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Lily))
+    Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Lily)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH6_GOT_WATER_STONE)
             IfEq(GF_FLO10_LilyRequestedWaterStone, false)

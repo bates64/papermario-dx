@@ -18,13 +18,13 @@ MobileAISettings AISettings_ShyGuy_Patrol = {
 };
 
 EvtScript EVS_NpcAI_ShyGuy_Patrol = {
-    Call(ShyGuyPatrolAI_Main, Ref(AISettings_ShyGuy_Patrol))
+    Call(ShyGuyPatrolAI_Main, AISettings_ShyGuy_Patrol)
     Return
     End
 };
 
 EvtScript EVS_NpcAI_ShyGuy_Patrol_Passive = {
-    Call(PatrolNoAttackAI_Main, Ref(AISettings_ShyGuy_Patrol))
+    Call(PatrolNoAttackAI_Main, AISettings_ShyGuy_Patrol)
     Return
     End
 };

@@ -4,8 +4,8 @@ EvtScript EVS_ExitWalk_omo_17_0 = EVT_EXIT_WALK(60, omo_05_ENTRY_0, "omo_17", om
 EvtScript EVS_ExitWalk_omo_17_1 = EVT_EXIT_WALK(60, omo_05_ENTRY_1, "omo_17", omo_17_ENTRY_1);
 
 EvtScript EVS_BindExitTriggers = {
-    BindTrigger(Ref(EVS_ExitWalk_omo_17_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deili3, 1, 0)
-    BindTrigger(Ref(EVS_ExitWalk_omo_17_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deili4, 1, 0)
+    BindTrigger(EVS_ExitWalk_omo_17_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deili3, 1, 0)
+    BindTrigger(EVS_ExitWalk_omo_17_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deili4, 1, 0)
     Return
     End
 };
@@ -14,7 +14,7 @@ EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_SHY_GUYS_TOYBOX)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Call(MakeNpcs, true, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     ExecWait(EVS_SetupGizmos)
     Exec(EVS_SetupMusic)
@@ -29,7 +29,7 @@ EvtScript EVS_Main = {
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_tt1, COLLIDER_FLAGS_UPPER_MASK)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_tt2, COLLIDER_FLAGS_UPPER_MASK)
     EndIf
-    Set(LVar0, Ref(EVS_BindExitTriggers))
+    Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     Wait(1)
     Return

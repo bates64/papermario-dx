@@ -73,21 +73,21 @@ EvtScript EVS_LowerMainLavaLevel = {
     Add(LVar0, -20)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamDistance, CAM_DEFAULT, Float(600.0))
-    Call(SetCamPitch, CAM_DEFAULT, Float(5.0), Float(8.0))
-    Call(SetCamSpeed, CAM_DEFAULT, Float(3.0))
+    Call(SetCamDistance, CAM_DEFAULT, 600.0)
+    Call(SetCamPitch, CAM_DEFAULT, 5.0, 8.0)
+    Call(SetCamSpeed, CAM_DEFAULT, 3.0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(WaitForCam, CAM_DEFAULT, 1.0)
     Wait(15)
     Thread
         Loop(40)
-            AddF(MV_GlowIntensity, Float(-0.015625))
+            AddF(MV_GlowIntensity, -0.015625)
             Wait(3)
         EndLoop
     EndThread
     Call(MakeLerp, 0, -25, 100, EASING_QUADRATIC_OUT)
-    SetF(LVar2, Float(0.0))
-    SetF(LVar3, Float(0.0))
+    SetF(LVar2, 0.0)
+    SetF(LVar3, 0.0)
     Set(LVar4, 0)
     Label(0)
     Call(UpdateLerp)
@@ -96,8 +96,8 @@ EvtScript EVS_LowerMainLavaLevel = {
     Call(TranslateModel, MODEL_o349, 0, LVar0, LVar2)
     IfGt(LVar4, 20)
         IfGt(LVar2, -75)
-            SubF(LVar2, Float(0.5))
-            SubF(LVar3, Float(0.55))
+            SubF(LVar2, 0.5)
+            SubF(LVar3, 0.55)
         EndIf
     EndIf
     Add(LVar4, 1)
@@ -106,7 +106,7 @@ EvtScript EVS_LowerMainLavaLevel = {
         Goto(0)
     EndIf
     Wait(45)
-    Call(ResetCam, CAM_DEFAULT, Float(90.0))
+    Call(ResetCam, CAM_DEFAULT, 90.0)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_yougan1, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, 1, COLLIDER_yougan, COLLIDER_FLAGS_UPPER_MASK)
     Call(EnableGroup, MODEL_i_on, false)
@@ -132,8 +132,8 @@ EvtScript EVS_MonitorPushBlockPuzzle = {
         Set(LVar0, 0)
         Set(LVar1, 0)
         Loop(20)
-            SubF(LVar0, Float(0.7))
-            SubF(LVar1, Float(0.1))
+            SubF(LVar0, 0.7)
+            SubF(LVar1, 0.1)
             Call(TranslateGroup, MODEL_you, 0, LVar0, LVar1)
             Wait(2)
         EndLoop
@@ -149,7 +149,7 @@ EvtScript EVS_SetupLavaPuzzle = {
     IfLt(GB_StoryProgress, STORY_CH5_LAVA_STREAM_BLOCKED)
         Call(EnableGroup, MODEL_i_off, false)
         Exec(EVS_MonitorPushBlockPuzzle)
-        SetF(MV_GlowIntensity, Float(1.0))
+        SetF(MV_GlowIntensity, 1.0)
     Else
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_yougan1, COLLIDER_FLAGS_UPPER_MASK)
         Call(EnableGroup, MODEL_i_on, false)
@@ -157,14 +157,14 @@ EvtScript EVS_SetupLavaPuzzle = {
         Call(TranslateModel, MODEL_yougan, 0, -25, -50)
         Call(TranslateModel, MODEL_spot, 0, -25, 0)
         Call(TranslateModel, MODEL_o349, 0, -25, -40)
-        SetF(MV_GlowIntensity, Float(0.5))
+        SetF(MV_GlowIntensity, 0.5)
     EndIf
     Thread
         SetGroup(EVT_GROUP_NEVER_PAUSE)
         Call(ApplyLavaGlowLighting, LAVA_GLOW_MODE_1, nullptr)
     EndThread
     Thread
-        Call(ClearLavaGlowLighting, Ref(LavaModels))
+        Call(ClearLavaGlowLighting, LavaModels)
     EndThread
     Return
     End

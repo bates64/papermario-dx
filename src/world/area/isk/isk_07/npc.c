@@ -44,19 +44,19 @@ EvtScript EVS_NpcDefeat_Pokey_01 = {
                         Call(PlaySound, SOUND_CHIME_SOLVED_PUZZLE)
                         Wait(30)
                         Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
-                        Call(SetCamSpeed, CAM_DEFAULT, Float(2.0))
+                        Call(SetCamSpeed, CAM_DEFAULT, 2.0)
                         Call(UseSettingsFrom, CAM_DEFAULT, -150, -390, 571)
                         Call(UseSettingsFrom, CAM_DEFAULT, -251, -390, 553)
                         Call(SetPanTarget, CAM_DEFAULT, -251, -390, 553)
                         Wait(1)
                         Call(PanToTarget, CAM_DEFAULT, 0, true)
-                        Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+                        Call(WaitForCam, CAM_DEFAULT, 1.0)
                         Wait(45)
                         Call(MakeItemEntity, ITEM_RUINS_KEY, -250, -240, 545, ITEM_SPAWN_MODE_FALL_NEVER_VANISH, GF_ISK07_Item_RuinsKey)
                         Set(GF_ISK07_Defeated_Mummies, true)
                         ExecWait(EVS_OpenEntryDoor)
                         Wait(60)
-                        Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+                        Call(SetCamSpeed, CAM_DEFAULT, 90.0)
                         Call(GetPlayerPos, LVar0, LVar1, LVar2)
                         Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
                         Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -93,7 +93,7 @@ EvtScript EVS_NpcIdle_Pokey_01 = {
     Call(NpcMoveTo, NPC_SELF, -140, 528, 10)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION, false)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_BEGIN_WITH_CHASING, true)
-    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_PokeyMummy_Wander))
+    Call(BindNpcAI, NPC_SELF, EVS_NpcAI_PokeyMummy_Wander)
     Return
     End
 };
@@ -113,7 +113,7 @@ EvtScript EVS_NpcIdle_Pokey_02 = {
     Call(NpcMoveTo, NPC_SELF, 47, 543, 10)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION, false)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_BEGIN_WITH_CHASING, true)
-    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_PokeyMummy_Wander))
+    Call(BindNpcAI, NPC_SELF, EVS_NpcAI_PokeyMummy_Wander)
     Return
     End
 };
@@ -133,7 +133,7 @@ EvtScript EVS_NpcIdle_Pokey_03 = {
     Call(NpcMoveTo, NPC_SELF, 227, 489, 10)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION, false)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_BEGIN_WITH_CHASING, true)
-    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_PokeyMummy_Wander))
+    Call(BindNpcAI, NPC_SELF, EVS_NpcAI_PokeyMummy_Wander)
     Return
     End
 };
@@ -142,8 +142,8 @@ EvtScript EVS_NpcInit_Pokey_01 = {
     IfEq(GF_ISK07_Defeated_Mummies, false)
         Call(SetSelfEnemyFlags, ENEMY_FLAG_NO_DROPS)
     EndIf
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Pokey_01))
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Pokey_01))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Pokey_01)
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_Pokey_01)
     Call(InterpNpcYaw, NPC_SELF, 100, 0)
     Call(SetOwnerInstigatorValue, 3)
     Return
@@ -154,8 +154,8 @@ EvtScript EVS_NpcInit_Pokey_02 = {
     IfEq(GF_ISK07_Defeated_Mummies, false)
         Call(SetSelfEnemyFlags, ENEMY_FLAG_NO_DROPS)
     EndIf
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Pokey_02))
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Pokey_01))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Pokey_02)
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_Pokey_01)
     Call(SetOwnerInstigatorValue, 3)
     Return
     End
@@ -165,8 +165,8 @@ EvtScript EVS_NpcInit_Pokey_03 = {
     IfEq(GF_ISK07_Defeated_Mummies, false)
         Call(SetSelfEnemyFlags, ENEMY_FLAG_NO_DROPS)
     EndIf
-    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Pokey_03))
-    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Pokey_01))
+    Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Pokey_03)
+    Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_Pokey_01)
     Call(SetOwnerInstigatorValue, 3)
     Return
     End

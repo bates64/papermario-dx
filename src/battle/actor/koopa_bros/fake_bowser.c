@@ -271,10 +271,10 @@ static s32 BowserModels[] = {
 };
 
 static EvtScript EVS_Init = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_FakeBowser_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_FakeBowser_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_FakeBowser_HandleEvent))
-    Call(BindHandlePhase, ACTOR_SELF, Ref(EVS_FakeBowser_HandlePhase))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_FakeBowser_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_FakeBowser_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_FakeBowser_HandleEvent)
+    Call(BindHandlePhase, ACTOR_SELF, EVS_FakeBowser_HandlePhase)
     UseArray(FakeBowserAnimState)
     Call(SetActorVar, BOSS_ACTOR, AVAR_Boss_Flags, 0)
     Call(SetActorVar, ACTOR_SELF, AVAR_Boss_TowerState, AVAL_Boss_TowerState_None)
@@ -322,7 +322,7 @@ static s32 IdleHeadAngles[] = {
 
 static EvtScript EVS_AnimBowser_IdleHead = {
     UseArray(FakeBowserAnimState)
-    UseFBuf(Ref(IdleHeadAngles))
+    UseFBuf(IdleHeadAngles)
     Label(0)
         Set(LVar0, ArrayVar(0))
         IfNe(LVar0, ANIM_DOING_IDLE)
@@ -330,7 +330,7 @@ static EvtScript EVS_AnimBowser_IdleHead = {
         EndIf
         FBufRead3(LVar0, LVar1, LVar2)
         IfEq(LVar0, 255)
-            UseFBuf(Ref(IdleHeadAngles))
+            UseFBuf(IdleHeadAngles)
             FBufRead3(LVar0, LVar1, LVar2)
         EndIf
         Call(SetPartRotation, ACTOR_SELF, PRT_HEAD, LVar0, LVar1, LVar2)
@@ -358,7 +358,7 @@ static s32 MoveHeadAngles[] = {
 
 static EvtScript EVS_AnimBowser_MoveHead = {
     UseArray(FakeBowserAnimState)
-    UseFBuf(Ref(MoveHeadAngles))
+    UseFBuf(MoveHeadAngles)
     Label(0)
         Set(LVar0, ArrayVar(0))
         IfNe(LVar0, ANIM_DOING_MOVE)
@@ -366,7 +366,7 @@ static EvtScript EVS_AnimBowser_MoveHead = {
         EndIf
         FBufRead3(LVar0, LVar1, LVar2)
         IfEq(LVar0, 255)
-            UseFBuf(Ref(MoveHeadAngles))
+            UseFBuf(MoveHeadAngles)
             FBufRead3(LVar0, LVar1, LVar2)
         EndIf
         Call(SetPartRotation, ACTOR_SELF, PRT_HEAD, LVar0, LVar1, LVar2)
@@ -405,7 +405,7 @@ static s32 HurtHeadAngles[] = {
 
 static EvtScript EVS_AnimBowser_HurtHead = {
     UseArray(FakeBowserAnimState)
-    UseFBuf(Ref(HurtHeadAngles))
+    UseFBuf(HurtHeadAngles)
     Label(0)
         Set(LVar0, ArrayVar(0))
         IfNe(LVar0, ANIM_DOING_HURT)
@@ -413,15 +413,15 @@ static EvtScript EVS_AnimBowser_HurtHead = {
         EndIf
         FBufRead3(LVar0, LVar1, LVar2)
         IfEq(LVar0, 255)
-            UseFBuf(Ref(HurtHeadAngles))
+            UseFBuf(HurtHeadAngles)
             FBufRead3(LVar0, LVar1, LVar2)
         EndIf
         Call(RandInt, 100, LVarA)
         IfLt(LVarA, 50)
-            SetF(LVarA, Float(0.0))
+            SetF(LVarA, 0.0)
             SubF(LVarA, LVar0)
             SetF(LVar0, LVarA)
-            SetF(LVarA, Float(0.0))
+            SetF(LVarA, 0.0)
             SubF(LVarA, LVar1)
             SetF(LVar1, LVarA)
         EndIf
@@ -437,7 +437,7 @@ static EvtScript EVS_AnimBowser_DeathMain = {
     Call(StartRumbleWithParams, 256, 30)
     Thread
         SetGroup(EVT_GROUP_NEVER_PAUSE)
-        Call(ShakeCam, CAM_BATTLE, 0, 20, Float(3.0))
+        Call(ShakeCam, CAM_BATTLE, 0, 20, 3.0)
     EndThread
     Call(SetPartFlagBits, ACTOR_SELF, PRT_HEAD, ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION, true)
     Call(GetPartPos, ACTOR_SELF, PRT_HEAD, LVar0, LVar1, LVar2)
@@ -457,41 +457,41 @@ static EvtScript EVS_AnimBowser_DeathMain = {
     Sub(LVar0, 60)
     Set(LVar1, -200)
     Add(LVar2, 100)
-    Call(SetPartJumpGravity, ACTOR_SELF, PRT_HEAD, Float(0.5))
+    Call(SetPartJumpGravity, ACTOR_SELF, PRT_HEAD, 0.5)
     Call(JumpPartTo, ACTOR_SELF, PRT_HEAD, LVar0, LVar1, LVar2, 60, true)
     Wait(30)
     Call(PlaySoundAtModel, MODEL_k1, SOUND_DISTANT_THUD, SOUND_SPACE_DEFAULT)
     Thread
         SetGroup(EVT_GROUP_NEVER_PAUSE)
-        Call(ShakeCam, CAM_BATTLE, 0, 5, Float(1.0))
+        Call(ShakeCam, CAM_BATTLE, 0, 5, 1.0)
     EndThread
     Call(StartRumbleWithParams, 100, 20)
     Wait(20)
     Call(PlaySoundAtModel, MODEL_u1, SOUND_DISTANT_THUD, SOUND_SPACE_DEFAULT)
     Thread
         SetGroup(EVT_GROUP_NEVER_PAUSE)
-        Call(ShakeCam, CAM_BATTLE, 0, 10, Float(1.5))
+        Call(ShakeCam, CAM_BATTLE, 0, 10, 1.5)
     EndThread
     Call(StartRumbleWithParams, 150, 20)
     Wait(30)
     Call(PlaySoundAtModel, MODEL_p1, SOUND_DISTANT_THUD, SOUND_SPACE_DEFAULT)
     Thread
         SetGroup(EVT_GROUP_NEVER_PAUSE)
-        Call(ShakeCam, CAM_BATTLE, 0, 10, Float(1.0))
+        Call(ShakeCam, CAM_BATTLE, 0, 10, 1.0)
     EndThread
     Call(StartRumbleWithParams, 100, 20)
     Wait(30)
     Call(PlaySoundAtModel, MODEL_d1, SOUND_DISTANT_THUD, SOUND_SPACE_DEFAULT)
     Thread
         SetGroup(EVT_GROUP_NEVER_PAUSE)
-        Call(ShakeCam, CAM_BATTLE, 0, 5, Float(0.7))
+        Call(ShakeCam, CAM_BATTLE, 0, 5, 0.7)
     EndThread
     Call(StartRumbleWithParams, 70, 20)
     Wait(20)
     Call(PlaySoundAtModel, MODEL_s1, SOUND_DISTANT_THUD, SOUND_SPACE_DEFAULT)
     Thread
         SetGroup(EVT_GROUP_NEVER_PAUSE)
-        Call(ShakeCam, CAM_BATTLE, 0, 10, Float(1.0))
+        Call(ShakeCam, CAM_BATTLE, 0, 10, 1.0)
     EndThread
     Call(StartRumbleWithParams, 100, 20)
     Wait(20)
@@ -499,12 +499,12 @@ static EvtScript EVS_AnimBowser_DeathMain = {
     Call(StartRumbleWithParams, 60, 20)
     Thread
         SetGroup(EVT_GROUP_NEVER_PAUSE)
-        Call(ShakeCam, CAM_BATTLE, 0, 5, Float(0.6))
+        Call(ShakeCam, CAM_BATTLE, 0, 5, 0.6)
     EndThread
     Wait(20)
     Thread
         SetGroup(EVT_GROUP_NEVER_PAUSE)
-        Call(ShakeCam, CAM_BATTLE, 0, 5, Float(0.3))
+        Call(ShakeCam, CAM_BATTLE, 0, 5, 0.3)
     EndThread
     Call(StartRumbleWithParams, 30, 20)
     Return
@@ -540,7 +540,7 @@ static s32 IdleBodyOffsets[] = {
 
 static EvtScript EVS_AnimBowser_IdleBody = {
     UseArray(FakeBowserAnimState)
-    UseBuf(Ref(IdleBodyOffsets))
+    UseBuf(IdleBodyOffsets)
     Label(0)
         Set(LVar0, ArrayVar(0))
         IfNe(LVar0, ANIM_DOING_IDLE)
@@ -548,7 +548,7 @@ static EvtScript EVS_AnimBowser_IdleBody = {
         EndIf
         BufRead3(LVar0, LVar1, LVar2)
         IfEq(LVar0, 255)
-            UseBuf(Ref(IdleBodyOffsets))
+            UseBuf(IdleBodyOffsets)
             BufRead3(LVar0, LVar1, LVar2)
         EndIf
         Call(SetActorDispOffset, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -575,7 +575,7 @@ static s32 MoveBodyOffsets[] = {
 
 static EvtScript EVS_AnimBowser_MoveBody = {
     UseArray(FakeBowserAnimState)
-    UseBuf(Ref(MoveBodyOffsets))
+    UseBuf(MoveBodyOffsets)
     Label(0)
         Set(LVar0, ArrayVar(0))
         IfNe(LVar0, ANIM_DOING_MOVE)
@@ -583,7 +583,7 @@ static EvtScript EVS_AnimBowser_MoveBody = {
         EndIf
         BufRead3(LVar0, LVar1, LVar2)
         IfEq(LVar0, 255)
-            UseBuf(Ref(MoveBodyOffsets))
+            UseBuf(MoveBodyOffsets)
             BufRead3(LVar0, LVar1, LVar2)
         EndIf
         Call(SetActorDispOffset, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -622,7 +622,7 @@ static s32 StrikeBodyOffsets[] = {
 
 static EvtScript EVS_AnimBowser_StrikeBody = {
     UseArray(FakeBowserAnimState)
-    UseBuf(Ref(StrikeBodyOffsets))
+    UseBuf(StrikeBodyOffsets)
     Label(0)
         Set(LVar0, ArrayVar(0))
         Switch(LVar0)
@@ -633,7 +633,7 @@ static EvtScript EVS_AnimBowser_StrikeBody = {
         EndSwitch
         BufRead3(LVar0, LVar1, LVar2)
         IfEq(LVar0, 255)
-            UseBuf(Ref(StrikeBodyOffsets))
+            UseBuf(StrikeBodyOffsets)
             BufRead3(LVar0, LVar1, LVar2)
         EndIf
         Call(SetActorDispOffset, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -672,7 +672,7 @@ static s32 HurtBodyOffsets[] = {
 
 static EvtScript EVS_AnimBowser_HurtBody = {
     UseArray(FakeBowserAnimState)
-    UseBuf(Ref(HurtBodyOffsets))
+    UseBuf(HurtBodyOffsets)
     Label(0)
         Set(LVar0, ArrayVar(0))
         IfNe(LVar0, ANIM_DOING_HURT)
@@ -680,7 +680,7 @@ static EvtScript EVS_AnimBowser_HurtBody = {
         EndIf
         BufRead3(LVar0, LVar1, LVar2)
         IfEq(LVar0, 255)
-            UseBuf(Ref(HurtBodyOffsets))
+            UseBuf(HurtBodyOffsets)
             BufRead3(LVar0, LVar1, LVar2)
         EndIf
         Call(SetActorDispOffset, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -710,7 +710,7 @@ static EvtScript EVS_AnimBowser_DeathBody = {
     Sub(LVar0, 150)
     Set(LVar1, -200)
     Sub(LVar2, 200)
-    Call(SetPartJumpGravity, ACTOR_SELF, PRT_BODY, Float(0.3))
+    Call(SetPartJumpGravity, ACTOR_SELF, PRT_BODY, 0.3)
     Call(JumpPartTo, ACTOR_SELF, PRT_BODY, LVar0, LVar1, LVar2, 80, true)
     Return
     End
@@ -737,7 +737,7 @@ static EvtScript EVS_AnimBowser_DeathShell = {
     Add(LVar0, 30)
     Set(LVar1, -200)
     Add(LVar2, 150)
-    Call(SetPartJumpGravity, ACTOR_SELF, PRT_SHELL, Float(0.5))
+    Call(SetPartJumpGravity, ACTOR_SELF, PRT_SHELL, 0.5)
     Call(JumpPartTo, ACTOR_SELF, PRT_SHELL, LVar0, LVar1, LVar2, 60, true)
     Return
     End
@@ -773,7 +773,7 @@ static s32 IdleFeetOffsets[] = {
 
 static EvtScript EVS_AnimBowser_IdleFeet = {
     UseArray(FakeBowserAnimState)
-    UseBuf(Ref(IdleFeetOffsets))
+    UseBuf(IdleFeetOffsets)
     Label(0)
         Set(LVar0, ArrayVar(0))
         IfNe(LVar0, ANIM_DOING_IDLE)
@@ -781,7 +781,7 @@ static EvtScript EVS_AnimBowser_IdleFeet = {
         EndIf
         BufRead3(LVar0, LVar1, LVar2)
         IfEq(LVar0, 255)
-            UseBuf(Ref(IdleFeetOffsets))
+            UseBuf(IdleFeetOffsets)
             BufRead3(LVar0, LVar1, LVar2)
         EndIf
         Call(SetPartPos, ACTOR_SELF, PRT_FEET, LVar0, LVar1, LVar2)
@@ -821,7 +821,7 @@ static s32 StrikeFeetOffsets[] = {
 
 static EvtScript EVS_AnimBowser_StrikeFeet = {
     UseArray(FakeBowserAnimState)
-    UseBuf(Ref(StrikeFeetOffsets))
+    UseBuf(StrikeFeetOffsets)
     Label(0)
         Set(LVar0, ArrayVar(0))
         Switch(LVar0)
@@ -832,7 +832,7 @@ static EvtScript EVS_AnimBowser_StrikeFeet = {
         EndSwitch
         BufRead3(LVar0, LVar1, LVar2)
         IfEq(LVar0, 255)
-            UseBuf(Ref(StrikeFeetOffsets))
+            UseBuf(StrikeFeetOffsets)
             BufRead3(LVar0, LVar1, LVar2)
         EndIf
         Call(SetPartPos, ACTOR_SELF, PRT_FEET, LVar0, LVar1, LVar2)
@@ -861,7 +861,7 @@ static s32 MoveFeetOffsets[] = {
 
 static EvtScript EVS_AnimBowser_MoveFeet = {
     UseArray(FakeBowserAnimState)
-    UseBuf(Ref(MoveFeetOffsets))
+    UseBuf(MoveFeetOffsets)
     Label(0)
         Set(LVar0, ArrayVar(0))
         IfNe(LVar0, ANIM_DOING_MOVE)
@@ -869,7 +869,7 @@ static EvtScript EVS_AnimBowser_MoveFeet = {
         EndIf
         BufRead3(LVar0, LVar1, LVar2)
         IfEq(LVar0, 255)
-            UseBuf(Ref(MoveFeetOffsets))
+            UseBuf(MoveFeetOffsets)
             BufRead3(LVar0, LVar1, LVar2)
         EndIf
         Call(SetPartPos, ACTOR_SELF, PRT_FEET, LVar0, LVar1, LVar2)
@@ -897,7 +897,7 @@ static EvtScript EVS_AnimBowser_DeathFeet = {
     Sub(LVar0, 50)
     Set(LVar1, -200)
     Sub(LVar2, 200)
-    Call(SetPartJumpGravity, ACTOR_SELF, PRT_FEET, Float(0.3))
+    Call(SetPartJumpGravity, ACTOR_SELF, PRT_FEET, 0.3)
     Call(JumpPartTo, ACTOR_SELF, PRT_FEET, LVar0, LVar1, LVar2, 80, true)
     Return
     End
@@ -944,7 +944,7 @@ static s32 StrikeArmAngles[] = {
 
 static EvtScript EVS_AnimBowser_StrikeArm = {
     UseArray(FakeBowserAnimState)
-    UseFBuf(Ref(StrikeArmAngles))
+    UseFBuf(StrikeArmAngles)
     Set(LVarF, 0)
     Label(0)
         Set(LVar0, ArrayVar(0))
@@ -955,12 +955,12 @@ static EvtScript EVS_AnimBowser_StrikeArm = {
             FBufRead3(LVar0, LVar1, LVar2)
             IfEq(LVar0, 255)
                 Set(LVarF, 1)
-                Set(LVar0, Float(0.0))
-                Set(LVar1, Float(0.0))
-                Set(LVar2, Float(0.0))
+                Set(LVar0, 0.0)
+                Set(LVar1, 0.0)
+                Set(LVar2, 0.0)
             EndIf
         EndIf
-        MulF(LVar2, Float(-2.0))
+        MulF(LVar2, -2.0)
         Call(SetPartRotation, ACTOR_SELF, PRT_LEFT_ARM, LVar0, LVar1, LVar2)
         Wait(1)
         Goto(0)
@@ -973,7 +973,7 @@ static EvtScript EVS_AnimBowser_BlockArm = {
     Call(MakeLerp, LVar4, 0, 20, EASING_LINEAR)
     Label(0)
         Call(UpdateLerp)
-        Call(SetPartRotation, ACTOR_SELF, PRT_LEFT_ARM, Float(0.0), Float(0.0), LVar0)
+        Call(SetPartRotation, ACTOR_SELF, PRT_LEFT_ARM, 0.0, 0.0, LVar0)
         Wait(1)
         IfEq(LVar1, 1)
             Goto(0)
@@ -1003,7 +1003,7 @@ static EvtScript EVS_AnimBowser_DeathLeftArm = {
     Sub(LVar0, 0)
     Set(LVar1, -200)
     Add(LVar2, 100)
-    Call(SetPartJumpGravity, ACTOR_SELF, PRT_LEFT_ARM, Float(0.6))
+    Call(SetPartJumpGravity, ACTOR_SELF, PRT_LEFT_ARM, 0.6)
     Call(JumpPartTo, ACTOR_SELF, PRT_LEFT_ARM, LVar0, LVar1, LVar2, 80, true)
     Return
     End
@@ -1019,7 +1019,7 @@ static EvtScript EVS_AnimBowser_DeathRightArm = {
     Sub(LVar0, 0)
     Set(LVar1, -200)
     Sub(LVar2, 200)
-    Call(SetPartJumpGravity, ACTOR_SELF, PRT_RIGHT_ARM, Float(0.4))
+    Call(SetPartJumpGravity, ACTOR_SELF, PRT_RIGHT_ARM, 0.4)
     Call(JumpPartTo, ACTOR_SELF, PRT_RIGHT_ARM, LVar0, LVar1, LVar2, 80, true)
     Return
     End
@@ -1049,7 +1049,7 @@ static s32 MoveWheelAngles[] = {
 
 static EvtScript EVS_AnimBowser_MoveWheels = {
     UseArray(FakeBowserAnimState)
-    UseFBuf(Ref(MoveWheelAngles))
+    UseFBuf(MoveWheelAngles)
     Label(0)
         Set(LVar0, ArrayVar(0))
         IfNe(LVar0, ANIM_DOING_MOVE)
@@ -1057,7 +1057,7 @@ static EvtScript EVS_AnimBowser_MoveWheels = {
         EndIf
         FBufRead3(LVar0, LVar1, LVar2)
         IfEq(LVar0, 255)
-            UseFBuf(Ref(MoveWheelAngles))
+            UseFBuf(MoveWheelAngles)
             FBufRead3(LVar0, LVar1, LVar2)
         EndIf
         Call(SetPartRotation, ACTOR_SELF, PRT_FRONT_WHEELS, LVar0, LVar1, LVar2)
@@ -1086,7 +1086,7 @@ static EvtScript EVS_AnimBowser_DeathFrontWheels = {
     Sub(LVar0, 150)
     Set(LVar1, -200)
     Add(LVar2, 100)
-    Call(SetPartJumpGravity, ACTOR_SELF, PRT_FRONT_WHEELS, Float(0.3))
+    Call(SetPartJumpGravity, ACTOR_SELF, PRT_FRONT_WHEELS, 0.3)
     Call(JumpPartTo, ACTOR_SELF, PRT_FRONT_WHEELS, LVar0, LVar1, LVar2, 80, true)
     Return
     End
@@ -1110,7 +1110,7 @@ static EvtScript EVS_AnimBowser_DeathBackWheels = {
     Sub(LVar0, 50)
     Set(LVar1, -200)
     Sub(LVar2, 100)
-    Call(SetPartJumpGravity, ACTOR_SELF, PRT_BACK_WHEELS, Float(0.3))
+    Call(SetPartJumpGravity, ACTOR_SELF, PRT_BACK_WHEELS, 0.3)
     Call(JumpPartTo, ACTOR_SELF, PRT_BACK_WHEELS, LVar0, LVar1, LVar2, 80, true)
     Wait(100)
     Return
@@ -1138,7 +1138,7 @@ static EvtScript EVS_AnimBowser_DeathTail = {
     Sub(LVar0, 0)
     Set(LVar1, -200)
     Add(LVar2, 200)
-    Call(SetPartJumpGravity, ACTOR_SELF, PRT_TAIL, Float(0.3))
+    Call(SetPartJumpGravity, ACTOR_SELF, PRT_TAIL, 0.3)
     Call(JumpPartTo, ACTOR_SELF, PRT_TAIL, LVar0, LVar1, LVar2, 80, true)
     Return
     End
@@ -1395,19 +1395,19 @@ static EvtScript EVS_FakeBowser_HandleEvent = {
         CaseOrEq(EVENT_BURN_DEATH)
             Call(HideHealthBar, ACTOR_SELF)
             IfEq(LVar0, EVENT_BURN_DEATH)
-                Call(SetModelTintMode, APPLY_TINT_MODELS, Ref(BowserModels), ENV_TINT_REMAP)
+                Call(SetModelTintMode, APPLY_TINT_MODELS, BowserModels, ENV_TINT_REMAP)
                 Call(SetModelTintParams, ENV_TINT_REMAP, 35, 35, 35, 0, 0, 0, 0, 0, 0)
             EndIf
             Set(ArrayVar(0), ANIM_BEGIN_HURT)
             Wait(20)
             IfEq(LVar0, EVENT_BURN_DEATH)
-                Call(SetModelTintMode, APPLY_TINT_MODELS, Ref(BowserModels), ENV_TINT_NONE)
+                Call(SetModelTintMode, APPLY_TINT_MODELS, BowserModels, ENV_TINT_NONE)
                 Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
                 Call(GetActorSize, ACTOR_SELF, LVar3, LVar4)
-                DivF(LVar3, Float(2.0))
+                DivF(LVar3, 2.0)
                 AddF(LVar1, LVar3)
-                AddF(LVar2, Float(5.0))
-                DivF(LVar3, Float(10.0))
+                AddF(LVar2, 5.0)
+                DivF(LVar3, 10.0)
                 PlayEffect(EFFECT_SMOKE_BURST, 0, LVar0, LVar1, LVar2, LVar3, 10)
                 Wait(5)
                 PlayEffect(EFFECT_SMOKE_BURST, 0, LVar0, LVar1, LVar2, LVar3, 10)
@@ -1429,18 +1429,18 @@ static EvtScript EVS_FakeBowser_HandleEvent = {
         EndCaseGroup
         CaseOrEq(EVENT_BURN_CONTACT)
         CaseOrEq(EVENT_BURN_HIT)
-            Call(SetModelTintMode, APPLY_TINT_MODELS, Ref(BowserModels), ENV_TINT_REMAP)
+            Call(SetModelTintMode, APPLY_TINT_MODELS, BowserModels, ENV_TINT_REMAP)
             Call(SetModelTintParams, ENV_TINT_REMAP, 35, 35, 35, 0, 0, 0, 0, 0, 0)
             Set(ArrayVar(0), ANIM_BEGIN_HURT)
             Wait(20)
             Set(ArrayVar(0), ANIM_BEGIN_IDLE)
-            Call(SetModelTintMode, APPLY_TINT_MODELS, Ref(BowserModels), ENV_TINT_NONE)
+            Call(SetModelTintMode, APPLY_TINT_MODELS, BowserModels, ENV_TINT_NONE)
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(GetActorSize, ACTOR_SELF, LVar3, LVar4)
-            DivF(LVar3, Float(2.0))
+            DivF(LVar3, 2.0)
             AddF(LVar1, LVar3)
-            AddF(LVar2, Float(5.0))
-            DivF(LVar3, Float(10.0))
+            AddF(LVar2, 5.0)
+            DivF(LVar3, 10.0)
             PlayEffect(EFFECT_SMOKE_BURST, 0, LVar0, LVar1, LVar2, LVar3, 10)
             Wait(5)
             PlayEffect(EFFECT_SMOKE_BURST, 0, LVar0, LVar1, LVar2, LVar3, 10)
@@ -1463,7 +1463,7 @@ static EvtScript EVS_FakeBowser_TakeTurn = {
         EndLoop
     EndThread
     Set(ArrayVar(0), ANIM_BEGIN_MOVE)
-    Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
+    Call(SetActorSpeed, ACTOR_SELF, 6.0)
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(AddGoalPos, ACTOR_SELF, 70, 0, 0)
     Call(RunToGoal, ACTOR_SELF, 0, false)
@@ -1494,7 +1494,7 @@ static EvtScript EVS_FakeBowser_TakeTurn = {
             EndThread
             Set(ArrayVar(0), ANIM_BEGIN_MOVE)
             Call(SetGoalToHome, ACTOR_SELF)
-            Call(SetActorSpeed, ACTOR_SELF, Float(4.0))
+            Call(SetActorSpeed, ACTOR_SELF, 4.0)
             Call(RunToGoal, ACTOR_SELF, 0, false)
             Set(ArrayVar(0), ANIM_BEGIN_IDLE)
             Return
@@ -1519,7 +1519,7 @@ static EvtScript EVS_FakeBowser_TakeTurn = {
     EndThread
     Set(ArrayVar(0), ANIM_BEGIN_MOVE)
     Call(SetGoalToHome, ACTOR_SELF)
-    Call(SetActorSpeed, ACTOR_SELF, Float(4.0))
+    Call(SetActorSpeed, ACTOR_SELF, 4.0)
     Call(RunToGoal, ACTOR_SELF, 0, false)
     Set(ArrayVar(0), ANIM_BEGIN_IDLE)
     Call(UseIdleAnimation, ACTOR_SELF, true)
@@ -1624,7 +1624,7 @@ static EvtScript EVS_KoopaBrosEnter = {
     Call(SetActorPos, GREEN_ACTOR, 100, 0, 10)
     Call(SetAnimation, GREEN_ACTOR, 1, ANIM_KoopaBros_Green_Launched)
     Thread
-        Call(SetActorJumpGravity, GREEN_ACTOR, Float(0.4))
+        Call(SetActorJumpGravity, GREEN_ACTOR, 0.4)
         Call(SetActorSounds, GREEN_ACTOR, ACTOR_SOUND_JUMP, SOUND_NONE, 0)
         Call(SetGoalPos, GREEN_ACTOR, -300, 250, 0)
         Call(JumpToGoal, GREEN_ACTOR, 50, false, true, false)
@@ -1634,7 +1634,7 @@ static EvtScript EVS_KoopaBrosEnter = {
     Call(SetActorPos, YELLOW_ACTOR, 100, 0, 10)
     Call(SetAnimation, YELLOW_ACTOR, 1, ANIM_KoopaBros_Yellow_Launched)
     Thread
-        Call(SetActorJumpGravity, YELLOW_ACTOR, Float(0.4))
+        Call(SetActorJumpGravity, YELLOW_ACTOR, 0.4)
         Call(SetActorSounds, YELLOW_ACTOR, ACTOR_SOUND_JUMP, SOUND_NONE, 0)
         Call(SetGoalPos, YELLOW_ACTOR, -200, 250, 0)
         Call(JumpToGoal, YELLOW_ACTOR, 50, false, true, false)
@@ -1644,7 +1644,7 @@ static EvtScript EVS_KoopaBrosEnter = {
     Call(SetActorPos, BLACK_ACTOR, 100, 0, 10)
     Call(SetAnimation, BLACK_ACTOR, 1, ANIM_KoopaBros_Black_Launched)
     Thread
-        Call(SetActorJumpGravity, BLACK_ACTOR, Float(0.4))
+        Call(SetActorJumpGravity, BLACK_ACTOR, 0.4)
         Call(SetActorSounds, BLACK_ACTOR, ACTOR_SOUND_JUMP, SOUND_NONE, 0)
         Call(SetGoalPos, BLACK_ACTOR, 0, 250, 0)
         Call(JumpToGoal, BLACK_ACTOR, 50, false, true, false)
@@ -1654,7 +1654,7 @@ static EvtScript EVS_KoopaBrosEnter = {
     Call(SetActorPos, RED_ACTOR, 100, 0, 10)
     Call(SetAnimation, RED_ACTOR, 1, ANIM_KoopaBros_Red_Launched)
     Thread
-        Call(SetActorJumpGravity, RED_ACTOR, Float(0.4))
+        Call(SetActorJumpGravity, RED_ACTOR, 0.4)
         Call(SetActorSounds, RED_ACTOR, ACTOR_SOUND_JUMP, SOUND_NONE, 0)
         Call(SetGoalPos, RED_ACTOR, 150, 250, 0)
         Call(JumpToGoal, RED_ACTOR, 50, false, true, false)
@@ -1684,7 +1684,7 @@ static EvtScript EVS_KoopaBrosEnter = {
         Call(SetAnimation, GREEN_ACTOR, 1, ANIM_KoopaBros_Green_Land)
         Call(SetActorPos, GREEN_ACTOR, 20, 250, 0)
         Call(SetGoalPos, GREEN_ACTOR, 20, 0, 0)
-        Call(SetActorJumpGravity, GREEN_ACTOR, Float(1.5))
+        Call(SetActorJumpGravity, GREEN_ACTOR, 1.5)
         Call(SetActorSounds, GREEN_ACTOR, ACTOR_SOUND_JUMP, SOUND_NONE, 0)
         Call(FallToGoal, GREEN_ACTOR, 30)
         Call(PlaySoundAtActor, GREEN_ACTOR, SOUND_KOOPA_BROS_LAND)
@@ -1697,7 +1697,7 @@ static EvtScript EVS_KoopaBrosEnter = {
         Call(SetAnimation, YELLOW_ACTOR, 1, ANIM_KoopaBros_Yellow_Land)
         Call(SetActorPos, YELLOW_ACTOR, 60, 250, -5)
         Call(SetGoalPos, YELLOW_ACTOR, 60, 0, -5)
-        Call(SetActorJumpGravity, YELLOW_ACTOR, Float(1.5))
+        Call(SetActorJumpGravity, YELLOW_ACTOR, 1.5)
         Call(SetActorSounds, YELLOW_ACTOR, ACTOR_SOUND_JUMP, SOUND_NONE, 0)
         Call(FallToGoal, YELLOW_ACTOR, 30)
         Call(PlaySoundAtActor, YELLOW_ACTOR, SOUND_KOOPA_BROS_LAND)
@@ -1710,7 +1710,7 @@ static EvtScript EVS_KoopaBrosEnter = {
         Call(SetAnimation, BLACK_ACTOR, 1, ANIM_KoopaBros_Black_Land)
         Call(SetActorPos, BLACK_ACTOR, 100, 250, -10)
         Call(SetGoalPos, BLACK_ACTOR, 100, 0, -10)
-        Call(SetActorJumpGravity, BLACK_ACTOR, Float(1.5))
+        Call(SetActorJumpGravity, BLACK_ACTOR, 1.5)
         Call(SetActorSounds, BLACK_ACTOR, ACTOR_SOUND_JUMP, SOUND_NONE, 0)
         Call(FallToGoal, BLACK_ACTOR, 30)
         Call(PlaySoundAtActor, BLACK_ACTOR, SOUND_KOOPA_BROS_LAND)
@@ -1723,7 +1723,7 @@ static EvtScript EVS_KoopaBrosEnter = {
         Call(SetAnimation, RED_ACTOR, 1, ANIM_KoopaBros_Red_Land)
         Call(SetActorPos, RED_ACTOR, 140, 250, -15)
         Call(SetGoalPos, RED_ACTOR, 140, 0, -15)
-        Call(SetActorJumpGravity, RED_ACTOR, Float(1.5))
+        Call(SetActorJumpGravity, RED_ACTOR, 1.5)
         Call(SetActorSounds, RED_ACTOR, ACTOR_SOUND_JUMP, SOUND_NONE, 0)
         Call(FallToGoal, RED_ACTOR, 30)
         Call(PlaySoundAtActor, RED_ACTOR, SOUND_KOOPA_BROS_LAND)
@@ -1778,10 +1778,10 @@ static EvtScript EVS_KoopaBrosEnter = {
     Call(SetPartFlagBits, ACTOR_SELF, PRT_TOWER, ACTOR_PART_FLAG_NO_TARGET, true)
     Call(SetPartFlagBits, ACTOR_SELF, PRT_TARGET, ACTOR_PART_FLAG_PRIMARY_TARGET, false)
     Call(SetPartFlagBits, ACTOR_SELF, PRT_TOWER, ACTOR_PART_FLAG_PRIMARY_TARGET, true)
-    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_KoopaBros_TakeTurn))
-    Call(BindIdle, ACTOR_SELF, Ref(EVS_KoopaBros_Idle))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_KoopaBros_HandleEvent))
-    Call(BindHandlePhase, ACTOR_SELF, Ref(EVS_KoopaBros_HandlePhase))
+    Call(BindTakeTurn, ACTOR_SELF, EVS_KoopaBros_TakeTurn)
+    Call(BindIdle, ACTOR_SELF, EVS_KoopaBros_Idle)
+    Call(BindHandleEvent, ACTOR_SELF, EVS_KoopaBros_HandleEvent)
+    Call(BindHandlePhase, ACTOR_SELF, EVS_KoopaBros_HandlePhase)
     Call(SetActorFlagBits, GREEN_ACTOR, ACTOR_FLAG_NO_HEALTH_BAR, false)
     Call(SetPartFlagBits, GREEN_ACTOR, 1, ACTOR_PART_FLAG_NO_TARGET, false)
     Call(HPBarToHome, GREEN_ACTOR)
@@ -1931,7 +1931,7 @@ static EvtScript EVS_BuildTowerWithKoopa = {
                 CaseEq(RED_ACTOR)
                     Call(SetAnimation, LVarA, 1, ANIM_KoopaBros_Red_Midair)
             EndSwitch
-            Call(SetActorJumpGravity, LVarA, Float(1.6))
+            Call(SetActorJumpGravity, LVarA, 1.6)
             Call(JumpToGoal, LVarA, 20, false, false, false)
             Call(PlayLandOnTowerFX, LVarA)
             Call(PlaySoundAtActor, LVarA, SOUND_KOOPA_BROS_LAND)
@@ -2083,7 +2083,7 @@ static EvtScript EVS_BuildTowerWithKoopa = {
                     CaseEq(RED_ACTOR)
                         Call(SetAnimation, LVarA, 1, ANIM_KoopaBros_Red_Midair)
                 EndSwitch
-                Call(SetActorJumpGravity, LVarA, Float(1.6))
+                Call(SetActorJumpGravity, LVarA, 1.6)
                 Call(JumpToGoal, LVarA, 20, false, false, false)
                 Call(PlayLandOnTowerFX, LVarA)
                 Call(PlaySoundAtActor, LVarA, SOUND_KOOPA_BROS_LAND)
@@ -2150,7 +2150,7 @@ static EvtScript EVS_BuildTowerWithKoopa = {
                     CaseEq(RED_ACTOR)
                         Call(SetAnimation, LVarA, 1, ANIM_KoopaBros_Red_Midair)
                 EndSwitch
-                Call(SetActorJumpGravity, LVarA, Float(1.6))
+                Call(SetActorJumpGravity, LVarA, 1.6)
                 Call(JumpToGoal, LVarA, 20, false, false, false)
                 Call(PlayLandOnTowerFX, LVarA)
                 Call(PlaySoundAtActor, LVarA, SOUND_KOOPA_BROS_LAND)
@@ -2283,7 +2283,7 @@ static EvtScript EVS_UpdateTowerWithKoopa = {
                 CaseEq(RED_ACTOR)
                     Call(SetAnimation, LVarA, 1, ANIM_KoopaBros_Red_Midair)
             EndSwitch
-            Call(SetActorJumpGravity, LVarA, Float(1.6))
+            Call(SetActorJumpGravity, LVarA, 1.6)
             Call(JumpToGoal, LVarA, 20, false, false, false)
             Call(PlayLandOnTowerFX, LVarA)
             Call(PlaySoundAtActor, LVarA, SOUND_KOOPA_BROS_LAND)
@@ -2365,7 +2365,7 @@ static EvtScript EVS_UpdateTowerWithKoopa = {
                 CaseEq(RED_ACTOR)
                     Call(SetAnimation, LVarA, 1, ANIM_KoopaBros_Red_Midair)
             EndSwitch
-            Call(SetActorJumpGravity, LVarA, Float(1.6))
+            Call(SetActorJumpGravity, LVarA, 1.6)
             Call(JumpToGoal, LVarA, 20, false, false, false)
             Call(PlayLandOnTowerFX, LVarA)
             Call(PlaySoundAtActor, LVarA, SOUND_KOOPA_BROS_LAND)

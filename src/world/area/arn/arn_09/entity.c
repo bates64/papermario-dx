@@ -11,9 +11,9 @@ EvtScript EVS_UseSpring = {
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_LAUNCH)
     Wait(1)
-    Call(SetPlayerJumpscale, Float(1.0))
+    Call(SetPlayerJumpscale, 1.0)
     Call(PlayerJump, 0, 200, 0, 30)
-    Call(GotoMap, Ref("arn_08"), arn_08_ENTRY_1)
+    Call(GotoMap, "arn_08", arn_08_ENTRY_1)
     Wait(100)
     Call(DisablePlayerInput, false)
     Call(DisablePlayerPhysics, false)
@@ -30,7 +30,7 @@ EvtScript EVS_LandFromWell = {
     Call(SetPlayerActionState, ACTION_STATE_FALLING)
     Call(AwaitAnyPlayerFloorTouch)
     Call(SetPlayerActionState, ACTION_STATE_LAUNCH)
-    Call(SetPlayerJumpscale, Float(1.5))
+    Call(SetPlayerJumpscale, 1.5)
     Call(PlayerJump, 50, 0, 0, 16)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Set(AF_ARN_UsingWellSpring, false)
@@ -40,8 +40,8 @@ EvtScript EVS_LandFromWell = {
 };
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Ref(Entity_ScriptSpring), 0, 0, 0, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(EVS_UseSpring))
+    Call(MakeEntity, Entity_ScriptSpring, 0, 0, 0, 0, MAKE_ENTITY_END)
+    Call(AssignScript, EVS_UseSpring)
     Return
     End
 };

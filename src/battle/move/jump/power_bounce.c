@@ -80,7 +80,7 @@ EvtScript EVS_UseMove = {
 EvtScript EVS_UseMove_Basic = {
     Call(LoadActionCommand, ACTION_COMMAND_JUMP)
     Call(InitActionCommand)
-    Call(SetActionDifficultyTable, Ref(DifficultyTable))
+    Call(SetActionDifficultyTable, DifficultyTable)
     ExecWait(EVS_JumpSupport_Approach)
     ExecWait(EVS_JumpSupport_CalcJumpTime)
     Call(StartActionCommand, LVarA, AC_DIFFICULTY_1)
@@ -132,7 +132,7 @@ EvtScript EVS_UseMove_Basic = {
             Call(UseBattleCamPreset, BTL_CAM_PLAYER_JUMP_FINISH)
         EndChildThread
         Call(InterruptActionCommand)
-        Call(SetActionDifficultyTable, Ref(DifficultyTable))
+        Call(SetActionDifficultyTable, DifficultyTable)
         Call(LoadActionCommand, ACTION_COMMAND_JUMP)
         Call(InitActionCommand)
         Set(LVarA, 24)
@@ -222,7 +222,7 @@ EvtScript EVS_UseMove_Basic = {
 EvtScript EVS_UseMove_Super = {
     Call(LoadActionCommand, ACTION_COMMAND_JUMP)
     Call(InitActionCommand)
-    Call(SetActionDifficultyTable, Ref(DifficultyTable))
+    Call(SetActionDifficultyTable, DifficultyTable)
     ExecWait(EVS_JumpSupport_Approach)
     ExecWait(EVS_JumpSupport_CalcJumpTime)
     Call(StartActionCommand, LVarA, AC_DIFFICULTY_1)
@@ -268,7 +268,7 @@ EvtScript EVS_UseMove_Super = {
         Call(UseBattleCamPreset, BTL_CAM_PLAYER_JUMP_FINISH)
     EndChildThread
     Call(InterruptActionCommand)
-    Call(SetActionDifficultyTable, Ref(DifficultyTable))
+    Call(SetActionDifficultyTable, DifficultyTable)
     Call(LoadActionCommand, ACTION_COMMAND_JUMP)
     Call(InitActionCommand)
     Set(LVarA, 37)
@@ -364,7 +364,7 @@ EvtScript EVS_UseMove_Super = {
 EvtScript EVS_UseMove_Ultra = {
     Call(LoadActionCommand, ACTION_COMMAND_JUMP)
     Call(InitActionCommand)
-    Call(SetActionDifficultyTable, Ref(DifficultyTable))
+    Call(SetActionDifficultyTable, DifficultyTable)
     ExecWait(EVS_JumpSupport_Approach)
     ExecWait(EVS_JumpSupport_CalcJumpTime)
     Call(StartActionCommand, LVarA, AC_DIFFICULTY_1)
@@ -411,7 +411,7 @@ EvtScript EVS_UseMove_Ultra = {
             Call(UseBattleCamPreset, BTL_CAM_PLAYER_JUMP_FINISH)
         EndChildThread
         Call(InterruptActionCommand)
-        Call(SetActionDifficultyTable, Ref(DifficultyTable))
+        Call(SetActionDifficultyTable, DifficultyTable)
         Call(LoadActionCommand, ACTION_COMMAND_JUMP)
         Call(InitActionCommand)
         Set(LVarA, 25)
