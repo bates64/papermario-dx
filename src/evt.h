@@ -19,10 +19,11 @@ typedef Bytecode EvtVar; /// encoded EVT variable reference
 /// helper for calculating command arg counts
 #define EVT_CMD_COUNT(argv...) (sizeof((Bytecode[]){argv}) / sizeof(Bytecode))
 
-/// expands to a packed header of the given opcode and arguments with argc calculated automatically
-#define EVT_CMD(opcode, argv...) \
-    EVT_CMD_HEADER((opcode), EVT_CMD_COUNT(argv), __LINE__), \
-    ##argv
+/// expands to a packed header of the given opcode and arguments with argc calculated automatically, converting each
+/// argument with EVT_ARG from script_api/macros.h
+#define EVT_CMD(opcode, ...) EVT_CMD_ARGS((opcode), EVT_ARGS(__VA_ARGS__))
+#define EVT_CMD_ARGS(opcode, ...) \
+    EVT_CMD_HEADER(opcode, EVT_CMD_COUNT(__VA_ARGS__), __LINE__) __VA_OPT__(,) __VA_ARGS__
 
 enum {
     EVT_OP_INTERNAL_FETCH,

@@ -61,6 +61,8 @@ extern "C" {
 
 // This fixes an issue with fixed point numbers not being correct. Potentially a truncation vs round difference.
 #define FLOAT_ROUND(x) ((x) >=0 ? (f64)((x) + 0.9) : (f64)(x))
+/// @deprecated EVT commands in C take decimal numbers as they are. Use Float in C arrays that a script reads with
+/// UseFBuf.
 #define Float(DOUBLE)  ((Bytecode)FLOAT_ROUND(((DOUBLE) * 1024.0f)) - EVT_FIXED_OFFSET)
 
 /// Programmatically converts Float --> f32
@@ -70,7 +72,81 @@ extern "C" {
 #define FLOAT_TO_FIXED(x) ((s32)((x) * 1024.0f) - EVT_FIXED_OFFSET)
 
 /// Address/pointer constant.
+/// @deprecated EVT commands in C take structs as they are, and pass their address. For a variable that isn't a struct
+/// or an array, such as an s32, use &.
 #define Ref(sym) ((Bytecode) &(sym))
+
+// A number that fits neither a Float nor an integer above the variable ranges calls evt_float_argument_out_of_range,
+// which fails the build because a script's arguments must be constants.
+#define EVT_REAL_ARG(x) \
+    ((x) > EVT_LOCAL_VAR_CUTOFF && (x) <= 2147483647.0 && (x) == (s32)(x) ? (Bytecode)(x) \
+    : (x) * 1024.0 > EVT_FIXED_END + EVT_FIXED_OFFSET && (x) * 1024.0 < EVT_FIXED_CUTOFF + EVT_FIXED_OFFSET ? Float(x) \
+    : evt_float_argument_out_of_range())
+Bytecode evt_float_argument_out_of_range(void);
+
+/// Converts an argument of an EVT command to Bytecode:
+/// - A struct or union passes its address, so it needs no Ref.
+/// - A floating-point number passes as an integer when it's whole, and as a Float otherwise.
+/// - Anything else, such as an integer, a string, or a pointer, passes as it is.
+#ifdef __cplusplus
+#define EVT_ARG(x) ((Bytecode)evt_arg(x))
+
+extern "C++" template <typename T> consteval auto evt_arg(const T& x) {
+    if constexpr (std::is_class_v<T> || std::is_union_v<T>) {
+        return &x;
+    } else if constexpr (std::is_floating_point_v<T>) {
+        return EVT_REAL_ARG(x);
+    } else {
+        return x;
+    }
+}
+#else
+#define EVT_ARG(x) __builtin_choose_expr(EVT_IS_AGGREGATE(x), \
+    (Bytecode) &__builtin_choose_expr(EVT_IS_AGGREGATE(x), (x), evt_arg_unused), \
+    __builtin_choose_expr(EVT_IS_REAL(x), EVT_REAL_ARG(__builtin_choose_expr(EVT_IS_REAL(x), (x), 0.0)), \
+        (Bytecode) __builtin_choose_expr(EVT_IS_AGGREGATE(x) || EVT_IS_REAL(x), 0, (x))))
+
+// The branches __builtin_choose_expr doesn't choose must still compile, so they use evt_arg_unused and 0 in place of x.
+// __builtin_classify_type gives 12 for a struct, 13 for a union, and 8 for a floating-point number.
+#define EVT_IS_AGGREGATE(x) (__builtin_classify_type(x) == 12 || __builtin_classify_type(x) == 13)
+#define EVT_IS_REAL(x) (__builtin_classify_type(x) == 8)
+extern char evt_arg_unused;
+#endif
+
+/// Converts each argument of an EVT command with EVT_ARG.
+#define EVT_ARGS(...) __VA_OPT__(_VFUNC(EVT_ARGS_, __NARG__(__VA_ARGS__))(__VA_ARGS__))
+#define EVT_ARGS_1(a) EVT_ARG(a)
+#define EVT_ARGS_2(a, ...) EVT_ARG(a), EVT_ARGS_1(__VA_ARGS__)
+#define EVT_ARGS_3(a, ...) EVT_ARG(a), EVT_ARGS_2(__VA_ARGS__)
+#define EVT_ARGS_4(a, ...) EVT_ARG(a), EVT_ARGS_3(__VA_ARGS__)
+#define EVT_ARGS_5(a, ...) EVT_ARG(a), EVT_ARGS_4(__VA_ARGS__)
+#define EVT_ARGS_6(a, ...) EVT_ARG(a), EVT_ARGS_5(__VA_ARGS__)
+#define EVT_ARGS_7(a, ...) EVT_ARG(a), EVT_ARGS_6(__VA_ARGS__)
+#define EVT_ARGS_8(a, ...) EVT_ARG(a), EVT_ARGS_7(__VA_ARGS__)
+#define EVT_ARGS_9(a, ...) EVT_ARG(a), EVT_ARGS_8(__VA_ARGS__)
+#define EVT_ARGS_10(a, ...) EVT_ARG(a), EVT_ARGS_9(__VA_ARGS__)
+#define EVT_ARGS_11(a, ...) EVT_ARG(a), EVT_ARGS_10(__VA_ARGS__)
+#define EVT_ARGS_12(a, ...) EVT_ARG(a), EVT_ARGS_11(__VA_ARGS__)
+#define EVT_ARGS_13(a, ...) EVT_ARG(a), EVT_ARGS_12(__VA_ARGS__)
+#define EVT_ARGS_14(a, ...) EVT_ARG(a), EVT_ARGS_13(__VA_ARGS__)
+#define EVT_ARGS_15(a, ...) EVT_ARG(a), EVT_ARGS_14(__VA_ARGS__)
+#define EVT_ARGS_16(a, ...) EVT_ARG(a), EVT_ARGS_15(__VA_ARGS__)
+#define EVT_ARGS_17(a, ...) EVT_ARG(a), EVT_ARGS_16(__VA_ARGS__)
+#define EVT_ARGS_18(a, ...) EVT_ARG(a), EVT_ARGS_17(__VA_ARGS__)
+#define EVT_ARGS_19(a, ...) EVT_ARG(a), EVT_ARGS_18(__VA_ARGS__)
+#define EVT_ARGS_20(a, ...) EVT_ARG(a), EVT_ARGS_19(__VA_ARGS__)
+#define EVT_ARGS_21(a, ...) EVT_ARG(a), EVT_ARGS_20(__VA_ARGS__)
+#define EVT_ARGS_22(a, ...) EVT_ARG(a), EVT_ARGS_21(__VA_ARGS__)
+#define EVT_ARGS_23(a, ...) EVT_ARG(a), EVT_ARGS_22(__VA_ARGS__)
+#define EVT_ARGS_24(a, ...) EVT_ARG(a), EVT_ARGS_23(__VA_ARGS__)
+#define EVT_ARGS_25(a, ...) EVT_ARG(a), EVT_ARGS_24(__VA_ARGS__)
+#define EVT_ARGS_26(a, ...) EVT_ARG(a), EVT_ARGS_25(__VA_ARGS__)
+#define EVT_ARGS_27(a, ...) EVT_ARG(a), EVT_ARGS_26(__VA_ARGS__)
+#define EVT_ARGS_28(a, ...) EVT_ARG(a), EVT_ARGS_27(__VA_ARGS__)
+#define EVT_ARGS_29(a, ...) EVT_ARG(a), EVT_ARGS_28(__VA_ARGS__)
+#define EVT_ARGS_30(a, ...) EVT_ARG(a), EVT_ARGS_29(__VA_ARGS__)
+#define EVT_ARGS_31(a, ...) EVT_ARG(a), EVT_ARGS_30(__VA_ARGS__)
+#define EVT_ARGS_32(a, ...) EVT_ARG(a), EVT_ARGS_31(__VA_ARGS__)
 
 /// Local Word. A variable local to the current script.
 /// These are copied to scripts created by Exec, ExecWait, Thread, and ChildThread.
@@ -315,18 +391,18 @@ typedef b32 (*EvtPredicateF6Func)(f32, f32, f32, f32, f32, f32);
 /// Jumps to a given instruction pointer and begins execution from there.
 /// You can jump to a different EVT source and labels etc. will be loaded as expected.
 /// The timescale for the current script is also reset to the global default.
-#define Jump(EVT_SOURCE)                    EVT_CMD(EVT_OP_JUMP, (Bytecode) EVT_SOURCE),
+#define Jump(EVT_SOURCE)                    EVT_CMD(EVT_OP_JUMP, EVT_SOURCE),
 
 /// Marks this point in the script as a Goto target.
 ///
 /// `LABEL_ID` may be an integer constant outside the EVT expression range, or
 /// a pointer to an identifier-style string such as `"Resume"` or `Ref(sym)`.
-#define Label(LABEL_ID)                     EVT_CMD(EVT_OP_LABEL, (Bytecode) LABEL_ID),
+#define Label(LABEL_ID)                     EVT_CMD(EVT_OP_LABEL, LABEL_ID),
 
 /// Moves execution to the given label.
 ///
 /// `LABEL_ID` must use the same representation as the matching Label.
-#define Goto(LABEL_ID)                      EVT_CMD(EVT_OP_GOTO, (Bytecode) LABEL_ID),
+#define Goto(LABEL_ID)                      EVT_CMD(EVT_OP_GOTO, LABEL_ID),
 
 /// Marks the beginning of a loop.
 ///
@@ -490,12 +566,12 @@ typedef b32 (*EvtPredicateF6Func)(f32, f32, f32, f32, f32, f32);
 #define EndSwitch                           EVT_CMD(EVT_OP_END_SWITCH),
 
 /// Sets the given variable to a given value casted to an integer.
-#define Set(VAR, INT_VALUE)                 EVT_CMD(EVT_OP_SET, VAR, (Bytecode) INT_VALUE),
+#define Set(VAR, INT_VALUE)                 EVT_CMD(EVT_OP_SET, VAR, INT_VALUE),
 
 /// Sets the given variable to a given value, skipping the evt_get_variable call.
 /// That is, `SetConst(LocalVar(0), LocalVar(1))` will set `LocalVar(0)` to `0xFE363C81` instead of copying the value of
 /// `LocalVar(1)` into `LocalVar(0)`.
-#define SetConst(VAR, CONST)                EVT_CMD(EVT_OP_SET_CONST, VAR, (Bytecode) CONST),
+#define SetConst(VAR, CONST)                EVT_CMD(EVT_OP_SET_CONST, VAR, CONST),
 
 /// Sets the given variable to a given value, but supports Floats.
 #define SetF(VAR, FLOAT_VALUE)              EVT_CMD(EVT_OP_SETF, VAR, FLOAT_VALUE),
@@ -585,7 +661,7 @@ typedef b32 (*EvtPredicateF6Func)(f32, f32, f32, f32, f32, f32);
 #define ClampF(VAR, MIN_OR_VALUE, MAX_OR_MIN, MORE...) EVT_CMD(EVT_OP_CLAMPF, VAR, MIN_OR_VALUE, MAX_OR_MIN, ##MORE),
 
 /// Loads a s32 pointer for use with subsequent BufRead commands.
-#define UseBuf(INT_PTR)                     EVT_CMD(EVT_OP_USE_BUF, (Bytecode) INT_PTR),
+#define UseBuf(INT_PTR)                     EVT_CMD(EVT_OP_USE_BUF, INT_PTR),
 
 /// Consumes one or more s32s from the buffer and stores them in the given variables.
 #define BufRead(VAR, MORE...)               EVT_CMD(EVT_OP_BUF_READ, VAR, ##MORE),
@@ -595,7 +671,7 @@ typedef b32 (*EvtPredicateF6Func)(f32, f32, f32, f32, f32, f32);
 
 /// Loads an s32 pointer of fixed-point `Float(...)` values for use with subsequent FBufRead commands.
 /// Beware that the int buffer and the float buffer are not distinct.
-#define UseFBuf(FLOAT_PTR)                  EVT_CMD(EVT_OP_USE_FBUF, (Bytecode) FLOAT_PTR),
+#define UseFBuf(FLOAT_PTR)                  EVT_CMD(EVT_OP_USE_FBUF, FLOAT_PTR),
 
 /// Consumes one or more fixed-point `Float(...)` values from the buffer and stores them in the given variables.
 #define FBufRead(VAR, MORE...)              EVT_CMD(EVT_OP_FBUF_READ, VAR, ##MORE),
@@ -631,11 +707,11 @@ typedef b32 (*EvtPredicateF6Func)(f32, f32, f32, f32, f32, f32);
                                             EVT_CMD(EVT_OP_MEM_SET, EVT_MEM_TYPEOF((DESTINATION_ARRAY)[0]), Ref((DESTINATION_ARRAY)[0]), INDEX, VALUE),
 
 /// Loads an s32 array pointer into the current script for use with `ArrayVar(INDEX)`.
-#define UseArray(INT_PTR)                   EVT_CMD(EVT_OP_USE_ARRAY, (Bytecode) INT_PTR),
+#define UseArray(INT_PTR)                   EVT_CMD(EVT_OP_USE_ARRAY, INT_PTR),
 
 /// Loads an s32 array pointer into the current script for use with `UF(INDEX)`.
 /// Flags are stored in a 'packed' structure where indices refer to bits.
-#define UseFlagArray(PACKED_FLAGS_PTR)      EVT_CMD(EVT_OP_USE_FLAGS, (Bytecode) PACKED_FLAGS_PTR),
+#define UseFlagArray(PACKED_FLAGS_PTR)      EVT_CMD(EVT_OP_USE_FLAGS, PACKED_FLAGS_PTR),
 
 /// Allocates a new array of the given size for use with `ArrayVar(INDEX)`.
 /// EVT scripts do not have to worry about freeing this array.
@@ -664,14 +740,14 @@ typedef b32 (*EvtPredicateF6Func)(f32, f32, f32, f32, f32, f32);
 ///
 /// Extra ARGS become ArgVars in the new script. Arguments are passed as literal bytecode words unless explicitly
 /// wrapped with ARG_INT or ARG_FLOAT.
-#define Exec(EVT_SOURCE, ARGS...)           EVT_CMD(EVT_OP_EXEC, (Bytecode) EVT_SOURCE, ##ARGS),
+#define Exec(EVT_SOURCE, ARGS...)           EVT_CMD(EVT_OP_EXEC, EVT_SOURCE, ##ARGS),
 
 /// Identical to Exec, but the newly-launched script ID is stored in OUTVAR.
 /// The other script may be interacted with using KillScript, SuspendScript, ResumeScript, and
 /// IsScriptRunning.
 /// Extra ARGS become ArgVars in the new script with the same capture rules as Exec.
 #define ExecGetID(OUTVAR, EVT_SOURCE, ARGS...) \
-                                            EVT_CMD(EVT_OP_EXEC_GET_ID, (Bytecode) EVT_SOURCE, OUTVAR, ##ARGS),
+                                            EVT_CMD(EVT_OP_EXEC_GET_ID, EVT_SOURCE, OUTVAR, ##ARGS),
 
 /// Launches a new child script.
 /// Blocks for at least one frame unless the child is made to have a higher priority than the parent.
@@ -687,7 +763,7 @@ typedef b32 (*EvtPredicateF6Func)(f32, f32, f32, f32, f32, f32);
 /// Child scripts are killed, suspended, and resumed with their parent. For example, using KillScript on the parent
 /// also kills the child launched by this command.
 /// Extra ARGS become ArgVars in the child script with the same capture rules as Exec.
-#define ExecWait(EVT_SOURCE, ARGS...)       EVT_CMD(EVT_OP_EXEC_WAIT, (Bytecode) EVT_SOURCE, ##ARGS),
+#define ExecWait(EVT_SOURCE, ARGS...)       EVT_CMD(EVT_OP_EXEC_WAIT, EVT_SOURCE, ##ARGS),
 
 /// Assert that this script invocation received exactly NUM_ARGS arguments.
 #define ExpectArgs(NUM_ARGS)                EVT_CMD(EVT_OP_EXPECT_ARGS, NUM_ARGS),
@@ -721,7 +797,7 @@ typedef b32 (*EvtPredicateF6Func)(f32, f32, f32, f32, f32, f32);
 ///
 /// Only one script will run for a trigger at once.
 #define BindTrigger(EVT_SOURCE, TRIGGER, COLLIDER_ID, HAS_INTERACT_PROMPT, TRIGGER_PTR_OUTVAR) \
-                                            EVT_CMD(EVT_OP_BIND_TRIGGER, (Bytecode) EVT_SOURCE, TRIGGER, (Bytecode) COLLIDER_ID, HAS_INTERACT_PROMPT, TRIGGER_PTR_OUTVAR),
+                                            EVT_CMD(EVT_OP_BIND_TRIGGER, EVT_SOURCE, TRIGGER, COLLIDER_ID, HAS_INTERACT_PROMPT, TRIGGER_PTR_OUTVAR),
 
 /// Similar to BindTrigger, but also attaches an item list to the trigger context.
 ///
@@ -730,7 +806,7 @@ typedef b32 (*EvtPredicateF6Func)(f32, f32, f32, f32, f32, f32);
 /// TATTLE_MSG is stored on the trigger and may be read by Goombario tattles.
 /// HAS_INTERACT_PROMPT controls whether the player sees the interaction prompt for wall-press-A triggers.
 #define BindItemPrompt(EVT_SOURCE, TRIGGER, COLLIDER_ID, ITEM_LIST, TATTLE_MSG, HAS_INTERACT_PROMPT) \
-                                            EVT_CMD(EVT_OP_BIND_ITEM_PROMPT, (Bytecode) EVT_SOURCE, TRIGGER, COLLIDER_ID, (Bytecode) ITEM_LIST, TATTLE_MSG, HAS_INTERACT_PROMPT),
+                                            EVT_CMD(EVT_OP_BIND_ITEM_PROMPT, EVT_SOURCE, TRIGGER, COLLIDER_ID, ITEM_LIST, TATTLE_MSG, HAS_INTERACT_PROMPT),
 
 /// Unbinds the current script from the trigger it was bound to, if any.
 #define Unbind                              EVT_CMD(EVT_OP_UNBIND),
@@ -808,7 +884,7 @@ typedef b32 (*EvtPredicateF6Func)(f32, f32, f32, f32, f32, f32);
 ///     Call(ApiFunction)
 ///
 /// The given arguments can be accessed from the API function using `script->ptrReadPos`.
-#define Call(FUNC, ARGS...)                 EVT_CMD(EVT_OP_CALL, (Bytecode) FUNC, ##ARGS),
+#define Call(FUNC, ARGS...)                 EVT_CMD(EVT_OP_CALL, FUNC, ##ARGS),
 
 /// Calls a C function with integer arguments and stores its return value.
 ///

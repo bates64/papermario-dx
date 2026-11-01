@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+### `Ref` and `Float` are deprecated ([Alex](https://starhaven.dev/bates64.com))
+
+EVT commands take structs and decimal numbers without `Ref` and `Float`:
+
+```c
+Call(MakeShopOwner, Owner)           // was Ref(Owner)
+Call(SetNpcJumpscale, NPC_SELF, 2.5) // was Float(2.5)
+```
+
+`Float` is still needed for decimal numbers in C arrays that a script reads with `UseFBuf`. A variable that isn't a struct or an array, such as an `s32`, passes its value, so pass its address with `&`, such as `UseBuf(&BlowingBubbles)`.
+
 ## 2026-10-25
 
 ### Maps and stages can use any texture (Clover and [Alex](https://starhaven.dev/bates64.com))
