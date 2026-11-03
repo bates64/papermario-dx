@@ -19,7 +19,7 @@ EvtScript EVS_BindExitTriggers = {
 
 EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_JADE_JUNGLE)
-    Call(SetSpriteShading, SHADING_JAN_19)
+    Call(SetSpriteShading, $SpriteShading)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     ExecWait(EVS_MakeEntities)
     Call(EnableFog)

@@ -202,3 +202,17 @@ DripVolume Drips[] = {
     },
 };
 ```
+
+## Light
+
+A Light marker lights sprites, such as a torch casting a red glow on the player. Lights only show when the map has sprite shading, which you turn on with **Sprite Shading** in the map editor's **Options** tab. There you also set the **Base Color**, the color of a sprite's unlit side, and the **Edge Offset**, how wide the lit edges of sprites are.
+
+The map's header gives its sprite shading as `$SpriteShading`, which lights sprites with the map's Light markers. A map can have up to 7 of them. Set the shading in the map's main script:
+
+```c
+EvtScript EVS_Main = {
+    Call(SetSpriteShading, $SpriteShading)
+    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
+    ...
+};
+```

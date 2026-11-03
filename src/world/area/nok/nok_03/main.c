@@ -46,7 +46,6 @@ EvtScript EVS_SetupTexPan = {
 
 EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_KOOPA_VILLAGE)
-    Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     IfLt(GB_StoryProgress, STORY_CH1_KOOPER_JOINED_PARTY)
         Call(MakeNpcs, false, DefaultNPCs)

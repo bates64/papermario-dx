@@ -36,7 +36,6 @@ EvtScript EVS_Main = {
     Set(AB_KPA91_DialogueState_Toad2, 0)
     Set(AB_KPA91_DialogueState_Dryite, 0)
     Set(AB_KPA91_DialogueState_ToadGuard, 0)
-    Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, true, DefaultNPCs)
     ExecWait(EVS_MakeEntities)

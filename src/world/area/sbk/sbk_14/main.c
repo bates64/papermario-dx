@@ -46,7 +46,6 @@ EvtScript EVS_EnterMap = {
 
 EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_DRY_DRY_DESERT)
-    Call(SetSpriteShading, SHADING_NONE)
     IfEq(GB_StoryProgress, STORY_CH2_GOT_PULSE_STONE)
         Call(DisablePulseStone, false)
     EndIf

@@ -8,7 +8,6 @@ void EnableBackgroundWave(void) {
 }
 
 EvtScript EVS_PreBattle = {
-    Call(SetSpriteShading, SHADING_NONE)
     Thread
         Set(LVar0, MODEL_Default)
         Set(LVar1, 0)

@@ -44,7 +44,6 @@ EvtScript EVS_Main = {
         Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
         Call(SetNpcPos, NPC_PARTNER, NPC_DISPOSE_LOCATION)
     EndIf
-    Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
     Call(SetCamPitch, CAM_DEFAULT, 0, 0)

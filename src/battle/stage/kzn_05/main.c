@@ -4,7 +4,6 @@
 #include "battle/stage/common/LavaDecorations.inc.c"
 
 EvtScript EVS_PreBattle = {
-    Call(SetSpriteShading, SHADING_NONE)
     Call(SetCamBGColor, CAM_BATTLE, 0, 0, 0)
     Set(LVar0, MODEL_yougan2)
     Set(LVar1, TEX_PANNER_0)

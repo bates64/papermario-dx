@@ -18,7 +18,7 @@ EvtScript EVS_EnterMap = {
 
 EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_PEACHS_CASTLE)
-    Call(SetSpriteShading, SHADING_KKJ_17)
+    Call(SetSpriteShading, $SpriteShading)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     ExecWait(EVS_MakeEntities)
     Exec(EVS_SetupMagicChest)

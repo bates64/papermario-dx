@@ -3,7 +3,6 @@
 #include "stage.xml.h"
 
 EvtScript EVS_PreBattle = {
-    Call(SetSpriteShading, SHADING_NONE)
     Call(SetCamBGColor, CAM_BATTLE, 0, 0, 0)
     Call(SetTexPanner, MODEL_taki1, TEX_PANNER_1)
     Call(EnableTexPanning, MODEL_taki1, true)

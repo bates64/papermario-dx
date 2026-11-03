@@ -32,8 +32,13 @@
     950,
     1000
   ],
-  "hasSpriteShading": false,
-  "shadingOffset": 0,
+  "hasSpriteShading": true,
+  "shadingOffset": 30,
+  "shadingBaseColor": [
+    160,
+    150,
+    255
+  ],
   "texPanners": [
     {
       "id": 0,
@@ -558,6 +563,146 @@
       ],
       "yaw": 0.0,
       "extracted": false
+    },
+    {
+      "id": 9,
+      "name": "Light_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        366,
+        -87,
+        367
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          190,
+          101,
+          47
+        ],
+        "pos": [
+          366,
+          -87,
+          367
+        ],
+        "falloff": 0.01,
+        "mode": "linear"
+      }
+    },
+    {
+      "id": 10,
+      "name": "Light_2",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        458,
+        -86,
+        216
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          190,
+          101,
+          47
+        ],
+        "pos": [
+          458,
+          -86,
+          216
+        ],
+        "falloff": 0.01,
+        "mode": "linear"
+      }
+    },
+    {
+      "id": 11,
+      "name": "Light_3",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        509,
+        91,
+        486
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          60,
+          60,
+          60
+        ],
+        "pos": [
+          509,
+          91,
+          486
+        ],
+        "falloff": 0.01,
+        "mode": "linear"
+      }
+    },
+    {
+      "id": 12,
+      "name": "Light_4",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        563,
+        89,
+        397
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          60,
+          60,
+          60
+        ],
+        "pos": [
+          563,
+          89,
+          397
+        ],
+        "falloff": 0.01,
+        "mode": "linear"
+      }
+    },
+    {
+      "id": 13,
+      "name": "Light_5",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        668,
+        92,
+        343
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          60,
+          60,
+          60
+        ],
+        "pos": [
+          668,
+          92,
+          343
+        ],
+        "falloff": 0.01,
+        "mode": "linear"
+      }
     }
   ]
 }

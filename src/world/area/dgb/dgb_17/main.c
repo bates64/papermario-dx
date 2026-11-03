@@ -43,7 +43,6 @@ EvtScript EVS_EnterMap = {
 
 EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_TUBBAS_MANOR)
-    Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     ExecWait(EVS_MakeEntities)
     Exec(EVS_SetupMusic)

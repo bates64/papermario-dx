@@ -68,7 +68,6 @@ EvtScript EVS_EnterMap = {
 
 EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_TOAD_TOWN)
-    Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, $WishingToad.index)

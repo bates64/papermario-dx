@@ -32,8 +32,13 @@
     950,
     1000
   ],
-  "hasSpriteShading": false,
-  "shadingOffset": 0,
+  "hasSpriteShading": true,
+  "shadingOffset": 30,
+  "shadingBaseColor": [
+    120,
+    120,
+    180
+  ],
   "texPanners": [
     {
       "id": 0,
@@ -710,6 +715,62 @@
       "extracted": true,
       "entityComp": {
         "type": "Padlock"
+      }
+    },
+    {
+      "id": 13,
+      "name": "Light_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          250,
+          220,
+          160
+        ],
+        "pos": [
+          0,
+          0,
+          0
+        ],
+        "falloff": 8.8e-05,
+        "mode": "quadratic"
+      }
+    },
+    {
+      "id": 14,
+      "name": "Light_2",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          250,
+          220,
+          160
+        ],
+        "pos": [
+          0,
+          0,
+          0
+        ],
+        "falloff": 8.7999986e-05,
+        "mode": "quadratic"
       }
     }
   ]

@@ -109,7 +109,6 @@ EvtScript EVS_EnterMap = {
 
 EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_PEACHS_CASTLE)
-    Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     IfEq(GB_StoryProgress, STORY_CH4_BEGAN_PEACH_MISSION)
         Call(MakeNpcs, false, DefaultNPCs)

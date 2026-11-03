@@ -52,7 +52,6 @@ EvtScript EVS_ControlUpperVisibility = {
 
 EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_STAR_HAVEN)
-    Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     IfEq(GB_StoryProgress, STORY_CH8_OPENED_PATH_TO_STAR_WAY)
         Set(GB_StoryProgress, STORY_CH8_REACHED_STAR_HAVEN)

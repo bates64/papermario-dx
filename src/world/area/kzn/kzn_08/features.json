@@ -32,8 +32,13 @@
     950,
     1000
   ],
-  "hasSpriteShading": false,
-  "shadingOffset": 0,
+  "hasSpriteShading": true,
+  "shadingOffset": 25,
+  "shadingBaseColor": [
+    160,
+    120,
+    120
+  ],
   "texPanners": [
     {
       "id": 0,
@@ -619,6 +624,118 @@
         "itemName": "0",
         "gameFlagName": "GF_KZN08_Chest_DizzyStomp",
         "scriptName": "EVS_OpenChest_DizzyStomp"
+      }
+    },
+    {
+      "id": 11,
+      "name": "Light_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        -97,
+        -17,
+        293
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          255,
+          100,
+          0
+        ],
+        "pos": [
+          -97,
+          -17,
+          293
+        ],
+        "falloff": 0.01,
+        "mode": "linear"
+      }
+    },
+    {
+      "id": 12,
+      "name": "Light_2",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        -176,
+        -32,
+        -90
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          255,
+          33,
+          0
+        ],
+        "pos": [
+          -176,
+          -32,
+          -90
+        ],
+        "falloff": 0.01,
+        "mode": "linear"
+      }
+    },
+    {
+      "id": 13,
+      "name": "Light_3",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        124,
+        161,
+        7
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          255,
+          255,
+          255
+        ],
+        "pos": [
+          124,
+          161,
+          7
+        ],
+        "falloff": 0.01,
+        "mode": "linear"
+      }
+    },
+    {
+      "id": 14,
+      "name": "Light_4",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        58,
+        13,
+        328
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          255,
+          255,
+          255
+        ],
+        "pos": [
+          58,
+          13,
+          328
+        ],
+        "falloff": 0.01,
+        "mode": "linear"
       }
     }
   ]

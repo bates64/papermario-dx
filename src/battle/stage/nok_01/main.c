@@ -22,7 +22,6 @@ EvtScript EVS_AnimateFlower = {
 };
 
 EvtScript EVS_PreBattle = {
-    Call(SetSpriteShading, SHADING_NONE)
     Set(LVar0, MODEL_h1)
     Exec(EVS_AnimateFlower)
     Set(LVar0, MODEL_h2)

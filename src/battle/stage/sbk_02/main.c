@@ -68,7 +68,6 @@ EvtScript EVS_UpdateSunPos = {
 };
 
 EvtScript EVS_PreBattle = {
-    Call(SetSpriteShading, SHADING_NONE)
     Set(LVar0, MODEL_g60)
     Set(LVar1, 0)
     Exec(EVS_UpdateSunPos)

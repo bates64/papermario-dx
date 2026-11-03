@@ -15,7 +15,6 @@ EvtScript EVS_BindExitTriggers = {
 
 EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_SHIVER_MOUNTAIN)
-    Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     ExecWait(EVS_MakeEntities)
     ExecWait(EVS_SetupMusic)

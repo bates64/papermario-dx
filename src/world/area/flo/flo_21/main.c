@@ -88,7 +88,6 @@ EvtScript EVS_BindExitTriggers = {
 
 EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_CLOUDY_CLIMB)
-    Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, false, DefaultNPCs)
     Exec(EVS_Scene_HuffNPuffAmbush)

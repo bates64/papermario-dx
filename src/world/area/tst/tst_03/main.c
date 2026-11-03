@@ -27,7 +27,6 @@ EvtScript EVS_GotoMap_tst_04_0 = {
 
 EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_TESTING)
-    Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     ExecWait(EVS_MakeEntities)
     BindTrigger(EVS_GotoMap_tst_02_1, TRIGGER_WALL_PUSH, COLLIDER_deilitw, 1, 0)

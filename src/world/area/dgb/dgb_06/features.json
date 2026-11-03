@@ -32,8 +32,13 @@
     950,
     1000
   ],
-  "hasSpriteShading": false,
-  "shadingOffset": 0,
+  "hasSpriteShading": true,
+  "shadingOffset": 30,
+  "shadingBaseColor": [
+    180,
+    160,
+    130
+  ],
   "texPanners": [
     {
       "id": 0,
@@ -569,6 +574,34 @@
         "itemName": "0",
         "gameFlagName": "GF_DGB06_Chest_CastleKey1",
         "scriptName": "EVS_OpenChest_TubbaKey"
+      }
+    },
+    {
+      "id": 8,
+      "name": "Light_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        -141,
+        199,
+        -217
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          255,
+          255,
+          255
+        ],
+        "pos": [
+          -141,
+          199,
+          -217
+        ],
+        "falloff": 0.005000003,
+        "mode": "linear"
       }
     }
   ]

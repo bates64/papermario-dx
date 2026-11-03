@@ -3,7 +3,6 @@
 #include "stage.xml.h"
 
 EvtScript EVS_PreBattle = {
-    Call(SetSpriteShading, SHADING_NONE)
     Call(SetCamBGColor, CAM_BATTLE, 0, 0, 0)
     Call(SetDarknessMode, BTL_DARKNESS_MODE_1)
     Return

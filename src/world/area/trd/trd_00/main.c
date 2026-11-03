@@ -106,7 +106,6 @@ EvtScript EVS_EnterMap = {
 
 EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_KOOPA_BROS_FORTRESS)
-    Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(GF_MAP_KoopaBrosFortress, true)
     Call(MakeNpcs, true, DefaultNPCs)

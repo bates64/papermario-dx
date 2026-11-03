@@ -4,7 +4,6 @@
 #include "battle/stage/common/MovingClouds.inc.c"
 
 EvtScript EVS_PreBattle = {
-    Call(SetSpriteShading, SHADING_NONE)
     Call(EnableModel, MODEL_o302, false)
     Return
     End
@@ -31,7 +30,6 @@ OVL_DEF_STAGE() = {
 // kmr_05:b
 
 EvtScript EVS_PreBattle_b = {
-    Call(SetSpriteShading, SHADING_NONE)
     Call(EnableModel, MODEL_yuka, false)
     Call(EnableModel, MODEL_o303, false)
     Return

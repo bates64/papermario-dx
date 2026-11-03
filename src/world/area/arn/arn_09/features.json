@@ -32,8 +32,13 @@
     950,
     1000
   ],
-  "hasSpriteShading": false,
-  "shadingOffset": 0,
+  "hasSpriteShading": true,
+  "shadingOffset": 30,
+  "shadingBaseColor": [
+    180,
+    180,
+    180
+  ],
   "texPanners": [
     {
       "id": 0,
@@ -549,6 +554,34 @@
       "entityComp": {
         "type": "ScriptSpring",
         "scriptName": "EVS_UseSpring"
+      }
+    },
+    {
+      "id": 7,
+      "name": "Light_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          255,
+          255,
+          0
+        ],
+        "pos": [
+          0,
+          0,
+          0
+        ],
+        "falloff": 0.0001999955,
+        "mode": "quadratic"
       }
     }
   ]

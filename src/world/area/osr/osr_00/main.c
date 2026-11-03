@@ -58,7 +58,6 @@ EvtScript EVS_TexPan_Fountain = {
 
 EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_PEACH_CASTLE_GROUNDS)
-    Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Switch(GB_StoryProgress)
         CaseEq(STORY_INTRO)

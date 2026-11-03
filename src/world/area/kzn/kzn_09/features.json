@@ -32,8 +32,13 @@
     950,
     1000
   ],
-  "hasSpriteShading": false,
-  "shadingOffset": 0,
+  "hasSpriteShading": true,
+  "shadingOffset": 20,
+  "shadingBaseColor": [
+    160,
+    120,
+    120
+  ],
   "texPanners": [
     {
       "id": 0,
@@ -708,6 +713,62 @@
         "type": "HiddenPanel",
         "gameFlagName": "GF_KZN09_HiddenPanel",
         "modelName": "MODEL_o149"
+      }
+    },
+    {
+      "id": 11,
+      "name": "Light_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        -478,
+        431,
+        136
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          76,
+          72,
+          0
+        ],
+        "pos": [
+          -478,
+          431,
+          136
+        ],
+        "falloff": 0.01,
+        "mode": "linear"
+      }
+    },
+    {
+      "id": 12,
+      "name": "Light_2",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        -528,
+        879,
+        -51
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          76,
+          72,
+          0
+        ],
+        "pos": [
+          -528,
+          879,
+          -51
+        ],
+        "falloff": 0.01,
+        "mode": "linear"
       }
     }
   ]

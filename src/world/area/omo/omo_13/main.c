@@ -14,7 +14,6 @@ EvtScript EVS_BindExitTriggers = {
 
 EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_SHY_GUYS_TOYBOX)
-    Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     IfEq(GF_OMO13_Defeated_AntiGuy, true)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_he, COLLIDER_FLAGS_UPPER_MASK)

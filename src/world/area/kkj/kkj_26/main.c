@@ -58,7 +58,7 @@ EvtScript EVS_EnterMap = {
 
 EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_PEACHS_CASTLE)
-    Call(SetSpriteShading, SHADING_KKJ_26)
+    Call(SetSpriteShading, $SpriteShading)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, $AllSpiritsRescued.index)

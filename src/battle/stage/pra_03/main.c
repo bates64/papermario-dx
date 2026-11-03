@@ -3,7 +3,6 @@
 #include "stage.xml.h"
 
 EvtScript EVS_PreBattle = {
-    Call(SetSpriteShading, SHADING_NONE)
     Call(SetCamBGColor, CAM_BATTLE, 0, 0, 0)
     Return
     End
@@ -22,7 +21,6 @@ OVL_DEF_STAGE() = {
 // pra_03:b
 
 EvtScript EVS_PreBattle_b = {
-    Call(SetSpriteShading, SHADING_NONE)
     Call(SetCamBGColor, CAM_BATTLE, 0, 0, 0)
     Call(SetGroupVisibility, MODEL_g115, MODEL_GROUP_HIDDEN)
     Return
@@ -37,7 +35,6 @@ OVL_DEF_STAGE(b) = {
 // pra_03:c
 
 EvtScript EVS_PreBattle_c = {
-    Call(SetSpriteShading, SHADING_NONE)
     Call(SetCamBGColor, CAM_BATTLE, 0, 0, 0)
     Call(SetGroupVisibility, MODEL_g115, MODEL_GROUP_HIDDEN)
     Call(SetGroupVisibility, MODEL_g117, MODEL_GROUP_HIDDEN)

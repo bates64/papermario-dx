@@ -7,7 +7,6 @@ extern ActorBlueprint whacka;
 extern Formation WhackaFormation;
 
 EvtScript EVS_PreBattle = {
-    Call(SetSpriteShading, SHADING_NONE)
     Call(SetGroupVisibility, MODEL_b, MODEL_GROUP_HIDDEN)
     Return
     End
@@ -45,7 +44,6 @@ Formation WhackaFormation = {
 // iwa_01:b
 
 EvtScript EVS_PreBattle_b = {
-    Call(SetSpriteShading, SHADING_NONE)
     Call(SetGroupVisibility, MODEL_a, MODEL_GROUP_HIDDEN)
     Return
     End

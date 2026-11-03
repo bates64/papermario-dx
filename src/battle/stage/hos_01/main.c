@@ -110,7 +110,6 @@ void build_gfx_pink_stars(s32 index) {
 }
 
 EvtScript EVS_PreBattle = {
-    Call(SetSpriteShading, SHADING_NONE)
 
     Call(MakeLocalVertexCopy, VTX_COPY_0, MODEL_o345, true)
     Call(SetCustomGfxBuilders, CUSTOM_GFX_1, build_gfx_yellow_stars, nullptr)

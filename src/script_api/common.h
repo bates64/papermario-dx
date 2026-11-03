@@ -2379,7 +2379,7 @@ API_CALLABLE(DeleteTrigger);
 /// @name Sprite shading
 
 /// @evtapi
-/// @param preset
+/// @param shading the map's sprite shading, `$SpriteShading`
 API_CALLABLE(SetSpriteShading);
 
 /// @evtapi

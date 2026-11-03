@@ -31,7 +31,6 @@ EvtScript EVS_UpdateMovingPlatforms = {
 };
 
 EvtScript EVS_PreBattle = {
-    Call(SetSpriteShading, SHADING_NONE)
     Call(SetCamBGColor, CAM_BATTLE, 0, 0, 0)
     Thread
         Set(LVar0, MODEL_ere1)

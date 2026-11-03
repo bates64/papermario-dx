@@ -32,8 +32,13 @@
     950,
     1000
   ],
-  "hasSpriteShading": false,
-  "shadingOffset": 0,
+  "hasSpriteShading": true,
+  "shadingOffset": 30,
+  "shadingBaseColor": [
+    160,
+    120,
+    120
+  ],
   "texPanners": [
     {
       "id": 0,
@@ -1113,6 +1118,146 @@
         "type": "YellowBlock",
         "itemName": "ITEM_COIN",
         "gameFlagName": "GF_KZN03_ItemBlock_CoinD"
+      }
+    },
+    {
+      "id": 28,
+      "name": "Light_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        112,
+        -6,
+        367
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          255,
+          95,
+          0
+        ],
+        "pos": [
+          112,
+          -6,
+          367
+        ],
+        "falloff": 0.01,
+        "mode": "linear"
+      }
+    },
+    {
+      "id": 29,
+      "name": "Light_2",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        -255,
+        50,
+        472
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          100,
+          148,
+          77
+        ],
+        "pos": [
+          -255,
+          50,
+          472
+        ],
+        "falloff": 0.01,
+        "mode": "uniform"
+      }
+    },
+    {
+      "id": 30,
+      "name": "Light_3",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        76,
+        242,
+        249
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          255,
+          125,
+          0
+        ],
+        "pos": [
+          76,
+          242,
+          249
+        ],
+        "falloff": 0.01,
+        "mode": "linear"
+      }
+    },
+    {
+      "id": 31,
+      "name": "Light_4",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        223,
+        443,
+        259
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          255,
+          95,
+          0
+        ],
+        "pos": [
+          223,
+          443,
+          259
+        ],
+        "falloff": 0.01,
+        "mode": "linear"
+      }
+    },
+    {
+      "id": 32,
+      "name": "Light_5",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        -73,
+        630,
+        55
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          104,
+          90,
+          29
+        ],
+        "pos": [
+          -73,
+          630,
+          55
+        ],
+        "falloff": 0.01,
+        "mode": "uniform"
       }
     }
   ]

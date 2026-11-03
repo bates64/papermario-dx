@@ -14,7 +14,6 @@ API_CALLABLE(SetupFog) {
 }
 
 EvtScript EVS_PreBattle = {
-    Call(SetSpriteShading, SHADING_NONE)
     Call(SetupFog)
     Return
     End

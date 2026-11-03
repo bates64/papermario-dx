@@ -32,8 +32,13 @@
     950,
     1000
   ],
-  "hasSpriteShading": false,
-  "shadingOffset": 0,
+  "hasSpriteShading": true,
+  "shadingOffset": 30,
+  "shadingBaseColor": [
+    170,
+    120,
+    120
+  ],
   "texPanners": [
     {
       "id": 0,
@@ -601,6 +606,90 @@
       "entityComp": {
         "type": "Chest",
         "itemName": "0"
+      }
+    },
+    {
+      "id": 9,
+      "name": "Light_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        391,
+        155,
+        82
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          255,
+          0,
+          0
+        ],
+        "pos": [
+          391,
+          155,
+          82
+        ],
+        "falloff": 0.01,
+        "mode": "linear"
+      }
+    },
+    {
+      "id": 10,
+      "name": "Light_2",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          255,
+          255,
+          255
+        ],
+        "pos": [
+          0,
+          0,
+          0
+        ],
+        "falloff": 0.01,
+        "mode": "linear"
+      }
+    },
+    {
+      "id": 11,
+      "name": "Light_3",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        482,
+        241,
+        176
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          255,
+          255,
+          117
+        ],
+        "pos": [
+          482,
+          241,
+          176
+        ],
+        "falloff": 0.01,
+        "mode": "linear"
       }
     }
   ]

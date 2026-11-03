@@ -32,8 +32,13 @@
     950,
     1000
   ],
-  "hasSpriteShading": false,
-  "shadingOffset": 0,
+  "hasSpriteShading": true,
+  "shadingOffset": 30,
+  "shadingBaseColor": [
+    160,
+    120,
+    120
+  ],
   "texPanners": [
     {
       "id": 0,
@@ -756,6 +761,90 @@
         "type": "YellowBlock",
         "itemName": "ITEM_MAPLE_SYRUP",
         "gameFlagName": "GF_KZN19_ItemBlock_MapleSyrup"
+      }
+    },
+    {
+      "id": 14,
+      "name": "Light_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        -322,
+        2,
+        -135
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          255,
+          30,
+          0
+        ],
+        "pos": [
+          -322,
+          2,
+          -135
+        ],
+        "falloff": 0.01,
+        "mode": "linear"
+      }
+    },
+    {
+      "id": 15,
+      "name": "Light_2",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        -99,
+        65,
+        100
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          255,
+          0,
+          0
+        ],
+        "pos": [
+          -99,
+          65,
+          100
+        ],
+        "falloff": 0.01,
+        "mode": "linear"
+      }
+    },
+    {
+      "id": 16,
+      "name": "Light_3",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        316,
+        49,
+        -69
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          255,
+          50,
+          40
+        ],
+        "pos": [
+          316,
+          49,
+          -69
+        ],
+        "falloff": 0.01966001,
+        "mode": "linear"
       }
     }
   ]

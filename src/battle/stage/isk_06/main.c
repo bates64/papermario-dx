@@ -16,7 +16,6 @@ API_CALLABLE(DeleteTorchFX) {
 }
 
 EvtScript EVS_PreBattle = {
-    Call(SetSpriteShading, SHADING_NONE)
     Call(SetCamBGColor, CAM_BATTLE, 0, 0, 0)
     Call(CreateTorchFX)
     Return
@@ -42,7 +41,6 @@ API_CALLABLE(CreateTorchFX_b) {
 }
 
 EvtScript EVS_PreBattle_b = {
-    Call(SetSpriteShading, SHADING_NONE)
     Call(SetCamBGColor, CAM_BATTLE, 0, 0, 0)
     Call(CreateTorchFX_b)
     Call(EnableModel, MODEL_kesu, false)

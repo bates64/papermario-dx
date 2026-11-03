@@ -4,7 +4,6 @@
 #include "battle/stage/common/Snowflakes.inc.c"
 
 EvtScript EVS_PreBattle = {
-    Call(SetSpriteShading, SHADING_NONE)
     Exec(EVS_SpawnSnowfall)
     Thread
         Set(LVar0, MODEL_o262)

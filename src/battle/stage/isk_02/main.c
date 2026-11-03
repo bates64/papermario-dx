@@ -3,7 +3,7 @@
 #include "stage.xml.h"
 
 EvtScript EVS_PreBattle = {
-    Call(SetSpriteShading, SHADING_BTL_ISK)
+    Call(SetSpriteShading, $SpriteShading)
     Call(SetCamBGColor, CAM_BATTLE, 0, 0, 0)
     Return
     End
@@ -30,7 +30,6 @@ OVL_DEF_STAGE() = {
 // isk_02:b
 
 EvtScript EVS_PreBattle_b = {
-    Call(SetSpriteShading, SHADING_NONE)
     Call(SetCamBGColor, CAM_BATTLE, 0, 0, 0)
     Call(EnableModel, MODEL_o365, false)
     Call(EnableModel, MODEL_o366, false)
@@ -51,7 +50,6 @@ OVL_DEF_STAGE(b) = {
 // isk_02:c
 
 EvtScript EVS_PreBattle_c = {
-    Call(SetSpriteShading, SHADING_NONE)
     Call(SetCamBGColor, CAM_BATTLE, 0, 0, 0)
     Call(EnableModel, MODEL_kai2, false)
     Call(EnableModel, MODEL_kai1, false)

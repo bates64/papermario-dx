@@ -74,7 +74,6 @@ segments:
   - { name: title/tape }
   - { name: title/bowser_silhouette }
   - { name: imgfx_data, vram: 0x0 }
-  - { name: sprite_shading_profiles }
   - { name: create_audio_system_obfuscated, vram: 0x80200000 }
   - { name: load_engine_data_obfuscated, vram: 0x80200080 }
   - { name: general_heap_create_obfuscated, vram: 0x802AE000 }
@@ -133,7 +132,6 @@ assets:
     assets/us/n_aspMain_data.bin: main
     assets/us/n_aspMain_text.bin: main
     assets/us/rspboot_font.bin: boot
-    assets/us/sprite_shading_profiles.bin: sprite_shading_profiles
     assets/us/tex_pool.bin: tex_pool
 
 # Directories whose images are packed into a larger blob rather than being

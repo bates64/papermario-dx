@@ -18,7 +18,6 @@ EvtScript EVS_RotateWindmill = {
 };
 
 EvtScript EVS_PreBattle = {
-    Call(SetSpriteShading, SHADING_NONE)
     Set(LVar0, MODEL_o332)
     ExecWait(EVS_RotateWindmill)
     Return

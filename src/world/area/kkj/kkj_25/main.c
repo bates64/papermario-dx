@@ -96,7 +96,7 @@ EvtScript EVS_Main = {
             Set(GF_KKJ25_Defeated_Bowser, true)
     EndSwitch
     Set(GB_WorldLocation, LOCATION_PEACHS_CASTLE)
-    Call(SetSpriteShading, SHADING_KKJ_25)
+    Call(SetSpriteShading, $SpriteShading)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(SetCamSpeed, CAM_DEFAULT, 0.75)
     IfEq(GF_KKJ25_Defeated_Bowser, false)

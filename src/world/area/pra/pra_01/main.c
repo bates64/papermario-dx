@@ -116,7 +116,6 @@ API_CALLABLE(DisableFloorReflection) {
 
 EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_SHIVER_MOUNTAIN)
-    Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(GF_MAP_CrystalPalace, true)
     IfEq(GB_StoryProgress, STORY_CH7_BEGAN_PEACH_MISSION)

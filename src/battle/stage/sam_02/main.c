@@ -4,7 +4,6 @@
 #include "battle/stage/common/Snowflakes.inc.c"
 
 EvtScript EVS_PreBattle = {
-    Call(SetSpriteShading, SHADING_NONE)
     Call(SetGroupVisibility, MODEL_p2, MODEL_GROUP_HIDDEN)
     Call(SetGroupVisibility, MODEL_p3, MODEL_GROUP_HIDDEN)
     Thread
@@ -50,7 +49,6 @@ OVL_DEF_STAGE() = {
 // sam_02:b
 
 EvtScript EVS_PreBattle_b = {
-    Call(SetSpriteShading, SHADING_NONE)
     Call(SetGroupVisibility, MODEL_p1, MODEL_GROUP_HIDDEN)
     Call(SetGroupVisibility, MODEL_yuki, MODEL_GROUP_HIDDEN)
     Exec(EVS_SpawnSnowfall)
@@ -68,7 +66,6 @@ OVL_DEF_STAGE(b) = {
 // sam_02:c
 
 EvtScript EVS_PreBattle_c = {
-    Call(SetSpriteShading, SHADING_NONE)
     Call(SetGroupVisibility, MODEL_p1, MODEL_GROUP_HIDDEN)
     Call(SetGroupVisibility, MODEL_p2, MODEL_GROUP_HIDDEN)
     Call(SetGroupVisibility, MODEL_yuki, MODEL_GROUP_HIDDEN)
@@ -87,7 +84,6 @@ OVL_DEF_STAGE(c) = {
 // sam_02:d
 
 EvtScript EVS_PreBattle_d = {
-    Call(SetSpriteShading, SHADING_NONE)
     Call(SetGroupVisibility, MODEL_p1, MODEL_GROUP_HIDDEN)
     Call(SetGroupVisibility, MODEL_p2, MODEL_GROUP_HIDDEN)
     Call(SetGroupVisibility, MODEL_p3, MODEL_GROUP_HIDDEN)

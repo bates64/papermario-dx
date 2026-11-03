@@ -79,7 +79,6 @@ ITEM_LIST(KeyList, ITEM_TUBBA_CASTLE_KEY);
 
 EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_TUBBAS_MANOR)
-    Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(GF_MAP_TubbasManor, true)
     ExecWait(EVS_MakeEntities)

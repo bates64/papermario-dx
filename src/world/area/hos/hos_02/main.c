@@ -97,7 +97,6 @@ EvtScript EVS_EnterStarWarp = {
 
 EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_STAR_WAY)
-    Call(SetSpriteShading, SHADING_NONE)
     Call(SetSurfaceWalkEffect, SURFACE_WALK_FX_SPARKLE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Set(GF_MAP_StarWay, true)

@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+### Each map has its own sprite shading ([Alex](https://starhaven.dev/bates64.com))
+
+Sprite shading is set for each map instead of in a shared list of profiles. Turn it on and set its colors in the map editor's **Options** tab, and place its lights as Light markers. See [the docs](https://docs.starhaven.dev/papermario-dx/world/markers/#light) for more information.
+
+To update:
+- Replace `Call(SetSpriteShading, SHADING_...)` with `Call(SetSpriteShading, $SpriteShading)`, then open the map, turn on **Sprite Shading**, and add its lights as Light markers. The base game's maps have already been moved over.
+- Delete `Call(SetSpriteShading, SHADING_NONE)`. It did nothing, and `SHADING_NONE` no longer exists.
+- If you edited `sprite/sprite_shading_profiles.json`, nothing reads it anymore. Copy your changes into each map that uses the profile.
+
 ### `Ref` and `Float` are deprecated ([Alex](https://starhaven.dev/bates64.com))
 
 EVT commands take structs and decimal numbers without `Ref` and `Float`:

@@ -320,7 +320,6 @@ s32 BetaPanelData[] = {
 
 EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_TESTING)
-    Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Call(MakeNpcs, false, DefaultNPCs)
     Set(LVar0, BetaPanelData)

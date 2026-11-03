@@ -19,7 +19,6 @@ EvtScript EVS_TexAnim_Fire = {
 };
 
 EvtScript EVS_PreBattle = {
-    Call(SetSpriteShading, SHADING_NONE)
     Call(SetCamBGColor, CAM_BATTLE, 0, 0, 0)
     Return
     End

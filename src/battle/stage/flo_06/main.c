@@ -4,7 +4,6 @@
 #include "battle/stage/common/MakeSun.inc.c"
 
 EvtScript EVS_PreBattle = {
-    Call(SetSpriteShading, SHADING_NONE)
     Call(SetCamBGColor, CAM_BATTLE, 0, 0, 0)
     ExecWait(MakeSun)
     Return

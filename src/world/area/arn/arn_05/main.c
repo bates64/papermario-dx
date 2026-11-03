@@ -28,7 +28,6 @@ EvtScript EVS_EnterMap = {
 
 EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_GUSTY_GULCH)
-    Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     IfLt(GB_StoryProgress, STORY_CH3_DEFEATED_TUBBA_BLUBBA)
         Call(MakeNpcs, false, BeforeNPCs)

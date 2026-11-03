@@ -5,8 +5,9 @@ It gives the IDs of the geometry's models, colliders, and zones, from the
 headers Star Rod writes beside the compiled geometry. If the map has a
 features.json, it also gives each of its markers as a constant named after it
 with a `$` in front, such as `$Goompa`, and its Entry markers as `$Entries`;
-see the Markers page of the manual. GCC leaves out the markers a file of the
-map's code doesn't use.
+see the Markers page of the manual. If the map has sprite shading, it gives
+that as `$SpriteShading`, with the map's Light markers as its lights. GCC leaves out
+the markers a file of the map's code doesn't use.
 
 With --entries, it also writes the header other maps include to send the
 player to this map's entries, such as world/area/kmr/kmr_03.h, which gives them
@@ -252,8 +253,41 @@ def path_lines(marker) -> tuple:
     return lines, [f"{path}_{name}" for _, name in named]
 
 
-def marker_lines(markers: list, map_name: str) -> tuple:
-    """The definitions of a map's markers for its own code, and the definition of its entries for other maps'."""
+LIGHT_FALLOFF = {
+    "uniform": [],
+    "linear": ["LIGHT_SOURCE_LINEAR_FALLOFF"],
+    "quadratic": ["LIGHT_SOURCE_QUADRATIC_FALLOFF"],
+}
+
+
+def shading_lines(features, lights: list) -> list:
+    """The definition of the map's sprite shading, from its base color, its edge offset, and its Light markers."""
+    if len(lights) > 7:
+        raise MarkerError(f"sprite shading can have at most 7 lights, but the map has {len(lights)} Light markers")
+
+    sources = []
+    for light in lights:
+        comp = light["lightComp"]
+        flags = " | ".join(["LIGHT_SOURCE_ENABLED", *LIGHT_FALLOFF[comp["mode"]]])
+        rgb = ", ".join(str(int(c)) for c in comp["rgb"])
+        sources.append(
+            f"{{ .flags = {flags}, .rgb = {{ {rgb} }}, .pos = {vec3f(light['pos'])}, .falloff = {f32(comp['falloff'])} }}"
+        )
+
+    ambient = ", ".join(str(int(c)) for c in features["shadingBaseColor"])
+    return define(
+        "SpriteShadingProfile",
+        "SpriteShading",
+        [
+            ".sources = { " + ", ".join(sources) + " }",
+            f".ambientColor = {{ {ambient} }}",
+            f".ambientPower = {int(features['shadingOffset'])}",
+        ],
+    )
+
+
+def marker_lines(features, map_name: str) -> tuple:
+    """The definitions of a map's markers and sprite shading for its own code, and the definition of its entries for other maps'."""
     names = {}
 
     def claim(name: str, owner: str):
@@ -263,7 +297,7 @@ def marker_lines(markers: list, map_name: str) -> tuple:
             raise MarkerError(f"{owner} and {names[name]} are both named ${name}: rename one in the map editor")
         names[name] = owner
 
-    markers = [m for m in markers if m["type"] not in ("Root", "Group")]
+    markers = [m for m in features.get("markers", []) if m["type"] not in ("Root", "Group")]
     markers_by_name = {m["name"]: m for m in markers}
     for marker in markers:
         claim(marker["name"], f"marker {marker['name']}")
@@ -271,6 +305,9 @@ def marker_lines(markers: list, map_name: str) -> tuple:
 
     lines = []
     externs = []
+    if features.get("hasSpriteShading"):
+        claim("SpriteShading", "the sprite shading")
+        lines += shading_lines(features, [m for m in markers if m["type"] == "Light"])
     entries = [m for m in markers if m["type"] == "Entry"]
     # entries first, since an entity such as a warp pipe can refer to one
     for marker in entries + [m for m in markers if m["type"] != "Entry"]:
@@ -337,9 +374,8 @@ def main(argv: list) -> int:
         lines += [f'#include "mapfs/{name}_shape.h"', f'#include "mapfs/{name}_hit.h"']
     entry_header = []
     if features:
-        markers = json.load(open(features)).get("markers", [])
         try:
-            marker_text, entry_header = marker_lines(markers, map_name or name)
+            marker_text, entry_header = marker_lines(json.load(open(features)), map_name or name)
         except MarkerError as e:
             print(f"{features}: error: {e}", file=sys.stderr)
             return 1

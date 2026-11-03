@@ -32,8 +32,13 @@
     950,
     1000
   ],
-  "hasSpriteShading": false,
-  "shadingOffset": 0,
+  "hasSpriteShading": true,
+  "shadingOffset": 48,
+  "shadingBaseColor": [
+    120,
+    120,
+    254
+  ],
   "texPanners": [
     {
       "id": 0,
@@ -576,6 +581,34 @@
       ],
       "yaw": 0.0,
       "extracted": false
+    },
+    {
+      "id": 9,
+      "name": "Light_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        273,
+        113,
+        -178
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          255,
+          0,
+          242
+        ],
+        "pos": [
+          273,
+          113,
+          -178
+        ],
+        "falloff": 0.01,
+        "mode": "linear"
+      }
     }
   ]
 }

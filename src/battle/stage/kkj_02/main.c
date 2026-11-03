@@ -63,7 +63,6 @@ EvtScript EVS_CirculatingBolts = {
 };
 
 EvtScript EVS_PreBattle = {
-    Call(SetSpriteShading, SHADING_NONE)
     Exec(EVS_RandomBolts)
     Exec(EVS_CirculatingBolts)
     Return

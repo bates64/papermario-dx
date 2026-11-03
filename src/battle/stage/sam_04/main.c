@@ -8,7 +8,6 @@ void EnableBackgroundWave(void) {
 }
 
 EvtScript EVS_PreBattle = {
-    Call(SetSpriteShading, SHADING_NONE)
     Exec(EVS_SpawnSnowfall)
     Return
     End

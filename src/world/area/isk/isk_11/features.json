@@ -32,8 +32,13 @@
     950,
     1000
   ],
-  "hasSpriteShading": false,
-  "shadingOffset": 0,
+  "hasSpriteShading": true,
+  "shadingOffset": 30,
+  "shadingBaseColor": [
+    150,
+    140,
+    252
+  ],
   "texPanners": [
     {
       "id": 0,
@@ -708,6 +713,202 @@
       ],
       "yaw": 0.0,
       "extracted": false
+    },
+    {
+      "id": 19,
+      "name": "Light_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        -41,
+        -821,
+        504
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          255,
+          70,
+          20
+        ],
+        "pos": [
+          -41,
+          -821,
+          504
+        ],
+        "falloff": 0.01,
+        "mode": "linear"
+      }
+    },
+    {
+      "id": 20,
+      "name": "Light_2",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        133,
+        -761,
+        492
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          255,
+          70,
+          20
+        ],
+        "pos": [
+          133,
+          -761,
+          492
+        ],
+        "falloff": 0.01,
+        "mode": "linear"
+      }
+    },
+    {
+      "id": 21,
+      "name": "Light_3",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        -46,
+        -652,
+        519
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          255,
+          70,
+          20
+        ],
+        "pos": [
+          -46,
+          -652,
+          519
+        ],
+        "falloff": 0.01,
+        "mode": "linear"
+      }
+    },
+    {
+      "id": 22,
+      "name": "Light_4",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        128,
+        -564,
+        490
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          255,
+          70,
+          20
+        ],
+        "pos": [
+          128,
+          -564,
+          490
+        ],
+        "falloff": 0.01,
+        "mode": "linear"
+      }
+    },
+    {
+      "id": 23,
+      "name": "Light_5",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        292,
+        -419,
+        410
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          255,
+          70,
+          20
+        ],
+        "pos": [
+          292,
+          -419,
+          410
+        ],
+        "falloff": 0.01,
+        "mode": "linear"
+      }
+    },
+    {
+      "id": 24,
+      "name": "Light_6",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        138,
+        -419,
+        509
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          255,
+          70,
+          20
+        ],
+        "pos": [
+          138,
+          -419,
+          509
+        ],
+        "falloff": 0.01,
+        "mode": "linear"
+      }
+    },
+    {
+      "id": 25,
+      "name": "Light_7",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        -141,
+        -419,
+        531
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          255,
+          70,
+          20
+        ],
+        "pos": [
+          -141,
+          -419,
+          531
+        ],
+        "falloff": 0.01,
+        "mode": "linear"
+      }
     }
   ]
 }

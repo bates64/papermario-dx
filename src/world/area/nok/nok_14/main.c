@@ -95,7 +95,6 @@ EvtScript EVS_UpdateEnounterStages = {
 
 EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_PLEASANT_PATH)
-    Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Call(MakeNpcs, false, DefaultNPCs)
     ExecWait(EVS_MakeEntities)

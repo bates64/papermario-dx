@@ -42,7 +42,6 @@ EvtScript EVS_BindExitTriggers = {
 
 EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_JADE_JUNGLE)
-    Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(SetZoneEnabled, ZONE_o79, false)
     Call(MakeNpcs, false, DefaultNPCs)

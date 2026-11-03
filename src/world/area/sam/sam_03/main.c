@@ -15,7 +15,6 @@ EvtScript EVS_BindExitTriggers = {
 
 EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_SHIVER_SNOWFIELD)
-    Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Set(GF_MAP_ShiverSnowfield, true)
     Call(EnableModel, MODEL_o44, false)

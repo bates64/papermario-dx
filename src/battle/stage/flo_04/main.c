@@ -22,7 +22,6 @@ EvtScript EVS_AnimateCloud = {
 #include "battle/stage/common/MakeSun.inc.c"
 
 EvtScript EVS_PreBattle = {
-    Call(SetSpriteShading, SHADING_NONE)
     Call(SetCamBGColor, CAM_BATTLE, 0, 0, 0)
     Set(LVar0, MODEL_o412)
     Exec(EVS_AnimateCloud)

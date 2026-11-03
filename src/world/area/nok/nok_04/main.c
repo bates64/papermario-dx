@@ -11,7 +11,6 @@ EvtScript EVS_BindExitTriggers = {
 
 EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_KOOPA_VILLAGE)
-    Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(AF_NOK04_PlayingGame, false)
     Set(AF_NOK04_BattleStarted, false)

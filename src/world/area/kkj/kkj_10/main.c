@@ -90,7 +90,7 @@ EvtScript EVS_EnterMap = {
 
 EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_PEACHS_CASTLE)
-    Call(SetSpriteShading, SHADING_KKJ_10)
+    Call(SetSpriteShading, $SpriteShading)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Switch(GB_StoryProgress)
         CaseOrEq(STORY_CH4_BEGAN_PEACH_MISSION)

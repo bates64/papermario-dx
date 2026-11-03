@@ -69,7 +69,6 @@ EvtScript EVS_UpdateRockingHorse = {
 };
 
 EvtScript EVS_PreBattle = {
-    Call(SetSpriteShading, SHADING_NONE)
     Call(SetCamBGColor, CAM_BATTLE, 0, 0, 0)
     Thread
         SetF(LVar0, 0.0)

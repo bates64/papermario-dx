@@ -28,7 +28,7 @@ EvtScript EVS_StartTexPanners = {
 
 EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_MT_LAVALAVA)
-    Call(SetSpriteShading, SHADING_KZN_05)
+    Call(SetSpriteShading, $SpriteShading)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)

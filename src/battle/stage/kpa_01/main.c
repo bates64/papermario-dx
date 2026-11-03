@@ -19,7 +19,6 @@ EvtScript EVS_TexAnim_Fire = {
 };
 
 EvtScript EVS_PreBattle = {
-    Call(SetSpriteShading, SHADING_NONE)
     Call(SetCamBGColor, CAM_BATTLE, 0, 0, 0)
     Call(SetGroupVisibility, MODEL_switch, MODEL_GROUP_HIDDEN)
     Thread
@@ -55,7 +54,6 @@ OVL_DEF_STAGE() = {
 
 // blue torches
 EvtScript EVS_PreBattle_b = {
-    Call(SetSpriteShading, SHADING_NONE)
     Call(SetCamBGColor, CAM_BATTLE, 0, 0, 0)
     Call(SetGroupVisibility, MODEL_hasira, MODEL_GROUP_HIDDEN)
     Set(LVar0, MODEL_o416)

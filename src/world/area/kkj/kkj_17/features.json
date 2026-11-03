@@ -32,8 +32,13 @@
     950,
     1000
   ],
-  "hasSpriteShading": false,
-  "shadingOffset": 0,
+  "hasSpriteShading": true,
+  "shadingOffset": 30,
+  "shadingBaseColor": [
+    120,
+    120,
+    180
+  ],
   "texPanners": [
     {
       "id": 0,
@@ -483,6 +488,34 @@
         "itemName": "ITEM_DEEP_FOCUS_A",
         "gameFlagName": "GF_KKJ17_Item_DeepFocus",
         "spawnMode": "ITEM_SPAWN_MODE_FIXED_NEVER_VANISH"
+      }
+    },
+    {
+      "id": 4,
+      "name": "Light_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        -45,
+        20,
+        -30
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          255,
+          255,
+          0
+        ],
+        "pos": [
+          -45,
+          20,
+          -30
+        ],
+        "falloff": 0.01,
+        "mode": "linear"
       }
     }
   ]

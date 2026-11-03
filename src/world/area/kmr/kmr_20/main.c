@@ -49,7 +49,6 @@ EvtScript EVS_Main = {
         EndIf
     EndIf
     Set(MF_HouseInteriorVisible, false)
-    Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Exec(EVS_SetupMusic)
     Call(GetEntryID, LVar0)

@@ -1588,7 +1588,7 @@ segments:
     - ["flip_card_2", 0xC49B8]
     - ["flip_card_3", 0xC6150]
     - ["cymbal_crush", 0xCA380]
-  - [0x315B80, pm_sprite_shading_profiles, sprite_shading_profiles]
+  - [0x315B80, pad, sprite_shading_profiles]
   - type: code
     start: 0x3169F0
     name: create_audio_system_obfuscated

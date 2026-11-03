@@ -4,7 +4,6 @@
 #include "battle/stage/common/LavaDecorations.inc.c"
 
 EvtScript EVS_PreBattle = {
-    Call(SetSpriteShading, SHADING_NONE)
     Call(SetCamBGColor, CAM_BATTLE, 0, 0, 0)
     Call(SetGroupVisibility, MODEL_08, MODEL_GROUP_HIDDEN)
     Call(SetGroupVisibility, MODEL_16, MODEL_GROUP_HIDDEN)
@@ -63,7 +62,6 @@ OVL_DEF_STAGE() = {
 // kzn_04:b
 
 EvtScript EVS_PreBattle_b = {
-    Call(SetSpriteShading, SHADING_NONE)
     Call(SetCamBGColor, CAM_BATTLE, 0, 0, 0)
     Call(SetGroupVisibility, MODEL_06, MODEL_GROUP_HIDDEN)
     Call(SetGroupVisibility, MODEL_16, MODEL_GROUP_HIDDEN)
@@ -110,7 +108,6 @@ OVL_DEF_STAGE(b) = {
 // kzn_04:c
 
 EvtScript EVS_PreBattle_c = {
-    Call(SetSpriteShading, SHADING_NONE)
     Call(SetCamBGColor, CAM_BATTLE, 0, 0, 0)
     Call(SetGroupVisibility, MODEL_06, MODEL_GROUP_HIDDEN)
     Call(SetGroupVisibility, MODEL_08, MODEL_GROUP_HIDDEN)

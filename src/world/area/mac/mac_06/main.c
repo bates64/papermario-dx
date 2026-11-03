@@ -46,7 +46,6 @@ EvtScript EVS_AnimateWaves = {
 
 EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_TOAD_TOWN)
-    Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Call(MakeNpcs, false, DefaultNPCs)
     Exec(EVS_FlyingGull)

@@ -79,7 +79,7 @@ EvtScript EVS_EnterMap = {
 
 EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_WINDY_MILL)
-    Call(SetSpriteShading, SHADING_ARN_11)
+    Call(SetSpriteShading, $SpriteShading)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, false, DefaultNPCs)
     Exec(EVS_SetupMusic)

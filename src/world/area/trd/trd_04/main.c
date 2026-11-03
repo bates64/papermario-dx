@@ -216,7 +216,6 @@ EvtScript EVS_Scene_LowerStairs = {
 
 EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_KOOPA_BROS_FORTRESS)
-    Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(SetRenderMode, MODEL_suimen, RENDER_MODE_SURFACE_XLU_LAYER2)
     IfLt(GB_StoryProgress, STORY_CH1_LOWERED_FIRST_STAIRS)

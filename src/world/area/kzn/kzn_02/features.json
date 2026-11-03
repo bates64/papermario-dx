@@ -32,8 +32,13 @@
     950,
     1000
   ],
-  "hasSpriteShading": false,
-  "shadingOffset": 0,
+  "hasSpriteShading": true,
+  "shadingOffset": 150,
+  "shadingBaseColor": [
+    170,
+    135,
+    135
+  ],
   "texPanners": [
     {
       "id": 0,
@@ -695,6 +700,118 @@
           "overrideSpeed": false,
           "speed": 1.0
         }
+      }
+    },
+    {
+      "id": 15,
+      "name": "Light_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        -126,
+        39,
+        168
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          255,
+          0,
+          0
+        ],
+        "pos": [
+          -126,
+          39,
+          168
+        ],
+        "falloff": 0.0889836,
+        "mode": "linear"
+      }
+    },
+    {
+      "id": 16,
+      "name": "Light_2",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        -119,
+        92,
+        165
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          255,
+          0,
+          0
+        ],
+        "pos": [
+          -119,
+          92,
+          165
+        ],
+        "falloff": 0.01,
+        "mode": "linear"
+      }
+    },
+    {
+      "id": 17,
+      "name": "Light_3",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        240,
+        39,
+        183
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          255,
+          0,
+          0
+        ],
+        "pos": [
+          240,
+          39,
+          183
+        ],
+        "falloff": 0.01,
+        "mode": "linear"
+      }
+    },
+    {
+      "id": 18,
+      "name": "Light_4",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        254,
+        75,
+        168
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          255,
+          255,
+          255
+        ],
+        "pos": [
+          254,
+          75,
+          168
+        ],
+        "falloff": 0.01,
+        "mode": "linear"
       }
     }
   ]

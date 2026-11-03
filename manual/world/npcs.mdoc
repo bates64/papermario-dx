@@ -111,7 +111,6 @@ Then make the NPCs from the map's main EVT script with `MakeNpcs`, before `Enter
 
 ```c
 EvtScript EVS_Main = {
-    Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Call(MakeNpcs, false, DefaultNPCs)
     Set(LVar0, EVS_BindExitTriggers)

@@ -32,8 +32,13 @@
     950,
     1000
   ],
-  "hasSpriteShading": false,
-  "shadingOffset": 0,
+  "hasSpriteShading": true,
+  "shadingOffset": 30,
+  "shadingBaseColor": [
+    160,
+    120,
+    120
+  ],
   "texPanners": [
     {
       "id": 0,
@@ -654,6 +659,90 @@
         "type": "HiddenPanel",
         "gameFlagName": "GF_KZN18_HiddenPanel",
         "modelName": "MODEL_o380"
+      }
+    },
+    {
+      "id": 12,
+      "name": "Light_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        -314,
+        49,
+        179
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          255,
+          30,
+          0
+        ],
+        "pos": [
+          -314,
+          49,
+          179
+        ],
+        "falloff": 0.01,
+        "mode": "linear"
+      }
+    },
+    {
+      "id": 13,
+      "name": "Light_2",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        111,
+        21,
+        95
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          255,
+          30,
+          0
+        ],
+        "pos": [
+          111,
+          21,
+          95
+        ],
+        "falloff": 0.01,
+        "mode": "linear"
+      }
+    },
+    {
+      "id": 14,
+      "name": "Light_3",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        325,
+        21,
+        -139
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          255,
+          30,
+          0
+        ],
+        "pos": [
+          325,
+          21,
+          -139
+        ],
+        "falloff": 0.01,
+        "mode": "linear"
       }
     }
   ]

@@ -62,7 +62,7 @@ EvtScript EVS_EnterMap = {
 
 EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_TOAD_TOWN_TUNNELS)
-    Call(SetSpriteShading, SHADING_TIK_06)
+    Call(SetSpriteShading, $SpriteShading)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(GF_MAP_ToadTownTunnels, true)
     ExecWait(EVS_MakeEntities)

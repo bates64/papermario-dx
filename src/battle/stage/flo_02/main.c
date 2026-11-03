@@ -6,7 +6,6 @@
 #include "battle/stage/common/MakeSun.inc.c"
 
 EvtScript EVS_PreBattle = {
-    Call(SetSpriteShading, SHADING_NONE)
     Call(SetCamBGColor, CAM_BATTLE, 0, 0, 0)
     Call(SetGroupVisibility, MODEL_dai_05, MODEL_GROUP_VISIBLE)
     Call(SetGroupVisibility, MODEL_0809, MODEL_GROUP_HIDDEN)
@@ -39,7 +38,6 @@ OVL_DEF_STAGE() = {
 // flo_02:b
 
 EvtScript EVS_PreBattle_b = {
-    Call(SetSpriteShading, SHADING_NONE)
     Call(SetCamBGColor, CAM_BATTLE, 0, 0, 0)
     Call(SetGroupVisibility, MODEL_dai_05, MODEL_GROUP_HIDDEN)
     Call(SetGroupVisibility, MODEL_0809, MODEL_GROUP_VISIBLE)
@@ -72,7 +70,6 @@ OVL_DEF_STAGE(b) = {
 // flo_02:c
 
 EvtScript EVS_PreBattle_c = {
-    Call(SetSpriteShading, SHADING_NONE)
     Call(SetCamBGColor, CAM_BATTLE, 0, 0, 0)
     Call(SetGroupVisibility, MODEL_dai_05, MODEL_GROUP_VISIBLE)
     Call(SetGroupVisibility, MODEL_0809, MODEL_GROUP_HIDDEN)

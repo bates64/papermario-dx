@@ -32,8 +32,13 @@
     950,
     1000
   ],
-  "hasSpriteShading": false,
-  "shadingOffset": 0,
+  "hasSpriteShading": true,
+  "shadingOffset": 30,
+  "shadingBaseColor": [
+    120,
+    120,
+    180
+  ],
   "texPanners": [
     {
       "id": 0,
@@ -536,6 +541,34 @@
         "itemName": "0",
         "gameFlagName": "GF_KKJ20_Chest_LastStand",
         "scriptName": "EVS_OpenChest_LastStand"
+      }
+    },
+    {
+      "id": 6,
+      "name": "Light_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        75,
+        110,
+        -130
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          255,
+          30,
+          0
+        ],
+        "pos": [
+          75,
+          110,
+          -130
+        ],
+        "falloff": 0.006999991,
+        "mode": "linear"
       }
     }
   ]

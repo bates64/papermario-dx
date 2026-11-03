@@ -58,7 +58,7 @@ EvtScript EVS_SetupDrips = {
 
 EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_TOAD_TOWN_TUNNELS)
-    Call(SetSpriteShading, SHADING_TIK_23)
+    Call(SetSpriteShading, $SpriteShading)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, true, DefaultNPCs)
     ExecWait(EVS_MakeEntities)

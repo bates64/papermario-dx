@@ -4,7 +4,6 @@
 #include "battle/stage/common/BeachEffects.inc.c"
 
 EvtScript EVS_PreBattle = {
-    Call(SetSpriteShading, SHADING_NONE)
     Call(SetCamBGColor, CAM_BATTLE, 0, 0, 0)
     Thread
         Set(LVar0, MODEL_o318)
@@ -41,7 +40,6 @@ OVL_DEF_STAGE() = {
 // trd_05:b
 
 EvtScript EVS_PreBattle_b = {
-    Call(SetSpriteShading, SHADING_NONE)
     Call(SetCamBGColor, CAM_BATTLE, 0, 0, 0)
     Call(EnableModel, MODEL_kai, false)
     Call(EnableModel, MODEL_kusari1, false)
@@ -65,7 +63,6 @@ OVL_DEF_STAGE(b) = {
 // trd_05:c
 
 EvtScript EVS_PreBattle_c = {
-    Call(SetSpriteShading, SHADING_NONE)
     Call(SetCamBGColor, CAM_BATTLE, 0, 0, 0)
     Call(EnableModel, MODEL_yuka3, false)
     Call(EnableModel, MODEL_hako, false)
@@ -97,7 +94,6 @@ OVL_DEF_STAGE(c) = {
 // trd_05:d
 
 EvtScript EVS_PreBattle_d = {
-    Call(SetSpriteShading, SHADING_NONE)
     Call(SetCamBGColor, CAM_BATTLE, 0, 0, 0)
     Call(EnableModel, MODEL_yuka3, false)
     Call(EnableModel, MODEL_hako, false)
@@ -128,7 +124,6 @@ OVL_DEF_STAGE(d) = {
 // trd_05:e
 
 EvtScript EVS_PreBattle_e = {
-    Call(SetSpriteShading, SHADING_NONE)
     Call(SetCamBGColor, CAM_BATTLE, 0, 0, 0)
     Call(EnableModel, MODEL_o318, false)
     Call(EnableModel, MODEL_mizu1, false)
@@ -150,7 +145,6 @@ OVL_DEF_STAGE(e) = {
 // trd_05:f
 
 EvtScript EVS_PreBattle_f = {
-    Call(SetSpriteShading, SHADING_NONE)
     Call(SetCamBGColor, CAM_BATTLE, 0, 0, 0)
     Set(LVar0, MODEL_o318)
     Exec(EVS_AnimateWave)

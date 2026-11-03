@@ -4,7 +4,6 @@
 #include "battle/stage/common/MovingClouds.inc.c"
 
 EvtScript EVS_PreBattle = {
-    Call(SetSpriteShading, SHADING_NONE)
     Set(LVar0, MODEL_g60)
     Set(LVar2, 0)
     Exec(EVS_AnimateCloud)

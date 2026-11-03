@@ -76,7 +76,6 @@ s32 VineModels[] = {
 };
 
 EvtScript EVS_PreBattle = {
-    Call(SetSpriteShading, SHADING_NONE)
     Call(SetCamBGColor, CAM_BATTLE, 0, 0, 0)
     Set(LVar0, VineModels)
     Exec(EVS_AnimateVines)

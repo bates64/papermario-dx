@@ -729,12 +729,6 @@ def write_ninja_rules(
     )
 
     ninja.rule(
-        "sprite_shading_profiles",
-        description="Building sprite shading profiles",
-        command=f"$python {BUILD_TOOLS}/sprite/sprite_shading_profiles.py $in $out $header_path",
-    )
-
-    ninja.rule(
         "imgfx_data",
         description="Generating image effects data",
         command=f"$python {BUILD_TOOLS}/imgfx/imgfx_data.py $in $out",
@@ -894,7 +888,6 @@ class Configure:
                     "pm_charset",
                     "pm_charset_palettes",
                     "pm_effect_loads",
-                    "pm_sprite_shading_profiles",
                     "pm_imgfx_data",
                 ]
             )
@@ -1151,17 +1144,6 @@ class Configure:
             implicit_outputs=[tex_pool_header],
             implicit_deps=self.layer_tree("mapfs/tex")
             + [posix(BUILD_TOOLS / "tex_pool.py"), "tools/splat_ext/tex_archives.py"],
-        )
-
-        shading_header = posix(
-            self.build_path() / "include/sprite/sprite_shading_profiles.h"
-        )
-        packed(
-            "sprite_shading_profiles.bin",
-            "sprite_shading_profiles",
-            [version_assets / "sprite/sprite_shading_profiles.json"],
-            variables={"header_path": shading_header},
-            implicit_outputs=[shading_header],
         )
 
         audio_dir = self.build_path() / "include" / "audio"

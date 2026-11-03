@@ -32,8 +32,13 @@
     950,
     1000
   ],
-  "hasSpriteShading": false,
-  "shadingOffset": 0,
+  "hasSpriteShading": true,
+  "shadingOffset": 10,
+  "shadingBaseColor": [
+    180,
+    180,
+    180
+  ],
   "texPanners": [
     {
       "id": 0,
@@ -513,6 +518,90 @@
       "extracted": true,
       "entityComp": {
         "type": "PinkFlower"
+      }
+    },
+    {
+      "id": 6,
+      "name": "Light_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        -276,
+        33,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          0,
+          255,
+          0
+        ],
+        "pos": [
+          -276,
+          33,
+          0
+        ],
+        "falloff": 0.01,
+        "mode": "linear"
+      }
+    },
+    {
+      "id": 7,
+      "name": "Light_2",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        0,
+        201,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          0,
+          255,
+          255
+        ],
+        "pos": [
+          0,
+          201,
+          0
+        ],
+        "falloff": 0.01,
+        "mode": "linear"
+      }
+    },
+    {
+      "id": 8,
+      "name": "Light_3",
+      "desc": "",
+      "hidden": false,
+      "type": "Light",
+      "pos": [
+        242,
+        485,
+        139
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "lightComp": {
+        "rgb": [
+          0,
+          255,
+          0
+        ],
+        "pos": [
+          242,
+          485,
+          139
+        ],
+        "falloff": 0.01,
+        "mode": "linear"
       }
     }
   ]

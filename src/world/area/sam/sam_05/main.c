@@ -15,7 +15,6 @@ EvtScript EVS_BindExitTriggers = {
 
 EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_SHIVER_SNOWFIELD)
-    Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     IfLt(GB_StoryProgress, STORY_CH7_DEFEATED_MONSTAR)
         Call(MakeNpcs, false, BeforeNPCs)

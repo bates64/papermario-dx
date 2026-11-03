@@ -53,7 +53,6 @@ EvtScript EVS_EnterMap = {
 
 EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_CRYSTAL_PALACE)
-    Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(24, 24, 40)
     Call(MakeNpcs, true, DefaultNPCs)
     Exec(EVS_SetupMusic)

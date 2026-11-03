@@ -1196,8 +1196,6 @@ enum DoorSounds {
     DOOR_SOUNDS_UNUSED              = 6,
 };
 
-#include "sprite/sprite_shading_profiles.h"
-
 enum LightSourceFlags {
     LIGHT_SOURCE_DISABLED           = 0,
     LIGHT_SOURCE_ENABLED            = 1,

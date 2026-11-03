@@ -59,7 +59,6 @@ EvtScript EVS_Main = {
         Set(GB_StoryProgress, STORY_CH5_RETURNED_TO_TOAD_TOWN)
     EndIf
     Set(GB_WorldLocation, LOCATION_TOAD_TOWN)
-    Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(AF_MAC02_Unread_16, false)
     Set(AF_MAC02_Unread_17, false)

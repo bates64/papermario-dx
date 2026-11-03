@@ -57,7 +57,6 @@ EvtScript EVS_BindExitTriggers = {
 
 EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_MT_RUGGED)
-    Call(SetSpriteShading, SHADING_NONE)
     Call(SetupSlidingCheck)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Call(MakeNpcs, true, DefaultNPCs)

@@ -4,7 +4,6 @@
 #include "battle/stage/common/BeachEffects.inc.c"
 
 EvtScript EVS_PreBattle = {
-    Call(SetSpriteShading, SHADING_NONE)
     Call(SetCamBGColor, CAM_BATTLE, 0, 0, 0)
     Call(SetGroupVisibility, MODEL_g18, MODEL_GROUP_HIDDEN)
     Thread
@@ -42,7 +41,6 @@ OVL_DEF_STAGE() = {
 // jan_01:b
 
 EvtScript EVS_PreBattle_b = {
-    Call(SetSpriteShading, SHADING_NONE)
     Call(SetCamBGColor, CAM_BATTLE, 0, 0, 0)
     Call(SetGroupVisibility, MODEL_g17, MODEL_GROUP_HIDDEN)
     Thread

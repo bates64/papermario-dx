@@ -6,7 +6,6 @@
 extern ActorBlueprint whacka;
 
 EvtScript EVS_PreBattle = {
-    Call(SetSpriteShading, SHADING_NONE)
     Return
     End
 };
