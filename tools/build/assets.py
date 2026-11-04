@@ -101,11 +101,13 @@ INCLUDE_MACRO = re.compile(
 )
 
 
-def _sources(src_root: Path) -> List[Path]:
-    return sorted([*src_root.rglob("*.c"), *src_root.rglob("*.cpp")])
+def _sources(src_root: Path, asset_stack) -> List[Path]:
+    """The sources under src_root that a .meta doesn't leave out of the build."""
+    sources = [*src_root.rglob("*.c"), *src_root.rglob("*.cpp")]
+    return sorted(source for source in sources if not is_deleted(source, asset_stack))
 
 
-def include_symbols(src_root: Path) -> Dict[str, str]:
+def include_symbols(src_root: Path, asset_stack) -> Dict[str, str]:
     """Asset path to the C symbol its generated header should define.
 
     A texture's dimensions are referred to by the name the source includes it
@@ -114,7 +116,7 @@ def include_symbols(src_root: Path) -> Dict[str, str]:
     """
     symbols: Dict[str, str] = {}
     seen = set()
-    for source in _sources(src_root):
+    for source in _sources(src_root, asset_stack):
         for asset, symbol in INCLUDE_MACRO.findall(source.read_text()):
             # An _OFFSET symbol addresses the asset's place in ROM rather
             # than naming the image.
@@ -128,13 +130,13 @@ def include_symbols(src_root: Path) -> Dict[str, str]:
     return symbols
 
 
-def included_palettes(src_root: Path) -> set:
+def included_palettes(src_root: Path, asset_stack) -> set:
     """Assets whose palette the source includes, named by their image path.
 
     An indexed PNG only needs its palette split out if something asks for it.
     """
     palettes = set()
-    for source in _sources(src_root):
+    for source in _sources(src_root, asset_stack):
         for match in re.finditer(r'INCLUDE_PAL\(\s*"([^"]+)"', source.read_text()):
             palettes.add(Path(match.group(1)).with_suffix(".png").as_posix())
     return palettes

@@ -1596,8 +1596,8 @@ class Configure:
 
     def write_texture_rules(self, build) -> None:
         """Convert each texture to the binary and header the game includes."""
-        symbols = assets.include_symbols(ROOT / "src")
-        wanted_palettes = assets.included_palettes(ROOT / "src")
+        symbols = assets.include_symbols(ROOT / "src", self.asset_stack)
+        wanted_palettes = assets.included_palettes(ROOT / "src", self.asset_stack)
         for included in sorted(symbols):
             if assets.is_deleted(Path("assets", self.version, included), self.asset_stack):
                 raise SystemExit(
