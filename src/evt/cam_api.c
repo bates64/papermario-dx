@@ -452,6 +452,18 @@ API_CALLABLE(PanToTarget) {
     return ApiStatus_DONE2;
 }
 
+/// Give the camera the settings of the camera zone under a position, if there is one.
+static void use_zone_settings(Camera* camera, f32 x, f32 y, f32 z) {
+    f32 hitX, hitY, hitZ;
+    f32 hitDepth = 32767.0f;
+    f32 nx, ny, nz;
+    s32 hitID = test_ray_zones(x, y + 10.0f, z, 0.0f, -1.0f, 0.0f, &hitX, &hitY, &hitZ, &hitDepth, &nx, &ny, &nz);
+
+    if (hitID > NO_COLLIDER) {
+        camera->overrideSettings = *gZoneCollisionData.colliderList[hitID].camSettings;
+    }
+}
+
 API_CALLABLE(UseSettingsFrom) {
     Bytecode* args = script->ptrReadPos;
     s32 id = evt_get_variable(script, *args++);
@@ -459,16 +471,8 @@ API_CALLABLE(UseSettingsFrom) {
     f32 startX = evt_get_float_variable(script, *args++);
     f32 startY = evt_get_float_variable(script, *args++);
     f32 startZ = evt_get_float_variable(script, *args++);
-    f32 hitX, hitY, hitZ;
-    f32 hitDepth = 32767.0f;
-    f32 nx, ny, nz;
-    s32 hitID = test_ray_zones(
-        startX, startY + 10.0f, startZ, 0.0f, -1.0f, 0.0f, &hitX, &hitY, &hitZ, &hitDepth, &nx, &ny, &nz
-    );
 
-    if (hitID > NO_COLLIDER) {
-        camera->overrideSettings = *gZoneCollisionData.colliderList[hitID].camSettings;
-    }
+    use_zone_settings(camera, startX, startY, startZ);
     return ApiStatus_DONE2;
 }
 
@@ -674,8 +678,6 @@ API_CALLABLE(WaitForCam) {
 }
 
 API_CALLABLE(SetCamProperties) {
-    f32 hitX, hitY, hitZ, hitDepth, nX, nY, nZ;
-    s32 zoneID;
     Bytecode* args = script->ptrReadPos;
     Camera* camera = &gCameras[evt_get_variable(script, *args++)];
     f32 moveSpeed = evt_get_float_variable(script, *args++);
@@ -687,13 +689,7 @@ API_CALLABLE(SetCamProperties) {
     f32 viewPitch = evt_get_float_variable(script, *args++);
 
     if (isInitialCall) {
-        hitDepth = 32767.0f;
-        zoneID =
-            test_ray_zones(posX, posY + 10.0f, posZ, 0.0f, -1.0f, 0.0f, &hitX, &hitY, &hitZ, &hitDepth, &nX, &nY, &nZ);
-        if (zoneID >= 0) {
-            camera->overrideSettings = *gZoneCollisionData.colliderList[zoneID].camSettings;
-        }
-
+        use_zone_settings(camera, posX, posY, posZ);
         camera->movePos.x = posX;
         camera->movePos.y = posY;
         camera->movePos.z = posZ;
@@ -715,9 +711,6 @@ API_CALLABLE(SetCamProperties) {
 }
 
 API_CALLABLE(AdjustCam) {
-    f32 hitX, hitY, hitZ, hitDepth, nX, nY, nZ;
-    f32 posX, posY, posZ;
-    s32 zoneID;
     Bytecode* args = script->ptrReadPos;
     Camera* camera = &gCameras[evt_get_variable(script, *args++)];
     f32 moveSpeed = evt_get_float_variable(script, *args++);
@@ -728,16 +721,11 @@ API_CALLABLE(AdjustCam) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
     if (isInitialCall) {
-        hitDepth = 32767.0f;
-        posX = playerStatus->pos.x;
-        posY = playerStatus->pos.y;
-        posZ = playerStatus->pos.z;
-        zoneID =
-            test_ray_zones(posX, posY + 10.0f, posZ, 0.0f, -1.0f, 0.0f, &hitX, &hitY, &hitZ, &hitDepth, &nX, &nY, &nZ);
-        if (zoneID >= 0) {
-            camera->overrideSettings = *gZoneCollisionData.colliderList[zoneID].camSettings;
-        }
+        f32 posX = playerStatus->pos.x;
+        f32 posY = playerStatus->pos.y;
+        f32 posZ = playerStatus->pos.z;
 
+        use_zone_settings(camera, posX, posY, posZ);
         camera->movePos.x = posX + deltaPosX;
         camera->movePos.y = posY;
         camera->movePos.z = posZ;
@@ -769,17 +757,8 @@ API_CALLABLE(ResetCam) {
         f32 x = playerStatus->pos.x;
         f32 y = playerStatus->pos.y;
         f32 z = playerStatus->pos.z;
-        f32 hitX, hitY, hitZ;
-        f32 hitDepth = 32767.0f;
-        f32 nx, ny, nz;
-        s32 hitID;
 
-        hitID = test_ray_zones(x, y + 10.0f, z, 0.0f, -1.0f, 0.0f, &hitX, &hitY, &hitZ, &hitDepth, &nx, &ny, &nz);
-
-        if (hitID > NO_COLLIDER) {
-            camera->overrideSettings = *gZoneCollisionData.colliderList[hitID].camSettings;
-        }
-
+        use_zone_settings(camera, x, y, z);
         camera->movePos.x = x;
         camera->movePos.y = y;
         camera->movePos.z = z;
