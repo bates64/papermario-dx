@@ -992,6 +992,8 @@ void clear_animator_list(void);
 void clear_model_data(void);
 void init_sprite_shading_data(void);
 void clear_sprite_shading_data(void);
+/// Light sprites with a sprite shading profile, such as a map's MAP_SPRITE_SHADING, or nullptr for none.
+void apply_sprite_shading(const SpriteShadingProfile* shading);
 void clear_character_set(void);
 void clear_trigger_data(void);
 void clear_script_list(void);

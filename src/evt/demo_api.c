@@ -1,15 +1,7 @@
 #include "common.h"
 
 API_CALLABLE(SetSpriteShading) {
-    const SpriteShadingProfile* shading = (const SpriteShadingProfile*) evt_get_variable(script, *script->ptrReadPos);
-
-    for (s32 i = 0; i < ARRAY_COUNT(shading->sources); i++) {
-        gSpriteShadingProfile->sources[i] = shading->sources[i];
-    }
-    gSpriteShadingProfile->ambientColor = shading->ambientColor;
-    gSpriteShadingProfile->ambientPower = shading->ambientPower;
-    gSpriteShadingProfile->flags |= SPR_SHADING_FLAG_ENABLED;
-
+    apply_sprite_shading((const SpriteShadingProfile*) evt_get_variable(script, *script->ptrReadPos));
     return ApiStatus_DONE2;
 }
 

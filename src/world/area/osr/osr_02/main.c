@@ -64,7 +64,6 @@ EvtScript EVS_Main = {
     IfGt(GB_StoryProgress, STORY_CH8_REACHED_BOWSERS_CASTLE)
         Set(GF_MAP_PeachsCastle, true)
     EndIf
-    Call(SetSpriteShading, $SpriteShading)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     IfEq(GB_StoryProgress, STORY_CH6_BEGAN_PEACH_MISSION)
         Call(SetAvailableDisguise, PEACH_DISGUISE_CLUBBA)

@@ -5,9 +5,9 @@ It gives the IDs of the geometry's models, colliders, and zones, from the
 headers Star Rod writes beside the compiled geometry. If the map has a
 features.json, it also gives each of its markers as a constant named after it
 with a `$` in front, such as `$Goompa`, and its Entry markers as `$Entries`;
-see the Markers page of the manual. If the map has sprite shading, it gives
-that as `$SpriteShading`, with the map's Light markers as its lights. GCC leaves out
-the markers a file of the map's code doesn't use.
+see the Markers page of the manual. GCC leaves out the markers a file of the
+map's code doesn't use. It also gives the map's sprite shading, with its Light
+markers as its lights, as MAP_SPRITE_SHADING, or nullptr if the map has none.
 
 With --entries, it also writes the header other maps include to send the
 player to this map's entries, such as world/area/kmr/kmr_03.h, which gives them
@@ -259,6 +259,8 @@ LIGHT_FALLOFF = {
     "quadratic": ["LIGHT_SOURCE_QUADRATIC_FALLOFF"],
 }
 
+NO_SPRITE_SHADING = "#define MAP_SPRITE_SHADING nullptr"
+
 
 def shading_lines(features, lights: list) -> list:
     """The definition of the map's sprite shading, from its base color, its edge offset, and its Light markers."""
@@ -275,15 +277,18 @@ def shading_lines(features, lights: list) -> list:
         )
 
     ambient = ", ".join(str(int(c)) for c in features["shadingBaseColor"])
-    return define(
-        "SpriteShadingProfile",
-        "SpriteShading",
-        [
-            ".sources = { " + ", ".join(sources) + " }",
-            f".ambientColor = {{ {ambient} }}",
-            f".ambientPower = {int(features['shadingOffset'])}",
-        ],
-    )
+    fields = [
+        ".sources = { " + ", ".join(sources) + " }",
+        f".ambientColor = {{ {ambient} }}",
+        f".ambientPower = {int(features['shadingOffset'])}",
+    ]
+    # a named object rather than a compound literal, since C++ can't take a compound literal's address
+    return [
+        'static const SpriteShadingProfile MapSpriteShading __asm__("map.SpriteShading") = {',
+        *(f"    {f}," for f in fields),
+        "};",
+        "#define MAP_SPRITE_SHADING (&MapSpriteShading)",
+    ]
 
 
 def marker_lines(features, map_name: str) -> tuple:
@@ -306,8 +311,9 @@ def marker_lines(features, map_name: str) -> tuple:
     lines = []
     externs = []
     if features.get("hasSpriteShading"):
-        claim("SpriteShading", "the sprite shading")
         lines += shading_lines(features, [m for m in markers if m["type"] == "Light"])
+    else:
+        lines.append(NO_SPRITE_SHADING)
     entries = [m for m in markers if m["type"] == "Entry"]
     # entries first, since an entity such as a warp pipe can refer to one
     for marker in entries + [m for m in markers if m["type"] != "Entry"]:
@@ -373,7 +379,9 @@ def main(argv: list) -> int:
     if name != "-":
         lines += [f'#include "mapfs/{name}_shape.h"', f'#include "mapfs/{name}_hit.h"']
     entry_header = []
-    if features:
+    if not features:
+        lines.append(NO_SPRITE_SHADING)
+    else:
         try:
             marker_text, entry_header = marker_lines(json.load(open(features)), map_name or name)
         except MarkerError as e:

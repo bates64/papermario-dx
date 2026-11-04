@@ -3,7 +3,7 @@
 #include "stage.xml.h"
 
 EvtScript EVS_PreBattle = {
-    Call(SetSpriteShading, $SpriteShading)
+    Call(SetSpriteShading, MAP_SPRITE_SHADING)
     Call(SetCamBGColor, CAM_BATTLE, 0, 0, 0)
     Return
     End

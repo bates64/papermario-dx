@@ -50,7 +50,6 @@ LavaReset SafeFloorColliders[] = {
 
 EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_MT_LAVALAVA)
-    Call(SetSpriteShading, $SpriteShading)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Set(GF_KZN06_Visited, true)
     ExecWait(EVS_MakeEntities)

@@ -45,7 +45,6 @@ EvtScript EVS_HiveTree_OnHit = {
 
 EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_FOREVER_FOREST)
-    Call(SetSpriteShading, $SpriteShading)
     EVT_SETUP_CAMERA_MIM()
     Set(AB_MIM_PrevMapID, GB_MIM_CurrentMapID)
     Call(GetMapID, GB_MIM_CurrentMapID)

@@ -39,8 +39,11 @@ typedef struct MapSettings {
     /* 0x46 */ PAD(2);
 } MapSettings; // size = 0x48
 
-/// Define the descriptor exported by a map overlay.
-#define OVL_DEF_MAP() export MapSettings settings
+/// Define the descriptor exported by a map overlay. This also exports the map's sprite shading from its map.xml.h,
+/// which the game applies when the map loads.
+#define OVL_DEF_MAP() \
+    export const SpriteShadingProfile* const spriteShading = MAP_SPRITE_SHADING; \
+    export MapSettings settings
 
 // The map editor's markers. A map's code gets each of its markers from map.xml.h, as a constant named after it with a
 // `$` in front, such as `$Goompa`.

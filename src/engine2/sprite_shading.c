@@ -37,6 +37,20 @@ void clear_sprite_shading_data(void) {
     gAuxSpriteShadingProfile->ambientPower = 20;
 }
 
+void apply_sprite_shading(const SpriteShadingProfile* shading) {
+    if (shading == nullptr) {
+        gSpriteShadingProfile->flags &= ~SPR_SHADING_FLAG_ENABLED;
+        return;
+    }
+
+    for (s32 i = 0; i < ARRAY_COUNT(shading->sources); i++) {
+        gSpriteShadingProfile->sources[i] = shading->sources[i];
+    }
+    gSpriteShadingProfile->ambientColor = shading->ambientColor;
+    gSpriteShadingProfile->ambientPower = shading->ambientPower;
+    gSpriteShadingProfile->flags |= SPR_SHADING_FLAG_ENABLED;
+}
+
 void init_sprite_shading_data(void) {
     if (gGameStatusPtr->context == CONTEXT_WORLD) {
         gSpriteShadingProfile = &wSpriteShadingProfile;

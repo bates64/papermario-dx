@@ -65,7 +65,6 @@ EvtScript EVS_HideCardModels = {
 };
 
 EvtScript EVS_Main = {
-    Call(SetSpriteShading, $SpriteShading)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(SetRenderMode, MODEL_o36, RENDER_MODE_SURFACE_XLU_ZB_ZUPD)
     Call(MakeNpcs, false, DefaultNPCs)

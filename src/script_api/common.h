@@ -2378,8 +2378,10 @@ API_CALLABLE(DeleteTrigger);
 /// @{
 /// @name Sprite shading
 
+/// Light sprites with a sprite shading profile. A map's own shading applies when it loads, so a map only needs this
+/// to change its shading, and a battle stage to set its shading.
 /// @evtapi
-/// @param shading the map's sprite shading, `$SpriteShading`
+/// @param shading the sprite shading, such as the map's `MAP_SPRITE_SHADING`, or `nullptr` to turn shading off
 API_CALLABLE(SetSpriteShading);
 
 /// @evtapi

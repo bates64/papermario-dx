@@ -36,7 +36,6 @@ EvtScript EVS_StartTexPanners = {
 
 EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_MT_LAVALAVA)
-    Call(SetSpriteShading, $SpriteShading)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Thread
         Call(GetEntryID, LVar0)

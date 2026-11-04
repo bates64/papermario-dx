@@ -35,7 +35,6 @@ EvtScript EVS_EnterWalk_80241F98 = {
 
 EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_DRY_DRY_RUINS)
-    Call(SetSpriteShading, $SpriteShading)
     Call(SetupLandingCamAdjust)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, true, DefaultNPCs)
