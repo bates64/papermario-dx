@@ -569,6 +569,12 @@ def write_ninja_rules(
     )
 
     ninja.rule(
+        "pigment_inferred",
+        description="Converting $in",
+        command=f"$python {BUILD_TOOLS}/img/pigment.py $in $out $img_flags",
+    )
+
+    ninja.rule(
         "img_header",
         description="Generating header for image $in",
         command=f'$python {BUILD_TOOLS}/img/header.py $in $out "$c_name"',
@@ -1620,15 +1626,26 @@ class Configure:
             # after, and contributes nothing else.
             variant = "." in stem.name
             if not variant:
-                build(
-                    out_dir / (stem.name + ".png.bin"),
-                    [png.relative_to(ROOT)],
-                    "pigment",
-                    variables={
-                        "img_type": texture.format,
-                        "img_flags": texture.flags(),
-                    },
-                )
+                # An undeclared format is inferred as the texture builds, so
+                # that editing the image can change it.
+                if texture.declared_format:
+                    build(
+                        out_dir / (stem.name + ".png.bin"),
+                        [png.relative_to(ROOT)],
+                        "pigment",
+                        variables={
+                            "img_type": texture.declared_format,
+                            "img_flags": texture.flags(),
+                        },
+                    )
+                else:
+                    build(
+                        out_dir / (stem.name + ".png.bin"),
+                        [png.relative_to(ROOT)],
+                        "pigment_inferred",
+                        variables={"img_flags": texture.flags()},
+                        implicit_deps=[BUILD_TOOLS / "img/pigment.py", BUILD_TOOLS / "raster.py"],
+                    )
                 build(
                     self.build_path() / "include" / stem.parent / (stem.name + ".png.h"),
                     [png.relative_to(ROOT)],

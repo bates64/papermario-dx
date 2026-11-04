@@ -10,7 +10,7 @@ out of the build.
 import re
 from functools import lru_cache
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Dict, List, Optional, Tuple
 
 import yaml
 
@@ -77,7 +77,8 @@ class Texture:
         meta = metadata(path, asset_stack)
         # Two N64 formats can encode identical pixels, so an asset that wants
         # the wider one has to say so.
-        self.format: str = meta.get("format") or self.png.format()
+        self.declared_format: Optional[str] = meta.get("format")
+        self.format: str = self.declared_format or self.png.format()
         self.flip_x: bool = bool(meta.get("flip_x", False))
         self.flip_y: bool = bool(meta.get("flip_y", False))
         self.namespaced: bool = bool(meta.get("namespaced", False))
