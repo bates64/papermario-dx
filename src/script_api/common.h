@@ -693,6 +693,13 @@ API_CALLABLE(SetCamProperties);
 /// @param viewPitch
 API_CALLABLE(AdjustCam);
 
+/// Sets the camera up the way a Camera Target marker from the map editor describes, and points it at the marker. If
+/// the marker pans, it also pans the camera there and waits until it arrives.
+/// @evtapi
+/// @param camID
+/// @param marker
+API_CALLABLE(UseCamTarget);
+
 /// @evtapi
 /// @param camID
 /// @param moveSpeed

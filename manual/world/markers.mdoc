@@ -203,6 +203,26 @@ DripVolume Drips[] = {
 };
 ```
 
+## Camera target
+
+A Camera Target marker is a place for the camera to look at, with the camera settings to use there, such as a shot in a scene. It's a `CamTargetMarker`.
+
+In its card, either give the marker its own camera settings, which work like a [camera zone's](/papermario-dx/world/camera/#camera-zones), or select **Camera Settings From Zone** to use the settings of the zone below it. With zone settings, you can still replace the zone's distance with **Override Boom Length** and its angles with **Override Boom Angles**. Select **Use Current View** to set the marker up from the editor's camera, and **Toggle Preview** to see the shot.
+
+Point the camera at the marker with `UseCamTarget`:
+
+```c
+EvtScript EVS_ShowShore = {
+    Call(UseCamTarget, CAM_DEFAULT, $Shore)
+    Wait(30)
+    Call(ResetCam, CAM_DEFAULT, 4.0)
+    Return
+    End
+};
+```
+
+If the marker has **Generate Camera Pan** selected, `UseCamTarget` pans the camera there at its **Move Speed** and waits until it arrives. Otherwise, it only changes the camera's settings and target, and you start the pan yourself with `PanToTarget`, as in [Moving the camera from an EVT script](/papermario-dx/world/camera/#moving-the-camera-from-an-evt-script).
+
 ## Light
 
 A Light marker lights sprites, such as a torch casting a red glow on the player. Lights only show when the map has sprite shading. To turn it on, select a Light marker and select **Enable** under **Sprite shading** in its properties. There you also set the **Base color**, the color of a sprite's unlit side, and the **Edge offset**, how wide the lit edges of sprites are. These settings belong to the whole map, so they only appear while one light is selected.

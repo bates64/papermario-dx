@@ -29,6 +29,8 @@ Call(SetNpcJumpscale, NPC_SELF, 2.5) // was Float(2.5)
 Markers placed in the map editor can be referred to by name with a dollar prefix, e.g. `$Goomba`.
 See [the docs](https://docs.starhaven.dev/papermario-dx/world/markers/) for more information.
 
+A Camera Target marker sets up the camera with `UseCamTarget`, such as `Call(UseCamTarget, CAM_DEFAULT, $Shore)`.
+
 Entries are referred to similarly, instead of the big `entrances.h` enum. `GotoMap` now looks like:
 ```c
 #include "world/area/kmr/kmr_03.h"

@@ -746,6 +746,43 @@ API_CALLABLE(AdjustCam) {
     return ApiStatus_DONE2;
 }
 
+API_CALLABLE(UseCamTarget) {
+    Bytecode* args = script->ptrReadPos;
+    Camera* camera = &gCameras[evt_get_variable(script, *args++)];
+    const CamTargetMarker* target = (const CamTargetMarker*) evt_get_variable(script, *args++);
+
+    if (isInitialCall) {
+        if (target->useZone) {
+            use_zone_settings(camera, target->pos.x, target->pos.y, target->pos.z);
+            if (target->overrideDist) {
+                camera->overrideSettings.boomLength = target->boomLength;
+            }
+            if (target->overrideAngles) {
+                camera->overrideSettings.boomPitch = target->boomPitch;
+                camera->overrideSettings.viewPitch = target->viewPitch;
+            }
+        } else {
+            camera->overrideSettings = target->settings;
+        }
+        camera->movePos = target->pos;
+        camera->panActive = true;
+
+        if (!target->pan) {
+            return ApiStatus_DONE2;
+        }
+        camera->moveSpeed = target->panSpeed / DT;
+        camera->useOverrideSettings = true;
+        camera->interpEasingParameter = 0.0f;
+        return ApiStatus_BLOCK;
+    }
+
+    if (camera->interpAlpha < 1.0f) {
+        return ApiStatus_BLOCK;
+    }
+
+    return ApiStatus_DONE2;
+}
+
 API_CALLABLE(ResetCam) {
     Bytecode* args = script->ptrReadPos;
     s32 id = evt_get_variable(script, *args++);

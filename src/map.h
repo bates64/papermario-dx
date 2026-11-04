@@ -111,6 +111,20 @@ typedef struct VolumeMarker {
     Vec3f max;
 } VolumeMarker;
 
+/// A camera setup for UseCamTarget to apply.
+typedef struct CamTargetMarker {
+    Vec3f pos;
+    b8 useZone; ///< Take the settings from the camera zone under `pos`, instead of from `settings`.
+    b8 overrideDist; ///< With `useZone`, replace the zone's boom length with `boomLength`.
+    b8 overrideAngles; ///< With `useZone`, replace the zone's pitches with `boomPitch` and `viewPitch`.
+    b8 pan; ///< Pan to `pos` at `panSpeed`, and wait until the camera arrives.
+    f32 boomLength;
+    f32 boomPitch;
+    f32 viewPitch;
+    f32 panSpeed;
+    CameraControlSettings settings;
+} CamTargetMarker;
+
 typedef struct PathMarkerPoint {
     Vec3s pos;
     u16 nextCount;

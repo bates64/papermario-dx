@@ -220,6 +220,41 @@ def volume_lines(marker) -> list:
     )
 
 
+def c_bool(value) -> str:
+    return "true" if value else "false"
+
+
+def camera_settings(zone) -> str:
+    """A CameraControlSettings initializer, laid out the way Star Rod compiles a camera zone's settings."""
+    (ax, ay, az), (bx, by, bz), (cx, _, cz) = zone["posA"], zone["posB"], zone["posC"]
+    if zone["type"] == 4:
+        points = f".two = {{ {', '.join(f32(v) for v in (ax, ay, az, bx, by, bz))} }}"
+    else:
+        points = f".three = {{ {', '.join(f32(v) for v in (ax, cx, az, bx, cz, bz))} }}"
+    return (
+        f"{{ .type = {int(zone['type'])}, .boomLength = {f32(zone['boomLength'])}, .boomPitch = {f32(zone['boomPitch'])}, "
+        f".points = {{ {points} }}, .viewPitch = {f32(zone['viewPitch'])}, .flag = {c_bool(zone.get('flag'))} }}"
+    )
+
+
+def cam_target_lines(marker) -> list:
+    comp = marker["camTargetComp"]
+    fields = [
+        f".pos = {vec3f(marker['pos'])}",
+        f".useZone = {c_bool(comp.get('useZone'))}",
+        f".overrideDist = {c_bool(comp.get('overrideDist'))}",
+        f".overrideAngles = {c_bool(comp.get('overrideAngles'))}",
+        f".pan = {c_bool(comp.get('generatePan'))}",
+        f".boomLength = {f32(comp.get('boomLength', 0))}",
+        f".boomPitch = {f32(comp.get('boomPitch', 0))}",
+        f".viewPitch = {f32(comp.get('viewPitch', 0))}",
+        f".panSpeed = {f32(comp.get('moveSpeed', 0))}",
+    ]
+    if not comp.get("useZone"):
+        fields.append(f".settings = {camera_settings(comp['cameraZone'])}")
+    return define("CamTargetMarker", marker["name"], fields)
+
+
 def path_lines(marker) -> tuple:
     """The path's definition, and the names it gives its points."""
     path = marker["name"]
@@ -330,6 +365,8 @@ def marker_lines(features, map_name: str) -> tuple:
             externs += needs
         elif kind in ("Sphere", "Cylinder", "Volume"):
             lines += volume_lines(marker)
+        elif kind == "CamTarget":
+            lines += cam_target_lines(marker)
         elif kind == "Path":
             path, point_names = path_lines(marker)
             for point in point_names:
