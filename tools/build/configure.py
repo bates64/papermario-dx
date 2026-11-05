@@ -2093,7 +2093,7 @@ class Configure:
                             ):
                                 area_dirs.append(str(map_dir.relative_to(ROOT)))
         gen_areas_stamp.parent.mkdir(parents=True, exist_ok=True)
-        gen_areas_stamp.write_text("\n".join(area_dirs) + "\n")
+        write_if_changed(str(gen_areas_stamp), ("\n".join(area_dirs) + "\n").encode("utf-8"))
         build(
             self.build_path() / "include/world/gAreas.inc.c",
             [Path(BUILD_TOOLS / "gen_areas.py"), gen_areas_stamp],

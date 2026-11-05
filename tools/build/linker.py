@@ -13,6 +13,8 @@ import re
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
+from common import write_if_changed
+
 # An object as the script refers to it, paired with the symbol labelling its
 # data: see data_label.
 LabelledObject = Tuple[str, str]
@@ -179,7 +181,7 @@ def write_script(
     out += _overlap_checks(segments, follows or {}, vram_symbols or {})
     out.append("")
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text("\n".join(out))
+    write_if_changed(str(path), "\n".join(out).encode("utf-8"))
 
 
 def write_symbol_header(path: Path, segments: List[Segment]) -> None:
@@ -194,4 +196,4 @@ def write_symbol_header(path: Path, segments: List[Segment]) -> None:
                 out.append(f"extern Addr {label};")
     out += ["", "#endif", ""]
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text("\n".join(out))
+    write_if_changed(str(path), "\n".join(out).encode("utf-8"))
