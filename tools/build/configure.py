@@ -602,12 +602,14 @@ def write_ninja_rules(
         "sprites",
         description="Packing sprites",
         command=f"$python {BUILD_TOOLS}/sprite/sprites.py $out $header_out $build_dir $asset_stack $npc_sprites $player_sprites $player_rasters",
+        restat=True,
     )
 
     ninja.rule(
         "sprite_header",
         description="Generating header for sprite $sprite_name",
         command=f"$python {BUILD_TOOLS}/sprite/header.py $out $sprite_name $sprite_id $asset_stack",
+        restat=True,
     )
 
     ninja.rule(

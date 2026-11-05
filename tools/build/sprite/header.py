@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 
+import io
 from sys import argv, path
 from pathlib import Path
 
 path.append(str(Path(__file__).parent.parent))
 
+from common import write_if_changed
 from sprite.npc_sprite import from_dir as npc_from_dir
 
 seen = set()
@@ -32,7 +34,7 @@ if __name__ == "__main__":
 
     asset_stack = tuple(Path(d) for d in asset_stack_raw.split(","))
 
-    with open(outfile, "w", encoding="utf-8") as f:
+    with io.StringIO() as f:
         # get sprite index
         s = int(s_in)
         assert 1 <= s <= 0xFFF
@@ -75,3 +77,5 @@ if __name__ == "__main__":
                 else:
                     write_if_unique(f, f"ANIM_{sprite_name}_{palette_name}_{name}", anim_id)
             f.write("\n")
+
+        write_if_changed(outfile, f.getvalue().encode("utf-8"))

@@ -1,6 +1,7 @@
 #! /usr/bin/env
 
 import argparse
+import io
 from dataclasses import dataclass
 from pathlib import Path
 import sys
@@ -11,7 +12,7 @@ sys.path.append(str(Path(__file__).parent.parent))
 sys.path.append(str(Path(__file__).parent.parent.parent / "splat_ext"))
 sys.path.append(str(Path(__file__).parent.parent.parent))
 sys.path.append(str(Path(__file__).parent.parent.parent / "splat"))
-from common import get_asset_path, iter_in_groups
+from common import get_asset_path, iter_in_groups, write_if_changed
 from sprite_tables import (
     BACK_PALETTE_XML,
     LIST_END_BYTES,
@@ -392,7 +393,7 @@ def write_player_sprite_header(
             sprite_id += 1
 
     out_file.parent.mkdir(exist_ok=True, parents=True)
-    with open(out_file, "w", encoding="utf-8") as f:
+    with io.StringIO() as f:
         f.write(f"#ifndef {ifdef_name}\n")
         f.write(f"#define {ifdef_name}\n\n")
 
@@ -422,6 +423,7 @@ def write_player_sprite_header(
             f.write("\n")
 
         f.write(f"#endif // {ifdef_name}\n")
+        write_if_changed(str(out_file), f.getvalue().encode("utf-8"))
 
 
 def build_player_sprites(sprite_order: List[str], build_dir: Path, asset_stack: Tuple[Path, ...]) -> bytes:
@@ -603,8 +605,7 @@ def build(
 
     final_data = build_info_bytes + major_file_divisons + player_raster_bytes + player_sprite_bytes + npc_sprite_bytes
 
-    with open(out_file, "wb") as f:
-        f.write(final_data)
+    write_if_changed(str(out_file), final_data)
 
     write_player_sprite_header(player_sprite_order, player_header_path)
 
