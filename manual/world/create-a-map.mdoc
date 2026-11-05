@@ -68,14 +68,15 @@ To change the map's settings, open the map and select nothing. The properties sh
 
 | Setting | What it sets |
 | --- | --- |
-| **Location** | Where the pause menu's map shows the player, such as `LOCATION_TOAD_TOWN`. Leave it empty to keep the location of the map the player came from. |
-| **Tattle** | The message the player's partner says when it tattles on the map, such as `MSG_MapTattle_kmr_02`. |
-| **Reverb** | The reverb on sound effects. The base game uses `1` in Gusty Gulch, `2` in Tubba Blubba's Castle, and `3` in Peach's Castle. |
-| **Song variation** | Which version of some songs plays in the map, such as the special battle theme. |
-| **Camera** | The camera's field of view, how near and far it draws, its background color, and whether it leads the player by looking ahead of them. |
+| **Location** | Where the pause menu's map shows the player, such as Toad Town. **Keep the previous location** keeps the location of the map the player came from. |
+| **Tattle** | The message the player's partner says when it tattles on the map, such as `MapTattle_kmr_02`. The list has the project's messages whose names start with `MapTattle`. |
+| **Reverb** | The reverb on sound effects and ambient sounds. **Small room** adds a few short reflections. Each **Echo** repeats a sound after its delay, fading each time. |
+| **Background** | The image behind the map, or without one, the color the camera clears to. |
+| **Camera** | The camera's field of view, how near and far it draws, and whether it leads the player by looking ahead of them. |
 | **World fog** and **Entity fog** | Fog over the map's models, and over its NPCs and entities. |
+| **Lighting** | Whether the map has [sprite shading](/papermario-dx/world/markers/#light), the color of a sprite's unlit side, and how wide its lit edges are. |
 
-To give the map a background, select **Map > Has Background**, and choose the image with **Map > Change Background**.
+Some base-game maps also have **Song variation**, which plays the second version of six songs, such as the special battle theme and the new partner jingle, in place of the one a script asks for. The base game uses it in dungeons and dangerous areas. The map's settings only show it on maps that use it. To choose a version of a song yourself, give it to `SetMusic`.
 
 The game sets up the location, camera, and fog as the map loads, before its `EVS_Main` starts, so the map's EVT scripts can change them, such as to move the camera in a [scene](/papermario-dx/world/scenes/).
 

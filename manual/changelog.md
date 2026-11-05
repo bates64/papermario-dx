@@ -4,14 +4,11 @@
 
 ### Each map has its own sprite shading ([Alex](https://starhaven.dev/bates64.com))
 
-Sprite shading is set for each map instead of in a shared list of profiles, and applies when the map loads. Place its lights as Light markers, then turn it on and set its colors in a light's properties. See [the docs](https://docs.starhaven.dev/papermario-dx/world/markers/#light) for more information.
+Sprite shading is set for each map instead of in a shared list of profiles, and applies when the map loads. Place its lights as Light markers, then turn it on and set its colors under **Lighting** in the map's settings, which show when nothing is selected. See [the docs](https://docs.starhaven.dev/papermario-dx/world/markers/#light) for more information.
 
 To update:
-- In a map, delete `Call(SetSpriteShading, SHADING_...)`, then open the map, add its lights as Light markers, and turn on sprite shading in one light's properties. The base game's maps have already been moved over.
-- If the profile had no lights, set `"hasSpriteShading": true`, `"shadingBaseColor"`, and `"shadingOffset"` in the map's `features.json` by hand, since the editor only shows these settings on a selected light.
-- In a battle stage, do the same in the editor, and replace `Call(SetSpriteShading, SHADING_...)` with `Call(SetSpriteShading, MAP_SPRITE_SHADING)`.
-- Delete `Call(SetSpriteShading, SHADING_NONE)`. It did nothing, and `SHADING_NONE` no longer exists.
-- If you edited `sprite/sprite_shading_profiles.json`, nothing reads it anymore. Copy your changes into each map that uses the profile.
+- Replace `Call(SetSpriteShading, SHADING_...)` with Light markers and the map's **Lighting** settings. In a battle stage, also call `SetSpriteShading` with `MAP_SPRITE_SHADING` in its pre-battle script.
+- Delete `Call(SetSpriteShading, SHADING_NONE)`.
 
 ### `Ref` and `Float` are deprecated ([Alex](https://starhaven.dev/bates64.com))
 
