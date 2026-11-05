@@ -890,7 +890,7 @@ OVL_DIR_MAGIC = 0x4D4F4444  # "MODD"
 
 
 def parse_syms(syms_path):
-    """Parse a syms.ld file into a dict of symbol name -> integer value."""
+    """Parse a linker script of symbol definitions into a dict of symbol name -> 32-bit value."""
     syms = {}
     with open(syms_path, "r", encoding="utf-8") as f:
         for line in f:
@@ -900,10 +900,10 @@ def parse_syms(syms_path):
             if "=" not in line:
                 continue
             name, _, value = line.partition("=")
-            name = name.strip()
+            name = name.strip().strip('"')
             value = value.strip()
             try:
-                syms[name] = int(value, 0)
+                syms[name] = int(value, 0) & 0xFFFFFFFF
             except ValueError:
                 pass
     return syms
@@ -947,8 +947,7 @@ def ld_address(address):
 
 
 def cmd_gen_syms(args):
-    """Subcommand: generate pickled syms from an ELF, and a linker script that
-    defines them for linking overlay debug ELFs."""
+    """Subcommand: generate pickled syms from an ELF."""
     syms = {}
     for symbol_file in args.symbol_files:
         syms.update(parse_syms(symbol_file))
@@ -962,10 +961,27 @@ def cmd_gen_syms(args):
     syms.update(gen_syms_from_elf(args.input))
     write_if_changed(args.output, pickle.dumps(syms))
 
-    # PROVIDE defines only the symbols an overlay references, so each debug
-    # ELF carries those rather than the whole engine's symbol table.
-    lines = [f'PROVIDE("{name}" = 0x{ld_address(value):X});' for name, value in sorted(syms.items())]
-    write_if_changed(args.script, ("\n".join(lines) + "\n").encode("utf-8"))
+
+def cmd_gen_imports(args):
+    """Subcommand: write, for each overlay in a manifest, a linker script
+    defining the engine symbols its objects reference."""
+    import json
+
+    syms = load_syms(args.syms)
+    with open(args.manifest, "r", encoding="utf-8") as f:
+        entries = json.load(f)
+
+    for entry in entries:
+        imported = set()
+        for obj_path in entry["objects"]:
+            with open(obj_path, "rb") as f:
+                elf = Elf32(f.read())
+            imported.update(
+                sym.name for sym in elf.symbols
+                if sym.shndx == SHN_UNDEF and sym.name in syms
+            )
+        lines = [f'PROVIDE("{name}" = 0x{ld_address(syms[name]):X});' for name in sorted(imported)]
+        write_if_changed(entry["imports"], ("\n".join(lines) + "\n").encode("utf-8"))
 
 
 def overlay_directory_pointer(syms, type_index):
@@ -1486,7 +1502,7 @@ def cmd_convert(args):
 
 def cmd_link(args):
     """Subcommand: link .o files into an overlay directly."""
-    syms = load_syms(args.syms_cache)
+    syms = parse_syms(args.imports)
     link_addr = int(args.link_addr, 0)
 
     try:
@@ -1657,11 +1673,17 @@ def main():
     p_gen_syms = subparsers.add_parser("gen-syms", help="Generate pickled syms from ELF")
     p_gen_syms.add_argument("input", help="Input ELF file")
     p_gen_syms.add_argument("output", help="Output .pkl file")
-    p_gen_syms.add_argument("script", help="Output linker script defining the symbols")
     p_gen_syms.add_argument(
         "symbol_files", nargs="*", help="Baseline linker symbol files"
     )
     p_gen_syms.set_defaults(func=cmd_gen_syms)
+
+    p_gen_imports = subparsers.add_parser(
+        "gen-imports", help="Write the engine symbols each overlay references"
+    )
+    p_gen_imports.add_argument("syms", help="Pickled syms file (.pkl)")
+    p_gen_imports.add_argument("manifest", help="JSON manifest listing overlays")
+    p_gen_imports.set_defaults(func=cmd_gen_imports)
 
     p_convert = subparsers.add_parser("convert", help="Convert ELF to overlay format")
     p_convert.add_argument("elf", help="Input ELF file")
@@ -1669,7 +1691,7 @@ def main():
     p_convert.set_defaults(func=cmd_convert)
 
     p_link = subparsers.add_parser("link", help="Link .o files into an overlay")
-    p_link.add_argument("syms_cache", help="Pickled syms file (.pkl)")
+    p_link.add_argument("imports", help="Linker script defining the engine symbols the objects reference")
     p_link.add_argument("output", help="Output .ovl file")
     p_link.add_argument("link_addr", help="Link address (e.g. 0x80240000)")
     p_link.add_argument(

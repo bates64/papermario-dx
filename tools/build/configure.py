@@ -778,25 +778,32 @@ def write_ninja_rules(
     ninja.rule(
         "syms",
         description="Reading engine symbols for overlays",
-        command=f"$python {BUILD_TOOLS}/overlay_cli.py gen-syms $elf $syms $syms_script $symbol_files",
+        command=f"$python {BUILD_TOOLS}/overlay_cli.py gen-syms $elf $syms $symbol_files",
+        restat=True,
+    )
+
+    ninja.rule(
+        "ovl_imports",
+        description="Reading the engine symbols each overlay references",
+        command=f"$python {BUILD_TOOLS}/overlay_cli.py gen-imports $syms $manifest",
         restat=True,
     )
 
     ninja.rule(
         "ovl_link_convert",
         description="Linking overlay $ovl_src",
-        command=f"$python {BUILD_TOOLS}/overlay_cli.py link $syms $out $link_addr $force_export $max_loaded_size $require_resolved $in",
+        command=f"$python {BUILD_TOOLS}/overlay_cli.py link $imports $out $link_addr $force_export $max_loaded_size $require_resolved $in",
     )
 
     # A debugger loads this alongside the engine's ELF, offset to wherever the
     # game loaded the overlay. Calls into the engine resolve against the
-    # symbols in $syms_script, which names each symbol once, where the engine's
+    # symbols in $imports, which names each symbol once, where the engine's
     # ELF also holds libgcc's unused copies of symbols the game defines itself.
     # Some overlays define a global twice, which the overlay linker tolerates.
     ninja.rule(
         "ovl_debug_elf",
         description="Linking overlay debug ELF $ovl_src",
-        command=f"{ld} -T $script --no-check-sections --allow-multiple-definition -o $out $in $syms_script",
+        command=f"{ld} -T $script --no-check-sections --allow-multiple-definition -o $out $in $imports",
     )
 
     ninja.rule(
@@ -1785,9 +1792,6 @@ class Configure:
     def syms_path(self) -> Path:
         return self.build_path() / "syms.pkl"
 
-    def syms_script_path(self) -> Path:
-        return self.build_path() / "syms.ld"
-
     def embedded_asset_deps(self, src: Path) -> List[str]:
         """Build outputs that a source embeds with `.incbin`.
 
@@ -2281,7 +2285,7 @@ class Configure:
         )
 
         ninja.build(
-            [posix(self.syms_path()), posix(self.syms_script_path())],
+            posix(self.syms_path()),
             "syms",
             posix(self.elf_path()),
             implicit=[
@@ -2292,7 +2296,6 @@ class Configure:
             variables={
                 "elf": posix(self.elf_path()),
                 "syms": posix(self.syms_path()),
-                "syms_script": posix(self.syms_script_path()),
                 "symbol_files": posix(self.version_path / "symbol_addrs.txt"),
             },
         )
@@ -2498,6 +2501,7 @@ class Configure:
             debug_syms_path = build_dir / f"{name}.ovl.debug_syms"
             debug_script_path = build_dir / f"{name}.ovl.ld"
             debug_elf_path = build_dir / f"{name}.ovl.elf"
+            imports_path = build_dir / f"{name}.ovl.imports.ld"
             objects = []
             overlay_evt_validation_stamps = []
             for c_file in c_files:
@@ -2612,7 +2616,7 @@ class Configure:
                 require_resolved = "--require-resolved"
 
             overlay_link_deps = [
-                posix(self.syms_path()),
+                posix(imports_path),
                 posix(BUILD_TOOLS / "overlay_cli.py"),
                 posix(BUILD_TOOLS / "overlay_impl.py"),
             ] + overlay_evt_validation_stamps
@@ -2623,7 +2627,7 @@ class Configure:
                 implicit=overlay_link_deps,
                 implicit_outputs=[posix(debug_syms_path), posix(debug_script_path)],
                 variables={
-                    "syms": posix(self.syms_path()),
+                    "imports": posix(imports_path),
                     "link_addr": link_addr,
                     "ovl_src": posix(src_path.relative_to(ROOT)),
                     "force_export": force_export,
@@ -2632,16 +2636,14 @@ class Configure:
                 },
             )
 
-            # Depends on the engine through syms.ld, which only changes when
-            # its symbols do, rather than on every rebuild of the engine's ELF.
             ninja.build(
                 posix(debug_elf_path),
                 "ovl_debug_elf",
                 objects,
-                implicit=[posix(debug_script_path), posix(self.syms_script_path())],
+                implicit=[posix(debug_script_path), posix(imports_path)],
                 variables={
                     "script": posix(debug_script_path),
-                    "syms_script": posix(self.syms_script_path()),
+                    "imports": posix(imports_path),
                     "ovl_src": posix(src_path.relative_to(ROOT)),
                 },
             )
@@ -2652,6 +2654,8 @@ class Configure:
                     "type_index": type_index,
                     "ovl": posix(ovl_path),
                     "debug_syms": posix(debug_syms_path),
+                    "objects": objects,
+                    "imports": posix(imports_path),
                 }
             )
             implicit_deps.append(posix(ovl_path))
@@ -2659,8 +2663,22 @@ class Configure:
 
         manifest_path = self.build_path() / "ovl" / "manifest.json"
         manifest_path.parent.mkdir(parents=True, exist_ok=True)
-        with open(manifest_path, "w", encoding="utf-8") as f:
-            json.dump(manifest_entries, f)
+        write_if_changed(str(manifest_path), json.dumps(manifest_entries).encode("utf-8"))
+
+        # An overlay depends on only the engine symbols it references, so moving
+        # others, such as the ROM addresses of the assets after a resized
+        # sprite, relinks nothing.
+        ninja.build(
+            [entry["imports"] for entry in manifest_entries],
+            "ovl_imports",
+            [posix(self.syms_path()), posix(manifest_path)],
+            implicit=[obj for entry in manifest_entries for obj in entry["objects"]]
+            + [posix(BUILD_TOOLS / "overlay_cli.py"), posix(BUILD_TOOLS / "overlay_impl.py")],
+            variables={
+                "syms": posix(self.syms_path()),
+                "manifest": posix(manifest_path),
+            },
+        )
 
         implicit_deps.append(posix(BUILD_TOOLS / "overlay_cli.py"))
         implicit_deps.append(posix(BUILD_TOOLS / "overlay_impl.py"))
