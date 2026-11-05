@@ -1,8 +1,14 @@
 #!/usr/bin/env python3
 
-from sys import argv
+import io
+from pathlib import Path
+from sys import argv, path
 
 import msgpack
+
+path.append(str(Path(__file__).parent.parent))
+
+from common import write_if_changed
 
 
 class Message:
@@ -45,7 +51,7 @@ if __name__ == "__main__":
         with open(infile, "rb") as f:
             messages.extend(Message(msg, i) for msg in msgpack.unpack(f))
 
-    with open(outfile, "wb") as f:
+    with io.BytesIO() as f:
         sections = []
 
         for message in messages:
@@ -127,8 +133,9 @@ if __name__ == "__main__":
         for offset in section_offsets:
             f.write(offset.to_bytes(4, byteorder="big"))
         f.write(b"\0\0\0\0")
+        write_if_changed(outfile, f.getvalue())
 
-    with open(header_file, "w", encoding="utf-8") as f:
+    with io.StringIO() as f:
         f.write(f'#pragma once\n\n#include "messages.h"\n\n')
 
         seen = {}
@@ -146,3 +153,4 @@ if __name__ == "__main__":
                     f.write(f"#define {define_name} {value}\n")
 
         f.write("\n")
+        write_if_changed(header_file, f.getvalue().encode("utf-8"))

@@ -10,6 +10,8 @@ import sys
 import zlib
 from pathlib import Path
 
+from common import write_if_changed
+
 SCRIPT_DIR = Path(__file__).resolve().parent
 
 OVL_MAGIC = b"MOD\x00"
@@ -942,22 +944,6 @@ def ld_address(address):
     32-bit MIPS addresses, so a script's addresses must be too for calls
     between the overlay and the engine to resolve."""
     return address | 0xFFFFFFFF00000000 if address & 0x80000000 else address
-
-
-def write_if_changed(path, data):
-    """Write data to path, leaving the file untouched if it already holds it,
-    so ninja's restat skips whatever depends on it."""
-    try:
-        with open(path, "rb") as f:
-            if f.read() == data:
-                return
-    except FileNotFoundError:
-        pass
-
-    tmp_path = path + ".tmp"
-    with open(tmp_path, "wb") as f:
-        f.write(data)
-    os.replace(tmp_path, path)
 
 
 def cmd_gen_syms(args):

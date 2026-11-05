@@ -23,6 +23,22 @@ def star_rod() -> str:
     return "tools\\star-rod.bat" if sys.platform == "win32" else "tools/star-rod.sh"
 
 
+def write_if_changed(path: str, data: bytes) -> None:
+    """Write data to path, leaving the file untouched if it already holds it,
+    so ninja's restat skips whatever depends on it."""
+    try:
+        with open(path, "rb") as f:
+            if f.read() == data:
+                return
+    except FileNotFoundError:
+        pass
+
+    tmp_path = path + ".tmp"
+    with open(tmp_path, "wb") as f:
+        f.write(data)
+    os.replace(tmp_path, path)
+
+
 def layer_relative(path: Path, asset_stack: Iterable) -> Optional[Path]:
     """Where a path sits within the asset layer holding it, or None if no layer does.
 

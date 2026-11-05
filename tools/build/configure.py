@@ -677,6 +677,7 @@ def write_ninja_rules(
         "msg_combine",
         description="Combining messages",
         command=f"$python {BUILD_TOOLS}/msg/combine.py $out --layer-sizes $layer_sizes $in",
+        restat=True,
     )
 
     ninja.rule(
