@@ -16,8 +16,6 @@ EvtScript EVS_BindExitTriggers = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_FLOWER_FIELDS)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(AF_FLO_TreeDrop_RedBerry1, false)
     Set(AF_FLO_TreeDrop_RedBerry2, false)
     Set(AB_FLO03_DialogueState_Petunia, 0)

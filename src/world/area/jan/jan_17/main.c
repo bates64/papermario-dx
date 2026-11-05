@@ -2,11 +2,6 @@
 #include "world/area/jan/jan_16.h"
 #include "world/area/jan/jan_18.h"
 
-API_CALLABLE(EnableFog) {
-    enable_world_fog();
-    return ApiStatus_DONE2;
-}
-
 EvtScript EVS_ExitWalk_jan_16_2 = EVT_EXIT_WALK(60, $Jan16, $jan_16.Jan17);
 EvtScript EVS_ExitWalk_jan_18_0 = EVT_EXIT_WALK(60, $Jan18, $jan_18.Jan17);
 
@@ -18,10 +13,7 @@ EvtScript EVS_BindExitTriggers = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_JADE_JUNGLE)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     ExecWait(EVS_MakeEntities)
-    Call(EnableFog)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitw, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilite, COLLIDER_FLAGS_UPPER_MASK)
     Call(GetLoadType, LVar1)

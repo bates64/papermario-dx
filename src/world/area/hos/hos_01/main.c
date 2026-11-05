@@ -115,8 +115,6 @@ EvtScript EVS_EnterStarWarp = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_SHOOTING_STAR_SUMMIT)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Thread
         Label(1)
         IfNe(GB_StoryProgress, STORY_CH0_MET_STAR_SPIRITS)

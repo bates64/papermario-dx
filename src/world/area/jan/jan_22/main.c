@@ -55,8 +55,6 @@ EvtScript EVS_EnterMap = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_JADE_JUNGLE)
-    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o304, COLLIDER_FLAGS_UPPER_MASK)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_RAPHAEL_MOVED_ROOT)

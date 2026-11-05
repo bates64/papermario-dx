@@ -10,8 +10,6 @@ EvtScript EVS_BindExitTriggers = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_SHY_GUYS_TOYBOX)
-    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     IfEq(GF_OMO04_SpawnedPeachChoice1, false)
         Call(MakeNpcs, true, KammySceneNPCs)
         Call(EnableNpcShadow, NPC_Goomba, false)

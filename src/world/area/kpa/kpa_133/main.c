@@ -68,8 +68,6 @@ EvtScript EVS_BlastWall = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_BOWSERS_CASTLE)
-    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Call(MakeNpcs, true, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     IfEq(GF_KPA133_Item_BombedWall, false)

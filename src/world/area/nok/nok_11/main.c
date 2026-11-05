@@ -66,8 +66,6 @@ EvtScript EVS_BindExitTriggers = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_PLEASANT_PATH)
-    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Set(GF_MAP_PleasantPath, true)
     IfEq(GB_StoryProgress, STORY_CH1_STAR_SPIRIT_DEPARTED)
         Call(MakeNpcs, false, JrTroopaNPCs)

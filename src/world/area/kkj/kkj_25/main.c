@@ -95,8 +95,6 @@ EvtScript EVS_Main = {
             Set(GF_KKJ25_Defeated_Kammy, true)
             Set(GF_KKJ25_Defeated_Bowser, true)
     EndSwitch
-    Set(GB_WorldLocation, LOCATION_PEACHS_CASTLE)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(SetCamSpeed, CAM_DEFAULT, 0.75)
     IfEq(GF_KKJ25_Defeated_Bowser, false)
         IfEq(GF_KKJ25_Defeated_Kammy, false)

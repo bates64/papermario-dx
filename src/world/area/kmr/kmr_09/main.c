@@ -14,8 +14,6 @@ EvtScript EVS_BindExitTriggers = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_GOOMBA_ROAD)
-    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Set(GF_MAP_GoombaRoad, true)
     Call(MakeNpcs, false, DefaultNPCs)
     ExecWait(EVS_MakeEntities)

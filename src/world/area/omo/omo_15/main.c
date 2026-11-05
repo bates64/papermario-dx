@@ -88,8 +88,6 @@ EvtScript EVS_BindExitTriggers = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_SHY_GUYS_TOYBOX)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, true, DefaultNPCs)
     ExecWait(EVS_SetupMusic)
     Set(LVar0, EVS_BindExitTriggers)

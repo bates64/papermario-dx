@@ -33,7 +33,6 @@ EvtScript EVS_BindExitTriggers = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_MARIOS_HOUSE)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, $Ending.index)
         Set(GB_StoryProgress, STORY_EPILOGUE)
@@ -49,7 +48,6 @@ EvtScript EVS_Main = {
         EndIf
     EndIf
     Set(MF_HouseInteriorVisible, false)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Exec(EVS_SetupMusic)
     Call(GetEntryID, LVar0)
     IfLt(LVar0, $ToadTown.index)

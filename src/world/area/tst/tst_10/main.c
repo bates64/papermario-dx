@@ -68,8 +68,6 @@ EvtScript EVS_BindExitTriggers = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_TESTING)
-    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     ExecWait(EVS_MakeEntities)
     IfEq(AF_TST10_DisabledExitCameras, true)
         Call(SetZoneEnabled, ZONE_north, false)

@@ -78,8 +78,6 @@ EvtScript EVS_EnterMap = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_WINDY_MILL)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, false, DefaultNPCs)
     Exec(EVS_SetupMusic)
     Exec(EVS_EnterMap)

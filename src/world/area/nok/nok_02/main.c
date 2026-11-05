@@ -83,8 +83,6 @@ EvtScript EVS_EnterMap = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_KOOPA_VILLAGE)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, $Entry3.index)
         Call(MakeNpcs, false, EpilogueNPCs)

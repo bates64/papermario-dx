@@ -27,8 +27,6 @@ EvtScript EVS_StartTexPanners = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_MT_LAVALAVA)
-    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     Wait(1)

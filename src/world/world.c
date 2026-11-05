@@ -73,6 +73,49 @@ static void load_map_settings(const Overlay* ovl, const char* mapName) {
     }
 }
 
+/// Sets up the location, camera, and fog the build exports from the map's features.json. The map's main EVT script
+/// starts after, so it can change them.
+static void apply_map_features(const Overlay* ovl) {
+    const s32* location = ovl_import(ovl, "_location");
+    if (location != nullptr) {
+        evt_set_variable(nullptr, GB_WorldLocation, *location);
+    }
+
+    const MapCamera* mapCamera = ovl_import(ovl, "_camera");
+    if (mapCamera != nullptr) {
+        Camera* camera = &gCameras[CAM_DEFAULT];
+        camera->updateMode = CAM_UPDATE_FROM_ZONE;
+        camera->needsInit = true;
+        camera->needsReinit = true;
+        camera->vfov = mapCamera->vfov;
+        camera->nearClip = mapCamera->nearClip;
+        camera->farClip = mapCamera->farClip;
+        camera->bgColor[0] = mapCamera->bgColor[0];
+        camera->bgColor[1] = mapCamera->bgColor[1];
+        camera->bgColor[2] = mapCamera->bgColor[2];
+        if (mapCamera->leadsPlayer) {
+            camera->flags |= CAMERA_FLAG_LEAD_PLAYER;
+        } else {
+            camera->flags &= ~CAMERA_FLAG_LEAD_PLAYER;
+        }
+        camera->flags &= ~CAMERA_FLAG_DISABLED;
+    }
+
+    const MapFog* worldFog = ovl_import(ovl, "_worldFog");
+    if (worldFog != nullptr) {
+        enable_world_fog();
+        set_world_fog_dist(worldFog->start, worldFog->end);
+        set_world_fog_color(worldFog->color[0], worldFog->color[1], worldFog->color[2], worldFog->color[3]);
+    }
+
+    const MapFog* entityFog = ovl_import(ovl, "_entityFog");
+    if (entityFog != nullptr) {
+        enable_entity_fog();
+        set_entity_fog_dist(entityFog->start, entityFog->end);
+        set_entity_fog_color(entityFog->color[0], entityFog->color[1], entityFog->color[2], entityFog->color[3]);
+    }
+}
+
 void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     s32 skipLoadingAssets = 0;
     const char* mapName;
@@ -233,6 +276,7 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     gGameStatusPtr->unk_92 = 1000;
 
     apply_sprite_shading(ovl_import(ovl, "_spriteShading"));
+    apply_map_features(ovl);
 
     gGameStatusPtr->mainScriptID =
         start_script_in_group(gMapSettings.main, EVT_PRIORITY_0, 0, EVT_GROUP_NEVER_PAUSE)->id;

@@ -66,9 +66,7 @@ EvtScript EVS_EnterMap = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_TUBBAS_MANOR)
     Set(GF_MAP_TubbasManor, true)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, 2)
         Call(MakeNpcs, false, DefaultNPCs)

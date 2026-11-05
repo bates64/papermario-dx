@@ -29,8 +29,6 @@ EvtScript EVS_EnterMap = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_GOOMBA_VILLAGE)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(AF_KMR04_DollyDropped, false)
     Call(MakeNpcs, false, DefaultNPCs)
     Call(ClearDefeatedEnemies)

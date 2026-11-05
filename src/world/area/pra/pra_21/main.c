@@ -48,8 +48,6 @@ EvtScript EVS_EnterMap = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_CRYSTAL_PALACE)
-    EVT_SETUP_CAMERA_NO_LEAD(24, 24, 40)
     ExecWait(EVS_MakeEntities)
     Exec(EVS_SetupMusic)
     IfLt(GB_StoryProgress, STORY_CH7_FOUND_HIDDEN_ROOM_UNDER_STATUE)

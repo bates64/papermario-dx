@@ -94,8 +94,6 @@ EvtScript EVS_EnterMap = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_PEACHS_CASTLE)
-    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq($Interlude.index)

@@ -37,11 +37,9 @@ EvtScript EVS_EnterMap = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_DRY_DRY_DESERT)
     IfEq(GB_StoryProgress, STORY_CH2_GOT_PULSE_STONE)
         Call(DisablePulseStone, false)
     EndIf
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, false, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     IfLt(GB_StoryProgress, STORY_CH2_UNCOVERED_DRY_DRY_RUINS)

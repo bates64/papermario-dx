@@ -94,7 +94,6 @@ EvtScript EVS_EnterMap = {
 };
 
 EvtScript EVS_Main = {
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     ExecWait(EVS_SetupScoreboard)
     Call(MakeNpcs, false, DefaultNPCs)
     ExecWait(EVS_SetupMusic)

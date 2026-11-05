@@ -70,8 +70,6 @@ EvtScript EVS_BlastWall = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_CRYSTAL_PALACE)
-    EVT_SETUP_CAMERA_NO_LEAD(24, 24, 40)
     Call(MakeNpcs, true, DefaultNPCs)
     IfEq(GF_PRA09_BombedWall, false)
         BindTrigger(EVS_BlastWall, TRIGGER_POINT_BOMB, BombPos_Wall, 1, 0)

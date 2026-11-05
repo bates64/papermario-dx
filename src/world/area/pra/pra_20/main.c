@@ -166,8 +166,6 @@ EvtScript EVS_EnterMap = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_CRYSTAL_PALACE)
-    EVT_SETUP_CAMERA_NO_LEAD(24, 24, 40)
     Exec(EVS_SetupMusic)
     Call(EnableModel, MODEL_o981, false)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o1019, COLLIDER_FLAGS_UPPER_MASK)

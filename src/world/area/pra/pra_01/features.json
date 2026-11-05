@@ -3,7 +3,7 @@
   "overrideHit": false,
   "shapeOverrideName": "",
   "hitOverrideName": "",
-  "locationName": "LOCATION_TOAD_TOWN",
+  "locationName": "LOCATION_SHIVER_MOUNTAIN",
   "background": "yki_bg",
   "tattle": "MSG_MapTattle_pra_01",
   "sfxReverb": 1,
@@ -15,15 +15,15 @@
     0,
     0
   ],
-  "camLeadsPlayer": true,
+  "camLeadsPlayer": false,
   "camEnabledLast": false,
   "fogWorld": [
-    0,
-    10,
-    10,
-    10,
+    1,
+    15,
+    5,
+    55,
     255,
-    950,
+    980,
     1000
   ],
   "fogEntity": [

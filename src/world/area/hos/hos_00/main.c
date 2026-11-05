@@ -68,8 +68,6 @@ EvtScript EVS_EnterMap = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_SHOOTING_STAR_SUMMIT)
-    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Set(GF_MAP_ShootingStarSummit, true)
     Set(GF_MAC01_RowfBadgesChosen, false)
     Call(GetEntryID, LVar0)

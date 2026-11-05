@@ -13,8 +13,6 @@ EvtScript EVS_BindExitTriggers = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_JADE_JUNGLE)
-    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Exec(EVS_MakeEntities)
     Exec(EVS_SetupPuzzle)
     Exec(EVS_SetupTrees)

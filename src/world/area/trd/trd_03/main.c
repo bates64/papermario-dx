@@ -203,8 +203,6 @@ EvtScript EVS_HiddenDoor = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_KOOPA_BROS_FORTRESS)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, true, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     IfLt(GB_StoryProgress, STORY_CH1_KOOPA_BROS_HID_KEY)

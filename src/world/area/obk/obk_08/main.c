@@ -15,8 +15,6 @@ EvtScript EVS_ExitMap_obk_01_4 =
     EVT_EXIT_SPLIT_SINGLE_DOOR($Foyer, $obk_01.RecordRoom, COLLIDER_tt1, MODEL_door1, MODEL_door1b, DOOR_SWING_OUT);
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_BOOS_MANSION)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, false, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     Set(AF_OBK08_KeepAwayStarted, false)

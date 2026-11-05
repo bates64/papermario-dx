@@ -66,7 +66,6 @@ EvtScript EVS_GotoMap_jan_00_0 = {
 
 EvtScript EVS_Main = {
     Call(CheckGameVarRanges)
-    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     ExecWait(EVS_MakeEntities)
     BindTrigger(EVS_GotoMap_kmr_09_1, TRIGGER_WALL_PUSH, COLLIDER_deilitn, 1, 0)
     BindTrigger(EVS_GotoMap_nok_10_0, TRIGGER_WALL_PUSH, COLLIDER_deilitne, 1, 0)

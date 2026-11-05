@@ -35,8 +35,6 @@ EvtScript EVS_StartTexPanners = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_MT_LAVALAVA)
-    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Call(MakeNpcs, true, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     Set(LVar0, EVS_BindExitTriggers)

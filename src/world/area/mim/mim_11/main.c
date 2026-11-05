@@ -231,9 +231,7 @@ EvtScript EVS_EnterMap = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_BOOS_MANSION)
     Set(GF_MAP_BoosMansion, true)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(EnableGroup, MODEL_g62, false)
     Call(MakeNpcs, true, DefaultNPCs)
     ExecWait(EVS_MakeEntities)

@@ -15,7 +15,8 @@ as fields of `$kmr_03`.
 
 With --settings, it also writes a source for the map's overlay that exports
 the settings the game imports when it loads the map: its entry list, sprite
-shading, background, tattle, song variation, and reverb.
+shading, background, tattle, song variation, reverb, location, camera, and
+fog.
 
 A header is only rewritten when its text changes, so editing a marker rebuilds
 only the code that includes it.
@@ -361,6 +362,25 @@ def settings_lines(features, markers: list) -> list:
         lines.append(f"export const s32 _songVariation = {int(features['songVariation'])};")
     if features.get("sfxReverb"):
         lines.append(f"export const s32 _sfxReverb = {int(features['sfxReverb'])};")
+
+    # no location keeps the one the player came from
+    if features.get("locationName"):
+        if not IDENTIFIER.fullmatch(features["locationName"]):
+            raise MarkerError(f"the location must be a name, such as LOCATION_TOAD_TOWN, not '{features['locationName']}'")
+        lines.append(f"export const s32 _location = {features['locationName']};")
+    if "camVfov" in features:
+        bg = ", ".join(str(int(c)) for c in features["camBackgroundColor"])
+        lines.append(
+            f"export const MapCamera _camera = {{ .vfov = {f32(features['camVfov'])}, "
+            f".nearClip = {int(features['camNearClip'])}, .farClip = {int(features['camFarClip'])}, "
+            f".bgColor = {{ {bg} }}, .leadsPlayer = {c_bool(features['camLeadsPlayer'])} }};"
+        )
+    for key, name in [("fogWorld", "_worldFog"), ("fogEntity", "_entityFog")]:
+        enabled, r, g, b, a, start, end = features.get(key, [0] * 7)
+        if enabled:
+            lines.append(
+                f"export const MapFog {name} = {{ .color = {{ {r}, {g}, {b}, {a} }}, .start = {start}, .end = {end} }};"
+            )
     return lines
 
 

@@ -6,7 +6,6 @@ API_CALLABLE(WidenCameraFOV) {
 }
 
 EvtScript EVS_Main = {
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(SetCamViewport, CAM_DEFAULT, 15, 28, 290, 128)
     Call(WidenCameraFOV)
     Call(EnableWorldStatusBar, false)

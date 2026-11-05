@@ -87,8 +87,6 @@ LavaReset SafeFloorColliders[] = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_MT_LAVALAVA)
-    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Call(MakeNpcs, true, DefaultNPCs)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o112, SURFACE_TYPE_LAVA)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o217, SURFACE_TYPE_LAVA)

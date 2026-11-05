@@ -179,8 +179,6 @@ BombTrigger BombPos_Tree6 = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_SHIVER_SNOWFIELD)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, false, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     ExecWait(EVS_SetupMusic)

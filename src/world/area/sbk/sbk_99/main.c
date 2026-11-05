@@ -29,8 +29,6 @@ EvtScript EVS_EnterMap = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_DRY_DRY_DESERT)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(GF_MAP_DryDryDesert, true)
     ExecWait(EVS_MakeEntities)
     Call(SetMusic, 0, SONG_MT_RUGGED, 0, VOL_LEVEL_FULL)

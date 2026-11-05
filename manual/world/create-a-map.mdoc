@@ -64,22 +64,22 @@ Each model, collider, and zone in the map has a constant, such as `MODEL_o101`, 
 
 ## Map settings
 
-The map's background, tattle, song variation, and reverb are in its `features.json`. To give the map a background, select **Map > Has Background** in the map editor, and choose the image with **Map > Change Background**. The map editor has no controls for the other settings, so add them to `features.json` yourself, after `"locationName"`:
-
-```json
-"locationName": "LOCATION_GOOMBA_VILLAGE",
-"tattle": "MSG_MapTattle_kmr_02",
-"songVariation": 1,
-"sfxReverb": 2,
-```
+To change the map's settings, open the map and select nothing. The properties show the map's settings. In Star Rod without Diorama64, they're in the **Options** tab.
 
 | Setting | What it sets |
 | --- | --- |
-| `tattle` | The message the player's partner says when it tattles on the map. |
-| `songVariation` | Which version, `0` or `1`, of some songs plays in the map, such as the special battle theme. |
-| `sfxReverb` | The reverb on sound effects, from `0`, the default, to `3`. The base game uses `1` in Gusty Gulch, `2` in Tubba Blubba's Castle, and `3` in Peach's Castle. |
+| **Location** | Where the pause menu's map shows the player, such as `LOCATION_TOAD_TOWN`. Leave it empty to keep the location of the map the player came from. |
+| **Tattle** | The message the player's partner says when it tattles on the map, such as `MSG_MapTattle_kmr_02`. |
+| **Reverb** | The reverb on sound effects. The base game uses `1` in Gusty Gulch, `2` in Tubba Blubba's Castle, and `3` in Peach's Castle. |
+| **Song variation** | Which version of some songs plays in the map, such as the special battle theme. |
+| **Camera** | The camera's field of view, how near and far it draws, its background color, and whether it leads the player by looking ahead of them. |
+| **World fog** and **Entity fog** | Fog over the map's models, and over its NPCs and entities. |
 
-If the tattle changes during the game, write a `get_tattle` function in the map's code that returns the message to use. It takes the place of `"tattle"`.
+To give the map a background, select **Map > Has Background**, and choose the image with **Map > Change Background**.
+
+The game sets up the location, camera, and fog as the map loads, before its `EVS_Main` starts, so the map's EVT scripts can change them, such as to move the camera in a [scene](/papermario-dx/world/scenes/).
+
+If the tattle changes during the game, write a `get_tattle` function in the map's code that returns the message to use. It takes the place of **Tattle**.
 
 ```c
 s32 get_tattle(void) {

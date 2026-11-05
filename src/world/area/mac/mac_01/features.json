@@ -7,14 +7,14 @@
   "background": "nok_bg",
   "tattle": "MSG_MapTattle_mac_01",
   "camVfov": 25,
-  "camNearClip": 16,
+  "camNearClip": 90,
   "camFarClip": 4096,
   "camBackgroundColor": [
     0,
     0,
     0
   ],
-  "camLeadsPlayer": true,
+  "camLeadsPlayer": false,
   "camEnabledLast": false,
   "fogWorld": [
     0,

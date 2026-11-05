@@ -117,7 +117,6 @@ EvtScript EVS_EnterMap = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_TOAD_TOWN)
     Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 90, 4096) // note: unusually large near clip dist: 90 vs 16
     Call(SetCamBGColor, CAM_DEFAULT, 0, 0, 0)
     Call(SetCamEnabled, CAM_DEFAULT, true)

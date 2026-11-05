@@ -103,8 +103,6 @@ EvtScript EVS_UnusedMoveStatue = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_BOWSERS_CASTLE)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, true, DefaultNPCs)
     IfNe(GB_KPA81_BowserDoorState, 0)
         Call(GetEntryID, LVar0)

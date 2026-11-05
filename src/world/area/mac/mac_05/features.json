@@ -14,7 +14,7 @@
     0,
     0
   ],
-  "camLeadsPlayer": true,
+  "camLeadsPlayer": false,
   "camEnabledLast": false,
   "fogWorld": [
     0,

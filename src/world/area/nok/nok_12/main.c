@@ -99,9 +99,7 @@ EvtScript EVS_EnterMap = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_PLEASANT_PATH)
     Set(AF_NOK12_HitSwitch, false)
-    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Call(GetDemoState, LVar0)
     IfEq(LVar0, DEMO_STATE_NONE)
         Call(MakeNpcs, false, DefaultNPCs)

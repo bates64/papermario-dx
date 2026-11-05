@@ -3,16 +3,16 @@
   "overrideHit": false,
   "shapeOverrideName": "",
   "hitOverrideName": "",
-  "locationName": "LOCATION_TOAD_TOWN",
+  "locationName": "",
   "camVfov": 25,
   "camNearClip": 16,
   "camFarClip": 4096,
   "camBackgroundColor": [
-    0,
-    0,
-    0
+    208,
+    208,
+    208
   ],
-  "camLeadsPlayer": true,
+  "camLeadsPlayer": false,
   "camEnabledLast": false,
   "fogWorld": [
     0,

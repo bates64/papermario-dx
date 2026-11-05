@@ -319,8 +319,6 @@ EvtScript EVS_EnterMap = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_GUSTY_GULCH)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(GF_MAP_GustyGulch, true)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_TUBBA_CHASED_MARIO_IN_FOYER)

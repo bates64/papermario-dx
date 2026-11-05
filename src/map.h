@@ -38,6 +38,22 @@ typedef struct MapSettings {
     /* 0x46 */ PAD(2);
 } MapSettings; // size = 0x48
 
+/// A map's camera, which the game sets up before the map's main EVT script starts.
+typedef struct MapCamera {
+    f32 vfov;
+    s16 nearClip;
+    s16 farClip;
+    u8 bgColor[3];
+    b8 leadsPlayer;
+} MapCamera;
+
+/// Fog the game turns on before the map's main EVT script starts.
+typedef struct MapFog {
+    u8 color[4];
+    s32 start;
+    s32 end;
+} MapFog;
+
 /// Define the settings a map overlay exports, in place of the ones the game takes from the map's EVS_Main and
 /// features.json.
 /// @deprecated Delete it, and set its background, tattle, and reverb in the map editor.

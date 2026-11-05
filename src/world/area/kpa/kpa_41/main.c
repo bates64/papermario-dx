@@ -75,8 +75,6 @@ EvtScript EVS_EnterMap = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_BOWSERS_CASTLE)
-    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Exec(EVS_EnterMap)
     Exec(EVS_SetupMusic)
     Return

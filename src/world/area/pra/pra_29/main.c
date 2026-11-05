@@ -153,8 +153,6 @@ EvtScript EVS_EnterMap = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_CRYSTAL_PALACE)
-    EVT_SETUP_CAMERA_DEFAULT(24, 24, 40)
     ExecWait(EVS_MakeEntities)
     Exec(EVS_SetupMusic)
     Exec(EVS_SetupBridge)

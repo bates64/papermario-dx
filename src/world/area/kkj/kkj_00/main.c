@@ -121,8 +121,6 @@ EvtScript EVS_StartSlide_Right = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_PEACH_CASTLE_GROUNDS)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     IfEq(GB_StoryProgress, STORY_INTRO)
         Call(MakeNpcs, false, IntroNPCs)
     Else

@@ -16,8 +16,6 @@ EvtScript EVS_ExitDoors_obk_01_3 = EVT_EXIT_SPLIT_SINGLE_DOOR(
 );
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_BOOS_MANSION)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, false, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     Exec(EVS_SetupFireplace)

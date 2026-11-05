@@ -49,8 +49,6 @@ LavaReset SafeFloorColliders[] = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_MT_LAVALAVA)
-    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Set(GF_KZN06_Visited, true)
     ExecWait(EVS_MakeEntities)
     Call(SetMusic, 0, SONG_MT_LAVALAVA, 0, VOL_LEVEL_FULL)

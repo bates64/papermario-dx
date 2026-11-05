@@ -13,8 +13,6 @@ EvtScript EVS_BindExitTriggers = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_FLOWER_FIELDS)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(AF_FLO_GivenCrystalBerry, false)
     Call(MakeNpcs, false, DefaultNPCs)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o180, SURFACE_TYPE_FLOWERS)

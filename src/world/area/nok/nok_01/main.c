@@ -86,8 +86,6 @@ EvtScript EVS_TexPan_Flowers = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_KOOPA_VILLAGE)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
 #if VERSION_PAL
     Call(GetLanguage, LVar0)
     Call(SetModelTexVariant, MODEL_o340, LVar0)

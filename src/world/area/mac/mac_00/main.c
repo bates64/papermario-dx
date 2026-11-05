@@ -71,8 +71,6 @@ EvtScript EVS_EnterMap = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_TOAD_TOWN)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
 #if VERSION_PAL
     Call(GetLanguage, LVar0)
     Call(SetModelTexVariant, MODEL_mushroom_kingdom, LVar0)

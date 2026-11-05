@@ -3,7 +3,7 @@
   "overrideHit": false,
   "shapeOverrideName": "",
   "hitOverrideName": "",
-  "locationName": "LOCATION_TOAD_TOWN",
+  "locationName": "LOCATION_TUBBAS_MANOR",
   "tattle": "MSG_MapTattle_dgb_01",
   "songVariation": 1,
   "sfxReverb": 2,
@@ -15,7 +15,7 @@
     0,
     0
   ],
-  "camLeadsPlayer": true,
+  "camLeadsPlayer": false,
   "camEnabledLast": false,
   "fogWorld": [
     0,

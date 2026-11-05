@@ -92,9 +92,7 @@ SearchBushConfig SearchBush_SwitchBush = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_GOOMBA_ROAD)
     Call(UseSlowerFadeOnMapChange)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, false, DefaultNPCs)
     Call(ClearDefeatedEnemies)
     ExecWait(EVS_MakeEntities)

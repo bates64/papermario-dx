@@ -91,8 +91,6 @@ EvtScript EVS_BlastWall = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_CRYSTAL_PALACE)
-    EVT_SETUP_CAMERA_NO_LEAD(24, 24, 40)
     ExecWait(EVS_MakeEntities)
     Exec(EVS_SetupMusic)
     IfEq(GF_PRA33_BombedWall, false)

@@ -68,11 +68,9 @@ EvtScript EVS_Scene_RuinsRising = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_DRY_DRY_DESERT)
     IfEq(GB_StoryProgress, STORY_CH2_GOT_PULSE_STONE)
         Call(DisablePulseStone, false)
     EndIf
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     IfLt(GB_StoryProgress, STORY_UNUSED_FFFFFFCC)
         Call(EnableGroup, MODEL_g28, false)
         Call(MakeNpcs, false, DefaultNPCs)

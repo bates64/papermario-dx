@@ -2,11 +2,6 @@
 #include "world/area/kkj/kkj_23.h"
 #include "world/area/kkj/kkj_25.h"
 
-API_CALLABLE(EnableWorldFog) {
-    enable_world_fog();
-    return ApiStatus_DONE2;
-}
-
 EvtScript EVS_ExitDoors_kkj_23_1 =
     EVT_EXIT_DOUBLE_DOOR($Rooftop, $kkj_23.TowerStaircase, COLLIDER_tte, MODEL_o58, MODEL_o57);
 EvtScript EVS_ExitDoors_kkj_25_0 =
@@ -43,10 +38,7 @@ EvtScript EVS_EnterMap = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_PEACHS_CASTLE)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     ExecWait(EVS_MakeEntities)
-    Call(EnableWorldFog)
     Exec(EVS_SetupMusic)
     Call(UseDoorSounds, DOOR_SOUNDS_LARGE)
     Exec(EVS_EnterMap)

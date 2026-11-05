@@ -37,8 +37,6 @@ EvtScript EVS_EnterMap = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_TOAD_TOWN_TUNNELS)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Exec(EVS_SetupMusic)
     Exec(EVS_SetupDrips)
     ExecWait(EVS_MakeEntities)

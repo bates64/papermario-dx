@@ -22,7 +22,6 @@ EvtScript EVS_SetupCamera = {
 };
 
 EvtScript EVS_Main = {
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Exec(EVS_SetupCamera)
     Call(MakeNpcs, false, DefaultNPCs)
     ExecWait(EVS_Dummy)

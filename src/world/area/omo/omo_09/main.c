@@ -10,11 +10,9 @@ EvtScript EVS_BindExitTriggers = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_SHY_GUYS_TOYBOX)
     IfGe(GB_StoryProgress, STORY_CH4_DEFEATED_GENERAL_GUY)
         Set(GF_OMO09_SpawnedPeachChoice3, true)
     EndIf
-    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
 #if VERSION_PAL
     Call(GetLanguage, LVar0)
     IfEq(LVar0, LANGUAGE_ES)

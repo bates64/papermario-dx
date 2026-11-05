@@ -192,8 +192,6 @@ EvtScript EVS_EnterMap = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_PEACHS_CASTLE)
-    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Switch(GB_StoryProgress)
         CaseEq(STORY_INTRO)
             Call(MakeNpcs, false, IntroNPCs)

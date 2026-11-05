@@ -48,8 +48,6 @@ EvtScript EVS_EnterScene = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_DRY_DRY_OUTPOST)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, false, DefaultNPCs)
     Call(InitVirtualEntityList)
     ExecWait(EVS_MakeEntities)

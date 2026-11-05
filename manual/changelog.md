@@ -44,12 +44,11 @@ To update:
 
 ### `OVL_DEF_MAP` is deprecated ([Alex](https://starhaven.dev/bates64.com))
 
-A map needs no `OVL_DEF_MAP`. The game starts the map's `EVS_Main`, takes its entries from its Entry markers, and reads its background, tattle, song variation, and reverb from its `features.json`. See [Map settings](https://docs.starhaven.dev/papermario-dx/world/create-a-map/#map-settings).
+A map needs no `OVL_DEF_MAP`. The game starts the map's `EVS_Main`, takes its entries from its Entry markers, and takes its background, tattle, song variation, and reverb from its settings in the map editor.
 
-A map with `OVL_DEF_MAP` still works, but the build warns about it. To update a map:
-- Move its `.bgName`, `.tattle`, `.songVariation`, and `.sfxReverb` into its `features.json` after `"locationName"`, as `"background"`, `"tattle"`, `"songVariation"`, and `"sfxReverb"`, such as `"tattle": "MSG_MapTattle_kmr_02"`. If `.tattle` gives a function with `.get`, name the function `get_tattle` instead.
-- Delete the `OVL_DEF_MAP`.
-- If the map's main EVT script has another name, rename it to `EVS_Main`.
+The game also sets up the map's location, camera, and fog from its settings as the map loads, before its `EVS_Main` starts. To see a map's settings, open it in the map editor and select nothing. See [Map settings](https://docs.starhaven.dev/papermario-dx/world/create-a-map/#map-settings).
+
+A map with `OVL_DEF_MAP` still works, but the build warns about it. To update a map, set its background, tattle, and reverb in its settings, then delete the `OVL_DEF_MAP`, and rename its main EVT script to `EVS_Main` if it has another name. To set its location, camera, and fog in its settings too, delete the lines in `EVS_Main` that set them, such as `EVT_SETUP_CAMERA_NO_LEAD(...)`.
 
 ## 2026-10-25
 

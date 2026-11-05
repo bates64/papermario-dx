@@ -46,7 +46,6 @@ EvtScript EVS_TexPan_MotionLines = {
 };
 
 EvtScript EVS_Main = {
-    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Exec(EVS_TexPan_MotionLines)
     Call(GetEntryID, LVar0)
     Switch(LVar0)

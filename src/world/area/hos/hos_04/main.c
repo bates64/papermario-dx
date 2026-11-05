@@ -102,8 +102,6 @@ EvtScript EVS_EnterMap = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_STAR_HAVEN)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Thread
         Call(MakeNpcs, false, DefaultNPCs)
     EndThread

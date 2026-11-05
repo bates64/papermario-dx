@@ -45,8 +45,6 @@ EvtScript EVS_EnterMap = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_PEACH_CASTLE_GROUNDS)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, false, DefaultNPCs)
     Call(EnableGroup, MODEL_g156, false)
     Call(SetTexPanner, MODEL_o715, TEX_PANNER_0)

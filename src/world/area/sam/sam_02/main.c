@@ -124,8 +124,6 @@ EvtScript EVS_TexPan_Fire = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_SHIVER_CITY)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(GF_MAP_ShiverCity, true)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_MAYOR_MURDER_MYSTERY)

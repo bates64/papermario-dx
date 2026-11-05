@@ -34,8 +34,6 @@ EvtScript EVS_ExitDoors_obk_01_6 = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
 );
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_BOOS_MANSION)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, $Epilogue.index)
         Call(MakeNpcs, false, EpilogueNPCs)

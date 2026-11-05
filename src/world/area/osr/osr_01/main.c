@@ -36,8 +36,6 @@ EvtScript EVS_TexPan_Fountain = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_PEACH_CASTLE_GROUNDS)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(GF_MAP_PeachCastleGrounds, true)
     Call(MakeNpcs, false, DefaultNPCs)
     ExecWait(EVS_PlaySong_Starship)

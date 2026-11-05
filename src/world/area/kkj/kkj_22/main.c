@@ -24,8 +24,6 @@ EvtScript EVS_EnterMap = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_PEACHS_CASTLE)
-    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Exec(EVS_SetupMusic)
     Call(UseDoorSounds, DOOR_SOUNDS_LARGE)
     BindTrigger(EVS_ExitDoor_kkj_13_1, TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)

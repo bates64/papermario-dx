@@ -114,8 +114,6 @@ EvtScript EVS_BombWall_Cell = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_KOOPA_BROS_FORTRESS)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH1_DEFEATED_KOOPA_BROS)
             Call(EnableModel, MODEL_o97, false)

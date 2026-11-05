@@ -3,7 +3,7 @@
   "overrideHit": false,
   "shapeOverrideName": "",
   "hitOverrideName": "",
-  "locationName": "LOCATION_TOAD_TOWN",
+  "locationName": "LOCATION_BOOS_MANSION",
   "background": "obk_bg",
   "tattle": "MSG_MapTattle_obk_02",
   "songVariation": 1,
@@ -16,7 +16,7 @@
     0,
     0
   ],
-  "camLeadsPlayer": true,
+  "camLeadsPlayer": false,
   "camEnabledLast": false,
   "fogWorld": [
     0,

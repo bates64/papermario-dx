@@ -47,8 +47,6 @@ EvtScript EVS_EnterMap = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_TUBBAS_MANOR)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     ExecWait(EVS_MakeEntities)
     Exec(EVS_SetupMusic)
     BindTrigger(EVS_ExitDoor_dgb_02_3, TRIGGER_WALL_PRESS_A, COLLIDER_deilits, 1, 0)

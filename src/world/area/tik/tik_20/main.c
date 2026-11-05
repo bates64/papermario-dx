@@ -66,8 +66,6 @@ EvtScript EVS_SetupDrips = {
 #include "../common/Flotsam.inc.c"
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_TOAD_TOWN_TUNNELS)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, true, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_toge, SURFACE_TYPE_SPIKES)

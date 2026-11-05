@@ -79,8 +79,6 @@ EvtScript EVS_EnterMap = {
 ITEM_LIST(KeyList_UpperDoor, ITEM_TUBBA_CASTLE_KEY);
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_TUBBAS_MANOR)
-    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     IfLt(GB_StoryProgress, STORY_CH3_STAR_SPIRIT_RESCUED)
         Call(MakeNpcs, true, DefaultNPCs)
     EndIf

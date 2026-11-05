@@ -41,12 +41,10 @@ BombTrigger BombPos_Wall = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_BOWSERS_CASTLE)
     Set(AB_KPA17_DialogueState_Toad1, 0)
     Set(AB_KPA17_DialogueState_Toad2, 0)
     Set(AB_KPA17_DialogueState_ToadGuard, 0)
     Set(AB_KPA17_DialogueState_ToadMinister, 0)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, true, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     IfEq(GF_KPA17_BombedWall, false)

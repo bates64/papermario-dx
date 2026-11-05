@@ -102,28 +102,18 @@ EvtScript EVS_EnterMap = {
     End
 };
 
-API_CALLABLE(SetupFog) {
-    set_world_fog_dist(980, 1000);
-    set_world_fog_color(15, 5, 55, 255);
-    enable_world_fog();
-    return ApiStatus_DONE2;
-}
-
 API_CALLABLE(DisableFloorReflection) {
     gOverrideFlags &= ~GLOBAL_OVERRIDES_ENABLE_FLOOR_REFLECTION;
     return ApiStatus_DONE2;
 }
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_SHIVER_MOUNTAIN)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(GF_MAP_CrystalPalace, true)
     IfEq(GB_StoryProgress, STORY_CH7_BEGAN_PEACH_MISSION)
         Call(MakeNpcs, true, DefaultNPCs)
     EndIf
     ExecWait(EVS_MakeEntities)
     ExecWait(EVS_SetupMusic)
-    Call(SetupFog)
     Call(DisableFloorReflection)
     Set(LVar0, MODEL_o549)
     Set(LVar1, MODEL_o549)

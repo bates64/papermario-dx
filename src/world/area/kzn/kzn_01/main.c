@@ -27,8 +27,6 @@ EvtScript EVS_StartTexPanners = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_MT_LAVALAVA)
-    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Set(GF_MAP_MtLavalava, true)
     IfLt(GB_StoryProgress, STORY_CH5_ENTERED_MT_LAVA_LAVA)
         Set(GB_StoryProgress, STORY_CH5_ENTERED_MT_LAVA_LAVA)

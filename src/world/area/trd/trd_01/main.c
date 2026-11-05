@@ -271,8 +271,6 @@ EvtScript EVS_Scene_RaiseStairs = {
 ITEM_LIST(KeyList, ITEM_KOOPA_FORTRESS_KEY);
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_KOOPA_BROS_FORTRESS)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, true, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     BindTrigger(EVS_ExitDoors_trd_00_1, TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)

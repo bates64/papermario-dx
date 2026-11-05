@@ -58,8 +58,6 @@ EvtScript EVS_Main = {
     IfEq(GB_StoryProgress, STORY_CH5_TRADED_VASE_FOR_SEED)
         Set(GB_StoryProgress, STORY_CH5_RETURNED_TO_TOAD_TOWN)
     EndIf
-    Set(GB_WorldLocation, LOCATION_TOAD_TOWN)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(AF_MAC02_Unread_16, false)
     Set(AF_MAC02_Unread_17, false)
     Set(AF_MAC02_Unread_18, false)

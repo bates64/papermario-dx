@@ -134,8 +134,6 @@ EvtScript EVS_UpdateSpinningWall = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_TESTING)
-    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Call(MakeNpcs, false, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     BindTrigger(EVS_GotoMap_tst_03_1, TRIGGER_WALL_PUSH, COLLIDER_deilitw, 1, 0)

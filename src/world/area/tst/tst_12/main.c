@@ -45,8 +45,6 @@ EvtScript EVS_SpawnFloatingFlowers = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_TESTING)
-    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o92, SURFACE_TYPE_FLOWERS)
     Set(LVar0, 544)
     Set(LVar1, 0)

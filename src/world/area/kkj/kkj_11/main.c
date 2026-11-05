@@ -103,8 +103,6 @@ EvtScript EVS_EnterMap = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_PEACHS_CASTLE)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Switch(GB_StoryProgress)
         CaseOrEq(STORY_CH1_BEGAN_PEACH_MISSION)
         CaseOrEq(STORY_CH2_BEGAN_PEACH_MISSION)

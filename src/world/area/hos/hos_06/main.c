@@ -51,8 +51,6 @@ EvtScript EVS_TexPan_Stars = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_SHOOTING_STAR_SUMMIT)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(AF_HOS06_SpokeWithMerluvlee, false)
     Call(MakeNpcs, false, DefaultNPCs)
     ExecWait(EVS_MakeEntities)

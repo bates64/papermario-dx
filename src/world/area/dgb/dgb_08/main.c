@@ -27,8 +27,6 @@ EvtScript EVS_EnterMap = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_TUBBAS_MANOR)
-    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_TUBBA_SMASHED_THE_BRIDGES)
             Call(MakeNpcs, true, BeforeNPCs)

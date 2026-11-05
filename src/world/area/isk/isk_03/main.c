@@ -44,9 +44,7 @@ EvtScript EVS_BindExitTriggers = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_DRY_DRY_RUINS)
     Call(SetupLandingCamAdjust)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     IfLt(GB_StoryProgress, STORY_CH2_DRAINED_FIRST_SAND_ROOM)
         Call(SetZoneEnabled, ZONE_o2023, false)
         Call(SetZoneEnabled, ZONE_03, false)

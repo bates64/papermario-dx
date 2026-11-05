@@ -3,7 +3,7 @@
   "overrideHit": false,
   "shapeOverrideName": "",
   "hitOverrideName": "",
-  "locationName": "LOCATION_TOAD_TOWN",
+  "locationName": "LOCATION_CRYSTAL_PALACE",
   "tattle": "MSG_MapTattle_pra_20",
   "songVariation": 1,
   "sfxReverb": 1,
@@ -11,11 +11,11 @@
   "camNearClip": 16,
   "camFarClip": 4096,
   "camBackgroundColor": [
-    0,
-    0,
-    0
+    24,
+    24,
+    40
   ],
-  "camLeadsPlayer": true,
+  "camLeadsPlayer": false,
   "camEnabledLast": false,
   "fogWorld": [
     0,

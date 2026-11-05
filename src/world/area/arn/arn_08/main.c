@@ -92,8 +92,6 @@ EvtScript EVS_EnterMap = {
 };
 
 EvtScript EVS_Main = {
-    Set(GB_WorldLocation, LOCATION_WINDY_MILL)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(GF_MAP_WindyMill, true)
     IfGe(GB_StoryProgress, STORY_CH4_FRYING_PAN_STOLEN)
         Set(GF_ARN10_Defeated_Goomba, false)
