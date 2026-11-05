@@ -60,6 +60,7 @@ def brace_delta(line: str) -> int:
 
 def parse_field_name(decl: str) -> str | None:
     clean = strip_comments(decl).strip()
+    clean = re.sub(r'\s*\b(?:DEPRECATED|__attribute__)\s*\(.*\)\s*(?=;|$)', "", clean)
 
     if not clean or clean.startswith("#") or clean.startswith("PAD("):
         return None
