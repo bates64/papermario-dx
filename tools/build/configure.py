@@ -541,7 +541,7 @@ def write_ninja_rules(
     ninja.rule(
         "map_source_header",
         description="Generating $out",
-        command=f"$python {BUILD_TOOLS}/mapfs/source_header.py $out $name $in $entries",
+        command=f"$python {BUILD_TOOLS}/mapfs/source_header.py $out $name $in $outputs",
         restat=True,
     )
 
@@ -1403,7 +1403,9 @@ class Configure:
         # world/area/kmr/kmr_02/map.xml.h, so code elsewhere can include it by
         # that path. The markers come from the features.json beside the map's
         # code, which also gives other maps its entries as
-        # world/area/kmr/kmr_02.h.
+        # world/area/kmr/kmr_02.h, and the map's overlay its settings as
+        # map_settings.c, which write_overlays links into it.
+        self.map_settings_sources: Dict[str, Path] = {}
         entries_headers: List[Path] = []
         for name, source in sources.items():
             relative = self.layer_relative(source)
@@ -1413,7 +1415,9 @@ class Configure:
             has_features = (ROOT / features).exists() and not assets.is_deleted(features, self.asset_stack)
             entries_header = self.build_path() / "include" / relative.parent.with_suffix(".h")
             has_entries = has_features and relative.name == "map.xml"
+            settings_source = self.build_path() / "src" / relative.parent / "map_settings.c"
             if has_entries:
+                self.map_settings_sources[relative.parent.name] = settings_source
                 entries_headers.append(entries_header)
             build(
                 self.build_path() / "include" / relative.with_suffix(".xml.h"),
@@ -1423,10 +1427,14 @@ class Configure:
                     BUILD_TOOLS / "mapfs" / "source_header.py",
                     *(self.map_build_dir() / f"{name}_{part}.h" for part in ["shape", "hit"]),
                 ],
-                implicit_outputs=[posix(entries_header)] if has_entries else [],
+                implicit_outputs=[posix(entries_header), posix(settings_source)] if has_entries else [],
                 variables={
                     "name": name,
-                    "entries": f"--entries {posix(entries_header)} {relative.parent.name}" if has_entries else "",
+                    "outputs": (
+                        f"--entries {posix(entries_header)} {relative.parent.name} --settings {posix(settings_source)}"
+                        if has_entries
+                        else ""
+                    ),
                 },
             )
 
@@ -1438,14 +1446,19 @@ class Configure:
             if relative in map_dirs or assets.is_deleted(features, self.asset_stack):
                 continue
             entries_header = self.build_path() / "include" / relative.with_suffix(".h")
+            settings_source = self.build_path() / "src" / relative / "map_settings.c"
+            self.map_settings_sources[relative.name] = settings_source
             entries_headers.append(entries_header)
             build(
                 self.build_path() / "include" / relative / "map.xml.h",
                 [features.relative_to(ROOT)],
                 "map_source_header",
                 implicit_deps=[BUILD_TOOLS / "mapfs" / "source_header.py"],
-                implicit_outputs=[posix(entries_header)],
-                variables={"name": "-", "entries": f"--entries {posix(entries_header)} {relative.name}"},
+                implicit_outputs=[posix(entries_header), posix(settings_source)],
+                variables={
+                    "name": "-",
+                    "outputs": f"--entries {posix(entries_header)} {relative.name} --settings {posix(settings_source)}",
+                },
             )
 
         # world/entries.h gives code outside the maps every map's entries, such
@@ -2529,6 +2542,8 @@ class Configure:
             implicit_deps.append(CRC_TOOL)
 
         for name, src_path, c_files, type_index in overlays:
+            if type_index == OVL_TYPE_MAP and name in self.map_settings_sources:
+                c_files = [*c_files, self.map_settings_sources[name]]
             build_dir = self.build_path() / "ovl" / str(type_index) / name
             ovl_path = build_dir / f"{name}.ovl"
             debug_syms_path = build_dir / f"{name}.ovl.debug_syms"
@@ -2614,6 +2629,8 @@ class Configure:
                 max_loaded_size = "--max-loaded-size 0x1000"
                 require_resolved = "--require-resolved"
             elif type_index == OVL_TYPE_MAP:
+                # the game imports these by name when the map doesn't export settings
+                force_export = "--export-if-defined EVS_Main --export-if-defined get_tattle"
                 max_loaded_size = "--max-loaded-size 0x27FF0"
                 require_resolved = "--require-resolved"
             elif type_index == OVL_TYPE_ACTION:

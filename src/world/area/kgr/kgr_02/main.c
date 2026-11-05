@@ -7,14 +7,6 @@ extern EvtScript EVS_StartTongueWiggle;
 extern EvtScript EVS_MonitorFriendlyFire;
 extern NpcGroupList DefaultNPCs;
 
-OVL_DEF_MAP() = {
-    .main = &EVS_Main,
-    .entryList = &$Entries,
-    .entryCount = ENTRY_COUNT($Entries),
-    .tattle = { MSG_MapTattle_kgr_02 },
-    .sfxReverb = 1,
-};
-
 #include "world/common/util/CreateDarkness.inc.c"
 
 EvtScript EVS_ExitWalk_kgr_01_1 = EVT_EXIT_WALK(60, $WhaleMouth, $kgr_01.WhaleStomach);

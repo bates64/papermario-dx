@@ -2,14 +2,6 @@
 
 extern EvtScript EVS_Main;
 
-OVL_DEF_MAP() = {
-    .main = &EVS_Main,
-    .entryList = &$Entries,
-    .entryCount = ENTRY_COUNT($Entries),
-    .bgName = "nok_bg",
-    .tattle = { MSG_MapTattle_trd_09 },
-};
-
 EvtScript EVS_SetupMusic = {
     IfEq(GB_StoryProgress, STORY_CH1_KOOPA_BROS_FIRING_BLASTERS)
         IfEq(GF_TRD09_Defeated_BillBlasters, false)

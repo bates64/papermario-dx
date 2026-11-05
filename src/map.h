@@ -13,8 +13,7 @@
 #define ENTRY_COUNT(entryList) (sizeof(entryList) / sizeof(Vec4f))
 typedef Vec4f EntryList[];
 
-/// Fields other than main, entryList, entryCount, bgName, tattle, songVariation, and sfxReverb are initialised when
-/// the map loads.
+/// The current map's settings, which the game fills in as it loads the map.
 typedef struct MapSettings {
     /* 0x00 */ struct ModelNode* modelTreeRoot;
     /* 0x04 */ s32 hitAssetCollisionOffset;
@@ -39,10 +38,11 @@ typedef struct MapSettings {
     /* 0x46 */ PAD(2);
 } MapSettings; // size = 0x48
 
-/// Define the descriptor exported by a map overlay. This also exports the map's sprite shading from its map.xml.h,
-/// which the game applies when the map loads.
+/// Define the settings a map overlay exports, in place of the ones the game takes from the map's EVS_Main and
+/// features.json.
+/// @deprecated Delete it, and set its background, tattle, and reverb in the map editor.
 #define OVL_DEF_MAP() \
-    export const SpriteShadingProfile* const spriteShading = MAP_SPRITE_SHADING; \
+    _Pragma("GCC warning \"OVL_DEF_MAP is deprecated: delete it, and set its background, tattle, and reverb in the map editor\"") \
     export MapSettings settings
 
 // The map editor's markers. A map's code gets each of its markers from map.xml.h, as a constant named after it with a
@@ -66,7 +66,7 @@ typedef struct EntryMarker {
     const char* map;
     Vec3f pos;
     f32 yaw;
-    s32 index; ///< Its place in the map's entry list, `$Entries`, the entry ID GotoMap and GetEntryID use.
+    s32 index; ///< Its place in the map's entry list, the entry ID GotoMap and GetEntryID use.
 } EntryMarker;
 
 typedef struct NpcMarker {

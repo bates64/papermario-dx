@@ -42,6 +42,37 @@ void load_map_script_lib(void) {
     DMA_COPY_SEGMENT(world_script_api);
 }
 
+static s32 import_s32(const Overlay* ovl, const char* name) {
+    const s32* value = ovl_import(ovl, name);
+    return value != nullptr ? *value : 0;
+}
+
+/// Takes a map's settings from its deprecated OVL_DEF_MAP if it has one, or else from its EVS_Main and the settings the
+/// build exports from its features.json.
+static void load_map_settings(const Overlay* ovl, const char* mapName) {
+    const MapSettings* settings = ovl_import(ovl, "settings");
+    if (settings != nullptr) {
+        gMapSettings = *settings;
+        return;
+    }
+
+    gMapSettings = (MapSettings) {
+        .main = ovl_import(ovl, "EVS_Main"),
+        .entryList = ovl_import(ovl, "_entryList"),
+        .entryCount = import_s32(ovl, "_entryCount"),
+        .bgName = ovl_import(ovl, "_bgName"),
+        .songVariation = import_s32(ovl, "_songVariation"),
+        .sfxReverb = import_s32(ovl, "_sfxReverb"),
+    };
+    ASSERT_MSG(gMapSettings.main != nullptr, "Map '%s' has no EVS_Main", mapName);
+
+    // a get_tattle function in the map's code overrides the tattle in its features.json
+    gMapSettings.tattle.get = ovl_import(ovl, "get_tattle");
+    if (gMapSettings.tattle.get == nullptr) {
+        gMapSettings.tattle.msgID = import_s32(ovl, "_tattle");
+    }
+}
+
 void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     s32 skipLoadingAssets = 0;
     const char* mapName;
@@ -104,9 +135,7 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     load_map_script_lib();
 
     Overlay* ovl = ovl_load(mapName, OVL_MAP);
-    MapSettings* settings = ovl_import(ovl, "settings");
-    ASSERT_MSG(settings != nullptr, "Map '%s' does not export 'settings'", mapName);
-    gMapSettings = *settings;
+    load_map_settings(ovl, mapName);
 
     if (gMapSettings.bgName != nullptr) {
         strcpy(wMapBgName, gMapSettings.bgName);
@@ -203,10 +232,7 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     gGameStatusPtr->unk_90 = 1000;
     gGameStatusPtr->unk_92 = 1000;
 
-    const SpriteShadingProfile* const* shading = ovl_import(ovl, "spriteShading");
-    if (shading != nullptr && *shading != nullptr) {
-        apply_sprite_shading(*shading);
-    }
+    apply_sprite_shading(ovl_import(ovl, "_spriteShading"));
 
     gGameStatusPtr->mainScriptID =
         start_script_in_group(gMapSettings.main, EVT_PRIORITY_0, 0, EVT_GROUP_NEVER_PAUSE)->id;

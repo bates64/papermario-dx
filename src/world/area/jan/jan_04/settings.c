@@ -7,11 +7,3 @@ s32 get_tattle(void) {
         return MSG_MapTattle_jan_04_after;
     }
 }
-
-OVL_DEF_MAP() = {
-    .main = &EVS_Main,
-    .entryList = &$Entries,
-    .entryCount = ENTRY_COUNT($Entries),
-    .bgName = "yos_bg",
-    .tattle = { .get = &get_tattle },
-};

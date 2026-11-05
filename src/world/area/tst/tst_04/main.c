@@ -1,4 +1,3 @@
-
 #include "tst_04.h"
 #include "world/area/tst/tst_03.h"
 
@@ -58,12 +57,6 @@ API_CALLABLE(PushPartnerTest) {
 
     return ApiStatus_DONE2;
 }
-
-OVL_DEF_MAP() = {
-    .main = &EVS_Main,
-    .entryList = &$Entries,
-    .entryCount = ENTRY_COUNT($Entries),
-};
 
 EvtScript EVS_GotoMap_tst_03_1 = {
     Call(GotoMap, $tst_03.MovingPlatformsTest)

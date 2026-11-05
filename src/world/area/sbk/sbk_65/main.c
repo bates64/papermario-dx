@@ -6,14 +6,6 @@
 
 extern EvtScript EVS_Main;
 
-OVL_DEF_MAP() = {
-    .main = &EVS_Main,
-    .entryList = &$Entries,
-    .entryCount = ENTRY_COUNT($Entries),
-    .bgName = "sbk_bg",
-    .tattle = { MSG_MapTattle_sbk_65 },
-};
-
 EvtScript EVS_ExitWalk_sbk_64_1 = EVT_EXIT_WALK(60, $West, $sbk_64.East);
 EvtScript EVS_ExitWalk_sbk_66_0 = EVT_EXIT_WALK(60, $East, $sbk_66.West);
 EvtScript EVS_ExitWalk_sbk_55_3 = EVT_EXIT_WALK(60, $North, $sbk_55.South);

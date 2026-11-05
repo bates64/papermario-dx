@@ -7,12 +7,3 @@ s32 get_tattle(void) {
         return MSG_MapTattle_kpa_14_after;
     }
 }
-
-OVL_DEF_MAP() = {
-    .main = &EVS_Main,
-    .entryList = &$Entries,
-    .entryCount = ENTRY_COUNT($Entries),
-    .tattle = { .get = &get_tattle },
-    .songVariation = 1,
-    .sfxReverb = 3,
-};

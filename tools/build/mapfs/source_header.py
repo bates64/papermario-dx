@@ -4,21 +4,25 @@
 It gives the IDs of the geometry's models, colliders, and zones, from the
 headers Star Rod writes beside the compiled geometry. If the map has a
 features.json, it also gives each of its markers as a constant named after it
-with a `$` in front, such as `$Goompa`, and its Entry markers as `$Entries`;
-see the Markers page of the manual. GCC leaves out the markers a file of the
-map's code doesn't use. It also gives the map's sprite shading, with its Light
-markers as its lights, as MAP_SPRITE_SHADING, or nullptr if the map has none.
+with a `$` in front, such as `$Goompa`; see the Markers page of the manual.
+GCC leaves out the markers a file of the map's code doesn't use. It also gives
+the map's sprite shading, with its Light markers as its lights, as
+MAP_SPRITE_SHADING, or nullptr if the map has none.
 
 With --entries, it also writes the header other maps include to send the
 player to this map's entries, such as world/area/kmr/kmr_03.h, which gives them
 as fields of `$kmr_03`.
+
+With --settings, it also writes a source for the map's overlay that exports
+the settings the game imports when it loads the map: its entry list, sprite
+shading, background, tattle, song variation, and reverb.
 
 A header is only rewritten when its text changes, so editing a marker rebuilds
 only the code that includes it.
 
 A map that borrows another's geometry passes - as the geometry name, and includes that geometry's IDs itself.
 
-Usage: source_header.py <out> <geometry name, such as w_kmr_02, or -> [features.json [--entries <out> <map name>]]
+Usage: source_header.py <out> <geometry name, such as w_kmr_02, or -> [features.json [--entries <out> <map name>] [--settings <out>]]
 """
 
 import json
@@ -297,8 +301,8 @@ LIGHT_FALLOFF = {
 NO_SPRITE_SHADING = "#define MAP_SPRITE_SHADING nullptr"
 
 
-def shading_lines(features, lights: list) -> list:
-    """The definition of the map's sprite shading, from its base color, its edge offset, and its Light markers."""
+def shading_fields(features, lights: list) -> list:
+    """The fields of the map's sprite shading, from its base color, its edge offset, and its Light markers."""
     if len(lights) > 7:
         raise MarkerError(f"sprite shading can have at most 7 lights, but the map has {len(lights)} Light markers")
 
@@ -312,18 +316,52 @@ def shading_lines(features, lights: list) -> list:
         )
 
     ambient = ", ".join(str(int(c)) for c in features["shadingBaseColor"])
-    fields = [
+    return [
         ".sources = { " + ", ".join(sources) + " }",
         f".ambientColor = {{ {ambient} }}",
         f".ambientPower = {int(features['shadingOffset'])}",
     ]
+
+
+def shading_lines(features, lights: list) -> list:
+    """The definition of the map's sprite shading as MAP_SPRITE_SHADING, for its code."""
     # a named object rather than a compound literal, since C++ can't take a compound literal's address
     return [
         'static const SpriteShadingProfile MapSpriteShading __asm__("map.SpriteShading") = {',
-        *(f"    {f}," for f in fields),
+        *(f"    {f}," for f in shading_fields(features, lights)),
         "};",
         "#define MAP_SPRITE_SHADING (&MapSpriteShading)",
     ]
+
+
+def settings_lines(features, markers: list) -> list:
+    """The source that exports the map's settings for the game to import when it loads the map."""
+    lines = ['#include "map.h"']
+    if features.get("tattle"):
+        lines.append('#include "message_ids.h"')
+
+    entries = [m for m in markers if m["type"] == "Entry"]
+    if entries:
+        lines.append("export EntryList _entryList = {")
+        lines += [f"    {{ {', '.join(f32(v) for v in [*m['pos'], m['yaw']])} }}," for m in entries]
+        lines.append("};")
+    lines.append(f"export const s32 _entryCount = {len(entries)};")
+
+    if features.get("hasSpriteShading"):
+        lines.append("export const SpriteShadingProfile _spriteShading = {")
+        lines += [f"    {f}," for f in shading_fields(features, [m for m in markers if m["type"] == "Light"])]
+        lines.append("};")
+    if features.get("background"):
+        lines.append(f"export const char _bgName[] = {json.dumps(features['background'])};")
+    if features.get("tattle"):
+        if not IDENTIFIER.fullmatch(features["tattle"]):
+            raise MarkerError(f"the tattle must be a message name, such as MSG_MapTattle_kmr_02, not '{features['tattle']}'")
+        lines.append(f"export const s32 _tattle = {features['tattle']};")
+    if features.get("songVariation"):
+        lines.append(f"export const s32 _songVariation = {int(features['songVariation'])};")
+    if features.get("sfxReverb"):
+        lines.append(f"export const s32 _sfxReverb = {int(features['sfxReverb'])};")
+    return lines
 
 
 def marker_lines(features, map_name: str) -> tuple:
@@ -341,7 +379,6 @@ def marker_lines(features, map_name: str) -> tuple:
     markers_by_name = {m["name"]: m for m in markers}
     for marker in markers:
         claim(marker["name"], f"marker {marker['name']}")
-    claim("Entries", "the entry list")
 
     lines = []
     externs = []
@@ -373,11 +410,6 @@ def marker_lines(features, map_name: str) -> tuple:
                 claim(point, f"a point of path {marker['name']}")
             lines += path
 
-    if entries:
-        lines.append('static EntryList $Entries __asm__("marker.Entries") = {')
-        lines += [f"    {{ {', '.join(f32(v) for v in [*m['pos'], m['yaw']])} }}," for m in entries]
-        lines.append("};")
-
     entry_header = []
     if entries:
         fields = " ".join(f"EntryMarker {m['name']};" for m in entries)
@@ -407,20 +439,26 @@ def write_if_changed(path: str, lines: list):
 def main(argv: list) -> int:
     out, name, *rest = argv
     features = rest[0] if rest else None
-    entries_out = map_name = None
+    entries_out = map_name = settings_out = None
     if "--entries" in rest:
         i = rest.index("--entries")
         entries_out, map_name = rest[i + 1], rest[i + 2]
+    if "--settings" in rest:
+        settings_out = rest[rest.index("--settings") + 1]
 
     lines = ["#pragma once"]
     if name != "-":
         lines += [f'#include "mapfs/{name}_shape.h"', f'#include "mapfs/{name}_hit.h"']
     entry_header = []
+    settings = []
     if not features:
         lines.append(NO_SPRITE_SHADING)
     else:
         try:
-            marker_text, entry_header = marker_lines(json.load(open(features)), map_name or name)
+            data = json.load(open(features))
+            marker_text, entry_header = marker_lines(data, map_name or name)
+            if settings_out:
+                settings = settings_lines(data, [m for m in data.get("markers", []) if m["type"] not in ("Root", "Group")])
         except MarkerError as e:
             print(f"{features}: error: {e}", file=sys.stderr)
             return 1
@@ -429,6 +467,8 @@ def main(argv: list) -> int:
     write_if_changed(out, lines)
     if entries_out:
         write_if_changed(entries_out, ["#pragma once", *entry_header])
+    if settings_out:
+        write_if_changed(settings_out, settings or ['#include "map.h"'])
     return 0
 
 

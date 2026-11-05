@@ -107,10 +107,6 @@ To create a map:
    #include "map.h"
    #include "map.xml.h"
 
-   EntryList Entrances = {
-       { 0.0, 0.0, 0.0, 90.0 },
-   };
-
    EvtScript EVS_BindExitTriggers = {
        Return
        End
@@ -123,16 +119,12 @@ To create a map:
        Return
        End
    };
-
-   OVL_DEF_MAP() = {
-       .main = &EVS_Main,
-       .entryList = &Entrances,
-       .entryCount = ENTRY_COUNT(Entrances),
-   };
    ```
 
+   The game starts the map's `EVS_Main` when the player enters the map.
 1. In Star Rod's Map Editor, select **Create**. For **Name**, enter the map folder's name, such as `house_of_fun`. Star Rod finds the folder and fills in its **Area**.
-1. Make the map, and save. Star Rod saves it as `map.xml` in the map's folder.
+1. Make the map, and add an [Entry marker](/papermario-dx/world/markers/#entry) where the player arrives.
+1. Save. Star Rod saves the map in the map's folder.
 
 ## Updating DX
 

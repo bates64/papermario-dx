@@ -3,13 +3,6 @@
 
 extern EvtScript EVS_Main;
 
-OVL_DEF_MAP() = {
-    .main = &EVS_Main,
-    .entryList = &$Entries,
-    .entryCount = ENTRY_COUNT($Entries),
-    .bgName = "nok_bg",
-};
-
 EvtScript EVS_SpawnFloatingFlowers = {
     SetGroup(EVT_GROUP_HOSTILE_NPC)
     Set(LVarA, LVar0)

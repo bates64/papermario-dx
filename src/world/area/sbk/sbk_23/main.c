@@ -8,14 +8,6 @@
 extern EvtScript EVS_Main;
 extern EvtScript EVS_MakeEntities;
 
-OVL_DEF_MAP() = {
-    .main = &EVS_Main,
-    .entryList = &$Entries,
-    .entryCount = ENTRY_COUNT($Entries),
-    .bgName = "sbk_bg",
-    .tattle = { MSG_MapTattle_sbk_23 },
-};
-
 EvtScript EVS_ExitWalk_sbk_22_1 = EVT_EXIT_WALK(60, $West, $sbk_22.East);
 EvtScript EVS_ExitWalk_sbk_24_0 = EVT_EXIT_WALK(60, $East, $sbk_24.West);
 EvtScript EVS_ExitWalk_sbk_13_3 = EVT_EXIT_WALK(60, $North, $sbk_13.South);

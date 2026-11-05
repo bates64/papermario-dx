@@ -35,18 +35,7 @@ Call(MakeItemEntity, ITEM_SHOOTING_STAR, $ShootingStar.pos.x, $ShootingStar.pos.
 
 An Entry marker is where the player appears when they enter the map, facing the marker's direction. It's an `EntryMarker`, with `pos`, `yaw`, `index`, and `map`. `index` is the entry's place in the map's list of entries, and `map` is the name of the map.
 
-The map's entries are its Entry markers in the order they appear in the Outline, and `map.xml.h` lists them as `$Entries`. Point the map's settings at that list:
-
-```c
-OVL_DEF_MAP() = {
-    .main = &EVS_Main,
-    .entryList = &$Entries,
-    .entryCount = ENTRY_COUNT($Entries),
-    ...
-};
-```
-
-To do something when the player arrives at one entry, compare the entry ID with that marker's `index`:
+The map's entries are its Entry markers in the order they appear in the Outline. To do something when the player arrives at one entry, compare the entry ID with that marker's `index`:
 
 ```c
 Call(GetEntryID, LVar0)

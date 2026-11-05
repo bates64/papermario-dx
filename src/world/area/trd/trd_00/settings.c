@@ -2,14 +2,6 @@
 
 extern EvtScript EVS_Main;
 
-OVL_DEF_MAP() = {
-    .main = &EVS_Main,
-    .entryList = &$Entries,
-    .entryCount = ENTRY_COUNT($Entries),
-    .bgName = "nok_bg",
-    .tattle = { MSG_MapTattle_trd_00 },
-};
-
 EvtScript EVS_SetupMusic = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH1_ARRIVED_AT_KOOPA_FORTRESS)

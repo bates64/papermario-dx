@@ -1,16 +1,9 @@
-
 #include "tst_01.h"
 #include "world/area/mac/machi.h"
 #include "world/area/tst/tst_02.h"
 
 extern EvtScript EVS_Main;
 extern EvtScript EVS_MakeEntities;
-
-OVL_DEF_MAP() = {
-    .main = &EVS_Main,
-    .entryList = &$Entries,
-    .entryCount = ENTRY_COUNT($Entries),
-};
 
 EvtScript EVS_GotoMap_machi_7 = {
     Call(GotoMap, $machi.Entry7)

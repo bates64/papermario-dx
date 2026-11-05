@@ -5,13 +5,6 @@ void mdl_project_tex_coords(s32 modelID, Gfx* destGfx, Matrix4f destMtx, void* d
 extern EvtScript EVS_Main;
 extern NpcGroupList DefaultNPCs;
 
-OVL_DEF_MAP() = {
-    .main = &EVS_Main,
-    .entryList = &$Entries,
-    .entryCount = ENTRY_COUNT($Entries),
-    .bgName = "nok_bg",
-};
-
 #include "world/common/prefab/BetaFloorPanels.inc.c"
 
 EvtScript EVS_NpcCreate_00 = {

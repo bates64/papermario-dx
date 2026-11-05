@@ -4,6 +4,8 @@
   "shapeOverrideName": "",
   "hitOverrideName": "",
   "locationName": "LOCATION_TOAD_TOWN",
+  "background": "sbk_bg",
+  "tattle": "MSG_MapTattle_sbk_33",
   "camVfov": 25,
   "camNearClip": 16,
   "camFarClip": 4096,

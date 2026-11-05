@@ -9,14 +9,6 @@ extern NpcGroupList DefaultNPCs;
 extern EvtScript EVS_SetupFoliage;
 extern EvtScript EVS_MakeEntities;
 
-OVL_DEF_MAP() = {
-    .main = &EVS_Main,
-    .entryList = &$Entries,
-    .entryCount = ENTRY_COUNT($Entries),
-    .bgName = "sbk_bg",
-    .tattle = { MSG_MapTattle_sbk_46 },
-};
-
 EvtScript EVS_ExitWalk_sbk_45_1 = EVT_EXIT_WALK(60, $West, $sbk_45.East);
 EvtScript EVS_ExitWalk_sbk_36_3 = EVT_EXIT_WALK(60, $North, $sbk_36.South);
 EvtScript EVS_ExitWalk_sbk_56_2 = EVT_EXIT_WALK(60, $South, $sbk_56.North);

@@ -5,12 +5,6 @@
 extern EvtScript EVS_Main;
 extern EvtScript EVS_MakeEntities;
 
-OVL_DEF_MAP() = {
-    .main = &EVS_Main,
-    .entryList = &$Entries,
-    .entryCount = ENTRY_COUNT($Entries),
-};
-
 EvtScript EVS_GotoMap_tst_01_1 = {
     Call(GotoMap, $tst_01.JumpHeightTest)
     Wait(100)

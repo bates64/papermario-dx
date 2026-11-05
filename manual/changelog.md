@@ -42,6 +42,15 @@ To update:
 - Replace entry constants such as `kmr_03_ENTRY_0` with entry markers such as `$kmr_03.Front`, including in exit macros. In `dx/config.h`, `NEW_GAME_ENTRY` replaces `NEW_GAME_MAP_ID` and `NEW_GAME_ENTRY_ID`.
 - If one of your maps has no markers, open it in the map editor and add an Entry marker for each entry in its entry list, in the same order.
 
+### `OVL_DEF_MAP` is deprecated ([Alex](https://starhaven.dev/bates64.com))
+
+A map needs no `OVL_DEF_MAP`. The game starts the map's `EVS_Main`, takes its entries from its Entry markers, and reads its background, tattle, song variation, and reverb from its `features.json`. See [Map settings](https://docs.starhaven.dev/papermario-dx/world/create-a-map/#map-settings).
+
+A map with `OVL_DEF_MAP` still works, but the build warns about it. To update a map:
+- Move its `.bgName`, `.tattle`, `.songVariation`, and `.sfxReverb` into its `features.json` after `"locationName"`, as `"background"`, `"tattle"`, `"songVariation"`, and `"sfxReverb"`, such as `"tattle": "MSG_MapTattle_kmr_02"`. If `.tattle` gives a function with `.get`, name the function `get_tattle` instead.
+- Delete the `OVL_DEF_MAP`.
+- If the map's main EVT script has another name, rename it to `EVS_Main`.
+
 ## 2026-10-25
 
 ### Maps and stages can use any texture (Clover and [Alex](https://starhaven.dev/bates64.com))

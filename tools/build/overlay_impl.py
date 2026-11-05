@@ -303,7 +303,7 @@ def get_loaded_footprint(overlay_data):
     )
 
 
-def link_overlay(obj_paths, syms, link_addr, force_exports=(), require_resolved=False):
+def link_overlay(obj_paths, syms, link_addr, force_exports=(), optional_exports=(), require_resolved=False):
     """Pure-Python linker: link .o files into an overlay, returning ovl_bytes.
 
     Section layout:
@@ -315,6 +315,7 @@ def link_overlay(obj_paths, syms, link_addr, force_exports=(), require_resolved=
     """
     # Parse all input ELFs
     force_exports = set(force_exports)
+    optional_exports = set(optional_exports)
     elfs = []
     for path in obj_paths:
         with open(path, "rb") as f:
@@ -395,6 +396,18 @@ def link_overlay(obj_paths, syms, link_addr, force_exports=(), require_resolved=
     exports = []  # [(addr, name)]
     export_symbols = {}  # export name -> symbol name
 
+    # A C++ map can define an EVS_Main in a nested namespace as well as its own, so an optional export goes to the
+    # least nested definition.
+    least_nested = {}  # export name -> (namespace depth, symbol name)
+    for elf in elfs:
+        for sym in elf.symbols:
+            name = export_name(sym.name)
+            if sym.binding == STB_GLOBAL and sym.shndx != SHN_UNDEF and name in optional_exports:
+                depth = itanium_demangle(sym.name).split("(", 1)[0].count("::")
+                if name not in least_nested or depth < least_nested[name][0]:
+                    least_nested[name] = (depth, sym.name)
+    optional_symbols = {sym_name for _, sym_name in least_nested.values()}
+
     for elf_idx, elf in enumerate(elfs):
         for sym_idx, sym in enumerate(elf.symbols):
             if sym.shndx == SHN_UNDEF:
@@ -416,7 +429,9 @@ def link_overlay(obj_paths, syms, link_addr, force_exports=(), require_resolved=
                 addr = sec_vma_map[key] + sym.value
                 resolved_syms[(elf_idx, sym_idx)] = addr
                 if sym.binding == STB_GLOBAL and (
-                    sym.visibility == STV_DEFAULT or sym.name in force_exports
+                    sym.visibility == STV_DEFAULT
+                    or sym.name in force_exports
+                    or sym.name in optional_symbols
                 ):
                     if sym.name and not sym.name.startswith("__"):
                         name = export_name(sym.name)
@@ -1511,6 +1526,7 @@ def cmd_link(args):
             syms,
             link_addr,
             force_exports=args.force_export,
+            optional_exports=args.export_if_defined,
             require_resolved=args.require_resolved,
         )
     except ValueError as exc:
@@ -1697,6 +1713,10 @@ def main():
     p_link.add_argument(
         "--force-export", action="append", default=[],
         help="Export this global even when it has hidden visibility",
+    )
+    p_link.add_argument(
+        "--export-if-defined", action="append", default=[],
+        help="Export this global even when it has hidden visibility, if any input defines it",
     )
     p_link.add_argument(
         "--max-loaded-size", type=lambda value: int(value, 0),

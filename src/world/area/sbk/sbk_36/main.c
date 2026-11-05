@@ -9,14 +9,6 @@ extern EvtScript EVS_Main;
 extern EvtScript EVS_MakeEntities;
 extern EvtScript EVS_SetupFoliage;
 
-OVL_DEF_MAP() = {
-    .main = &EVS_Main,
-    .entryList = &$Entries,
-    .entryCount = ENTRY_COUNT($Entries),
-    .bgName = "sbk_bg",
-    .tattle = { MSG_MapTattle_sbk_36 },
-};
-
 EvtScript EVS_ExitWalk_sbk_35_1 = EVT_EXIT_WALK(60, $West, $sbk_35.East);
 EvtScript EVS_ExitWalk_dro_01_0 = EVT_EXIT_WALK(60, $DryDryOutpost, $dro_01.DryDryDesert);
 EvtScript EVS_ExitWalk_sbk_26_3 = EVT_EXIT_WALK(60, $North, $sbk_26.South);

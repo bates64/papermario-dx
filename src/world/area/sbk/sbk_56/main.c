@@ -1,4 +1,3 @@
-
 #include "sbk_56.h"
 #include "world/area/sbk/sbk_46.h"
 #include "world/area/sbk/sbk_55.h"
@@ -8,14 +7,6 @@
 extern EvtScript EVS_Main;
 extern EvtScript EVS_MakeEntities;
 extern EvtScript EVS_SetupFoliage;
-
-OVL_DEF_MAP() = {
-    .main = &EVS_Main,
-    .entryList = &$Entries,
-    .entryCount = ENTRY_COUNT($Entries),
-    .bgName = "sbk_bg",
-    .tattle = { MSG_MapTattle_sbk_56 },
-};
 
 API_CALLABLE(StartOasisTracks) {
     bgm_set_linked_mode(0, 1);

@@ -2,15 +2,6 @@
 
 extern EvtScript EVS_Main;
 
-OVL_DEF_MAP() = {
-    .main = &EVS_Main,
-    .entryList = &$Entries,
-    .entryCount = ENTRY_COUNT($Entries),
-    .tattle = { MSG_MapTattle_trd_10 },
-    .songVariation = 1,
-    .sfxReverb = 3,
-};
-
 EvtScript EVS_SetupMusic = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH1_DEFEATED_KOOPA_BROS)

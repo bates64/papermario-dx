@@ -57,7 +57,7 @@ The commands after `Finally` run all at once, so they can't wait, loop, jump, or
 
 ## Where EVT scripts live
 
-An EVT script runs while the overlay that holds it is loaded. A map's EVT scripts run while the player is on that map, and an actor's run during its battle. A map's main EVT script, set as `.main` in its `OVL_DEF_MAP()`, starts every other EVT script on the map. For more about what's loaded when, see [How Paper Mario works](/papermario-dx/engine).
+An EVT script runs while the overlay that holds it is loaded. A map's EVT scripts run while the player is on that map, and an actor's run during its battle. A map's main EVT script, `EVS_Main`, starts every other EVT script on the map. For more about what's loaded when, see [How Paper Mario works](/papermario-dx/engine).
 
 ## Debugging an EVT script
 

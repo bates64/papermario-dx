@@ -4,13 +4,6 @@
 extern EvtScript EVS_Main;
 extern EvtScript EVS_MakeEntities;
 
-OVL_DEF_MAP() = {
-    .main = &EVS_Main,
-    .entryList = &$Entries,
-    .entryCount = ENTRY_COUNT($Entries),
-    .bgName = "nok_bg",
-};
-
 // note: sets DisablePlayerInput, but does not use EVT_GROUP_EXIT_MAP
 EvtScript EVS_ExitWalk_tst_10_2 = {
     Call(DisablePlayerInput, true)

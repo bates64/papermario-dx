@@ -46,9 +46,9 @@ Paper Mario names each area with three letters, and starts each map's name with 
 
 Each map is a folder in its area's folder, such as `world/area/kmr/kmr_02/`. It holds:
 
-- **`map.xml`**: the map's models, collision, and zones, which you edit in the map editor.
-- **`main.c`**: the map's code, which controls what happens in the map.
-- **A header** named after the map, such as `kmr_02.h`. A new map's header lists its entries.
+- **The map**: its models, collision, zones, [markers](/papermario-dx/world/markers/), and [settings](#map-settings), which you edit in the map editor.
+- **`main.c`**: the map's code, which controls what happens in the map. The game starts its `EVS_Main` EVT script when the player enters the map.
+- **A header** named after the map, such as `kmr_02.h`, which the map's code includes.
 
 ## Creating the map
 
@@ -61,6 +61,34 @@ Each map is a folder in its area's folder, such as `world/area/kmr/kmr_02/`. It 
 ## Refer to the map's objects
 
 Each model, collider, and zone in the map has a constant, such as `MODEL_o101`, `COLLIDER_deilie`, and `ZONE_1`, that the map's code can refer to.
+
+## Map settings
+
+The map's background, tattle, song variation, and reverb are in its `features.json`. To give the map a background, select **Map > Has Background** in the map editor, and choose the image with **Map > Change Background**. The map editor has no controls for the other settings, so add them to `features.json` yourself, after `"locationName"`:
+
+```json
+"locationName": "LOCATION_GOOMBA_VILLAGE",
+"tattle": "MSG_MapTattle_kmr_02",
+"songVariation": 1,
+"sfxReverb": 2,
+```
+
+| Setting | What it sets |
+| --- | --- |
+| `tattle` | The message the player's partner says when it tattles on the map. |
+| `songVariation` | Which version, `0` or `1`, of some songs plays in the map, such as the special battle theme. |
+| `sfxReverb` | The reverb on sound effects, from `0`, the default, to `3`. The base game uses `1` in Gusty Gulch, `2` in Tubba Blubba's Castle, and `3` in Peach's Castle. |
+
+If the tattle changes during the game, write a `get_tattle` function in the map's code that returns the message to use. It takes the place of `"tattle"`.
+
+```c
+s32 get_tattle(void) {
+    if (evt_get_variable(nullptr, GF_KPA16_ShutOffLava)) {
+        return MSG_MapTattle_kpa_15_after;
+    }
+    return MSG_MapTattle_kpa_15_before;
+}
+```
 
 ## Testing the map
 

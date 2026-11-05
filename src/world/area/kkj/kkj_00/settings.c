@@ -6,11 +6,3 @@ export s32 map_init(void) {
     }
     return false;
 }
-
-OVL_DEF_MAP() = {
-    .main = &EVS_Main,
-    .entryList = &$Entries,
-    .entryCount = ENTRY_COUNT($Entries),
-    .songVariation = 1,
-    .sfxReverb = 3,
-};
