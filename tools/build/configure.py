@@ -20,7 +20,7 @@ if sys.platform == 'win32':
     import ntfsutils.junction
 
 import assets
-from common import layer_relative, star_rod
+from common import layer_relative, star_rod, write_if_changed
 import linker
 from action_data import actions_from_yaml
 from effect_data import effects_from_yaml
@@ -1208,34 +1208,35 @@ class Configure:
         sprite_dir = self.build_path() / version_assets / "sprite"
         compressed = []
         for sprite_id, name in enumerate(names, 1):
-            source = version_assets / "sprite/npc" / name
+            sources = self.layer_tree(f"sprite/npc/{name}")
             raw = sprite_dir / "npc" / (name + ".bin")
             packed_sprite = raw.with_suffix(".Yay0")
             compressed.append(packed_sprite)
             build(
                 raw,
-                [source],
+                [],
                 "npc_sprite",
                 variables={"sprite_name": name, "asset_stack": asset_stack},
-                asset_deps=[posix(source)],
+                implicit_deps=sources,
             )
             build(packed_sprite, [raw], "yay0")
             build(
                 self.build_path() / "include/sprite/npc" / (name + ".h"),
-                [source, packed_sprite],
+                [packed_sprite],
                 "sprite_header",
                 variables={
                     "sprite_name": name,
                     "sprite_id": str(sprite_id),
                     "asset_stack": asset_stack,
                 },
+                implicit_deps=sources,
             )
 
         player_header = posix(self.build_path() / "include/sprite/player.h")
         packed(
             "sprite/sprites.bin",
             "sprites",
-            [version_assets / "sprite", *compressed],
+            compressed,
             object_name="sprite/sprites.o",
             variables={
                 "header_out": player_header,
@@ -1247,7 +1248,7 @@ class Configure:
                 "player_rasters": ",".join(self.layer_names("sprite/player/rasters/*.png")),
             },
             implicit_outputs=[player_header],
-            asset_deps=["sprite/player"],
+            implicit_deps=self.layer_tree("sprite/player"),
         )
 
     def write_message_rules(self, build, ninja, skip_outputs, version_assets) -> None:
@@ -1818,32 +1819,18 @@ class Configure:
         return out
 
     def layer_tree(self, directory: str) -> List[str]:
-        """A directory and everything under it, in every layer.
+        """A directory and everything under it in every layer, with a file naming the layers that hold it.
 
         Adding or removing a file changes its directory's mtime, so a packer
         that finds its inputs by looking depends on every directory too.
+        Removing the directory itself from a layer changes the file naming the
+        layers.
         """
-        return [
-            posix(path)
-            for layer in self.asset_stack
-            for path in [Path(layer) / directory, *(Path(layer) / directory).glob("**/*")]
-            if path.exists()
-        ]
-
-    # Given a directory within an asset layer, return a list of all assets in the
-    # directory for all layers of the asset stack
-    def get_asset_list(self, asset_dir: str) -> List[str]:
-        ret: Dict[Path, Path] = {}
-
-        for stack_dir in self.asset_stack:
-            path_stem = f"{stack_dir}/{asset_dir}"
-
-            for p in Path(path_stem).glob("**/*"):
-                glob_part = p.relative_to(path_stem)
-                if glob_part not in ret:
-                    ret[glob_part] = p
-
-        return sorted(posix(v) for v in ret.values())
+        roots = [Path(layer) / directory for layer in self.asset_stack if (Path(layer) / directory).exists()]
+        holders = self.build_path() / "layers" / f"{directory}.txt"
+        holders.parent.mkdir(parents=True, exist_ok=True)
+        write_if_changed(str(holders), "".join(f"{posix(root)}\n" for root in roots).encode("utf-8"))
+        return [posix(holders)] + [posix(path) for root in roots for path in [root, *root.glob("**/*")]]
 
     @lru_cache(maxsize=None)
     def resolve_asset_path(self, path: Path) -> Path:
@@ -1957,7 +1944,6 @@ class Configure:
             task: str,
             variables: Dict[str, str] = {},
             implicit_outputs: List[str] = [],
-            asset_deps: List[str] = [],
             implicit_deps: List[str] = [],
         ):
             if not isinstance(object_paths, list):
@@ -2026,8 +2012,6 @@ class Configure:
                 inputs = self.resolve_src_paths(src_paths)
                 if task in ["cc_modern", "cxx_modern"]:
                     variables = {**variables, "iquote": self.source_iquote(Path(inputs[0]))}
-                for dir in asset_deps:
-                    inputs.extend(self.get_asset_list(dir))
 
                 evt_objects = []
                 if evt_validation and task in ["cc_modern", "cxx_modern"]:
