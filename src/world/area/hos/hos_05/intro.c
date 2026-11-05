@@ -1358,7 +1358,36 @@ void worker_draw_story_graphics(void) {
 #define BOWSER_IMG_SIZE (128 * 128 * G_IM_SIZ_8b_BYTES)
 #define PAL_256_SIZE (256 * 2)
 
+/// An image or palette in the ROM, found by its symbol in the segment that holds it.
+typedef struct StoryAsset {
+    u8* romStart;
+    u8* vram;
+    u8* symbol;
+} StoryAsset;
+
+typedef struct StoryPage {
+    StoryAsset img;
+    StoryAsset pal;
+} StoryPage;
+
+#define STORY_ASSET(segment, symbol) { segment##_ROM_START, segment##_VRAM, symbol }
+#define STORY_PAGE(segment) { STORY_ASSET(segment, segment##_png), STORY_ASSET(segment, segment##_pal) }
+
+StoryPage StoryPages[] = {
+    STORY_PAGE(title_bg_1),
+    STORY_PAGE(title_bg_2),
+    STORY_PAGE(title_bg_3),
+    STORY_PAGE(title_bg_4),
+};
+
+void load_story_asset(StoryAsset* asset, s32 size, void* dest) {
+    u8* romStart = asset->romStart + ((u32) asset->symbol - (u32) asset->vram);
+
+    dma_copy(romStart, romStart + size, dest);
+}
+
 void load_story_image(s32 loadBackImage, s32 imageIdx) {
+    StoryPage* page;
     s32 i;
 
     imageIdx--;
@@ -1372,22 +1401,20 @@ void load_story_image(s32 loadBackImage, s32 imageIdx) {
         return;
     }
 
+    page = &StoryPages[imageIdx];
     if (!loadBackImage) {
-        dma_copy(
-            title_bg_1_ROM_START + imageIdx * (STORY_IMG_SIZE + PAL_256_SIZE),
-            title_bg_1_ROM_START + (imageIdx + 1) * (STORY_IMG_SIZE + PAL_256_SIZE), StoryGraphicsPtr->imgFront
-        );
+        load_story_asset(&page->img, STORY_IMG_SIZE, StoryGraphicsPtr->imgFront);
+        load_story_asset(&page->pal, PAL_256_SIZE, StoryGraphicsPtr->palFront);
     } else {
-        dma_copy(
-            title_bg_1_ROM_START + imageIdx * (STORY_IMG_SIZE + PAL_256_SIZE),
-            title_bg_1_ROM_START + (imageIdx + 1) * (STORY_IMG_SIZE + PAL_256_SIZE), StoryGraphicsPtr->imgBack
-        );
+        load_story_asset(&page->img, STORY_IMG_SIZE, StoryGraphicsPtr->imgBack);
+        load_story_asset(&page->pal, PAL_256_SIZE, StoryGraphicsPtr->palBack);
     }
 }
 
 API_CALLABLE(InitializeStoryGraphicsData) {
-    u8* dmaEnd;
-    u8* dmaStart;
+    StoryAsset tape = STORY_ASSET(title_tape, title_tape_png);
+    StoryAsset bowserImg = STORY_ASSET(title_bowser_silhouette, title_bowser_silhouette_png);
+    StoryAsset bowserPal = STORY_ASSET(title_bowser_silhouette, title_bowser_silhouette_pal);
     u8* pos;
 
     StoryGraphicsPtr->workerID = create_worker_frontUI(nullptr, worker_draw_story_graphics);
@@ -1419,11 +1446,9 @@ API_CALLABLE(InitializeStoryGraphicsData) {
     load_story_image(false, STORY_PAGE_BLANK);
     load_story_image(true, STORY_PAGE_STARRY_SKY);
 
-    // load the tape and bowser silhouette images
-    dmaStart = title_tape_ROM_START;
-    dmaEnd = title_tape_ROM_START + TAPE_IMG_SIZE + BOWSER_IMG_SIZE + PAL_256_SIZE;
-
-    dma_copy(dmaStart, dmaEnd, StoryGraphicsPtr->imgTape);
+    load_story_asset(&tape, TAPE_IMG_SIZE, StoryGraphicsPtr->imgTape);
+    load_story_asset(&bowserImg, BOWSER_IMG_SIZE, StoryGraphicsPtr->imgBowser);
+    load_story_asset(&bowserPal, PAL_256_SIZE, StoryGraphicsPtr->palBowser);
     StoryGraphicsPtr->flipOrder = 0;
     StoryGraphicsPtr->storyPageAlpha = 255;
     StoryGraphicsPtr->tapeAlpha = 0;
