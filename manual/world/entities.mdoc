@@ -4,7 +4,19 @@ sidebar:
   order: 6
 ---
 
-Entities are the objects the player hits, opens, and uses in a map, such as blocks, chests, springs, and switches. Make one with `MakeEntity` in an EVT script that the map's main EVT script runs, such as with `ExecWait(EVS_MakeEntities)`. Entity blueprints are declared in `entity.h`, so include it in the map's code:
+Entities are the objects the player hits, opens, and uses in a map, such as blocks, chests, springs, and switches. To add one, place an [Entity marker](/papermario-dx/world/markers/#entity) where it goes, choose its type and settings in the marker's card, and make it with `MakeMarkerEntity` in an EVT script that the map's main EVT script runs:
+
+```c
+EvtScript EVS_MakeEntities = {
+    Call(MakeMarkerEntity, $SaveBlock)
+    Return
+    End
+};
+```
+
+## Making an entity in code
+
+To make an entity where no marker is, such as at a position an EVT script works out, call `MakeEntity`. Entity blueprints are declared in `entity.h`, so include it in the map's code:
 
 ```c
 #include "entity.h"
@@ -18,7 +30,7 @@ EvtScript EVS_MakeEntities = {
 
 `MakeEntity` takes the entity's blueprint, its x, y, and z position, and the angle it faces in degrees. Some blueprints take more arguments after the angle, such as the item in a block. End the arguments with `MAKE_ENTITY_END`.
 
-After `MakeEntity`, `LVar0` holds the entity's index, which other calls such as `SetEntityPosition` take. To use the entity after the EVT script ends, save the index to a [map variable](/papermario-dx/evt-scripts/variables/).
+After `MakeEntity` or `MakeMarkerEntity`, `LVar0` holds the entity's index, which other calls such as `SetEntityPosition` take. To use the entity after the EVT script ends, save the index to a [map variable](/papermario-dx/evt-scripts/variables/).
 
 ## Common entities
 

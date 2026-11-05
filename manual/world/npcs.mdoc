@@ -4,7 +4,7 @@ sidebar:
   order: 5
 ---
 
-An NPC is a character in a map, such as a Toad who talks to the player or a Goomba that starts a battle. A map makes its NPCs when the player enters it, from data you write in the map's code. The examples on this page make a Toad who wanders, talks, and has something new to say once the player opens a gate.
+An NPC is a character in a map, such as a Toad who talks to the player or a Goomba that starts a battle. You describe each NPC in the map's code, and the map makes its NPCs when the player enters it. The examples on this page make a Toad who wanders, talks, and has something new to say once the player opens a gate.
 
 ## NPC IDs
 
@@ -61,6 +61,8 @@ NpcData NpcData_Toad = {
 | `.drops` | What the NPC drops when the player defeats it. Friendly NPCs use `NO_DROPS`. |
 | `.animations` | The NPC's animations, which also choose its sprite. |
 | `.tattle` | Optional. The message the player's partner says when it tattles on the NPC. |
+
+To place the NPC and draw its territory in the map editor, add an [NPC marker](/papermario-dx/world/markers/#npc) and take `.pos`, `.yaw`, and `.territory` from it.
 
 ## Choosing a sprite
 

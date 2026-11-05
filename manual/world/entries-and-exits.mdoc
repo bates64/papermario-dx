@@ -10,7 +10,7 @@ An **entry** is a place where the player can arrive on a map. An **exit** is a [
 
 An entry is an Entry marker. To add one, right-click the floor in the map editor where the player should arrive, select **New Entry...**, and give it a name, such as `Back`. Then turn it to face the way the player should face as they arrive.
 
-The map's entries are numbered in the order they appear in the Outline, starting at `0`, and the map's code gets each one as a constant named after it, such as `$Back`. Its `.index` is its number. [Markers](/papermario-dx/world/markers/#entry) has more on Entry markers.
+The map numbers its entries in the order they appear in the Outline, starting at `0`. In the map's code, this entry is `$Back`, and `$Back.index` is its number. For more, see [Entry markers](/papermario-dx/world/markers/#entry).
 
 To send the player to another map's entry, include that map's header, such as `#include "world/area/kmr/kmr_03.h"`, and refer to the entry as a field of the map, such as `$kmr_03.Front`.
 

@@ -4,27 +4,23 @@ sidebar:
   order: 10
 ---
 
-A **marker** is a named position or shape in a map, such as where an NPC stands, where the player enters, or where a block sits. You place markers in the map editor, and the map's code refers to each one by its name with a `$` in front, such as `$Goompa`. Every map in dx keeps its positions in markers, so to move something, you move its marker instead of changing numbers in code.
+A **marker** is a named point or shape that you place in a map with the map editor, such as where an NPC stands, where the player arrives, or where a chest sits. The map's code reads each marker by its name with a `$` in front, such as `$Goompa`, so to move something, you drag its marker instead of changing numbers in code.
 
 ## Place a marker
 
 {% steps %}
 1. Open the map's `map.xml`, and select the **Markers** tab of the Outline.
 2. Right-click the floor where the marker should go, and select the kind of marker to make, such as **New NPC...**.
-3. Enter a name for the marker, such as `Goompa`, and select **Create**. Your code refers to the marker by this name, so it must start with a letter and use only letters, numbers, and underscores. It also can't be the name of another marker in the map or the name of a map, such as `kmr_03`.
+3. Enter a name for the marker, such as `Goompa`, and select **Create**.
 {% /steps %}
 
 To move a marker, select it and drag the move gizmo, or type its position in its card. To rename it, right-click it in the Outline and select **Rename...**.
 
 ## Use a marker in code
 
-Save the map and build the mod. The map's header, such as `kmr_02.h`, includes `map.xml.h`, which then gives the map's code each marker as a constant named after it. The `$` marks names that come from the map editor, so you can tell them apart from names your code defines.
+Save the map and build the mod. The map's header, such as `kmr_02.h`, includes `map.xml.h`, which declares each marker as a constant.
 
-Each kind of marker has its own type, defined in `map.h`, and its fields hold what you set in the editor. For example, an NPC marker named `Goompa` is an `NpcMarker`, and `$Goompa.pos` is its position. Positions are `Vec3f`, so you can take their parts as `.x`, `.y`, and `.z`.
-
-The fields are constants, so they work anywhere a number written in the code would: in data, such as an `NpcData`, and in EVT scripts. A file of the map's code that doesn't use a marker doesn't carry its data.
-
-If you rename or remove a marker, the build fails at each place your code still uses the old name, so you can find and update them all. It also fails if two of the map's names would be the same, such as a marker named `Route_Start` in a map whose path `Route` has a point named `Start`. The error names both, so you can rename one.
+Each kind of marker has a type in `map.h`, and its fields hold what you set in the editor. For example, an NPC marker named `Goompa` is an `NpcMarker`, and `$Goompa.pos` is its position, a `Vec3f` with `.x`, `.y`, and `.z`. The fields are constants, so they work in data, such as an `NpcData`, and in EVT scripts.
 
 ## Position
 
@@ -37,9 +33,9 @@ Call(MakeItemEntity, ITEM_SHOOTING_STAR, $ShootingStar.pos.x, $ShootingStar.pos.
 
 ## Entry
 
-An Entry marker is where the player appears when they enter the map, facing the marker's direction. It's an `EntryMarker`, with `pos`, `yaw`, `index`, its place in the map's list of entries, and `map`, the name of the map it's in.
+An Entry marker is where the player appears when they enter the map, facing the marker's direction. It's an `EntryMarker`, with `pos`, `yaw`, `index`, and `map`. `index` is the entry's place in the map's list of entries, and `map` is the name of the map.
 
-The map's entries are its Entry markers in the order they appear in the Outline. `map.xml.h` gives them as `$Entries`, a list to point the map's settings at:
+The map's entries are its Entry markers in the order they appear in the Outline, and `map.xml.h` lists them as `$Entries`. Point the map's settings at that list:
 
 ```c
 OVL_DEF_MAP() = {
@@ -50,7 +46,7 @@ OVL_DEF_MAP() = {
 };
 ```
 
-To do something when the player enters by one entry, compare the entry ID with that marker's `index`:
+To do something when the player arrives at one entry, compare the entry ID with that marker's `index`:
 
 ```c
 Call(GetEntryID, LVar0)
@@ -64,7 +60,7 @@ To move an entry to a different place in the list, drag its marker in the Outlin
 
 ### Send the player to another map
 
-Each map's entries also go in a header of their own, which the build puts in the area's folder next to the map's folder, such as `world/area/kmr/kmr_03.h`. When another map includes it, it gets the entries as fields of a constant named after the map, so the entry that kmr_03 calls `$Front` is `$kmr_03.Front`:
+The build also puts each map's entries in a header in the area's folder, such as `world/area/kmr/kmr_03.h`. A map that includes it gets the entries as fields of a constant named after the map, so the entry `$Front` in kmr_03 is `$kmr_03.Front`:
 
 ```c
 #include "world/area/kmr/kmr_03.h"
@@ -72,16 +68,14 @@ Each map's entries also go in a header of their own, which the build puts in the
 EvtScript EVS_ExitWalk_kmr_03 = EVT_EXIT_WALK(60, $West, $kmr_03.Front);
 ```
 
-The exit macros, such as `EVT_EXIT_WALK` and `EVT_EXIT_SINGLE_DOOR`, take the entry the player leaves by and the entry they arrive at. If kmr_03 renames or removes `Front`, the build fails here, so you can update the exit.
-
-To send the player from your own script, give `GotoMap` the entry marker, and it takes the map's name and the entry's index from it. `GotoMapSpecial` does the same, with the transition after the marker:
+The exit macros, such as `EVT_EXIT_WALK` and `EVT_EXIT_SINGLE_DOOR`, take the entry the player leaves by and the entry they arrive at. `GotoMap` and `GotoMapSpecial` take the entry they arrive at:
 
 ```c
 Call(GotoMap, $kmr_03.Front)
 Call(GotoMapSpecial, $kmr_03.Front, TRANSITION_STANDARD)
 ```
 
-The header holds only the map's entries, so a change to the map's other markers doesn't rebuild the maps that include it.
+For more about exits, see [Entries and exits](/papermario-dx/world/entries-and-exits/).
 
 ## NPC
 
@@ -99,9 +93,9 @@ NpcData NpcData_Goompa = {
 
 ## Entity
 
-An Entity marker is an object the game makes at a position, such as a save block, a chest, or a switch. You choose its type and settings in its card, such as the item a block holds or the flag that records it's been opened. It's an `EntityMarker`, with `pos`, `yaw`, and those settings.
+An Entity marker is an object the game makes at a position, such as a save block, a chest, or a switch. You choose its type and settings in its card, such as the item a block holds or the flag that records that a chest was opened. It's an `EntityMarker`.
 
-Make the entity from an EVT script, usually the map's script that makes its entities:
+Make the entity from an EVT script, usually the one that makes the map's entities:
 
 ```c
 EvtScript EVS_MakeEntities = {
@@ -112,11 +106,11 @@ EvtScript EVS_MakeEntities = {
 };
 ```
 
-`MakeMarkerEntity` makes the entity of the marker's type, with its settings, and returns its index in `LVar0`, like `MakeEntity` does.
+Like `MakeEntity`, `MakeMarkerEntity` returns the entity's index in `LVar0`.
 
 ## Path
 
-A path is a set of points where each point can lead to any number of others, such as a route, a patrol, or the spaces of a board game. It's a `PathMarker`, with `count` and `points`, and your code walks it as a graph.
+A Path marker is a set of points where each point can lead to any number of others, such as a route, a patrol, or the spaces of a board game. It's a `PathMarker`, with `count` and `points`.
 
 ### Draw a path
 
@@ -140,7 +134,7 @@ Paths mode shows every path in the map, and draws their points over everything e
 | Remove a line | Right-click it. |
 | Move points | Hold **Alt** and drag a point. |
 
-A drag snaps to a point of the same path when it ends near one, and the point it snaps to gets larger, so you can see which one you'll hit. Deleting a point keeps the path connected: the points that led to it lead to the points it led to instead.
+A drag snaps to a point of the same path when it ends near one, and that point grows so you can see which one you'll hit. Deleting a point keeps the path connected: the points that led to it lead to the points it led to instead.
 
 To move points with the move gizmo, select **Select** mode, select the path's marker in the Outline, and click one of its points. The point's card shows its position, so you can also type exact values there.
 
@@ -156,7 +150,7 @@ typedef struct PathMarkerPoint {
 } PathMarkerPoint;
 ```
 
-Your code finds points by name. Select a point and enter a name in the **Name** field of its card, such as `Start`, and the map's code gets its index as `$Route_Start`. You only need to name the points your code refers to directly. For example, this function finds where a point leads, taking the first way when there's more than one:
+To refer to a point in code, select it and enter a name in the **Name** field of its card, such as `Start`. `$Route_Start` is then that point's index in `$Route.points`. This function finds where a point leads, taking the first way when there's more than one:
 
 ```c
 s32 next_stop(s32 stop) {
@@ -164,8 +158,6 @@ s32 next_stop(s32 stop) {
     return point->nextCount > 0 ? point->next[0] : -1;
 }
 ```
-
-`next_stop($Route_Start)` gives the index of the point that `Start` leads to.
 
 ## Sphere
 
@@ -180,7 +172,7 @@ BombTrigger BombPos_Wall = {
 
 ## Cylinder
 
-A Cylinder marker is an upright cylinder, such as an area to check whether the player is standing in. It's a `CylinderMarker`, with `pos`, the center of its base, and `radius` and `height`.
+A Cylinder marker is an upright cylinder, such as an area the player can stand in. It's a `CylinderMarker`, with `pos`, the center of its base, and `radius` and `height`.
 
 ```c
 f32 dx = playerStatus->pos.x - $Fountain.pos.x;
@@ -190,7 +182,7 @@ b32 inFountain = SQ(dx) + SQ(dz) < SQ($Fountain.radius);
 
 ## Volume
 
-A Volume marker is a box, such as where water drips from or where flowers can grow. It's a `VolumeMarker`, with `min` and `max`, its opposite corners. Take the parts the code needs:
+A Volume marker is a box, such as where water drips from or where flowers can grow. It's a `VolumeMarker`, with `min` and `max`, its opposite corners:
 
 ```c
 DripVolume Drips[] = {
@@ -205,9 +197,9 @@ DripVolume Drips[] = {
 
 ## Camera target
 
-A Camera Target marker is a place for the camera to look at, with the camera settings to use there, such as a shot in a scene. It's a `CamTargetMarker`.
+A Camera Target marker is a place for the camera to look at and the camera settings to use there, such as one shot of a scene. It's a `CamTargetMarker`.
 
-In its card, either give the marker its own camera settings, which work like a [camera zone's](/papermario-dx/world/camera/#camera-zones), or select **Camera Settings From Zone** to use the settings of the zone below it. With zone settings, you can still replace the zone's distance with **Override Boom Length** and its angles with **Override Boom Angles**. Select **Use Current View** to set the marker up from the editor's camera, and **Toggle Preview** to see the shot.
+In its card, give the marker camera settings, which work like a [camera zone's](/papermario-dx/world/camera/#camera-zones), or select **Camera Settings From Zone** to use the settings of the zone below it. With zone settings, **Override Boom Length** replaces the zone's distance and **Override Boom Angles** replaces its angles. Select **Use Current View** to set the marker up from the editor's camera, and **Toggle Preview** to see the shot.
 
 Point the camera at the marker with `UseCamTarget`:
 
@@ -221,15 +213,15 @@ EvtScript EVS_ShowShore = {
 };
 ```
 
-If the marker has **Generate Camera Pan** selected, `UseCamTarget` pans the camera there at its **Move Speed** and waits until it arrives. Otherwise, it only changes the camera's settings and target, and you start the pan yourself with `PanToTarget`, as in [Moving the camera from an EVT script](/papermario-dx/world/camera/#moving-the-camera-from-an-evt-script).
+If the marker has **Generate Camera Pan** selected, `UseCamTarget` pans the camera there at its **Move Speed** and waits until it arrives. Otherwise, it only changes the camera's settings and target, and you start the pan with `PanToTarget`, as in [Moving the camera from an EVT script](/papermario-dx/world/camera/#moving-the-camera-from-an-evt-script).
 
 ## Light
 
 A Light marker lights sprites, such as a torch casting a red glow on the player. Lights only show when the map has sprite shading. To turn it on, select a Light marker and select **Enable** under **Sprite shading** in its properties. There you also set the **Base color**, the color of a sprite's unlit side, and the **Edge offset**, how wide the lit edges of sprites are. These settings belong to the whole map, so they only appear while one light is selected.
 
-A map can have up to 7 Light markers. Its shading applies when the map loads, before its main script runs, so a map needs no code to use it.
+A map can have up to 7 Light markers. The shading applies when the map loads, before its main EVT script runs, so the map needs no code for it.
 
-A battle stage's shading doesn't apply on its own, because a stage's variants can differ in whether they're shaded. The stage's header gives its shading as `MAP_SPRITE_SHADING`, so set it in the pre-battle script of each variant that uses it:
+A battle stage's variants can differ in whether they're shaded, so a stage's shading doesn't apply until a script sets it. The stage's header gives its shading as `MAP_SPRITE_SHADING`, so set it in the pre-battle script of each variant that uses it:
 
 ```c
 EvtScript EVS_PreBattle = {
