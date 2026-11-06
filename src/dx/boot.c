@@ -220,8 +220,6 @@ const char* dx_boot_resolve_battle(const BattleArea* area, const char* formation
     return standIn->name;
 }
 
-#if DX_DEBUG_MENU
-
 /// Set to ask for a quick save once dx_can_quick_save allows. Cleared once
 /// it's made.
 u8 gQuickSaveRequested;
@@ -317,5 +315,3 @@ void dx_boot_update(void) {
         gQuickSaveRequested = false;
     }
 }
-
-#endif

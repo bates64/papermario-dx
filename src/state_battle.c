@@ -30,9 +30,7 @@ extern ShapeFile gMapShapeData;
 
 void state_init_battle(void) {
     BattleTransitionDelay = 5;
-#if DX_DEBUG_MENU
     dx_boot_on_battle_start();
-#endif
 }
 
 void state_step_battle(void) {

@@ -36,7 +36,6 @@ void dx_boot_on_battle_end(void);
 /// area's first battle stands in.
 const char* dx_boot_resolve_battle(const BattleArea* area, const char* formation);
 
-#if DX_DEBUG_MENU
 /// Saves the current file and makes the game boot back into it. In a battle,
 /// it saves the player's data from the battle's start, and boots into the
 /// battle.
@@ -50,7 +49,6 @@ void dx_boot_on_battle_start(void);
 
 /// Quick saves once it's safe, if gQuickSaveRequested is set. Runs each frame.
 void dx_boot_update(void);
-#endif
 
 #ifdef _LANGUAGE_C_PLUS_PLUS
 }
