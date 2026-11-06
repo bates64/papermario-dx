@@ -2,6 +2,24 @@
 
 ## Unreleased
 
+### Refer to map markers in C ([Alex](https://starhaven.dev/bates64.com))
+
+A map's code reads the markers you place in the map editor by name, with a `$` in front, such as `$Goomba`. See [the docs](https://docs.starhaven.dev/papermario-dx/world/markers/) for more information.
+
+A Camera Target marker sets up the camera with `UseCamTarget`, such as `Call(UseCamTarget, CAM_DEFAULT, $Shore)`.
+
+Entries are Entry markers too, and replace the enum in `entrances.h`. To send the player to another map's entry, include that map's header and pass the entry:
+
+```c
+#include "world/area/kmr/kmr_03.h"
+
+Call(GotoMap, $kmr_03.Front)
+```
+
+To update:
+- Replace entry constants such as `kmr_03_ENTRY_0` with entry markers such as `$kmr_03.Front`, including in exit macros. In `dx/config.h`, `NEW_GAME_ENTRY` replaces `NEW_GAME_MAP_ID` and `NEW_GAME_ENTRY_ID`.
+- If one of your maps has no markers, open it in the map editor and add an Entry marker for each entry in its entry list, in the same order.
+
 ### Each map has its own sprite shading ([Alex](https://starhaven.dev/bates64.com))
 
 Sprite shading is set for each map instead of in a shared list of profiles, and applies when the map loads. Place its lights as Light markers, then turn it on and set its colors under **Lighting** in the map's settings, which show when nothing is selected. See [the docs](https://docs.starhaven.dev/papermario-dx/world/markers/#light) for more information.
@@ -20,24 +38,6 @@ Call(SetNpcJumpscale, NPC_SELF, 2.5) // was Float(2.5)
 ```
 
 `Float` is still needed for decimal numbers in C arrays that a script reads with `UseFBuf`. A variable that isn't a struct or an array, such as an `s32`, passes its value, so pass its address with `&`, such as `UseBuf(&BlowingBubbles)`.
-
-### Refer to map markers in C ([Alex](https://starhaven.dev/bates64.com))
-
-A map's code reads the markers you place in the map editor by name, with a `$` in front, such as `$Goomba`. See [the docs](https://docs.starhaven.dev/papermario-dx/world/markers/) for more information.
-
-A Camera Target marker sets up the camera with `UseCamTarget`, such as `Call(UseCamTarget, CAM_DEFAULT, $Shore)`.
-
-Entries are Entry markers too, and replace the enum in `entrances.h`. To send the player to another map's entry, include that map's header and pass the entry:
-
-```c
-#include "world/area/kmr/kmr_03.h"
-
-Call(GotoMap, $kmr_03.Front)
-```
-
-To update:
-- Replace entry constants such as `kmr_03_ENTRY_0` with entry markers such as `$kmr_03.Front`, including in exit macros. In `dx/config.h`, `NEW_GAME_ENTRY` replaces `NEW_GAME_MAP_ID` and `NEW_GAME_ENTRY_ID`.
-- If one of your maps has no markers, open it in the map editor and add an Entry marker for each entry in its entry list, in the same order.
 
 ### `OVL_DEF_MAP` is deprecated ([Alex](https://starhaven.dev/bates64.com))
 
