@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 2026-11-06
+
 ### Refer to map markers in C ([Alex](https://starhaven.dev/bates64.com))
 
 A map's code reads the markers you place in the map editor by name, with a `$` in front, such as `$Goomba`. See [the docs](https://docs.starhaven.dev/papermario-dx/world/markers/) for more information.
