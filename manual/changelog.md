@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+Fixed Star Rod on Linux, where its map and sprite editors failed to start. ([Alex](https://starhaven.dev/bates64.com))
+
 ## 2026-11-06
 
 ### Refer to map markers in C ([Alex](https://starhaven.dev/bates64.com))
