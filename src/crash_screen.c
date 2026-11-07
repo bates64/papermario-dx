@@ -34,6 +34,9 @@ INCLUDE_IMG("crash_screen/font.png", gCrashScreenFont);
 // The font image is on 6x7 grid
 #define GLYPH(x, y) (x + (y * 5))
 
+/// The widest x advance crash_screen_draw_glyph returns.
+#define CRASH_SCREEN_MAX_GLYPH_ADVANCE 7
+
 // RGBA5551 colors
 #define COLOR_WHITE  0xFFFF
 #define COLOR_RED    0xF801
@@ -256,18 +259,20 @@ s32 crash_screen_printf(s32 x, s32 y, const char* fmt, ...) {
     va_end(args);
 }
 
-/// Returns y advance.
-s32 crash_screen_printf_proportional(s32 x, s32 y, const char* fmt, ...) {
+/// Advances `*y` past the text. Text that runs out of room before the right margin continues on the next line at `x`.
+void crash_screen_printf_proportional(s32 x, s32* y, const char* fmt, ...) {
     u8* ptr;
     u32 glyph;
     s32 size;
     u8 buf[0x200];
     va_list args;
     s32 ox = x;
+    s32 maxX = SCREEN_WIDTH - ox - CRASH_SCREEN_MAX_GLYPH_ADVANCE;
 
     va_start(args, fmt);
 
     size = _Printf(crash_screen_copy_to_buf, (char*) buf, fmt, args);
+    va_end(args);
     crash_screen_log(buf, size);
 
     if (size > 0) {
@@ -278,15 +283,20 @@ s32 crash_screen_printf_proportional(s32 x, s32 y, const char* fmt, ...) {
 
             glyph = charToGlyph[*ptr & 0x7F];
 
+            if (x > maxX && *ptr != '\n') {
+                x = ox;
+                *y += 10;
+            }
+
             if (glyph != 0xFF) {
-                x += crash_screen_draw_glyph(x, y, glyph);
+                x += crash_screen_draw_glyph(x, *y, glyph);
             } else {
                 x += 4;
             }
 
             if (*ptr == '\n') {
                 x = ox;
-                y += 10;
+                *y += 10;
             }
 
             size--;
@@ -296,11 +306,8 @@ s32 crash_screen_printf_proportional(s32 x, s32 y, const char* fmt, ...) {
 
     // If last character was not a newline, move to the next line
     if (x != ox) {
-        y += 10;
+        *y += 10;
     }
-    return y;
-
-    va_end(args);
 }
 
 void crash_screen_print_fpr(s32 x, s32 y, s32 regNum, void* addr) {
@@ -541,7 +548,7 @@ static s32 crash_screen_print_error(s32 x, s32 y, OSThread* faultedThread) {
     gCrashScreenColor = COLOR_RED;
 
     if (crashScreenAssertMessage[0] != '\0') {
-        y = crash_screen_printf_proportional(x, y, crashScreenAssertMessage);
+        crash_screen_printf_proportional(x, &y, crashScreenAssertMessage);
         gCrashScreenColor = COLOR_WHITE;
         return y;
     }
@@ -550,40 +557,40 @@ static s32 crash_screen_print_error(s32 x, s32 y, OSThread* faultedThread) {
 
     switch (causeIndex) {
         case 1: // TLB modification
-            y = crash_screen_printf_proportional(x, y, "Segfault: write to 0x%08lX", badvaddr);
+            crash_screen_printf_proportional(x, &y, "Segfault: write to 0x%08lX", badvaddr);
             break;
         case 2: // TLB exception on load
             if (badvaddr == 0) {
-                y = crash_screen_printf_proportional(x, y, "Attempt to read from nullptr");
+                crash_screen_printf_proportional(x, &y, "Attempt to read from nullptr");
             } else {
-                y = crash_screen_printf_proportional(x, y, "Segfault: read from 0x%08lX", badvaddr);
+                crash_screen_printf_proportional(x, &y, "Segfault: read from 0x%08lX", badvaddr);
             }
             break;
         case 3: // TLB exception on store
             if (badvaddr == 0) {
-                y = crash_screen_printf_proportional(x, y, "Attempt to write to nullptr");
+                crash_screen_printf_proportional(x, &y, "Attempt to write to nullptr");
             } else {
-                y = crash_screen_printf_proportional(x, y, "Segfault: write to 0x%08lX", badvaddr);
+                crash_screen_printf_proportional(x, &y, "Segfault: write to 0x%08lX", badvaddr);
             }
             break;
         case 4: // Address error on load
-            y = crash_screen_printf_proportional(x, y, "Unaligned read from 0x%08lX", badvaddr);
+            crash_screen_printf_proportional(x, &y, "Unaligned read from 0x%08lX", badvaddr);
             break;
         case 5: // Address error on store
-            y = crash_screen_printf_proportional(x, y, "Unaligned write to 0x%08lX", badvaddr);
+            crash_screen_printf_proportional(x, &y, "Unaligned write to 0x%08lX", badvaddr);
             break;
         case 6: // Bus error on inst
         case 7: // Bus error on data
-            y = crash_screen_printf_proportional(x, y, "Bus error at 0x%08lX", badvaddr);
+            crash_screen_printf_proportional(x, &y, "Bus error at 0x%08lX", badvaddr);
             break;
         case 10: // Reserved instruction
-            y = crash_screen_printf_proportional(x, y, "Invalid instruction at 0x%08lX", ctx->pc);
+            crash_screen_printf_proportional(x, &y, "Invalid instruction at 0x%08lX", ctx->pc);
             break;
         case 12: // Arithmetic overflow
-            y = crash_screen_printf_proportional(x, y, "Integer overflow");
+            crash_screen_printf_proportional(x, &y, "Integer overflow");
             break;
         case 13: // Trap
-            y = crash_screen_printf_proportional(x, y, "Trap");
+            crash_screen_printf_proportional(x, &y, "Trap");
             break;
         case 15: { // Floating point exception
             u32 fpcsr = ctx->fpcsr;
@@ -595,7 +602,7 @@ static s32 crash_screen_print_error(s32 x, s32 y, OSThread* faultedThread) {
                     break;
                 }
             }
-            y = crash_screen_printf_proportional(x, y, "Float: %s", fpCause);
+            crash_screen_printf_proportional(x, &y, "Float: %s", fpCause);
             break;
         }
         default: {
@@ -605,7 +612,7 @@ static s32 crash_screen_print_error(s32 x, s32 y, OSThread* faultedThread) {
                 idx = 16;
             if (idx == 31)
                 idx = 17;
-            y = crash_screen_printf_proportional(x, y, "%s", gFaultCauses[idx]);
+            crash_screen_printf_proportional(x, &y, "%s", gFaultCauses[idx]);
             break;
         }
     }
@@ -627,19 +634,19 @@ static s32 crash_screen_print_location(s32 x, s32 y, ResolvedSym* sym) {
 
     gCrashScreenColor = COLOR_GREY;
     if (hasFile && hasLine && hasOverlay) {
-        y = crash_screen_printf_proportional(x, y, "    %s:%ld (%s)", sym->file, sym->line, sym->overlay);
+        crash_screen_printf_proportional(x, &y, "    %s:%ld (%s)", sym->file, sym->line, sym->overlay);
     } else if (hasFile && hasLine) {
-        y = crash_screen_printf_proportional(x, y, "    %s:%ld", sym->file, sym->line);
+        crash_screen_printf_proportional(x, &y, "    %s:%ld", sym->file, sym->line);
     } else if (hasFile && hasOverlay) {
-        y = crash_screen_printf_proportional(x, y, "    %s (%s)", sym->file, sym->overlay);
+        crash_screen_printf_proportional(x, &y, "    %s (%s)", sym->file, sym->overlay);
     } else if (hasOverlay && hasLine) {
-        y = crash_screen_printf_proportional(x, y, "    %s:%ld", sym->overlay, sym->line);
+        crash_screen_printf_proportional(x, &y, "    %s:%ld", sym->overlay, sym->line);
     } else if (hasOverlay) {
-        y = crash_screen_printf_proportional(x, y, "    (%s)", sym->overlay);
+        crash_screen_printf_proportional(x, &y, "    (%s)", sym->overlay);
     } else if (hasFile) {
-        y = crash_screen_printf_proportional(x, y, "    %s", sym->file);
+        crash_screen_printf_proportional(x, &y, "    %s", sym->file);
     } else {
-        y = crash_screen_printf_proportional(x, y, "    :%ld", sym->line);
+        crash_screen_printf_proportional(x, &y, "    :%ld", sym->line);
     }
 
     return y;
@@ -679,7 +686,7 @@ void crash_screen_draw(OSThread* faultedThread) {
             }
             backtrace_resolve_addr(addr, &sym, -1);
             gCrashScreenColor = COLOR_CYAN;
-            y = crash_screen_printf_proportional(x, y, "%s", sym.name);
+            crash_screen_printf_proportional(x, &y, "%s", sym.name);
             y = crash_screen_print_location(x, y, &sym);
             if (isFirstFrame && crashScreenAssertMessage[0] == '\0') {
                 y += 5;
@@ -694,7 +701,7 @@ void crash_screen_draw(OSThread* faultedThread) {
         while (s != nullptr) {
             backtrace_resolve_addr((u32) s->ptrFirstLine, &sym, s->curLine);
             gCrashScreenColor = COLOR_YELLOW;
-            y = crash_screen_printf_proportional(x, y, "%s", sym.name);
+            crash_screen_printf_proportional(x, &y, "%s", sym.name);
             y = crash_screen_print_location(x, y, &sym);
             s = s->blockingParent;
         }
@@ -702,7 +709,7 @@ void crash_screen_draw(OSThread* faultedThread) {
         for (; i < max; i++) {
             backtrace_resolve_addr(bt[i], &sym, -1);
             gCrashScreenColor = COLOR_CYAN;
-            y = crash_screen_printf_proportional(x, y, "%s", sym.name);
+            crash_screen_printf_proportional(x, &y, "%s", sym.name);
             y = crash_screen_print_location(x, y, &sym);
             if (isFirstFrame && crashScreenAssertMessage[0] == '\0') {
                 y += 5;
