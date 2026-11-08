@@ -20,7 +20,8 @@ void dx_begin_battle(const char* battle, const char* stage, b32 restarting);
 b32 dx_boot_from_record(void);
 
 /// Whether the first map load starts at the boot record's entrance. If so,
-/// sets gGameStatus's map and entrance to it.
+/// sets gGameStatus's map and entrance to it. A record that names a map the
+/// game doesn't have is ignored.
 b32 dx_boot_use_entrance(void);
 
 /// Whether the world is loading only for the boot record's battle to return to.

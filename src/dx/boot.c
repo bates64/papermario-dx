@@ -141,7 +141,12 @@ b32 dx_boot_use_entrance(void) {
     }
     // later map loads, such as after a game over, start where the game was saved
     BootEntranceUsed = true;
-    get_map_IDs_by_name_checked(gSaveBootRecord.map, &gGameStatus.areaID, &gGameStatus.mapID);
+    s16 areaID, mapID;
+    if (!get_map_IDs_by_name(gSaveBootRecord.map, &areaID, &mapID)) {
+        return false;
+    }
+    gGameStatus.areaID = areaID;
+    gGameStatus.mapID = mapID;
     gGameStatus.entryID = gSaveBootRecord.entryID;
     return true;
 }
